@@ -1,0 +1,14 @@
+\begin{table*}[!tp]
+\centering
+    \begin{adjustbox}{max width=\textwidth}
+    \begin{tabular}{*{6}{c}||ccc}
+    \toprule
+    \small Fine-tuned & \small MAS & \small $\text{LAMOL}_{\text{GEN}}^{0.05}$ & \small $\text{LAMOL}_{\text{GEN}}^{0.2}$ & \small $\text{LAMOL}_{\text{TASK}}^{0.05}$ & \small $\text{LAMOL}_{\text{TASK}}^{0.2}$ & \small $\text{LAMOL}_{\text{REAL}}^{0.05}$ & \small $\text{LAMOL}_{\text{REAL}}^{0.2}$ & \small Multitasked \\
+    \midrule
+    51.5 & 49.5 & 69.6 & 73.1 & 71.5 & \textbf{74.3} & 74.5 & 76.0 & 76.6 \\
+    \bottomrule
+    \end{tabular}
+    \end{adjustbox}
+    \caption{Summary of averaged score on five tasks. The scores are reported as the averaged score over all tasks of the models after training on every task. The rightmost three columns~-- LAMOL with $\gamma = 0.05$ and $\gamma = 0.2$ of real samples from previous tasks and Multitasked~-- are upper bounds for comparison. Best performance in boldface.}
+\label{tab:five_tasks}
+\end{table*}

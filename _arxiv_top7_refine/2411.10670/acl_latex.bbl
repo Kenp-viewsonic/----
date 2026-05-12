@@ -1,0 +1,317 @@
+\begin{thebibliography}{63}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Basu et~al.(2004)Basu, Banerjee, and Mooney}]{basu2004active}
+Sugato Basu, Arindam Banerjee, and Raymond~J Mooney. 2004.
+\newblock Active semi-supervision for pairwise constrained clustering.
+\newblock In \emph{SIAM international conference on data mining}.
+
+\bibitem[{Brown et~al.(2020)Brown, Mann, Ryder, Subbiah, Kaplan, Dhariwal, Neelakantan, Shyam, Sastry, Askell et~al.}]{brown2020language}
+Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared~D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, et~al. 2020.
+\newblock Language models are few-shot learners.
+\newblock \emph{Advances in neural information processing systems (NeurIPS)}.
+
+\bibitem[{Bubeck et~al.(2023)Bubeck, Chandrasekaran, Eldan, Gehrke, Horvitz, Kamar, Lee, Lee, Li, Lundberg et~al.}]{bubeck2023sparks}
+S{\'e}bastien Bubeck, Varun Chandrasekaran, Ronen Eldan, Johannes Gehrke, Eric Horvitz, Ece Kamar, Peter Lee, Yin~Tat Lee, Yuanzhi Li, Scott Lundberg, et~al. 2023.
+\newblock Sparks of artificial general intelligence: Early experiments with gpt-4.
+\newblock \emph{arXiv preprint arXiv:2303.12712}.
+
+\bibitem[{Bulatov et~al.(2023)Bulatov, Kuratov, and Burtsev}]{bulatov2023scaling}
+Aydar Bulatov, Yuri Kuratov, and Mikhail~S Burtsev. 2023.
+\newblock Scaling transformer to 1m tokens and beyond with rmt.
+\newblock \emph{arXiv preprint arXiv:2304.11062}.
+
+\bibitem[{Bunk et~al.(2020)Bunk, Varshneya, Vlasov, and Nichol}]{bunk2020diet}
+Tanja Bunk, Daksh Varshneya, Vladimir Vlasov, and Alan Nichol. 2020.
+\newblock Diet: Lightweight language understanding for dialogue systems.
+\newblock \emph{arXiv preprint arXiv:2004.09936}.
+
+\bibitem[{Caron et~al.(2018)Caron, Bojanowski, Joulin, and Douze}]{caron2018deep}
+Mathilde Caron, Piotr Bojanowski, Armand Joulin, and Matthijs Douze. 2018.
+\newblock Deep clustering for unsupervised learning of visual features.
+\newblock In \emph{European conference on computer vision (ECCV)}.
+
+\bibitem[{Casanueva et~al.(2020)Casanueva, Tem{\v{c}}inas, Gerz, Henderson, and Vuli{\'c}}]{casanueva2020efficient}
+I{\~n}igo Casanueva, Tadas Tem{\v{c}}inas, Daniela Gerz, Matthew Henderson, and Ivan Vuli{\'c}. 2020.
+\newblock Efficient intent detection with dual sentence encoders.
+\newblock \emph{arXiv preprint arXiv:2003.04807}.
+
+\bibitem[{Chang et~al.(2017)Chang, Wang, Meng, Xiang, and Pan}]{chang2017deep}
+Jianlong Chang, Lingfeng Wang, Gaofeng Meng, Shiming Xiang, and Chunhong Pan. 2017.
+\newblock Deep adaptive image clustering.
+\newblock In \emph{International conference on computer vision (ICCV)}.
+
+\bibitem[{Chu et~al.(2023)Chu, Chen, Chen, Yu, He, Wang, Peng, Liu, Qin, and Liu}]{chu2023survey}
+Zheng Chu, Jingchang Chen, Qianglong Chen, Weijiang Yu, Tao He, Haotian Wang, Weihua Peng, Ming Liu, Bing Qin, and Ting Liu. 2023.
+\newblock A survey of chain of thought reasoning: Advances, frontiers and future.
+\newblock \emph{arXiv preprint arXiv:2309.15402}.
+
+\bibitem[{Costello et~al.(2018)Costello, Lin, Mruthyunjaya, Bolla, and Jankowski}]{costello2018multi}
+Charles Costello, Ruixi Lin, Vishwas Mruthyunjaya, Bettina Bolla, and Charles Jankowski. 2018.
+\newblock Multi-layer ensembling techniques for multilingual intent classification.
+\newblock \emph{arXiv preprint arXiv:1806.07914}.
+
+\bibitem[{Coucke et~al.(2018)Coucke, Saade, Ball, Bluche, Caulier, Leroy, Doumouro, Gisselbrecht, Caltagirone, Lavril et~al.}]{coucke2018snips}
+Alice Coucke, Alaa Saade, Adrien Ball, Th{\'e}odore Bluche, Alexandre Caulier, David Leroy, Cl{\'e}ment Doumouro, Thibault Gisselbrecht, Francesco Caltagirone, Thibaut Lavril, et~al. 2018.
+\newblock Snips voice platform: an embedded spoken language understanding system for private-by-design voice interfaces.
+\newblock \emph{arXiv preprint arXiv:1805.10190}.
+
+\bibitem[{Dao et~al.(2022)Dao, Fu, Ermon, Rudra, and R{\'e}}]{dao2022flashattention}
+Tri Dao, Dan Fu, Stefano Ermon, Atri Rudra, and Christopher R{\'e}. 2022.
+\newblock Flashattention: Fast and memory-efficient exact attention with io-awareness.
+\newblock \emph{Advances in Neural Information Processing Systems (NeurIPS)}.
+
+\bibitem[{De~Raedt et~al.(2023)De~Raedt, Godin, Demeester, and Develder}]{de2023idas}
+Maarten De~Raedt, Fr{\'e}deric Godin, Thomas Demeester, and Chris Develder. 2023.
+\newblock Idas: Intent discovery with abstractive summarization.
+\newblock \emph{arXiv preprint arXiv:2305.19783}.
+
+\bibitem[{Degand and Muller(2020)}]{degand2020introduction}
+Liesbeth Degand and Philippe Muller. 2020.
+\newblock Introduction to the special issue on dialogue and dialogue systems.
+\newblock \emph{Traitement Automatique des Langues}, 61(3):7--15.
+
+\bibitem[{Devlin et~al.(2018)Devlin, Chang, Lee, and Toutanova}]{devlin2018bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2018.
+\newblock Bert: Pre-training of deep bidirectional transformers for language understanding.
+\newblock \emph{arXiv preprint arXiv:1810.04805}.
+
+\bibitem[{Ester et~al.(1996)Ester, Kriegel, Sander, Xu et~al.}]{ester1996density}
+Martin Ester, Hans-Peter Kriegel, J{\"o}rg Sander, Xiaowei Xu, et~al. 1996.
+\newblock A density-based algorithm for discovering clusters in large spatial databases with noise.
+\newblock In \emph{KDD}.
+
+\bibitem[{FitzGerald et~al.(2022)FitzGerald, Hench, Peris, Mackie, Rottmann, Sanchez, Nash, Urbach, Kakarala, Singh et~al.}]{fitzgerald2022massive}
+Jack FitzGerald, Christopher Hench, Charith Peris, Scott Mackie, Kay Rottmann, Ana Sanchez, Aaron Nash, Liam Urbach, Vishesh Kakarala, Richa Singh, et~al. 2022.
+\newblock Massive: A 1m-example multilingual natural language understanding dataset with 51 typologically-diverse languages.
+\newblock \emph{arXiv preprint arXiv:2204.08582}.
+
+\bibitem[{Gao et~al.(2023)Gao, Chaudhary, Srinivasan, Hashimoto, Raman, and Bendersky}]{gao2023ambiguityaware}
+Lingyu Gao, Aditi Chaudhary, Krishna Srinivasan, Kazuma Hashimoto, Karthik Raman, and Michael Bendersky. 2023.
+\newblock \href {http://arxiv.org/abs/2309.07900} {Ambiguity-aware in-context learning with large language models}.
+
+\bibitem[{Gowda and Krishna(1978)}]{gowda1978agglomerative}
+K~Chidananda Gowda and GJPR Krishna. 1978.
+\newblock Agglomerative clustering using the concept of mutual nearest neighbourhood.
+\newblock \emph{Pattern recognition}, 10(2):105--112.
+
+\bibitem[{Han et~al.(2019)Han, Vedaldi, and Zisserman}]{han2019learning}
+Kai Han, Andrea Vedaldi, and Andrew Zisserman. 2019.
+\newblock Learning to discover novel visual categories via deep transfer clustering.
+\newblock In \emph{International Conference on Computer Vision (ICCV)}.
+
+\bibitem[{Heusel et~al.(2017)Heusel, Ramsauer, Unterthiner, Nessler, and Hochreiter}]{heusel2017gans}
+Martin Heusel, Hubert Ramsauer, Thomas Unterthiner, Bernhard Nessler, and Sepp Hochreiter. 2017.
+\newblock Gans trained by a two time-scale update rule converge to a local nash equilibrium.
+\newblock \emph{Advances in neural information processing systems}, 30.
+
+\bibitem[{Hsu et~al.(2017)Hsu, Lv, and Kira}]{hsu2017learning}
+Yen-Chang Hsu, Zhaoyang Lv, and Zsolt Kira. 2017.
+\newblock Learning to cluster in order to transfer across domains and tasks.
+\newblock \emph{arXiv preprint arXiv:1711.10125}.
+
+\bibitem[{Hsu et~al.(2019)Hsu, Lv, Schlosser, Odom, and Kira}]{hsu2019multi}
+Yen-Chang Hsu, Zhaoyang Lv, Joel Schlosser, Phillip Odom, and Zsolt Kira. 2019.
+\newblock Multi-class classification without multi-class labels.
+\newblock \emph{arXiv preprint arXiv:1901.00544}.
+
+\bibitem[{Izacard et~al.(2022)Izacard, Lewis, Lomeli, Hosseini, Petroni, Schick, Dwivedi-Yu, Joulin, Riedel, and Grave}]{izacard2022few}
+Gautier Izacard, Patrick Lewis, Maria Lomeli, Lucas Hosseini, Fabio Petroni, Timo Schick, Jane Dwivedi-Yu, Armand Joulin, Sebastian Riedel, and Edouard Grave. 2022.
+\newblock Few-shot learning with retrieval augmented language models.
+\newblock \emph{arXiv preprint arXiv:2208.03299}.
+
+\bibitem[{Jayarao and Srivastava(2018)}]{jayarao2018intent}
+Pratik Jayarao and Aman Srivastava. 2018.
+\newblock Intent detection for code-mix utterances in task oriented dialogue systems.
+\newblock In \emph{International Conference on Electrical, Electronics, Communication, Computer, and Optimization Techniques (ICEECCOT)}.
+
+\bibitem[{Kumar et~al.(2022)Kumar, Patidar, Varshney, Vig, and Shroff}]{kumar2022intent}
+Rajat Kumar, Mayur Patidar, Vaibhav Varshney, Lovekesh Vig, and Gautam Shroff. 2022.
+\newblock Intent detection and discovery from user logs via deep semi-supervised contrastive clustering.
+\newblock In \emph{PConference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies}.
+
+\bibitem[{Larson et~al.(2019)Larson, Mahendran, Peper, Clarke, Lee, Hill, Kummerfeld, Leach, Laurenzano, Tang et~al.}]{larson2019evaluation}
+Stefan Larson, Anish Mahendran, Joseph~J Peper, Christopher Clarke, Andrew Lee, Parker Hill, Jonathan~K Kummerfeld, Kevin Leach, Michael~A Laurenzano, Lingjia Tang, et~al. 2019.
+\newblock An evaluation dataset for intent classification and out-of-scope prediction.
+\newblock In \emph{Empirical Methods in Natural Language Processing and International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)}.
+
+\bibitem[{Lester et~al.(2021)Lester, Al-Rfou, and Constant}]{lester2021power}
+Brian Lester, Rami Al-Rfou, and Noah Constant. 2021.
+\newblock The power of scale for parameter-efficient prompt tuning.
+\newblock \emph{arXiv preprint arXiv:2104.08691}.
+
+\bibitem[{Lewis et~al.(2020)Lewis, Perez, Piktus, Petroni, Karpukhin, Goyal, K{\"u}ttler, Lewis, Yih, Rockt{\"a}schel et~al.}]{lewis2020retrieval}
+Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir Karpukhin, Naman Goyal, Heinrich K{\"u}ttler, Mike Lewis, Wen-tau Yih, Tim Rockt{\"a}schel, et~al. 2020.
+\newblock Retrieval-augmented generation for knowledge-intensive nlp tasks.
+\newblock \emph{Advances in Neural Information Processing Systems}, 33:9459--9474.
+
+\bibitem[{Li et~al.(2020)Li, Arora, Chen, Gupta, Gupta, and Mehdad}]{li2020mtop}
+Haoran Li, Abhinav Arora, Shuohui Chen, Anchit Gupta, Sonal Gupta, and Yashar Mehdad. 2020.
+\newblock Mtop: A comprehensive multilingual task-oriented semantic parsing benchmark.
+\newblock \emph{arXiv preprint arXiv:2008.09335}.
+
+\bibitem[{Liang et~al.(2022)Liang, Bommasani, Lee, Tsipras, Soylu, Yasunaga, Zhang, Narayanan, Wu, Kumar et~al.}]{liang2022holistic}
+Percy Liang, Rishi Bommasani, Tony Lee, Dimitris Tsipras, Dilara Soylu, Michihiro Yasunaga, Yian Zhang, Deepak Narayanan, Yuhuai Wu, Ananya Kumar, et~al. 2022.
+\newblock Holistic evaluation of language models.
+\newblock \emph{arXiv preprint arXiv:2211.09110}.
+
+\bibitem[{Lin et~al.(2020)Lin, Xu, and Zhang}]{lin2020discovering}
+Ting-En Lin, Hua Xu, and Hanlei Zhang. 2020.
+\newblock Discovering new intents via constrained deep adaptive clustering with cluster refinement.
+\newblock In \emph{AAAI Conference on Artificial Intelligence}.
+
+\bibitem[{Lin et~al.(2023)Lin, Papangelis, Kim, Lee, Hazarika, Namazifar, Jin, Liu, and Hakkani-Tur}]{lin2023selective}
+Yen-Ting Lin, Alexandros Papangelis, Seokhwan Kim, Sungjin Lee, Devamanyu Hazarika, Mahdi Namazifar, Di~Jin, Yang Liu, and Dilek Hakkani-Tur. 2023.
+\newblock Selective in-context data augmentation for intent detection using pointwise v-information.
+\newblock \emph{arXiv preprint arXiv:2302.05096}.
+
+\bibitem[{Liu et~al.(2019)Liu, Li, and Lin}]{liu2019review}
+Jiao Liu, Yanling Li, and Min Lin. 2019.
+\newblock Review of intent detection methods in the human-machine dialogue system.
+\newblock In \emph{Journal of physics: conference series}, volume 1267.
+
+\bibitem[{Liu et~al.(2023)Liu, Yuan, Fu, Jiang, Hayashi, and Neubig}]{liu2023pre}
+Pengfei Liu, Weizhe Yuan, Jinlan Fu, Zhengbao Jiang, Hiroaki Hayashi, and Graham Neubig. 2023.
+\newblock Pre-train, prompt, and predict: A systematic survey of prompting methods in natural language processing.
+\newblock \emph{ACM Computing Surveys}, 55(9):1--35.
+
+\bibitem[{MacQueen et~al.(1967)}]{macqueen1967some}
+James MacQueen et~al. 1967.
+\newblock Some methods for classification and analysis of multivariate observations.
+\newblock In \emph{Berkeley symposium on mathematical statistics and probability}.
+
+\bibitem[{Mattern et~al.(2023)Mattern, Mireshghallah, Jin, Sch{\"o}lkopf, Sachan, and Berg-Kirkpatrick}]{mattern2023membership}
+Justus Mattern, Fatemehsadat Mireshghallah, Zhijing Jin, Bernhard Sch{\"o}lkopf, Mrinmaya Sachan, and Taylor Berg-Kirkpatrick. 2023.
+\newblock Membership inference attacks against language models via neighbourhood comparison.
+\newblock \emph{arXiv preprint arXiv:2305.18462}.
+
+\bibitem[{Mireshghallah et~al.(2022)Mireshghallah, Goyal, Uniyal, Berg-Kirkpatrick, and Shokri}]{mireshghallah2022quantifying}
+Fatemehsadat Mireshghallah, Kartik Goyal, Archit Uniyal, Taylor Berg-Kirkpatrick, and Reza Shokri. 2022.
+\newblock Quantifying privacy risks of masked language models using membership inference attacks.
+\newblock \emph{arXiv preprint arXiv:2203.03929}.
+
+\bibitem[{OpenAI(2023)}]{openai2023gpt4}
+OpenAI. 2023.
+\newblock \href {http://arxiv.org/abs/2303.08774} {Gpt-4 technical report}.
+
+\bibitem[{Reimers and Gurevych(2019)}]{reimers2019sentence}
+Nils Reimers and Iryna Gurevych. 2019.
+\newblock Sentence-bert: Sentence embeddings using siamese bert-networks.
+\newblock \emph{arXiv preprint arXiv:1908.10084}.
+
+\bibitem[{Rodriguez et~al.(2023)Rodriguez, Agarwal, Laradji, Rodriguez, Vazquez, Pal, and Pedersoli}]{rodriguez2023starvector}
+Juan~A Rodriguez, Shubham Agarwal, Issam~H Laradji, Pau Rodriguez, David Vazquez, Christopher Pal, and Marco Pedersoli. 2023.
+\newblock Starvector: Generating scalable vector graphics code from images.
+\newblock \emph{arXiv preprint arXiv:2312.11556}.
+
+\bibitem[{Rubin et~al.(2022)Rubin, Herzig, and Berant}]{rubin2022learning}
+Ohad Rubin, Jonathan Herzig, and Jonathan Berant. 2022.
+\newblock Learning to retrieve prompts for in-context learning.
+\newblock In \emph{Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies}, pages 2655--2671.
+
+\bibitem[{Scheirer et~al.(2012)Scheirer, de~Rezende~Rocha, Sapkota, and Boult}]{scheirer2012toward}
+Walter~J Scheirer, Anderson de~Rezende~Rocha, Archana Sapkota, and Terrance~E Boult. 2012.
+\newblock Toward open set recognition.
+\newblock \emph{IEEE transactions on pattern analysis and machine intelligence (T-PAMI)}, 35(7):1757--1772.
+
+\bibitem[{Semeniuta et~al.(2018)Semeniuta, Severyn, and Gelly}]{semeniuta2018accurate}
+Stanislau Semeniuta, Aliaksei Severyn, and Sylvain Gelly. 2018.
+\newblock On accurate evaluation of gans for language generation.
+\newblock \emph{arXiv preprint arXiv:1806.04936}.
+
+\bibitem[{Shen et~al.(2021)Shen, Sun, Zhang, and Najmabadi}]{shen2021semi}
+Xiang Shen, Yinge Sun, Yao Zhang, and Mani Najmabadi. 2021.
+\newblock Semi-supervised intent discovery with contrastive learning.
+\newblock In \emph{Workshop on Natural Language Processing for Conversational AI}.
+
+\bibitem[{Shi et~al.(2018)Shi, Chen, Sha, Li, Sun, Wang, and Zhang}]{shi2018auto}
+Chen Shi, Qi~Chen, Lei Sha, Sujian Li, Xu~Sun, Houfeng Wang, and Lintao Zhang. 2018.
+\newblock Auto-dialabel: Labeling dialogue data with unsupervised learning.
+\newblock In \emph{Conference on empirical methods in natural language processing (EMNLP)}.
+
+\bibitem[{Shin et~al.(2020)Shin, Razeghi, Logan~IV, Wallace, and Singh}]{shin2020autoprompt}
+Taylor Shin, Yasaman Razeghi, Robert~L Logan~IV, Eric Wallace, and Sameer Singh. 2020.
+\newblock Autoprompt: Eliciting knowledge from language models with automatically generated prompts.
+\newblock \emph{arXiv preprint arXiv:2010.15980}.
+
+\bibitem[{Shu et~al.(2017)Shu, Xu, and Liu}]{shu2017doc}
+Lei Shu, Hu~Xu, and Bing Liu. 2017.
+\newblock Doc: Deep open classification of text documents.
+\newblock In \emph{Conference on Empirical Methods in Natural Language Processing (EMNLP)}, pages 2911--2916.
+
+\bibitem[{Touvron et~al.(2023)Touvron, Martin, Stone, Albert, Almahairi, Babaei, Bashlykov, Batra, Bhargava, Bhosale et~al.}]{touvron2023llama2}
+Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, et~al. 2023.
+\newblock Llama 2: Open foundation and fine-tuned chat models.
+\newblock \emph{arXiv preprint arXiv:2307.09288}.
+
+\bibitem[{Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser, and Polosukhin}]{vaswani2017attention}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan~N Gomez, {\L}ukasz Kaiser, and Illia Polosukhin. 2017.
+\newblock Attention is all you need.
+\newblock In \emph{Advances in neural information processing systems (NeuriPS)}.
+
+\bibitem[{Wang et~al.(2023)Wang, Xie, Jiang, Mandlekar, Xiao, Zhu, Fan, and Anandkumar}]{wang2023voyager}
+Guanzhi Wang, Yuqi Xie, Yunfan Jiang, Ajay Mandlekar, Chaowei Xiao, Yuke Zhu, Linxi Fan, and Anima Anandkumar. 2023.
+\newblock Voyager: An open-ended embodied agent with large language models.
+\newblock \emph{arXiv preprint arXiv:2305.16291}.
+
+\bibitem[{Wei et~al.(2022)Wei, Tay, Bommasani, Raffel, Zoph, Borgeaud, Yogatama, Bosma, Zhou, Metzler et~al.}]{wei2022emergent}
+Jason Wei, Yi~Tay, Rishi Bommasani, Colin Raffel, Barret Zoph, Sebastian Borgeaud, Dani Yogatama, Maarten Bosma, Denny Zhou, Donald Metzler, et~al. 2022.
+\newblock Emergent abilities of large language models.
+\newblock \emph{arXiv preprint arXiv:2206.07682}.
+
+\bibitem[{Xie et~al.(2016)Xie, Girshick, and Farhadi}]{xie2016unsupervised}
+Junyuan Xie, Ross Girshick, and Ali Farhadi. 2016.
+\newblock Unsupervised deep embedding for clustering analysis.
+\newblock In \emph{International conference on machine learning (ICML)}.
+
+\bibitem[{Xie et~al.(2021)Xie, Raghunathan, Liang, and Ma}]{xie2021explanation}
+Sang~Michael Xie, Aditi Raghunathan, Percy Liang, and Tengyu Ma. 2021.
+\newblock An explanation of in-context learning as implicit bayesian inference.
+\newblock \emph{arXiv preprint arXiv:2111.02080}.
+
+\bibitem[{Xu et~al.(2015)Xu, Wang, Tian, Xu, Zhao, Wang, and Hao}]{xu2015short}
+Jiaming Xu, Peng Wang, Guanhua Tian, Bo~Xu, Jun Zhao, Fangyuan Wang, and Hongwei Hao. 2015.
+\newblock Short text clustering via convolutional neural networks.
+\newblock In \emph{Proceedings of the 1st Workshop on Vector Space Modeling for Natural Language Processing}, pages 62--69.
+
+\bibitem[{Yang et~al.(2017)Yang, Fu, Sidiropoulos, and Hong}]{yang2017towards}
+Bo~Yang, Xiao Fu, Nicholas~D Sidiropoulos, and Mingyi Hong. 2017.
+\newblock Towards k-means-friendly spaces: Simultaneous deep learning and clustering.
+\newblock In \emph{international conference on machine learning (ICML)}.
+
+\bibitem[{Zhan et~al.(2021)Zhan, Liang, Liu, Fan, Wu, and Lam}]{zhan2021out}
+Li-Ming Zhan, Haowen Liang, Bo~Liu, Lu~Fan, Xiao-Ming Wu, and Albert Lam. 2021.
+\newblock Out-of-scope intent detection with self-supervision and discriminative training.
+\newblock \emph{arXiv preprint arXiv:2106.08616}.
+
+\bibitem[{Zhang et~al.(2021{\natexlab{a}})Zhang, Xu, and Lin}]{zhang2021deep}
+Hanlei Zhang, Hua Xu, and Ting-En Lin. 2021{\natexlab{a}}.
+\newblock Deep open intent classification with adaptive decision boundary.
+\newblock In \emph{AAAI Conference on Artificial Intelligence}.
+
+\bibitem[{Zhang et~al.(2021{\natexlab{b}})Zhang, Xu, Lin, and Lyu}]{zhang2021discovering}
+Hanlei Zhang, Hua Xu, Ting-En Lin, and Rui Lyu. 2021{\natexlab{b}}.
+\newblock Discovering new intents with deep aligned clustering.
+\newblock In \emph{AAAI Conference on Artificial Intelligence}.
+
+\bibitem[{Zhang et~al.(2020)Zhang, Hashimoto, Liu, Wu, Wan, Yu, Socher, and Xiong}]{zhang2020discriminative}
+Jian-Guo Zhang, Kazuma Hashimoto, Wenhao Liu, Chien-Sheng Wu, Yao Wan, Philip~S Yu, Richard Socher, and Caiming Xiong. 2020.
+\newblock Discriminative nearest neighbor few-shot intent detection by transferring natural language inference.
+\newblock \emph{arXiv preprint arXiv:2010.13009}.
+
+\bibitem[{Zhang et~al.(2022)Zhang, Zhang, Zhan, Wu, and Lam}]{zhang2022new}
+Yuwei Zhang, Haode Zhang, Li-Ming Zhan, Xiao-Ming Wu, and Albert Lam. 2022.
+\newblock New intent discovery with pre-training and contrastive learning.
+\newblock \emph{arXiv preprint arXiv:2205.12914}.
+
+\bibitem[{Zhou et~al.(2022)Zhou, Liu, and Qiu}]{zhou2022knn}
+Yunhua Zhou, Peiju Liu, and Xipeng Qiu. 2022.
+\newblock Knn-contrastive learning for out-of-domain intent classification.
+\newblock In \emph{Annual Meeting of the Association for Computational Linguistics (ACL)}.
+
+\bibitem[{Zhou et~al.(2023)Zhou, Quan, and Qiu}]{zhou2023probabilistic}
+Yunhua Zhou, Guofeng Quan, and Xipeng Qiu. 2023.
+\newblock A probabilistic framework for discovering new intents.
+\newblock In \emph{Annual Meeting of the Association for Computational Linguistics (ACL}.
+
+\end{thebibliography}

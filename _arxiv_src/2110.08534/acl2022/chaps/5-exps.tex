@@ -1,0 +1,179 @@
+
+\section{Results}
+We summarize our findings over the created data streams. We ask whether lifelong pretraining and continual learning algorthms are effective base on our evaluation protocol proposed in Sec.~\ref{ssec:evaluation_protocols}. 
+%\xiang{Let's post a few high-level analysis questions here to overview the section.}
+
+
+
+% \xiang{Need an experiment setting or setup subsection to give some details: 1) eval metrics for different downstream tasks; 2) additional details about data streams and datasets; 3) implementation details, hps config, etc.}
+\subsection{Experiment Settings}
+We use the \texttt{RoBERTa-base} model~\cite{Liu2019RoBERTaAR}, initialized with RoBERTa-base weights throughout the experiments. We set the maximal sequence length to 128 and an effective training batch size of 2,048. On the research paper stream, models are trained for 8$k$ steps in the first domain and 4$k$ steps in the subsequent domains. On the Tweet stream, we train the models for 4$k$ steps in each domain. These correspond to less than a single pass of data in each domain. See Appendix~\ref{sec:hyps} for detailed setups. %\xiang{below details can move to appendix and leave a pointer here.}
+
+
+% \subsection{Results on the Research Paper Stream}
+\subsection{Domain Incremental Data Stream}
+%\xiang{say a few sentences to re-cap the data stream setup and what aspects of model capability (i.e., measure of success) we're looking at here. Next, you can describe the exp setup/workflow as follows.}
+As we introduced in Sec.~\ref{ssec:datasets}, in the domain incremental research paper stream, %the criterion is whether models can transfer knowledge to new domains while retaining knowledge in the domains visited earlier. 
+we expect a model $f_t$ to perform well on all downstream tasks $S_{1..t}$ from domains $D_{1..t}$.
+%\xiang{Still reads a bit vague to me; above can be further clarified using more notations.}
+%\xiang{reference notations in Sec 2.1 to clarify more on the exp settings.}
+In Table~\ref{tab:academics}, we report the performance of models on all downstream tasks $S_{1..T}$ fine-tuned from the final pretraining checkpoint, $f_T$. 
+%For each downstream task related to a domain $D_t$, we fine-tune the language models at the time step $t$ and afterward, as indicated in the header ``evaluated after'' in Table~\ref{tab:academics}. 
+We visualize more complete change of downstream task performance over different time steps of pretraining (\textit{i.e.,}, $f_1, f_2,f_3,f_4$) in Fig.~\ref{fig:academics_curve}. We also report the log perplexity of masked language modeling (MLM) in Table~\ref{tab:academics} as additional information. With these results, we address the research questions below.
+
+%Table~\ref{tab:academics} summarizes the fine-tuning performance over the research paper data stream. 
+
+% \xiang{\paragraph{\textit{Q1: Does sequential pretraining help retain knowledge across different domain corpora?}}
+% (1) first talk about task-specific LM vs. roberta to show that domain corpus are useful for the corresponding downstream tasks;
+% (2) see if Sequential Pretraining bring gains vs. task-specific LM --> if results are mix that mean that sequential pretraining (Sequential Pretraining) has space to be improved.
+% }
+
+%\xiang{Do we have anything special to say about MLM? I think the discrepancy between MLM and downstream performance are interesting to speak out?}
+
+%\xiang{I don't see Fig~\ref{fig:academics_curve} being analyzed in details in any part now? I expect some interesting insights can be derived there.}
+
+\paragraph{\textit{Does lifelong pretraining help retain knowledge across different domain corpora?}}
+We first examine whether task-specific or lifelong pretraining improves performance over domain-specific downstream tasks. %\xiang{more clear if with notations}
+Comparing Task-Specific LMs with RoBERTa-base in Table~\ref{tab:academics}, we notice consistent performance improvements, especially on Biomedical and Computer Science domains ($D_1, D_2$). %, where the F1-scores improve at least by 1.7\%. %Then most simple sequential pretraining apparoach, Sequential Pretraining, could also consistently improve over RoBERTa-base. 
+% \paragraph{Performance Without CL Algorithms.} 
+We also see Sequential Pretraining could consistently outperform RoBERTa-base. However, the comparison between Sequential Pretraining and Task Specific LMs are mixed: on $D_1, D_2, D_3$, Sequential Pretraining could outperform Task-Specific LMs only except MNER; while on the earliest biomedical domain ($D_1$), Sequential Pretraining achieves substantially lower performance. From Figure~\ref{fig:academics_curve}, we see the performance of Sequential Pretraining on Chemprot and RCT (from $D_1$) drops significantly from $t=1$ to $4$. %The results imply sequential pretraining still has space to be improved. \xiang{expand a bit more on the implication and how does it lead }
+The results imply lifelong pretraining allows later domains to benefit from knowledge transfer from earlier domains, but the performance on earlier domains is limited because of forgetting.
+
+
+% \paragraph{Comparison to Task-Specific Models.} 
+%We find that Task-Specific LMs, which are trained independently over each domain-specific corpus, achieve comparable or sometimes better downstream performance than the best continually pretrained models. However, we argue that a clear advantage of continually pretrained models is that a single model can be applied to multiple domains.
+
+\input{acl2022/floats/tab_er_tune}
+
+
+\paragraph{\textit{Does continual learning algorithms help retain knowledge in sequential pretraining?}}
+Next, we compare different kinds of CL algorithms and investigate the effect of CL algorithms in alleviating forgetting and improving knowledge transfer. %.\xiang{elaborate more on the goal and overview here. Effect on what? What effects?}
+% \paragraph{Effect of Adapter Approaches.} 
+%\xiang{1) Where do readers look for these observations? 
+%2) Note that Table 1 is special as it is for LM from the last domain/step -- therefore it makes sense that 
+%3) I found the last two sentences here most interesting; other detailed observations can be compress to brief summary to save space.}
+Table~\ref{tab:academics} shows that Online-EWC slightly improves MLM perplexity compared to  Sequential PT, but brings no improvement to the fine-tuning performance. We hypothesize that regularization directly in the parameter space as in Online-EWC is not effective when the parameter space is very high dimensional.
+%We first compare the performance of model architecture based approaches with Sequential Pretraining.
+Adapter improves downstream task F1 scores on the bio-medical domain ($D_1$) by 1.2\% and 0.8\%, 
+but does not outperform Sequential Pretraining in other domains (similarly for Simple Layer Expansion approach), %We note that despite the immunity to forgetting of model expansion approaches, these methods struggle to outperform simple Sequential Pretraining, %. The reason is likely to be the reduced modeling capacity for new domains
+likely because a great portion of the model is kept frozen. % in these approaches. 
+
+
+\input{acl2022/floats/fig_academics_plots}
+
+
+\input{acl2022/floats/fig_kshot_academics_subset}
+
+
+
+
+% \paragraph{Effect of Experience Replay.} 
+%\xiang{smooth out transition and recap the pros and cons of memory based methods.}
+In contrast, the memory-replay based approach (ER) allows training the full parameters of the model and has been shown to be highly effective in continual learning of classification tasks~\cite{Wang2019SentenceEA, chaudhry2019tiny}. However, we surprisingly find that ER could hardly improve over Sequential Pretraining except $D_1$. % by 0.6\% and 0.4\%.
+A similar pattern can be found in the MLM perplexity. 
+We hypothesize that the positive effect of example replay has diminished because of the overfitting to the memory examples. Table~\ref{tab:er_tune} summarizes the effect of tuning hyperpameters in ER. When we reduce the frequency of replay (from every 10 steps to 100 steps), the MLM performance improves, which implies reduced overfitting; however, the performance of downstream task performance does not improve. When we increase the size of the memory $|M|$ from $100k$ to $10M$, the MLM perplexity also improves; still, there are still no improvements in downstream tasks. It may imply ER itself is not an effective approach for continual pretraining. %We leave more analysis into ER as future works. %We further examine the performance of ER when we experiment with a larger replay memory but notice marginal improvements, detailed in Appendix.
+
+%\xiang{smooth out transition and recap the pros and cons of KD methods.}
+
+
+Unlike ER, distillation approaches utilize richer information such as output logits or representation similarity to preserve past knowledge. We find either Logit KD or SEED-Logit KD to be most effective depending on the task, while Rep-KD and Contrastive-KD are less effective. The best performing distillation approach improves F1 over Sequential Pretraining on downstream tasks from $D_1$, $D_2$ at least by 1.0\%. However, performance on $D_3, D_4$, which come later in the data stream, does not improve over Sequential Pretraining, possibly because the distillation loss term %which tries to retain models' past knowledge 
+makes the model rigid in obtaining new knowledge.
+
+%because retaining past knowledge is a burden for obtaining new knowledge while the model has not yet suffered significantly from forgetting at the end of pretraining. 
+%Still, the performance on MNER, Synthesis and Hyponym improve over the RoBERTa-base model. 
+%Other distillation algorithms, such as Rep-Distill and Contrast-Distill, were not as effective as Logit-Distillation or SEED-Distillation. %However, from the performance evolution of downstream models at different pretraining checkpoint illustrated in Figure~\ref{fig:academics_curve}, we see SEED-Logit Distill could occasionally outperform Logit-Distill (\textit{e.g.,} on RCT-Sample), but in general does not outperform Logit-Distill. It implies their can be positive effect of preserving similarity structure of representations in additional to model outputs, but the effect is highly dependent on the task. 
+
+% \paragraph{Effect of Distillation Approaches.}
+%From the performance of Logit Distillation, Representation Distillation, and Contrastive Distillation, we find that only Logit Distillation could clearly reduce masked language modeling perplexity over the baselines. Representation and Contrastive Distillation do not reduce masked language modeling perplexity, which is understandable, because these two algorithms directly operate over the sentence representations, leaving the masked language model prediction head unregularized. However, we further find that only Logit distillation could consistently improve downstream task performance over Sequential Pretraining on downstream tasks in earlier domains when evaluated at the end of pretraining. The results indicate that Logit Distillation is a highly effective algorithm, and also implies that input logits are useful dark knowledge for knowledge preservation. We note the current results do not necessarily imply that the stability of representations and representational similarity is irrelevant to alleviating forgetting. In future works, we may further improve the loss term of distillation applied in Representation and Contrastive distillation.
+
+%\xiang{Addition Analysis/discussion on ER: show the performance trend of ER wrt the size of memory, and convince people that to get little performance improvement it requires a lot larger memory, and thus less data efficient as compared to the KD methods.}
+
+\input{acl2022/floats/tab_computation_costs}
+
+
+
+
+\paragraph{\textit{What is the gap between lifelong pretraining and multi-task learning across all the domains?}
+%This needs comparison with multi-task pretraining baseline --- If we can do CL pretraining well, can CL be comparable to multi-corpus pretraining. If so, we can do CL which is much cheaper than MTL.
+}
+%\xiang{first say a bit on the motivation and hypothesis behind this analysis.}
+Multi-Task Learning refers to the offline training paradigm, which retrain PTLMs over all corpora ($D_{1..t}$) each time a new corpus $D_t$ becomes available. 
+%The practice is computationally expensive if new corpora keep emerging. 
+We examine whether lifelong pretraining is comparable to multi-task pretraining in terms of performance. From Table~\ref{tab:academics} and Figure~\ref{fig:academics_curve}, we see Sequential Pretraining in general underperforms MTL except for the final domain. However, certain CL approaches, such as Logit-Distillation, could improve over MTL on all downstream tasks from the first and the second domain. We speculate the reason is that continual learning naturally provides a curriculum~\cite{Xu2020CurriculumLF, Shi2015RecurrentNN} to models where each individual task is easier to learn. 
+%, in contrast to MTL, where data is mixed from multiple domains. 
+The results have a positive implication that lifelong pretraining is not only more computationally efficient and requires less storage of past data, but may also improve the performance of pretraining.
+
+
+
+\paragraph{\textit{Does lifelong pretraining make models more data efficient?}}
+In Table~\ref{fig:academics_kshot_subset}, we further examine the performance of final pretrained models under different amounts of training examples. We include full results in Appendix~\ref{apdx:low_resource}. We find in general, performance improvements are more significant in the low-resource setup. %\xiang{revise and expand a bit more on the msgs.}
+%We hypothesize it is because the accumulated knowledge over continual pretraining creates a better model initialization to help learn downstream tasks in a more data-efficient manner.
+
+
+
+\paragraph{\textit{Computational Costs.}} We quantify computational costs of different CL algorithms with the number of forward and backward passes in Table~\ref{tab:forward_backward_count} and present additional experiments with controlled computational costs in Appendix~\ref{apdx:controlled_computation_costs}. We find additional computational cost is necessary for performance improvement of distillation-based CL. However, it is not possible to trade performance simply by investing more computation budget with arbitrary CL algorithms. We leave detailed discussions in Appendix~\ref{apdx:controlled_computation_costs}.
+
+%Exp 2 Setup (fine-tuning data efficiency): take checkpoints from (original LM, task-specific LM, CL-LM); do fine-tuning and track the performance wrt fine-tuning steps.
+%}
+
+
+
+
+
+
+
+\subsection{Temporal Data Stream}
+\label{ssec:temporal_data_stream}
+
+We conduct analysis on pretraining PTLM on chronologically-ordered tweet corpora, to understand whether lifelong pretraining helps adaptation to the latest data and improves temporal generalization ability. %In this setup, the pretrained corpora $D_{1..4}$ are tweet data in different years%and the pretrained LMs are fine-tuned on Hashtag and Emoji prediction data from each year of $D_{1..4}$.
+% We then move our focus to the next set of research questions regarding whether lifelong pretraining improves model's adaptation to latest data and temporal generalization when the data stream is chronologically ordered.
+%\xiang{add 1-2 sentences on overview of the exp setup?}
+%We study a series of research questions using the tweet stream. 
+The results are summarized in Table~\ref{tab:twitter}.
+% We summarize our findings below.
+
+%\xiang{\paragraph{\textit{Q1: Will LM be outdated?}}
+%updated LM vs. original LM
+%}
+\paragraph{\textit{Will LMs be outdated?}} %We first examine whether the LM pretrained specifically on the tweets of 2014 (the row of Task-Specific (2014) in Table~\ref{tab:twitter}) becomes less effective when applied to downstream datasets from subsequent years. 
+We compare the performance of Task-Specific (2014) to the Task-Specific models pretrained on the year of downstream datasets (noted as Task-Specific (Latest)) and notice consistent improvements in downstream tasks in 2018 and 2020  (first two columns in Table~\ref{tab:twitter}). Sequential Pretraining could also outperform the Task-Specific (2014) model. It verifies that language models may get outdated over time, but the issue can be addressed by task-specific or lifelong pretraining over the latest corpora.
+
+% As we mentioned in Sec.~\ref{ssec:evaluation_protocols}, over chronologically ordered data streams, the performance over the latest data is of higher importance. Therefore, in Table~\ref{tab:twitter}, we focus on the hashtag prediction performance in the year 2020. Unfortunately, we find continually pretrained models do not improve over task-specific models, which are only pretrained over the latest year. It may imply knowledge from earlier years is redundant for the hashtag prediction task given the latest data. 
+
+\input{acl2022/floats/tab_twitter_subset}
+
+
+\paragraph{\textit{Does lifelong pretraining help improve the downstream model’s performance on latest data?}}
+%\xiang{1) Where (what part of results) to look for the observations? (do we look for year 2020, or all years, or sth else?)
+%2) What is the main takeaway distilled in an accessible sentence? Can we have that up front?
+%}
+We show that downstream model's performance over later data ($D_3, D_4$) can be improved over Task-Specific models when continual learning algorithms are applied. From the first two columns of Table~\ref{tab:twitter}, %we see no consistent improvement of simple Sequential Pretraining over Task-Specific models in 2018 and 2020 ($D_3, D_4$).  %in hashtag prediction tasks, it achieves 0.18 higher score over data of year 2018, but achieves 0.02 lower score over data of year 2020. 
+%We find continual learning algorithms could improve the performance by a small degree. 
+we see Logit-KD and SEED-KD improve Hashtag prediction score over data of years 2018 and 2020. %by 1.60 and 0.65 respectively over Sequentail PT. %, and improves emoji prediction F1 by 0.71 and 0.61 over Task-Specific models. 
+SEED-Logit KD further improves prediction F1 on Emoji prediction. 
+Note that these findings are in contrast to the research paper stream, where CL algorithms do not improve performance in the latest domain $D_4$. The reason can be the higher similarity between domains in the tweet corpora making the knowledge transfer easier, which is further discussed in Appendix~\ref{apdx:analysis_data_streams}.
+
+\paragraph{\textit{Does lifelong pretraining improve temporal generalization?}} 
+%\xiang{Some brief re-cap on motivation of this ability; the exp setting; and eval protocol.}
+Temporal generalization evaluates downstream performance over latest test data when fine-tuned over outdated training data. 
+%The setup is prevalent in practice for systems deployed online. 
+We show lifelong pretraining brings clear improvement to temporal generalization.
+From Table~\ref{tab:twitter}, we see even Sequential Pretraining could improve over the model pretrained merely on the year 2020 data (Task-Specific (2020)) consistently. We find performance further improves with CL algorithms applied. SEED-Logit-KD performs best in general on crossyear hashtag prediction tasks. %improving scores over Task-Specific (2020) by 1.75 and 2.91. 
+In crossyear emoji prediction, we find Contrast-KD and SEED-KD perform best. We also find that SEED-Logit-KD could slightly outperform Logit-KD. %, improving over Task-Specific (2020) by 1.42, 2.67 and 1.60 respectively.
+
+%In th   e further investigate whether continual learning algorithms improve temporal generalization, where the hashtags prediction models are fine-tuned on outdated training data (2014, 2016, 2018) but evaluated on the latest data (2020). From Table~\ref{tab:twitter_tg}, we see lifelong pretraining almost always improve performance over Task-Specific LM. It implies pretraining data from earlier years are helpful for temporal generalization. However, we do not find a consistent trend within the performance of different continual learning algorithms: Logit-KD$_{\text{first}}$ performs the best in 2014$\to$2020 generalization, while Sequential Pretraining performs the best in 2018$\to$2020 generalization. The mixed results encourage future works to study more effective lifelong pretraining algorithms.
+
+
+%\input{acl2022/floats/tab_twitter_tg}
+
+
+%\subsection{Performance of Existing Continual Learning Algorithms}
+%For memory based approaches, we are able to quantify the benefit of continual learning algorithms by comparing their performance to Sequential Pretraining, which shares the same model architecture but does not apply any continual learning algorithms. We notice that ER could improve performance on three of the four datasets. 
+
+%Adapter-based methods do not suffer from forgetting, and is able to improve over Roberta-base and Adapter-Fresh models that are not trained over academic corpora. However, we notice the performance of the best-performing adapter methods (Adapter-Single) is only on par with ER, despite perfect mitigation of forgetting. We also tried fusing information from multiple (2 or 4, which correspond to Adapter-Fusion$_2$ and Adapter-Fusion$_4$), but the performance did not improvement. We also experimented with a larger hidden dimension within the adapters (Adapter-Large), while the performance increased only marginally. We hypothesize that the modeling capacity of adapter models is the bottleneck of the performance. 
+
+
+
+% \subsection{Performance of Contrastive Learning Experience Replay}
+% We compare our proposed CER approach with ER. We notice CER could improve performance over all datasets compared to ER. We further show the performance improvement originates from that CER could reduce catastrophic forgetting, rather than the side effect of adding the contrastive learning that allows learning better representation: by comparing Single and Single-Contrast, we see the improvement is not clear by adding the contrastive learning term in the single-task learning case.
+

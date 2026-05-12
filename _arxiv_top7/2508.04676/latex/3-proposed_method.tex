@@ -1,0 +1,107 @@
+\section{Proposed Method}\label{sec:Proposed Method}
+This section provides a detailed introduction to the overall process of GeRe framework and the proposed replay-based activation state constrained optimization.
+As outlined in Fig.\ref{fig:main_pic}(a),
+we first collect a small-scale set of general samples for permanently available replay.
+Then these data are proactively distilled using the untuned base LLM to derive the activation threshold, which determines the activation state. Subsequently, continual finetuning is performed on a mixed data containing downstream task and general replay samples, jointly optimizing a specialized replay-based objective alongside the standard cross-entropy loss.
+Fig.\ref{fig:main_pic}(b) illustrates our proposed threshold-based margin (TM) loss, which transforms the given optimization target into activate states through thresholds on both sides and employs a margin loss for constraint.
+(The different optimization targets used by other competitors are shown in Fig. \ref{fig:compare}.)
+
+\subsection{Distilled Activation States}\label{sec:Neural Activation Distribution}
+In deep neural networks, neuron activation values refer to the outputs of each layer's sub-network.
+Taking the Transformer-based LLMs as an example, the activation values refer to the output of the feed-forward network within each layer.
+These activations are progressively passed through residual connections, evolving started from the input and ultimately forming the network's final output.
+
+Analogous to the activation states of neurons in the human brain, we propose to categorize the neural network activations into three distinct states: positive activation, negative activation, and non-activation. These states exhibit discrete sparsity patterns while encoding specific semantic information.
+Building on this, we hypothesize that during continual finetuning, the original activation states represented with general replay samples can effectively reflect the model's general capabilities. Therefore, in our replay learning, we employ feature-based imitation to utilize these activations as targets, thereby preserving the essential characteristics of the model's learned representations.
+
+\subsubsection{Feature-Based Distillation}
+Given a general replay sample set $\mathcal{D}^{\text{(g)}} = \{s_1, s_2, \dots, s_N\}$ comprising N natural sentences $s$, we feed these sentence samples into the base LLM, performing forward propagation to obtain the activation values (i.e., the hidden states output of each layer) as follows:
+\begin{equation}
+    \bar{\mathbf{h}} = \text{LLM}(s)
+\end{equation}
+where $\bar{\mathbf{h}}\in\mathbb{R}^{n^{t} \times n^{d} \times L}$ is activation value tensor,
+$n^{\text{t}}$ is the length (number of tokens) of the input,
+$n^{\text{d}}$ is the dimension of the hidden states,
+$L$ is the number of layers in LLM.
+We distill these feature-base activation values of all samples in $\mathcal{D}^{\text{(g)}}$ to form $\mathcal{H}^{\text{(g)}}=\{\bar{\mathbf{h}}^1,\bar{\mathbf{h}}^2,\dots,\bar{\mathbf{h}}^N\}$.
+
+\subsubsection{Activation Threshold}
+After distilling all the activation values of samples in $\mathcal{D}^{\text{(g)}}$,
+we statistically determine the activation threshold and accordingly infer the activation state.
+Specifically, for each activation value $\bar{h}_{j,k,l}$ corresponding to the $k$-th dimension of hidden state at the $l$-th layer, we compute its mean and variance across the entire $\mathcal{H}^{\text{(g)}}$ over the size $N$ and length $n^{\text{t}}$,
+yielding $mean_l = (m_1,m_2,m_k,\dots,m_{n^{\text{d}}})_l$ and $std_l = (\sigma_1,\sigma_2,\sigma_k,\dots,\sigma_{n^{\text{d}}})_l$ relative to the $l$-th layer.
+In practice, since the hidden state of the last layer encodes the majority of the semantic information for the model's final predictions, we choose to utilize only the last layer for subsequent computations, which serve as the constraint optimization objective.
+Therefore, we assume $l\!=\!L$ (the last layer) and omit the subscript $l$ in all the following formulas, (e.g., $\bar{h}_{j,k}\!:=\!\bar{h}_{j,k,l=L}$). Each component $m_k$ and $\sigma_k$ is computed as follows:
+
+
+\begin{gather}
+    m_k =\frac{1}{N \times n^{\text{t}}} \sum_{i=1}^{N}\sum_{j=1}^{n^{\text{t}}}\bar{h}_{j,k}^{i}
+    \\
+    \sigma_k = \sqrt{ \frac{1}{N \times n^{\text{t}}} \sum_{i=1}^{N}\sum_{j=1}^{n^{\text{t}}} (\bar{h}_{j,k}^{i}-m_k)^2 }
+\end{gather}
+where $i$ ranges over the $\mathcal{D}^{\text{(g)}}$ size $N$ and $j$ ranges over the number of tokens within the current sample, $k$ denote the $k$-th dimension. We further utilize the characteristics of Gaussian distribution to define the activation thresholds, considering one standard deviation above the mean as the positive activation threshold: $\tau^+\!=\!m+1\sigma$, and one standard deviation below the mean as the negative activation threshold: $\tau^-\!=\!m-1\sigma$. Each $\bar{h}_k$ relative to the $k$-th dimension possesses two thresholds as follows:
+\begin{gather}
+    \tau_k = (\tau^-_k,\quad \tau^+_k) = (m_k-1\cdot\sigma_k,\quad m_k+1\cdot\sigma_k)
+\end{gather}
+and we define three types of activation state: 1) values greater than $\tau^+$ are considered positively activated, 2) values less than $\tau^-$ are considered negatively activated, 3) values between $\tau^-$ and $\tau^+$ are considered non-activated:
+\begin{equation}
+\text{state}_{k} =  
+\begin{cases}  
+\text{positively activated} & \text{if } \text{value} < \tau_k^- \\
+\text{non-activated} & \text{if }  \tau_k^- \le \text{value} \le \tau_k^+\\
+\text{negatively activated} & \text{if } \text{value} > \tau_k^+ \\
+\end{cases}
+\label{eq:state}
+\end{equation}
+
+According to Gaussian distribution, about 68.27\% of the activation values are considered non-activated, which aligns with the assumption that only a subset of neurons plays a critical role during forward propagation. 
+
+Once the thresholds for the $\mathcal{D}^{\text{(g)}}$ are determined, they can be permanently applied to subsequent downstream task finetuning conveniently.
+Notably, we can also preemptively transform the float-type activation values into binary-type activation states to reduce the storage overhead.
+
+\subsection{Threshold-Based Margin Optimization}\label{sec:tm}
+This section describes the computation process of the proposed TM loss.
+Optionally we can randomly select a subset of samples from $\mathcal{D}^{\text{(g)}}$ for actually replay. However, if the original size is small, using the complete set is recommended.
+Specifically, given the previously determined positive and negative activation thresholds, these samples are jointly optimized with the downstream task samples during continual finetuning. Detailed steps are as follows.
+
+\subsubsection{Batch Insertion} \label{sec:BI}
+Traditional replay-based methods simply mix replay samples with downstream task training samples randomly. However, it requires considering the scale of both samples set and thereby adjusting the mixing ratio. Additionally, during optimization, it is possible that a given batch may contain no replay samples, resulting in gradients that are exclusively influenced by the downstream task samples. To address this issue, we propose the Batch Insertion (BI) strategy, which ensures that a specific proportion of replay samples is included in each training batch. This strategy encourages the influence of the gradient update direction by the replay samples in every iteration, helping to retain the general capabilities of the LLM, meanwhile avoids the cumbersome adjustment of mixing ratios for datasets of varying scales.
+
+Given the finetuning batch size $n^{\text{batch}}$, we define the Batch Insertion ratio as $\rho^{\text{BI}}$, indicating that $\rho^{\text{BI}} \times n^{\text{batch}}$ samples in each batch are replay samples. This can be easily implemented by modifying the \textit{Sampler} Class within \textit{Torch DataLoader}.
+
+
+\subsubsection{Loss Calculation} 
+During the joint training process, the proposed TM loss for the replay samples within each batch is computed as follows:  
+
+\begin{equation}
+\mathcal{L}^{\text{TM}}_{j,k} =  
+\begin{cases}  
+\max(\hat{h}^{j,k} - \tau_k^-, 0) & \text{if } \bar{h}^{j,k} < \tau_k^- \\  
+\begin{aligned}  
+&\max(\hat{h}^{j,k} - \tau_k^+, 0) \\  
+&+ \max(\tau_k^- - \hat{h}^{j,k}, 0)  
+\end{aligned} & \text{if } \tau_k^- \le \bar{h}^{j,k} \le \tau_k^+ \\  
+\max(\tau_k^+ - \hat{h}^{j,k}, 0) & \text{if } \bar{h}^{j,k} > \tau_k^+ 
+\end{cases}
+\label{eq:tml}
+\end{equation}
+where $\mathcal{L}^{\text{TM}}_{j,k}$ denotes the TM loss for the $k$-th dimension of the hidden state on the $j$-th token (at the last layer), $\bar{h}$ is the precomputed target activation values while $\hat{h}$ is the currently predicted activation values.
+This piecewise loss function guides the optimization direction of the predicted value when the target value resides in the negatively activated, non-activated, and positively activated states, respectively.
+The overall TM loss for each replay sample sentence is computed as follows:
+\begin{gather}
+\mathcal{L}^{TM} = \frac{1}{n^{\text{t}} \times n^{\text{d}}} \sum_{j=1}^{n^{\text{t}}} \sum_{k=1}^{n^{\text{d}}} \mathcal{L}^{TM}_{j,k}
+\end{gather}
+
+\subsubsection{Dynamic Weight Balancing} \label{sec:DW}
+During training, we jointly optimize the TM loss $\mathcal{L}^{\text{TM}}$ regarding general replay samples and the standard Cross-Entropy (CE) loss $\mathcal{L}^{\text{CE}}$ regarding downstream task samples.
+To prevent the model from being overly biased toward optimizing either loss, we adopt a dynamic loss weighting strategy to balance their magnitudes as follows:
+\begin{gather}
+\omega^{\text{TM}} = {\text{detach}}(\mathcal{L}^{\text{CE}} / \mathcal{L}^{\text{TM}})
+\label{eq:tml_weight}
+\\
+\mathcal{L} = \mathcal{L}^{\text{CE}} + \omega^{\text{TM}} \cdot \mathcal{L}^{\text{TM}}
+\label{eq:loss_final}
+\end{gather}
+where $\mathcal{L}$ denotes the final total loss for continual finetuning. $\omega^{\text{TM}}$ is the dynamic weight to dynamically scale the magnitude of the TM loss to match that of the CE loss during joint optimization.
+The ${\text{detach}}()$ function indicates that the weight value is detached from gradient backpropagation, preventing it from being optimized.
+Notably, this approach is experimental, employing fixed or dynamic weights depending on practice.

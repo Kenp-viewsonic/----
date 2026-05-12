@@ -1,0 +1,82 @@
+%%%% For anonymized submission, use this
+\documentclass[sigconf]{aamas}
+
+\input{macros}
+\input{math_commands.tex}
+
+\titlespacing*{\section}
+{0pt}{1.0ex plus 0.5ex minus 0.5ex}{0.8ex}
+\titlespacing*{\subsection}
+{0pt}{0.8ex plus 0.3ex minus 0.3ex}{0.6ex}
+\titlespacing*{\subsubsection}
+{0pt}{0.6ex}{0.4ex}
+\setlist{nosep}
+\setlength{\floatsep}{6pt}
+\setlength{\textfloatsep}{8pt}
+\setlength{\intextsep}{6pt}
+\setlength{\dblfloatsep}{6pt}
+\setlength{\dbltextfloatsep}{8pt}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{4pt}
+\raggedbottom
+
+\setcopyright{ifaamas}
+\acmConference[AAMAS '26]{Proc.\@ of the 25th International Conference
+on Autonomous Agents and Multiagent Systems (AAMAS 2026)}{May 25 -- 29, 2026}
+{Paphos, Cyprus}{C.~Amato, L.~Dennis, V.~Mascardi, J.~Thangarajah (eds.)}
+\copyrightyear{2026}
+\acmYear{2026}
+\acmDOI{}
+\acmPrice{}
+\acmISBN{}
+
+\acmSubmissionID{1241}
+
+\title{LLM Performance Predictors: Learning When to Escalate in Hybrid Human-AI Moderation Systems}
+\input{authors.tex}
+\input{sec/0_abstract.tex}
+% ---- Keywords (comma-separated) ----
+\keywords{Large Language Models, Uncertainty Quantification, Content Moderation, Human–AI Collaboration, Cost-aware Routing}
+%%% Include any author-defined commands here.
+\newcommand{\BibTeX}{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em\TeX}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\textfloatsep}{8pt plus 1.0pt minus 2.0pt}
+\settopmatter{authorsperrow=3}
+
+\makeatletter
+\providecommand{\@acmBadgeL@image}{}
+\providecommand{\@acmBadgeR@image}{}
+\makeatother
+
+\begin{document}
+
+%%% The following commands remove the headers in your paper. For final 
+%%% papers, these will be inserted during the pagination process.
+
+\pagestyle{fancy}
+\fancyhead{}
+
+%%% The next command prints the information defined in the preamble.
+
+\maketitle 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{sec/1_introduction.tex}
+\input{sec/2_relatedWork.tex}
+\input{sec/3_method.tex}
+\input{sec/4_experiments.tex}
+\input{sec/5_results.tex}
+\input{sec/6_conclusion.tex}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{main}
+
+
+\appendix
+\input{appendix/app_prompts.tex}
+\input{appendix/app_full_lpps.tex}
+\input{appendix/cost_sensitivity_analysis}
+\end{document}

@@ -1,0 +1,122 @@
+%
+% File emnlp2020.tex
+%
+%% Based on the style files for ACL 2020, which were
+%% Based on the style files for ACL 2018, NAACL 2018/19, which were
+%% Based on the style files for ACL-2015, with some improvements
+%%  taken from the NAACL-2016 style
+%% Based on the style files for ACL-2014, which were, in turn,
+%% based on ACL-2013, ACL-2012, ACL-2011, ACL-2010, ACL-IJCNLP-2009,
+%% EACL-2009, IJCNLP-2008...
+%% Based on the style files for EACL 2006 by 
+%%e.agirre@ehu.es or Sergi.Balari@uab.es
+%% and that of ACL 08 by Joakim Nivre and Noah Smith
+%\listfiles
+\documentclass[11pt,a4paper]{article}
+\usepackage[hyperref]{emnlp2020}
+\usepackage{times}
+\usepackage{latexsym}
+\renewcommand{\UrlFont}{\ttfamily\small}
+
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{url}
+\usepackage{bm}
+\usepackage{here}
+%\usepackage[fleqn]{amsmath}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{multirow}
+\usepackage{arydshln}
+\usepackage{enumitem}
+
+\usepackage{algorithm}
+%\usepackage{algorithmic}
+\usepackage{algpseudocode}
+\usepackage{soul}
+\usepackage{float}
+\usepackage{subfigure}
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+\aclfinalcopy % Uncomment this line for the final submission
+%\def\aclpaperid{***} %  Enter the acl Paper ID here
+
+%\setlength\titlebox{5cm}
+% You can expand the titlebox if you need extra space
+% to show all the authors. Please do not make the titlebox
+% smaller than 5cm (the original size); we will check this
+% in the camera-ready version and ask you to change it back.
+
+\newcommand\BibTeX{B\textsc{ib}\TeX}
+
+\newcommand{\argmax}[1]{\underset{#1}{\operatorname{arg}\,\operatorname{max}}\;}
+
+\title{Discriminative Nearest Neighbor Few-Shot Intent Detection\\ by Transferring Natural Language Inference}
+
+\author{
+  \textbf{Jian-Guo Zhang}$^1$\thanks{\ \ Work done while the first author was an intern at Salesforce Research.}~~~~ \textbf{Kazuma Hashimoto}$^2$\thanks{\ \ Corresponding author.}~~~~ \textbf{Wenhao Liu}$^2$~~~~ \textbf{Chien-Sheng Wu}$^2$~~~~  \\ \textbf{Yao Wan}$^3$~~~~ \textbf{Philip S. Yu}$^1$~~~~  \textbf{Richard Socher}$^2$~~~~ \textbf{Caiming Xiong}$^2$ \\
+  $^1$ University of Illinois at Chicago, Chicago, USA \\
+  $^2$Salesforce Research,  Palo Alto, USA \\
+  $^3$Huazhong University of Science and Technology, Wuhan, China\\
+  { \texttt{\{jzhan51,psyu\}@uic.edu}, \texttt{wanyao@hust.edu.cn} } \\
+  { \texttt{\{{k.hashimoto,wenhao.liu,wu.jason,rsocher,cxiong\}@salesforce.com}} }
+}
+
+
+\date{}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+% Intent detection is crucial in goal-oriented dialog to identify whether each user utterance has an intent or not.
+% Intent candidates are different across different systems, and few-shot learning attracts our interest to instantly build a new system.
+% This paper presents a simple yet effective approach to robust and accurate example-based intent detection.
+% Unlike previous studies on few-shot intent classification, we focus on the task along with out-of-scope detection.
+
+% Jason rewrote, feel free to change it back
+%We also equip our system with the ability to detect an out-of-scope intent when the intent is supposed to be a novel intent.
+
+% Intent detection is one of the core components of goal-oriented dialog systems in practice. 
+%However, pre-defining and collecting data for all the possible intents are hard and costly due to the unconstrained user behavior and growing domains.
+% In this paper, we focus on few-shot intent detection and present a simple yet effective approach to discriminative example-based classification.
+
+Intent detection is one of the core components of goal-oriented dialog systems, and detecting out-of-scope (OOS) intents is also a practically important skill.
+Few-shot learning is attracting much attention to mitigate data scarcity, but OOS detection becomes even more challenging.
+In this paper, we present a simple yet effective approach, discriminative nearest neighbor classification with deep self-attention.
+Unlike softmax classifiers, we leverage BERT-style pairwise encoding to train a binary classifier that estimates the best matched training example for a user input.
+We propose to boost the discriminative ability by transferring a natural language inference (NLI) model.
+Our extensive experiments on a large-scale multi-domain intent detection task show that our method achieves more stable and accurate in-domain and OOS detection accuracy than RoBERTa-based classifiers and embedding-based nearest neighbor approaches.
+More notably, the NLI transfer enables our 10-shot model to perform competitively with 50-shot or even full-shot classifiers, while we can keep the inference time constant by leveraging a faster embedding retrieval model. 
+
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{introduction.tex}
+\input{methodology.tex}
+\input{settings.tex}
+\input{experiments.tex}
+% %\input{discussion.tex}
+\input{related-work.tex}
+\input{conclusion.tex}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Acknowledgments}
+This work is supported in part by NSF under grants III-1763325, III-1909323, and SaTC-1930941.
+We thank Huan Wang, Wenpeng Yin for their insightful discussions, and the anonymous reviewers for their helpful and thoughtful comments.
+We also thank Jin Qu, Tian Xie, Xinyi Yang, and Yingbo Zhou for their support in the deployment of DNNC into the internal system.
+
+% remove this later!!
+%\clearpage
+
+\bibliographystyle{acl_natbib}
+\bibliography{emnlp2020}
+
+%\clearpage
+\input{supplementary.tex}
+
+%\clearpage
+
+\end{document}

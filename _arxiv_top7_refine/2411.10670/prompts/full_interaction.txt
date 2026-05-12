@@ -1,0 +1,74 @@
+You are a helpful assistant and an expert in natural language processing and specialize in the task of intent detection.
+AI language model, your task is to assign the correct intent to a given textual utterance. The intent can be one of the pre-defined intents or a new one that you create based on the context and knowledge about the problem and specific data domain. You should never assign an utterance to 'unknown'. 
+
+For each utterance, analyze the context and the specific request or action implied. If the utterance matches a known intent, assign it to that intent. If it doesn't match any known intent, create a new intent that accurately represents the request or action implied by the utterance.
+
+Remember, the goal is to understand the user's intent as accurately as possible. Be aware of the known intents and reuse them as much as possible, but don't hesitate to create new intents when necessary. 
+
+Here are some examples:
+
+- If the utterance is "how are you named", the intent is "what_is_your_name".
+- If the utterance is "i need to know the total calories for a chicken caesar salad", the intent is "calories".
+- If the utterance is "please pause my banking actions", the intent is "freeze_account".
+
+Use these examples as a guide, but remember that the utterances can vary greatly in structure and content. Your task is to understand the underlying intent, regardless of how the utterance is phrased.
+Make sure each intent is only between one and three words, and as short and reusable as possible. Use the same format as the context examples. Don't classify the examples below CONTEXT EXAMPLES. Only classify the test examples below TEST EXAMPLES. You are prohibited to assign intents to 'unknown'. Instead, create a new intent. 
+
+Don't discover a new intent if you have already discovered one that is similar. Make sure that the intents are not very generic, you can be fine-grained. Use the following list of known intents to keep reference, reuse them as much as possible: 
+
+no, what_is_your_name, calories, shopping_list, freeze_account, pto_request_status, current_location, where_are_you_from, income, gas, confirm_reservation, maybe, improve_credit_score, book_hotel, repeat, apr, damaged_card, tire_pressure, balance, share_location, what_are_your_hobbies, insurance_change, car_rental, smart_home, gas_type, yes, pto_used, replacement_card_duration, order_status, cancel, restaurant_suggestion, rollover_401k, change_accent, redeem_rewards, credit_score, reminder, restaurant_reviews, meeting_schedule, meal_suggestion, exchange_rate, directions, flight_status, calendar, do_you_have_pets, alarm, travel_suggestion, update_playlist, ingredients_list, travel_notification, what_can_i_ask_you, w2, report_lost_card, book_flight, distance, thank_you, travel_alert, calculator, make_call, roll_dice, pto_balance, how_old_are_you, international_visa, how_busy, time, are_you_a_bot, timezone, change_user_name, mpg, insurance, payday, vaccines, fun_fact, report_fraud, pto_request, taxes, restaurant_reservation, measurement_conversion, last_maintenance, play_music, application_status, credit_limit_change, change_speed, date, who_made_you, pin_change, spending_history, definition, reminder_update, change_ai_name, tire_change, order, account_blocked, calendar_update, routing, cook_time, food_last, interest_rate, greeting, user_name, todo_list, ingredient_substitution, schedule_maintenance, shopping_list_update, transactions, rewards_balance, credit_limit, carry_on, expiration_date, change_language, text, next_holiday, who_do_you_work_for
+
+CONTEXT EXAMPLES:
+
+Utterance: please remind me later, Intent: reminder_update
+Utterance: i want to know what health plan i'm currently on, Intent: insurance
+Utterance: do you work for another individual, Intent: who_do_you_work_for
+Utterance: tell me my health plan, Intent: insurance
+Utterance: is there an insurance plan for my health, Intent: insurance
+Utterance: are you working for another person or entity, Intent: who_do_you_work_for
+Utterance: i'm ready to put in the order for everything on my shopping list, Intent: order
+Utterance: get everything on my shopping list, Intent: order
+Utterance: i'd like to you order everything that's on my shopping list, Intent: order
+Utterance: it is damaging to my credit score if i miss one credit card payment, Intent: improve_credit_score
+
+RESPONSE FORMAT:
+
+ID: <i>, Utterance: <content>, Intent: <intent> Use the same ID in the test example.
+
+TEST EXAMPLES (to predict):
+
+ID:0, is there another person you work for
+ID:1, does tartine in san francisco take reservations
+ID:2, what is the traffic like on the road to downtown dallas
+ID:3, what do you think the meaning of life is
+ID:4, what is the square root of 80
+ID:5, is the friday's full after 4
+ID:6, i'm going to need an uber for 4 people to go to patty's bar
+ID:7, place an order for my entire shopping list
+ID:8, what is the traffic like on the way to town
+ID:9, please spell doctor
+ID:10, tell my bank i'm in canada the entire week of the 6th to the 13th
+ID:11, i need help with some fun tourist things to do in tokyo
+ID:12, please remind me at a later time
+ID:13, what specific health plan do i have
+ID:14, can i harm my credit if i miss a car payment
+ID:15, please call mark
+
+Your response:
+
+ID:0, Utterance: is there another person you work for, Intent: who_do_you_work_for
+ID:1, Utterance: does tartine in san francisco take reservations, Intent: restaurant_reservation
+ID:2, Utterance: what is the traffic like on the road to downtown dallas, Intent: traffic_status
+ID:3, Utterance: what do you think the meaning of life is, Intent: philosophical_question
+ID:4, Utterance: what is the square root of 80, Intent: calculator
+ID:5, Utterance: is the friday's full after 4, Intent: restaurant_busy_status
+ID:6, Utterance: i'm going to need an uber for 4 people to go to patty's bar, Intent: book_ride
+ID:7, Utterance: place an order for my entire shopping list, Intent: order
+ID:8, Utterance: what is the traffic like on the way to town, Intent: traffic_status
+ID:9, Utterance: please spell doctor, Intent: spelling
+ID:10, Utterance: tell my bank i'm in canada the entire week of the 6th to the 13th, Intent: travel_notification
+ID:11, Utterance: i need help with some fun tourist things to do in tokyo, Intent: travel_suggestion
+ID:12, Utterance: please remind me at a later time, Intent: reminder_update
+ID:13, Utterance: what specific health plan do i have, Intent: insurance
+ID:14, Utterance: can i harm my credit if i miss a car payment, Intent: improve_credit_score
+ID:15, Utterance: please call mark, Intent: make_call

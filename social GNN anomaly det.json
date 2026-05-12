@@ -1,0 +1,561 @@
+[
+  {
+    "link": "https://www.arxiv.org/abs/2104.06095",
+    "title": "Relevance-Aware Anomalous Users Detection in Social Network via Graph Neural Network",
+    "publish_time": "20210413",
+    "authors": [
+      "Yangyang Li",
+      "Yipeng Ji",
+      "Shaoning Li",
+      "Shulong He",
+      "Yinhao Cao",
+      "Xiong Li",
+      "Jun Shi",
+      "Yangchao Yang and Yifeng Liu"
+    ],
+    "abstract": "Anomalous users detection in social network is an imperative task for security problems. Motivated by the great power of Graph Neural Networks(GNNs), many current researches adopt GNN-based detectors to reveal the anomalous users. However, the increasing scale of social activities, explosive growth of users and manifold technical disguise render the user detection a difficult task. In this paper, we propose an innovate Relevance-aware Anomalous Users Detection model (RAU-GNN) to obtain a fine-grained detection result. RAU-GNN first extracts multiple relations of all types of users in social network, including both benign and anomalous users, and accordingly constructs the multiple user relation graph. Secondly, we employ relevance-aware GNN framework to learn the hidden features of users, and discriminate the anomalous users after discriminating. Concretely, by integrating Graph Convolution Network(GCN) and Graph Attention Network(GAT), we design a GCN-based relation fusion layer to aggregate initial information from different relations, and a GAT-based embedding layer to obtain the high-level embeddings. Lastly, we feed the learned representations to the following GNN layer in order to consolidate the node embedding by aggregating the final users' embeddings. We conduct extensive experiment on real-world datasets. The experimental results show that our approach can achieve high accuracy for anomalous users detection.",
+    "score": 0.9950567483901978
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2004.04834",
+    "title": "Friend or Faux: Graph-Based Early Detection of Fake Accounts on Social Networks",
+    "publish_time": "20200409",
+    "authors": [
+      "Adam Breuer",
+      "Roee Eilat",
+      "and Udi Weinsberg"
+    ],
+    "abstract": "In this paper, we study the problem of early detection of fake user accounts on social networks based solely on their network connectivity with other users. Removing such accounts is a core task for maintaining the integrity of social networks, and early detection helps to reduce the harm that such accounts inflict. However, new fake accounts are notoriously difficult to detect via graph-based algorithms, as their small number of connections are unlikely to reflect a significant structural difference from those of new real accounts. We present the SybilEdge algorithm, which determines whether a new user is a fake account (`sybil') by aggregating over (I) her choices of friend request targets and (II) these targets' respective responses. SybilEdge performs this aggregation giving more weight to a user's choices of targets to the extent that these targets are preferred by other fakes versus real users, and also to the extent that these targets respond differently to fakes versus real users. We show that SybilEdge rapidly detects new fake users at scale on the Facebook network and outperforms state-of-the-art algorithms. We also show that SybilEdge is robust to label noise in the training data, to different prevalences of fake accounts in the network, and to several different ways fakes can select targets for their friend requests. To our knowledge, this is the first time a graph-based algorithm has been shown to achieve high performance (AUC>0.9) on new users who have only sent a small number of friend requests.",
+    "score": 0.9908945560455322
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2106.09876",
+    "title": "Anomaly Detection in Dynamic Graphs via Transformer",
+    "publish_time": "20210618",
+    "authors": [
+      "Yixin Liu",
+      "Shirui Pan",
+      "Yu Guang Wang",
+      "Fei Xiong",
+      "Liang Wang",
+      "Qingfeng Chen",
+      "Vincent CS Lee"
+    ],
+    "abstract": "Detecting anomalies for dynamic graphs has drawn increasing attention due to their wide applications in social networks, e-commerce, and cybersecurity. Recent deep learning-based approaches have shown promising results over shallow methods. However, they fail to address two core challenges of anomaly detection in dynamic graphs: the lack of informative encoding for unattributed nodes and the difficulty of learning discriminate knowledge from coupled spatial-temporal dynamic graphs. To overcome these challenges, in this paper, we present a novel Transformer-based Anomaly Detection framework for DYnamic graphs (TADDY). Our framework constructs a comprehensive node encoding strategy to better represent each node's structural and temporal roles in an evolving graphs stream. Meanwhile, TADDY captures informative representation from dynamic graphs with coupled spatial-temporal patterns via a dynamic graph transformer model. The extensive experimental results demonstrate that our proposed TADDY framework outperforms the state-of-the-art methods by a large margin on six real-world datasets.",
+    "score": 0.9730017185211182
+  },
+  {
+    "link": "https://www.arxiv.org/abs/1912.04144",
+    "title": "Multi-scale Anomaly Detection on Attributed Networks",
+    "publish_time": "20191125",
+    "authors": [
+      "Leonardo Guti\\'errez-G\\'omez",
+      "Alexandre Bovet",
+      "Jean-Charles Delvenne"
+    ],
+    "abstract": "Many social and economic systems can be represented as attributed networks encoding the relations between entities who are themselves described by different node attributes. Finding anomalies in these systems is crucial for detecting abuses such as credit card frauds, web spams or network intrusions. Intuitively, anomalous nodes are defined as nodes whose attributes differ starkly from the attributes of a certain set of nodes of reference, called the context of the anomaly. While some methods have proposed to spot anomalies locally, globally or within a community context, the problem remain challenging due to the multi-scale composition of real networks and the heterogeneity of node metadata. Here, we propose a principled way to uncover outlier nodes simultaneously with the context with respect to which they are anomalous, at all relevant scales of the network. We characterize anomalous nodes in terms of the concentration retained for each node after smoothing specific signals localized on the vertices of the graph. Besides, we introduce a graph signal processing formulation of the Markov stability framework used in community detection, in order to find the context of anomalies. The performance of our method is assessed on synthetic and real-world attributed networks and shows superior results concerning state of the art algorithms. Finally, we show the scalability of our approach in large networks employing Chebychev polynomial approximations.",
+    "score": 0.9725373387336731
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2007.06903",
+    "title": "H-VGRAE: A Hierarchical Stochastic Spatial-Temporal Embedding Method for Robust Anomaly Detection in Dynamic Networks",
+    "publish_time": "20200714",
+    "authors": [
+      "Chenming Yang",
+      "Liang Zhou",
+      "Hui Wen",
+      "Zhiheng Zhou",
+      "Yue Wu"
+    ],
+    "abstract": "Detecting anomalous edges and nodes in dynamic networks is critical in various areas, such as social media, computer networks, and so on. Recent approaches leverage network embedding technique to learn how to generate node representations for normal training samples and detect anomalies deviated from normal patterns. However, most existing network embedding approaches learn deterministic node representations, which are sensitive to fluctuations of the topology and attributes due to the high flexibility and stochasticity of dynamic networks. In this paper, a stochastic neural network, named by Hierarchical Variational Graph Recurrent Autoencoder (H-VGRAE), is proposed to detect anomalies in dynamic networks by the learned robust node representations in the form of random variables. H-VGRAE is a semi-supervised model to capture normal patterns in training set by maximizing the likelihood of the adjacency matrix and node attributes via variational inference. Comparing with existing methods, H-VGRAE has three main advantages: 1) H-VGRAE learns robust node representations through stochasticity modeling and the extraction of multi-scale spatial-temporal features; 2) H-VGRAE can be extended to deep structure with the increase of the dynamic network scale; 3) the anomalous edge and node can be located and interpreted from the probabilistic perspective. Extensive experiments on four real-world datasets demonstrate the outperformance of H-VGRAE on anomaly detection in dynamic networks compared with state-of-the-art competitors.",
+    "score": 0.9613494873046875
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2306.00006",
+    "title": "Truncated Affinity Maximization: One-class Homophily Modeling for Graph Anomaly Detection",
+    "publish_time": "20230529",
+    "authors": [
+      "Hezhe Qiao",
+      "Guansong Pang"
+    ],
+    "abstract": "We reveal a one-class homophily phenomenon, which is one prevalent property we find empirically in real-world graph anomaly detection (GAD) datasets, i.e., normal nodes tend to have strong connection/affinity with each other, while the homophily in abnormal nodes is significantly weaker than normal nodes. However, this anomaly-discriminative property is ignored by existing GAD methods that are typically built using a conventional anomaly detection objective, such as data reconstruction. In this work, we explore this property to introduce a novel unsupervised anomaly scoring measure for GAD, local node affinity, that assigns a larger anomaly score to nodes that are less affiliated with their neighbors, with the affinity defined as similarity on node attributes/representations. We further propose Truncated Affinity Maximization (TAM) that learns tailored node representations for our anomaly measure by maximizing the local affinity of nodes to their neighbors. Optimizing on the original graph structure can be biased by nonhomophily edges (i.e., edges connecting normal and abnormal nodes). Thus, TAM is instead optimized on truncated graphs where non-homophily edges are removed iteratively to mitigate this bias. The learned representations result in significantly stronger local affinity for normal nodes than abnormal nodes. Extensive empirical results on 10 real-world GAD datasets show that TAM substantially outperforms seven competing models, achieving over 10% increase in AUROC/AUPRC compared to the best contenders on challenging datasets. Our code is available at https://github.com/mala-lab/TAM-master/.",
+    "score": 0.9314560294151306
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2306.01951",
+    "title": "GAD-NR: Graph Anomaly Detection via Neighborhood Reconstruction",
+    "publish_time": "20230602",
+    "authors": [
+      "Amit Roy",
+      "Juan Shu",
+      "Jia Li",
+      "Carl Yang",
+      "Olivier Elshocht",
+      "Jeroen Smeets and Pan Li"
+    ],
+    "abstract": "Graph Anomaly Detection (GAD) is a technique used to identify abnormal nodes within graphs, finding applications in network security, fraud detection, social media spam detection, and various other domains. A common method for GAD is Graph Auto-Encoders (GAEs), which encode graph data into node representations and identify anomalies by assessing the reconstruction quality of the graphs based on these representations. However, existing GAE models are primarily optimized for direct link reconstruction, resulting in nodes connected in the graph being clustered in the latent space. As a result, they excel at detecting cluster-type structural anomalies but struggle with more complex structural anomalies that do not conform to clusters. To address this limitation, we propose a novel solution called GAD-NR, a new variant of GAE that incorporates neighborhood reconstruction for graph anomaly detection. GAD-NR aims to reconstruct the entire neighborhood of a node, encompassing the local structure, self-attributes, and neighbor attributes, based on the corresponding node representation. By comparing the neighborhood reconstruction loss between anomalous nodes and normal nodes, GAD-NR can effectively detect any anomalies. Extensive experimentation conducted on six real-world datasets validates the effectiveness of GAD-NR, showcasing significant improvements (by up to 30% in AUC) over state-of-the-art competitors. The source code for GAD-NR is openly available. Importantly, the comparative analysis reveals that the existing methods perform well only in detecting one or two types of anomalies out of the three types studied. In contrast, GAD-NR excels at detecting all three types of anomalies across the datasets, demonstrating its comprehensive anomaly detection capabilities.",
+    "score": 0.9136590361595154
+  },
+  {
+    "link": "https://www.arxiv.org/abs/1908.03849",
+    "title": "SpecAE: Spectral AutoEncoder for Anomaly Detection in Attributed Networks",
+    "publish_time": "20190811",
+    "authors": [
+      "Yuening Li",
+      "Xiao Huang",
+      "Jundong Li",
+      "Mengnan Du",
+      "Na Zou"
+    ],
+    "abstract": "Anomaly detection aims to distinguish observations that are rare and different from the majority. While most existing algorithms assume that instances are i.i.d., in many practical scenarios, links describing instance-to-instance dependencies and interactions are available. Such systems are called attributed networks. Anomaly detection in attributed networks has various applications such as monitoring suspicious accounts in social media and financial fraud in transaction networks. However, it remains a challenging task since the definition of anomaly becomes more complicated and topological structures are heterogeneous with nodal attributes. In this paper, we propose a spectral convolution and deconvolution based framework -- SpecAE, to project the attributed network into a tailored space to detect global and community anomalies. SpecAE leverages Laplacian sharpening to amplify the distances between representations of anomalies and the ones of the majority. The learned representations along with reconstruction errors are combined with a density estimation model to perform the detection. They are trained jointly as an end-to-end framework. Experiments on real-world datasets demonstrate the effectiveness of SpecAE.",
+    "score": 0.9136544466018677
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2312.14535",
+    "title": "ADA-GAD: Anomaly-Denoised Autoencoders for Graph Anomaly Detection",
+    "publish_time": "20231222",
+    "authors": [
+      "Junwei He",
+      "Qianqian Xu",
+      "Yangbangyan Jiang",
+      "Zitai Wang",
+      "Qingming Huang"
+    ],
+    "abstract": "Graph anomaly detection is crucial for identifying nodes that deviate from regular behavior within graphs, benefiting various domains such as fraud detection and social network. Although existing reconstruction-based methods have achieved considerable success, they may face the \\textit{Anomaly Overfitting} and \\textit{Homophily Trap} problems caused by the abnormal patterns in the graph, breaking the assumption that normal nodes are often better reconstructed than abnormal ones. Our observations indicate that models trained on graphs with fewer anomalies exhibit higher detection performance. Based on this insight, we introduce a novel two-stage framework called Anomaly-Denoised Autoencoders for Graph Anomaly Detection (ADA-GAD). In the first stage, we design a learning-free anomaly-denoised augmentation method to generate graphs with reduced anomaly levels. We pretrain graph autoencoders on these augmented graphs at multiple levels, which enables the graph autoencoders to capture normal patterns. In the next stage, the decoders are retrained for detection on the original graph, benefiting from the multi-level representations learned in the previous stage. Meanwhile, we propose the node anomaly distribution regularization to further alleviate \\textit{Anomaly Overfitting}. We validate the effectiveness of our approach through extensive experiments on both synthetic and real-world datasets.",
+    "score": 0.9035589694976807
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2508.10594",
+    "title": "FreeGAD: A Training-Free yet Effective Approach for Graph Anomaly Detection",
+    "publish_time": "20250814",
+    "authors": [
+      "Yunfeng Zhao",
+      "Yixin Liu",
+      "Shiyuan Li",
+      "Qingfeng Chen",
+      "Yu Zheng and Shirui Pan"
+    ],
+    "abstract": "Graph Anomaly Detection (GAD) aims to identify nodes that deviate from the majority within a graph, playing a crucial role in applications such as social networks and e-commerce. Despite the current advancements in deep learning-based GAD, existing approaches often suffer from high deployment costs and poor scalability due to their complex and resource-intensive training processes. Surprisingly, our empirical findings suggest that the training phase of deep GAD methods, commonly perceived as crucial, may actually contribute less to anomaly detection performance than expected. Inspired by this, we propose FreeGAD, a novel training-free yet effective GAD method. Specifically, it leverages an affinity-gated residual encoder to generate anomaly-aware representations. Meanwhile, FreeGAD identifies anchor nodes as pseudo-normal and anomalous guides, followed by calculating anomaly scores through anchor-guided statistical deviations. Extensive experiments demonstrate that FreeGAD achieves superior anomaly detection performance, efficiency, and scalability on multiple benchmark datasets from diverse domains, without any training or iterative optimization.",
+    "score": 0.9034299254417419
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2002.03665",
+    "title": "AnomalyDAE: Dual autoencoder for anomaly detection on attributed networks",
+    "publish_time": "20200210",
+    "authors": [
+      "Haoyi Fan",
+      "Fengbin Zhang",
+      "Zuoyong Li"
+    ],
+    "abstract": "Anomaly detection on attributed networks aims at finding nodes whose patterns deviate significantly from the majority of reference nodes, which is pervasive in many applications such as network intrusion detection and social spammer detection. However, most existing methods neglect the complex cross-modality interactions between network structure and node attribute. In this paper, we propose a deep joint representation learning framework for anomaly detection through a dual autoencoder (AnomalyDAE), which captures the complex interactions between network structure and node attribute for high-quality embeddings. Specifically, AnomalyDAE consists of a structure autoencoder and an attribute autoencoder to learn both node embedding and attribute embedding jointly in latent space. Moreover, attention mechanism is employed in structure encoder to learn the importance between a node and its neighbors for an effective capturing of structure pattern, which is important to anomaly detection. Besides, by taking both the node embedding and attribute embedding as inputs of attribute decoder, the cross-modality interactions between network structure and node attribute are learned during the reconstruction of node attribute. Finally, anomalies can be detected by measuring the reconstruction errors of nodes from both the structure and attribute perspectives. Extensive experiments on real-world datasets demonstrate the effectiveness of the proposed method.",
+    "score": 0.8797153234481812
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2011.13085",
+    "title": "Fast and Accurate Anomaly Detection in Dynamic Graphs with a Two-Pronged Approach",
+    "publish_time": "20201126",
+    "authors": [
+      "Minji Yoon",
+      "Bryan Hooi",
+      "Kijung Shin",
+      "Christos Faloutsos"
+    ],
+    "abstract": "Given a dynamic graph stream, how can we detect the sudden appearance of anomalous patterns, such as link spam, follower boosting, or denial of service attacks? Additionally, can we categorize the types of anomalies that occur in practice, and theoretically analyze the anomalous signs arising from each type? In this work, we propose AnomRank, an online algorithm for anomaly detection in dynamic graphs. AnomRank uses a two-pronged approach defining two novel metrics for anomalousness. Each metric tracks the derivatives of its own version of a 'node score' (or node importance) function. This allows us to detect sudden changes in the importance of any node. We show theoretically and experimentally that the two-pronged approach successfully detects two common types of anomalies: sudden weight changes along an edge, and sudden structural changes to the graph. AnomRank is (a) Fast and Accurate: up to 49.5x faster or 35% more accurate than state-of-the-art methods, (b) Scalable: linear in the number of edges in the input graph, processing millions of edges within 2 seconds on a stock laptop/desktop, and (c) Theoretically Sound: providing theoretical guarantees of the two-pronged approach.",
+    "score": 0.8511461615562439
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2011.04723",
+    "title": "F-FADE: Frequency Factorization for Anomaly Detection in Edge Streams",
+    "publish_time": "20201109",
+    "authors": [
+      "Yen-Yu Chang",
+      "Pan Li",
+      "Rok Sosic",
+      "M. H. Afifi",
+      "Marco Schweighauser",
+      "Jure Leskovec"
+    ],
+    "abstract": "Edge streams are commonly used to capture interactions in dynamic networks, such as email, social, or computer networks. The problem of detecting anomalies or rare events in edge streams has a wide range of applications. However, it presents many challenges due to lack of labels, a highly dynamic nature of interactions, and the entanglement of temporal and structural changes in the network. Current methods are limited in their ability to address the above challenges and to efficiently process a large number of interactions. Here, we propose F-FADE, a new approach for detection of anomalies in edge streams, which uses a novel frequency-factorization technique to efficiently model the time-evolving distributions of frequencies of interactions between node-pairs. The anomalies are then determined based on the likelihood of the observed frequency of each incoming interaction. F-FADE is able to handle in an online streaming setting a broad variety of anomalies with temporal and structural changes, while requiring only constant memory. Our experiments on one synthetic and six real-world dynamic networks show that F-FADE achieves state of the art performance and may detect anomalies that previous methods are unable to find.",
+    "score": 0.8346841335296631
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2006.15410",
+    "title": "Mining Persistent Activity in Continually Evolving Networks",
+    "publish_time": "20200627",
+    "authors": [
+      "Caleb Belth",
+      "Xinyi Zheng",
+      "Danai Koutra"
+    ],
+    "abstract": "Frequent pattern mining is a key area of study that gives insights into the structure and dynamics of evolving networks, such as social or road networks. However, not only does a network evolve, but often the way that it evolves, itself evolves. Thus, knowing, in addition to patterns' frequencies, for how long and how regularly they have occurred---i.e., their persistence---can add to our understanding of evolving networks. In this work, we propose the problem of mining activity that persists through time in continually evolving networks---i.e., activity that repeatedly and consistently occurs. We extend the notion of temporal motifs to capture activity among specific nodes, in what we call activity snippets, which are small sequences of edge-updates that reoccur. We propose axioms and properties that a measure of persistence should satisfy, and develop such a persistence measure. We also propose PENminer, an efficient framework for mining activity snippets' Persistence in Evolving Networks, and design both offline and streaming algorithms. We apply PENminer to numerous real, large-scale evolving networks and edge streams, and find activity that is surprisingly regular over a long period of time, but too infrequent to be discovered by aggregate count alone, and bursts of activity exposed by their lack of persistence. Our findings with PENminer include neighborhoods in NYC where taxi traffic persisted through Hurricane Sandy, the opening of new bike-stations, characteristics of social network users, and more. Moreover, we use PENminer towards identifying anomalies in multiple networks, outperforming baselines at identifying subtle anomalies by 9.8-48% in AUC.",
+    "score": 0.8165855407714844
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2108.09896",
+    "title": "Generative and Contrastive Self-Supervised Learning for Graph Anomaly Detection",
+    "publish_time": "20210823",
+    "authors": [
+      "Yu Zheng",
+      "Ming Jin",
+      "Yixin Liu",
+      "Lianhua Chi",
+      "Khoa T. Phan",
+      "Yi-Ping Phoebe Chen"
+    ],
+    "abstract": "Anomaly detection from graph data has drawn much attention due to its practical significance in many critical applications including cybersecurity, finance, and social networks. Existing data mining and machine learning methods are either shallow methods that could not effectively capture the complex interdependency of graph data or graph autoencoder methods that could not fully exploit the contextual information as supervision signals for effective anomaly detection. To overcome these challenges, in this paper, we propose a novel method, Self-Supervised Learning for Graph Anomaly Detection (SL-GAD). Our method constructs different contextual subgraphs (views) based on a target node and employs two modules, generative attribute regression and multi-view contrastive learning for anomaly detection. While the generative attribute regression module allows us to capture the anomalies in the attribute space, the multi-view contrastive learning module can exploit richer structure information from multiple subgraphs, thus abling to capture the anomalies in the structure space, mixing of structure, and attribute information. We conduct extensive experiments on six benchmark datasets and the results demonstrate that our method outperforms state-of-the-art methods by a large margin.",
+    "score": 0.8164850473403931
+  },
+  {
+    "link": "https://www.arxiv.org/abs/1404.4679",
+    "title": "Graph-based Anomaly Detection and Description: A Survey",
+    "publish_time": "20140418",
+    "authors": [
+      "Leman Akoglu",
+      "Hanghang Tong",
+      "Danai Koutra"
+    ],
+    "abstract": "Detecting anomalies in data is a vital task, with numerous high-impact applications in areas such as security, finance, health care, and law enforcement. While numerous techniques have been developed in past years for spotting outliers and anomalies in unstructured collections of multi-dimensional points, with graph data becoming ubiquitous, techniques for structured {\\em graph} data have been of focus recently. As objects in graphs have long-range correlations, a suite of novel technology has been developed for anomaly detection in graph data. This survey aims to provide a general, comprehensive, and structured overview of the state-of-the-art methods for anomaly detection in data represented as graphs. As a key contribution, we provide a comprehensive exploration of both data mining and machine learning algorithms for these {\\em detection} tasks. we give a general framework for the algorithms categorized under various settings: unsupervised vs. (semi-)supervised approaches, for static vs. dynamic graphs, for attributed vs. plain graphs. We highlight the effectiveness, scalability, generality, and robustness aspects of the methods. What is more, we stress the importance of anomaly {\\em attribution} and highlight the major techniques that facilitate digging out the root cause, or the `why', of the detected anomalies for further analysis and sense-making. Finally, we present several real-world applications of graph-based anomaly detection in diverse domains, including financial, auction, computer traffic, and social networks. We conclude our survey with a discussion on open theoretical and practical challenges in the field.",
+    "score": 0.7972638010978699
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2310.11676",
+    "title": "PREM: A Simple Yet Effective Approach for Node-Level Graph Anomaly Detection",
+    "publish_time": "20231018",
+    "authors": [
+      "Junjun Pan",
+      "Yixin Liu",
+      "Yizhen Zheng",
+      "Shirui Pan"
+    ],
+    "abstract": "Node-level graph anomaly detection (GAD) plays a critical role in identifying anomalous nodes from graph-structured data in various domains such as medicine, social networks, and e-commerce. However, challenges have arisen due to the diversity of anomalies and the dearth of labeled data. Existing methodologies - reconstruction-based and contrastive learning - while effective, often suffer from efficiency issues, stemming from their complex objectives and elaborate modules. To improve the efficiency of GAD, we introduce a simple method termed PREprocessing and Matching (PREM for short). Our approach streamlines GAD, reducing time and memory consumption while maintaining powerful anomaly detection capabilities. Comprising two modules - a pre-processing module and an ego-neighbor matching module - PREM eliminates the necessity for message-passing propagation during training, and employs a simple contrastive loss, leading to considerable reductions in training time and memory usage. Moreover, through rigorous evaluations of five real-world datasets, our method demonstrated robustness and effectiveness. Notably, when validated on the ACM dataset, PREM achieved a 5% improvement in AUC, a 9-fold increase in training speed, and sharply reduce memory usage compared to the most efficient baseline.",
+    "score": 0.7763885259628296
+  },
+  {
+    "link": "https://www.arxiv.org/abs/1601.06711",
+    "title": "Scalable Anomaly Ranking of Attributed Neighborhoods",
+    "publish_time": "20160125",
+    "authors": [
+      "Bryan Perozzi",
+      "Leman Akoglu"
+    ],
+    "abstract": "Given a graph with node attributes, what neighborhoods are anomalous? To answer this question, one needs a quality score that utilizes both structure and attributes. Popular existing measures either quantify the structure only and ignore the attributes (e.g., conductance), or only consider the connectedness of the nodes inside the neighborhood and ignore the cross-edges at the boundary (e.g., density). In this work we propose normality, a new quality measure for attributed neighborhoods. Normality utilizes structure and attributes together to quantify both internal consistency and external separability. It exhibits two key advantages over other measures: (1) It allows many boundary-edges as long as they can be \"exonerated\"; i.e., either (i) are expected under a null model, and/or (ii) the boundary nodes do not exhibit the subset of attributes shared by the neighborhood members. Existing measures, in contrast, penalize boundary edges irrespectively. (2) Normality can be efficiently maximized to automatically infer the shared attribute subspace (and respective weights) that characterize a neighborhood. This efficient optimization allows us to process graphs with millions of attributes. We capitalize on our measure to present a novel approach for Anomaly Mining of Entity Neighborhoods (AMEN). Experiments on real-world attributed graphs illustrate the effectiveness of our measure at anomaly detection, outperforming popular approaches including conductance, density, OddBall, and SODA. In addition to anomaly detection, our qualitative analysis demonstrates the utility of normality as a powerful tool to contrast the correlation between structure and attributes across different graphs.",
+    "score": 0.7763839364051819
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2002.09594",
+    "title": "One-Class Graph Neural Networks for Anomaly Detection in Attributed Networks",
+    "publish_time": "20200222",
+    "authors": [
+      "Xuhong Wang",
+      "Baihong Jin",
+      "Ying Du",
+      "Ping Cui and Yupu Yang"
+    ],
+    "abstract": "Nowadays, graph-structured data are increasingly used to model complex systems. Meanwhile, detecting anomalies from graph has become a vital research problem of pressing societal concerns. Anomaly detection is an unsupervised learning task of identifying rare data that differ from the majority. As one of the dominant anomaly detection algorithms, One Class Support Vector Machine has been widely used to detect outliers. However, those traditional anomaly detection methods lost their effectiveness in graph data. Since traditional anomaly detection methods are stable, robust and easy to use, it is vitally important to generalize them to graph data. In this work, we propose One Class Graph Neural Network (OCGNN), a one-class classification framework for graph anomaly detection. OCGNN is designed to combine the powerful representation ability of Graph Neural Networks along with the classical one-class objective. Compared with other baselines, OCGNN achieves significant improvements in extensive experiments.",
+    "score": 0.7542127966880798
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2112.05355",
+    "title": "LUNAR: Unifying Local Outlier Detection Methods via Graph Neural Networks",
+    "publish_time": "20211210",
+    "authors": [
+      "Adam Goodge",
+      "Bryan Hooi",
+      "See Kiong Ng",
+      "Wee Siong Ng"
+    ],
+    "abstract": "Many well-established anomaly detection methods use the distance of a sample to those in its local neighbourhood: so-called `local outlier methods', such as LOF and DBSCAN. They are popular for their simple principles and strong performance on unstructured, feature-based data that is commonplace in many practical applications. However, they cannot learn to adapt for a particular set of data due to their lack of trainable parameters. In this paper, we begin by unifying local outlier methods by showing that they are particular cases of the more general message passing framework used in graph neural networks. This allows us to introduce learnability into local outlier methods, in the form of a neural network, for greater flexibility and expressivity: specifically, we propose LUNAR, a novel, graph neural network-based anomaly detection method. LUNAR learns to use information from the nearest neighbours of each node in a trainable way to find anomalies. We show that our method performs significantly better than existing local outlier methods, as well as state-of-the-art deep baselines. We also show that the performance of our method is much more robust to different settings of the local neighbourhood size.",
+    "score": 0.7541413307189941
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2212.05478",
+    "title": "Mul-GAD: a semi-supervised graph anomaly detection framework via aggregating multi-view information",
+    "publish_time": "20221211",
+    "authors": [
+      "Zhiyuan Liu",
+      "Chunjie Cao and Jingzhang Sun"
+    ],
+    "abstract": "Anomaly detection is defined as discovering patterns that do not conform to the expected behavior. Previously, anomaly detection was mostly conducted using traditional shallow learning techniques, but with little improvement. As the emergence of graph neural networks (GNN), graph anomaly detection has been greatly developed. However, recent studies have shown that GNN-based methods encounter challenge, in that no graph anomaly detection algorithm can perform generalization on most datasets. To bridge the tap, we propose a multi-view fusion approach for graph anomaly detection (Mul-GAD). The view-level fusion captures the extent of significance between different views, while the feature-level fusion makes full use of complementary information. We theoretically and experimentally elaborate the effectiveness of the fusion strategies. For a more comprehensive conclusion, we further investigate the effect of the objective function and the number of fused views on detection performance. Exploiting these findings, our Mul-GAD is proposed equipped with fusion strategies and the well-performed objective function. Compared with other state-of-the-art detection methods, we achieve a better detection performance and generalization in most scenarios via a series of experiments conducted on Pubmed, Amazon Computer, Amazon Photo, Weibo and Books. Our code is available at https://github.com/liuyishoua/Mul-Graph-Fusion.",
+    "score": 0.7537834048271179
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2401.10547",
+    "title": "PhoGAD: Graph-based Anomaly Behavior Detection with Persistent Homology Optimization",
+    "publish_time": "20240119",
+    "authors": [
+      "Ziqi Yuan",
+      "Haoyi Zhou",
+      "Tianyu Chen",
+      "Jianxin Li"
+    ],
+    "abstract": "A multitude of toxic online behaviors, ranging from network attacks to anonymous traffic and spam, have severely disrupted the smooth operation of networks. Due to the inherent sender-receiver nature of network behaviors, graph-based frameworks are commonly used for detecting anomalous behaviors. However, in real-world scenarios, the boundary between normal and anomalous behaviors tends to be ambiguous. The local heterophily of graphs interferes with the detection, and existing methods based on nodes or edges introduce unwanted noise into representation results, thereby impacting the effectiveness of detection. To address these issues, we propose PhoGAD, a graph-based anomaly detection framework. PhoGAD leverages persistent homology optimization to clarify behavioral boundaries. Building upon this, the weights of adjacent edges are designed to mitigate the effects of local heterophily. Subsequently, to tackle the noise problem, we conduct a formal analysis and propose a disentangled representation-based explicit embedding method, ultimately achieving anomaly behavior detection. Experiments on intrusion, traffic, and spam datasets verify that PhoGAD has surpassed the performance of state-of-the-art (SOTA) frameworks in detection efficacy. Notably, PhoGAD demonstrates robust detection even with diminished anomaly proportions, highlighting its applicability to real-world scenarios. The analysis of persistent homology demonstrates its effectiveness in capturing the topological structure formed by normal edge features. Additionally, ablation experiments validate the effectiveness of the innovative mechanisms integrated within PhoGAD.",
+    "score": 0.7302732467651367
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2005.07427",
+    "title": "Structural Temporal Graph Neural Networks for Anomaly Detection in Dynamic Graphs",
+    "publish_time": "20200515",
+    "authors": [
+      "Lei Cai",
+      "Zhengzhang Chen",
+      "Chen Luo",
+      "Jiaping Gui",
+      "Jingchao Ni",
+      "Ding Li",
+      "Haifeng Chen"
+    ],
+    "abstract": "Detecting anomalies in dynamic graphs is a vital task, with numerous practical applications in areas such as security, finance, and social media. Previous network embedding based methods have been mostly focusing on learning good node representations, whereas largely ignoring the subgraph structural changes related to the target nodes in dynamic graphs. In this paper, we propose StrGNN, an end-to-end structural temporal Graph Neural Network model for detecting anomalous edges in dynamic graphs. In particular, we first extract the $h$-hop enclosing subgraph centered on the target edge and propose the node labeling function to identify the role of each node in the subgraph. Then, we leverage graph convolution operation and Sortpooling layer to extract the fixed-size feature from each snapshot/timestamp. Based on the extracted features, we utilize Gated recurrent units (GRUs) to capture the temporal information for anomaly detection. Extensive experiments on six benchmark datasets and a real enterprise security system demonstrate the effectiveness of StrGNN.",
+    "score": 0.7302018404006958
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2507.13954",
+    "title": "Robust Anomaly Detection with Graph Neural Networks using Controllability",
+    "publish_time": "20250718",
+    "authors": [
+      "Yifan Wei",
+      "Anwar Said",
+      "Waseem Abbas",
+      "Xenofon Koutsoukos"
+    ],
+    "abstract": "Anomaly detection in complex domains poses significant challenges due to the need for extensive labeled data and the inherently imbalanced nature of anomalous versus benign samples. Graph-based machine learning models have emerged as a promising solution that combines attribute and relational data to uncover intricate patterns. However, the scarcity of anomalous data exacerbates the challenge, which requires innovative strategies to enhance model learning with limited information. In this paper, we hypothesize that the incorporation of the influence of the nodes, quantified through average controllability, can significantly improve the performance of anomaly detection. We propose two novel approaches to integrate average controllability into graph-based frameworks: (1) using average controllability as an edge weight and (2) encoding it as a one-hot edge attribute vector. Through rigorous evaluation on real-world and synthetic networks with six state-of-the-art baselines, our proposed methods demonstrate improved performance in identifying anomalies, highlighting the critical role of controllability measures in enhancing the performance of graph machine learning models. This work underscores the potential of integrating average controllability as additional metrics to address the challenges of anomaly detection in sparse and imbalanced datasets.",
+    "score": 0.6507209539413452
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2103.00113",
+    "title": "Anomaly Detection on Attributed Networks via Contrastive Self-Supervised Learning",
+    "publish_time": "20210227",
+    "authors": [
+      "Yixin Liu",
+      "Zhao Li",
+      "Shirui Pan",
+      "Chen Gong",
+      "Chuan Zhou",
+      "George Karypis"
+    ],
+    "abstract": "Anomaly detection on attributed networks attracts considerable research interests due to wide applications of attributed networks in modeling a wide range of complex systems. Recently, the deep learning-based anomaly detection methods have shown promising results over shallow approaches, especially on networks with high-dimensional attributes and complex structures. However, existing approaches, which employ graph autoencoder as their backbone, do not fully exploit the rich information of the network, resulting in suboptimal performance. Furthermore, these methods do not directly target anomaly detection in their learning objective and fail to scale to large networks due to the full graph training mechanism. To overcome these limitations, in this paper, we present a novel contrastive self-supervised learning framework for anomaly detection on attributed networks. Our framework fully exploits the local information from network data by sampling a novel type of contrastive instance pair, which can capture the relationship between each node and its neighboring substructure in an unsupervised way. Meanwhile, a well-designed graph neural network-based contrastive learning model is proposed to learn informative embedding from high-dimensional attributes and local structure and measure the agreement of each instance pairs with its outputted scores. The multi-round predicted scores by the contrastive learning model are further used to evaluate the abnormality of each node with statistical estimation. In this way, the learning model is trained by a specific anomaly detection-aware target. Furthermore, since the input of the graph neural network module is batches of instance pairs instead of the full network, our framework can adapt to large networks flexibly. Experimental results show that our proposed framework outperforms the state-of-the-art baseline methods on all seven benchmark datasets.",
+    "score": 0.6507071256637573
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2009.14738",
+    "title": "ResGCN: Attention-based Deep Residual Modeling for Anomaly Detection on Attributed Networks",
+    "publish_time": "20200930",
+    "authors": [
+      "Yulong Pei",
+      "Tianjin Huang",
+      "Werner van Ipenburg",
+      "Mykola Pechenizkiy"
+    ],
+    "abstract": "Effectively detecting anomalous nodes in attributed networks is crucial for the success of many real-world applications such as fraud and intrusion detection. Existing approaches have difficulties with three major issues: sparsity and nonlinearity capturing, residual modeling, and network smoothing. We propose Residual Graph Convolutional Network (ResGCN), an attention-based deep residual modeling approach that can tackle these issues: modeling the attributed networks with GCN allows to capture the sparsity and nonlinearity; utilizing a deep neural network allows to directly learn residual from the input, and a residual-based attention mechanism reduces the adverse effect from anomalous nodes and prevents over-smoothing. Extensive experiments on several real-world attributed networks demonstrate the effectiveness of ResGCN in detecting anomalies.",
+    "score": 0.6219044923782349
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2411.06427",
+    "title": "UniGAD: Unifying Multi-level Graph Anomaly Detection",
+    "publish_time": "20241110",
+    "authors": [
+      "Yiqing Lin",
+      "Jianheng Tang",
+      "Chenyi Zi",
+      "H.Vicky Zhao",
+      "Yuan Yao",
+      "Jia Li"
+    ],
+    "abstract": "Graph Anomaly Detection (GAD) aims to identify uncommon, deviated, or suspicious objects within graph-structured data. Existing methods generally focus on a single graph object type (node, edge, graph, etc.) and often overlook the inherent connections among different object types of graph anomalies. For instance, a money laundering transaction might involve an abnormal account and the broader community it interacts with. To address this, we present UniGAD, the first unified framework for detecting anomalies at node, edge, and graph levels jointly. Specifically, we develop the Maximum Rayleigh Quotient Subgraph Sampler (MRQSampler) that unifies multi-level formats by transferring objects at each level into graph-level tasks on subgraphs. We theoretically prove that MRQSampler maximizes the accumulated spectral energy of subgraphs (i.e., the Rayleigh quotient) to preserve the most significant anomaly information. To further unify multi-level training, we introduce a novel GraphStitch Network to integrate information across different levels, adjust the amount of sharing required at each level, and harmonize conflicting training goals. Comprehensive experiments show that UniGAD outperforms both existing GAD methods specialized for a single task and graph prompt-based approaches for multiple tasks, while also providing robust zero-shot task transferability. All codes can be found at https://github.com/lllyyq1121/UniGAD.",
+    "score": 0.621860682964325
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2104.07917",
+    "title": "Hop-Count Based Self-Supervised Anomaly Detection on Attributed Networks",
+    "publish_time": "20210416",
+    "authors": [
+      "Tianjin Huang",
+      "Yulong Pei",
+      "Vlado Menkovski and Mykola Pechenizkiy"
+    ],
+    "abstract": "Recent years have witnessed an upsurge of interest in the problem of anomaly detection on attributed networks due to its importance in both research and practice. Although various approaches have been proposed to solve this problem, two major limitations exist: (1) unsupervised approaches usually work much less efficiently due to the lack of supervisory signal, and (2) existing anomaly detection methods only use local contextual information to detect anomalous nodes, e.g., one- or two-hop information, but ignore the global contextual information. Since anomalous nodes differ from normal nodes in structures and attributes, it is intuitive that the distance between anomalous nodes and their neighbors should be larger than that between normal nodes and their neighbors if we remove the edges connecting anomalous and normal nodes. Thus, hop counts based on both global and local contextual information can be served as the indicators of anomaly. Motivated by this intuition, we propose a hop-count based model (HCM) to detect anomalies by modeling both local and global contextual information. To make better use of hop counts for anomaly identification, we propose to use hop counts prediction as a self-supervised task. We design two anomaly scores based on the hop counts prediction via HCM model to identify anomalies. Besides, we employ Bayesian learning to train HCM model for capturing uncertainty in learned parameters and avoiding overfitting. Extensive experiments on real-world attributed networks demonstrate that our proposed model is effective in anomaly detection.",
+    "score": 0.6217881441116333
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2205.09786",
+    "title": "Subset Node Anomaly Tracking over Large Dynamic Graphs",
+    "publish_time": "20220519",
+    "authors": [
+      "Xingzhi Guo",
+      "Baojian Zhou",
+      "Steven Skiena"
+    ],
+    "abstract": "Tracking a targeted subset of nodes in an evolving graph is important for many real-world applications. Existing methods typically focus on identifying anomalous edges or finding anomaly graph snapshots in a stream way. However, edge-oriented methods cannot quantify how individual nodes change over time while others need to maintain representations of the whole graph all time, thus computationally inefficient. This paper proposes \\textsc{DynAnom}, an efficient framework to quantify the changes and localize per-node anomalies over large dynamic weighted-graphs. Thanks to recent advances in dynamic representation learning based on Personalized PageRank, \\textsc{DynAnom} is 1) \\textit{efficient}: the time complexity is linear to the number of edge events and independent on node size of the input graph; 2) \\textit{effective}: \\textsc{DynAnom} can successfully track topological changes reflecting real-world anomaly; 3) \\textit{flexible}: different type of anomaly score functions can be defined for various applications. Experiments demonstrate these properties on both benchmark graph datasets and a new large real-world dynamic graph. Specifically, an instantiation method based on \\textsc{DynAnom} achieves the accuracy of 0.5425 compared with 0.2790, the best baseline, on the task of node-level anomaly localization while running 2.3 times faster than the baseline. We present a real-world case study and further demonstrate the usability of \\textsc{DynAnom} for anomaly discovery over large-scale graphs.",
+    "score": 0.5617078542709351
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2506.04190",
+    "title": "How to Use Graph Data in the Wild to Help Graph Anomaly Detection?",
+    "publish_time": "20250604",
+    "authors": [
+      "Yuxuan Cao",
+      "Jiarong Xu",
+      "Chen Zhao",
+      "Jiaan Wang",
+      "Carl Yang",
+      "Chunping Wang",
+      "Yang Yang"
+    ],
+    "abstract": "In recent years, graph anomaly detection has found extensive applications in various domains such as social, financial, and communication networks. However, anomalies in graph-structured data present unique challenges, including label scarcity, ill-defined anomalies, and varying anomaly types, making supervised or semi-supervised methods unreliable. Researchers often adopt unsupervised approaches to address these challenges, assuming that anomalies deviate significantly from the normal data distribution. Yet, when the available data is insufficient, capturing the normal distribution accurately and comprehensively becomes difficult. To overcome this limitation, we propose to utilize external graph data (i.e., graph data in the wild) to help anomaly detection tasks. This naturally raises the question: How can we use external data to help graph anomaly detection tasks? To answer this question, we propose a framework called Wild-GAD. It is built upon a unified database, UniWildGraph, which comprises a large and diverse collection of graph data with broad domain coverage, ample data volume, and a unified feature space. Further, we develop selection criteria based on representativity and diversity to identify the most suitable external data for anomaly detection task. Extensive experiments on six real-world datasets demonstrate the effectiveness of Wild-GAD. Compared to the baseline methods, our framework has an average 18% AUCROC and 32% AUCPR improvement over the best-competing methods.",
+    "score": 0.5616400241851807
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2007.01229",
+    "title": "Laplacian Change Point Detection for Dynamic Graphs",
+    "publish_time": "20200702",
+    "authors": [
+      "Shenyang Huang",
+      "Yasmeen Hitti",
+      "Guillaume Rabusseau",
+      "Reihaneh Rabbany"
+    ],
+    "abstract": "Dynamic and temporal graphs are rich data structures that are used to model complex relationships between entities over time. In particular, anomaly detection in temporal graphs is crucial for many real world applications such as intrusion identification in network systems, detection of ecosystem disturbances and detection of epidemic outbreaks. In this paper, we focus on change point detection in dynamic graphs and address two main challenges associated with this problem: I) how to compare graph snapshots across time, II) how to capture temporal dependencies. To solve the above challenges, we propose Laplacian Anomaly Detection (LAD) which uses the spectrum of the Laplacian matrix of the graph structure at each snapshot to obtain low dimensional embeddings. LAD explicitly models short term and long term dependencies by applying two sliding windows. In synthetic experiments, LAD outperforms the state-of-the-art method. We also evaluate our method on three real dynamic networks: UCI message network, US senate co-sponsorship network and Canadian bill voting network. In all three datasets, we demonstrate that our method can more effectively identify anomalous time points according to significant real world events.",
+    "score": 0.5615808963775635
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2404.16366",
+    "title": "Guarding Graph Neural Networks for Unsupervised Graph Anomaly Detection",
+    "publish_time": "20240425",
+    "authors": [
+      "Yuanchen Bei",
+      "Sheng Zhou",
+      "Jinke Shi",
+      "Yao Ma",
+      "Haishuai Wang",
+      "Jiajun Bu"
+    ],
+    "abstract": "Unsupervised graph anomaly detection aims at identifying rare patterns that deviate from the majority in a graph without the aid of labels, which is important for a variety of real-world applications. Recent advances have utilized Graph Neural Networks (GNNs) to learn effective node representations by aggregating information from neighborhoods. This is motivated by the hypothesis that nodes in the graph tend to exhibit consistent behaviors with their neighborhoods. However, such consistency can be disrupted by graph anomalies in multiple ways. Most existing methods directly employ GNNs to learn representations, disregarding the negative impact of graph anomalies on GNNs, resulting in sub-optimal node representations and anomaly detection performance. While a few recent approaches have redesigned GNNs for graph anomaly detection under semi-supervised label guidance, how to address the adverse effects of graph anomalies on GNNs in unsupervised scenarios and learn effective representations for anomaly detection are still under-explored. To bridge this gap, in this paper, we propose a simple yet effective framework for Guarding Graph Neural Networks for Unsupervised Graph Anomaly Detection (G3AD). Specifically, G3AD introduces two auxiliary networks along with correlation constraints to guard the GNNs from inconsistent information encoding. Furthermore, G3AD introduces an adaptive caching module to guard the GNNs from solely reconstructing the observed data that contains anomalies. Extensive experiments demonstrate that our proposed G3AD can outperform seventeen state-of-the-art methods on both synthetic and real-world datasets.",
+    "score": 0.499645471572876
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2601.10193",
+    "title": "GFM4GA: Graph Foundation Model for Group Anomaly Detection",
+    "publish_time": "20260115",
+    "authors": [
+      "Jiujiu Chen",
+      "Weijun Zeng",
+      "Shaofeng Hu",
+      "Sihong Xie",
+      "Hui Xiong"
+    ],
+    "abstract": "Group anomaly detection is crucial in many network applications, but faces challenges due to diverse anomaly patterns. Motivated by the success of large language models (LLMs) in natural language processing, graph foundation models (GFMs) is proposed to handle few-shot learning task with fewer labeling efforts. GFMs have been successfully applied to detection of individual anomalies but cannot be generalized to group anomalies, as group anomaly patterns must be detected as a whole and individuals in an abnormal group can look rather normal. Therefore, we propose GFM4GA, a novel graph foundation model for group anomaly detection. The pipeline is pretrained via dual-level contrastive learning based on feature-based estimation and group extraction, to capture potential group anomaly structure and feature inconsistencies. In the downstream tasks, the pipeline is finetuned in parameter-constrained and group-anomaly-proportion weighted few-shot settings, and its adaptive ability to unseen group anomalies expanded via group contexts determined by labeled anomaly neighbors. Experiments show that GFM4GA surpasses group anomaly detectors and GFMs for individual anomalies, achieving average improvements of 2.85% in AUROC and 2.55% in AUPRC.",
+    "score": 0.4996395409107208
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2212.00535",
+    "title": "Graph Anomaly Detection via Multi-Scale Contrastive Learning Networks with Augmented View",
+    "publish_time": "20221201",
+    "authors": [
+      "Jingcan Duan",
+      "Siwei Wang",
+      "Pei Zhang",
+      "En Zhu",
+      "Jingtao Hu",
+      "Hu Jin",
+      "Yue Liu",
+      "Zhibin Dong"
+    ],
+    "abstract": "Graph anomaly detection (GAD) is a vital task in graph-based machine learning and has been widely applied in many real-world applications. The primary goal of GAD is to capture anomalous nodes from graph datasets, which evidently deviate from the majority of nodes. Recent methods have paid attention to various scales of contrastive strategies for GAD, i.e., node-subgraph and node-node contrasts. However, they neglect the subgraph-subgraph comparison information which the normal and abnormal subgraph pairs behave differently in terms of embeddings and structures in GAD, resulting in sub-optimal task performance. In this paper, we fulfill the above idea in the proposed multi-view multi-scale contrastive learning framework with subgraph-subgraph contrast for the first practice. To be specific, we regard the original input graph as the first view and generate the second view by graph augmentation with edge modifications. With the guidance of maximizing the similarity of the subgraph pairs, the proposed subgraph-subgraph contrast contributes to more robust subgraph embeddings despite of the structure variation. Moreover, the introduced subgraph-subgraph contrast cooperates well with the widely-adopted node-subgraph and node-node contrastive counterparts for mutual GAD performance promotions. Besides, we also conduct sufficient experiments to investigate the impact of different graph augmentation approaches on detection performance. The comprehensive experimental results well demonstrate the superiority of our method compared with the state-of-the-art approaches and the effectiveness of the multi-view subgraph pair contrastive strategy for the GAD task.",
+    "score": 0.49959126114845276
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2506.00594",
+    "title": "Graph Evidential Learning for Anomaly Detection",
+    "publish_time": "20250531",
+    "authors": [
+      "Chunyu Wei",
+      "Wenji Hu",
+      "Xingjia Hao",
+      "Yunhai Wang",
+      "Yueguo Chen",
+      "Bing Bai",
+      "Fei Wang"
+    ],
+    "abstract": "Graph anomaly detection faces significant challenges due to the scarcity of reliable anomaly-labeled datasets, driving the development of unsupervised methods. Graph autoencoders (GAEs) have emerged as a dominant approach by reconstructing graph structures and node features while deriving anomaly scores from reconstruction errors. However, relying solely on reconstruction error for anomaly detection has limitations, as it increases the sensitivity to noise and overfitting. To address these issues, we propose Graph Evidential Learning (GEL), a probabilistic framework that redefines the reconstruction process through evidential learning. By modeling node features and graph topology using evidential distributions, GEL quantifies two types of uncertainty: graph uncertainty and reconstruction uncertainty, incorporating them into the anomaly scoring mechanism. Extensive experiments demonstrate that GEL achieves state-of-the-art performance while maintaining high robustness against noise and structural perturbations.",
+    "score": 0.4684346616268158
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2401.14155",
+    "title": "Alleviating Structural Distribution Shift in Graph Anomaly Detection",
+    "publish_time": "20240125",
+    "authors": [
+      "Yuan Gao",
+      "Xiang Wang",
+      "Xiangnan He",
+      "Zhenguang Liu",
+      "Huamin Feng",
+      "Yongdong Zhang"
+    ],
+    "abstract": "Graph anomaly detection (GAD) is a challenging binary classification problem due to its different structural distribution between anomalies and normal nodes -- abnormal nodes are a minority, therefore holding high heterophily and low homophily compared to normal nodes. Furthermore, due to various time factors and the annotation preferences of human experts, the heterophily and homophily can change across training and testing data, which is called structural distribution shift (SDS) in this paper. The mainstream methods are built on graph neural networks (GNNs), benefiting the classification of normals from aggregating homophilous neighbors, yet ignoring the SDS issue for anomalies and suffering from poor generalization. This work solves the problem from a feature view. We observe that the degree of SDS varies between anomalies and normal nodes. Hence to address the issue, the key lies in resisting high heterophily for anomalies meanwhile benefiting the learning of normals from homophily. We tease out the anomaly features on which we constrain to mitigate the effect of heterophilous neighbors and make them invariant. We term our proposed framework as Graph Decomposition Network (GDN). Extensive experiments are conducted on two benchmark datasets, and the proposed framework achieves a remarkable performance boost in GAD, especially in an SDS environment where anomalies have largely different structural distribution across training and testing environments. Codes are open-sourced in https://github.com/blacksingular/wsdm_GDN.",
+    "score": 0.46843117475509644
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2502.09254",
+    "title": "AnomalyGFM: Graph Foundation Model for Zero/Few-shot Anomaly Detection",
+    "publish_time": "20250213",
+    "authors": [
+      "Hezhe Qiao",
+      "Chaoxi Niu",
+      "Ling Chen",
+      "Guansong Pang"
+    ],
+    "abstract": "Graph anomaly detection (GAD) aims to identify abnormal nodes that differ from the majority of the nodes in a graph, which has been attracting significant attention in recent years. Existing generalist graph models have achieved remarkable success in different graph tasks but struggle to generalize to the GAD task. This limitation arises from their difficulty in learning generalized knowledge for capturing the inherently infrequent, irregular and heterogeneous abnormality patterns in graphs from different domains. To address this challenge, we propose AnomalyGFM, a GAD-oriented graph foundation model that supports zero-shot inference and few-shot prompt tuning for GAD in diverse graph datasets. One key insight is that graph-agnostic representations for normal and abnormal classes are required to support effective zero/few-shot GAD across different graphs. Motivated by this, AnomalyGFM is pre-trained to align data-independent, learnable normal and abnormal class prototypes with node representation residuals (i.e., representation deviation of a node from its neighbors). The residual features essentially project the node information into a unified feature space where we can effectively measure the abnormality of nodes from different graphs in a consistent way. This provides a driving force for the learning of graph-agnostic, discriminative prototypes for the normal and abnormal classes, which can be used to enable zero-shot GAD on new graphs, including very large-scale graphs. If there are few-shot labeled normal nodes available in the new graphs, AnomalyGFM can further support prompt tuning to leverage these nodes for better adaptation. Comprehensive experiments on 11 widely-used GAD datasets with real anomalies, demonstrate that AnomalyGFM significantly outperforms state-of-the-art competing methods under both zero- and few-shot GAD settings.",
+    "score": 0.43751710653305054
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2002.12011",
+    "title": "Semi-supervised Anomaly Detection on Attributed Graphs",
+    "publish_time": "20200227",
+    "authors": [
+      "Atsutoshi Kumagai",
+      "Tomoharu Iwata",
+      "Yasuhiro Fujiwara"
+    ],
+    "abstract": "We propose a simple yet effective method for detecting anomalous instances on an attribute graph with label information of a small number of instances. Although with standard anomaly detection methods it is usually assumed that instances are independent and identically distributed, in many real-world applications, instances are often explicitly connected with each other, resulting in so-called attributed graphs. The proposed method embeds nodes (instances) on the attributed graph in the latent space by taking into account their attributes as well as the graph structure based on graph convolutional networks (GCNs). To learn node embeddings specialized for anomaly detection, in which there is a class imbalance due to the rarity of anomalies, the parameters of a GCN are trained to minimize the volume of a hypersphere that encloses the node embeddings of normal instances while embedding anomalous ones outside the hypersphere. This enables us to detect anomalies by simply calculating the distances between the node embeddings and hypersphere center. The proposed method can effectively propagate label information on a small amount of nodes to unlabeled ones by taking into account the node's attributes, graph structure, and class imbalance. In experiments with five real-world attributed graph datasets, we demonstrate that the proposed method achieves better performance than various existing anomaly detection methods.",
+    "score": 0.43746960163116455
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2502.13308",
+    "title": "A Label-Free Heterophily-Guided Approach for Unsupervised Graph Fraud Detection",
+    "publish_time": "20250218",
+    "authors": [
+      "Junjun Pan",
+      "Yixin Liu",
+      "Xin Zheng",
+      "Yizhen Zheng",
+      "Alan Wee-Chung Liew",
+      "Fuyi Li",
+      "Shirui Pan"
+    ],
+    "abstract": "Graph fraud detection (GFD) has rapidly advanced in protecting online services by identifying malicious fraudsters. Recent supervised GFD research highlights that heterophilic connections between fraudsters and users can greatly impact detection performance, since fraudsters tend to camouflage themselves by building more connections to benign users. Despite the promising performance of supervised GFD methods, the reliance on labels limits their applications to unsupervised scenarios; Additionally, accurately capturing complex and diverse heterophily patterns without labels poses a further challenge. To fill the gap, we propose a Heterophily-guided Unsupervised Graph fraud dEtection approach (HUGE) for unsupervised GFD, which contains two essential components: a heterophily estimation module and an alignment-based fraud detection module. In the heterophily estimation module, we design a novel label-free heterophily metric called HALO, which captures the critical graph properties for GFD, enabling its outstanding ability to estimate heterophily from node attributes. In the alignment-based fraud detection module, we develop a joint MLP-GNN architecture with ranking loss and asymmetric alignment loss. The ranking loss aligns the predicted fraud score with the relative order of HALO, providing an extra robustness guarantee by comparing heterophily among non-adjacent nodes. Moreover, the asymmetric alignment loss effectively utilizes structural information while alleviating the feature-smooth effects of GNNs. Extensive experiments on 6 datasets demonstrate that HUGE significantly outperforms competitors, showcasing its effectiveness and robustness.",
+    "score": 0.4070743918418884
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2205.04816",
+    "title": "Reconstruction Enhanced Multi-View Contrastive Learning for Anomaly Detection on Attributed Networks",
+    "publish_time": "20220510",
+    "authors": [
+      "Jiaqiang Zhang",
+      "Senzhang Wang",
+      "Songcan Chen"
+    ],
+    "abstract": "Detecting abnormal nodes from attributed networks is of great importance in many real applications, such as financial fraud detection and cyber security. This task is challenging due to both the complex interactions between the anomalous nodes with other counterparts and their inconsistency in terms of attributes. This paper proposes a self-supervised learning framework that jointly optimizes a multi-view contrastive learning-based module and an attribute reconstruction-based module to more accurately detect anomalies on attributed networks. Specifically, two contrastive learning views are firstly established, which allow the model to better encode rich local and global information related to the abnormality. Motivated by the attribute consistency principle between neighboring nodes, a masked autoencoder-based reconstruction module is also introduced to identify the nodes which have large reconstruction errors, then are regarded as anomalies. Finally, the two complementary modules are integrated for more accurately detecting the anomalous nodes. Extensive experiments conducted on five benchmark datasets show our model outperforms current state-of-the-art models.",
+    "score": 0.40701061487197876
+  },
+  {
+    "link": "https://www.arxiv.org/abs/1811.07609",
+    "title": "Outlier Aware Network Embedding for Attributed Networks",
+    "publish_time": "20181119",
+    "authors": [
+      "Sambaran Bandyopadhyay",
+      "Lokesh N",
+      "M. N. Murty"
+    ],
+    "abstract": "Attributed network embedding has received much interest from the research community as most of the networks come with some content in each node, which is also known as node attributes. Existing attributed network approaches work well when the network is consistent in structure and attributes, and nodes behave as expected. But real world networks often have anomalous nodes. Typically these outliers, being relatively unexplainable, affect the embeddings of other nodes in the network. Thus all the downstream network mining tasks fail miserably in the presence of such outliers. Hence an integrated approach to detect anomalies and reduce their overall effect on the network embedding is required. Towards this end, we propose an unsupervised outlier aware network embedding algorithm (ONE) for attributed networks, which minimizes the effect of the outlier nodes, and hence generates robust network embeddings. We align and jointly optimize the loss functions coming from structure and attributes of the network. To the best of our knowledge, this is the first generic network embedding approach which incorporates the effect of outliers for an attributed network without any supervision. We experimented on publicly available real networks and manually planted different types of outliers to check the performance of the proposed algorithm. Results demonstrate the superiority of our approach to detect the network outliers compared to the state-of-the-art approaches. We also consider different downstream machine learning applications on networks to show the efficiency of ONE as a generic network embedding technique. The source code is made available at https://github.com/sambaranban/ONE.",
+    "score": 0.40693923830986023
+  }
+]

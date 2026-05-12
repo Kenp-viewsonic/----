@@ -1,0 +1,126 @@
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{1french2006catastrophic}
+R.~M. French, Catastrophic forgetting in connectionist networks, Encyclopedia
+  of cognitive science (2006).
+
+\bibitem{2sahoo2018online}
+D.~SAHOO, H.~Q. PHAM, J.~LU, S.~C. HOI, Online deep learning: Learning deep
+  neural networks on the fly.(2018), in: Proceedings of the Twenty-Seventh
+  International Joint Conference on Artificial Intelligence IJCAI 2018, July
+  13-19, Stockholm, pp. 2660--2666.
+
+\bibitem{3pham2019bilevel}
+Q.~Pham, D.~Sahoo, C.~Liu, S.~C. Hoi, Bilevel continual learning, arXiv
+  e-prints (2019) 1--13.
+
+\bibitem{4kirkpatrick2017overcoming}
+J.~Kirkpatrick, R.~Pascanu, N.~Rabinowitz, J.~Veness, G.~Desjardins, A.~A.
+  Rusu, K.~Milan, J.~Quan, T.~Ramalho, A.~Grabska-Barwinska, et~al., Overcoming
+  catastrophic forgetting in neural networks, Proceedings of the national
+  academy of sciences 114~(13) (2017) 3521--3526.
+
+\bibitem{5zenke2017continual}
+F.~Zenke, B.~Poole, S.~Ganguli, Continual learning through synaptic
+  intelligence, in: International Conference on Machine Learning, PMLR, 2017,
+  pp. 3987--3995.
+
+\bibitem{6leibe2016computer}
+B.~Leibe, J.~Matas, N.~Sebe, M.~Welling, Computer Vision--ECCV 2016: 14th
+  European Conference, Amsterdam, The Netherlands, October 11--14, 2016,
+  Proceedings, Part IV, Vol. 9908, Springer, 2016.
+
+\bibitem{7yoon2018lifelong}
+J.~YOON, E.~YANG, J.~LEE, et~al., Lifelong learning with dynamically expandable
+  networks [j/ol] (2018).
+
+\bibitem{8rusu2016progressive}
+A.~A. Rusu, N.~C. Rabinowitz, G.~Desjardins, H.~Soyer, J.~Kirkpatrick,
+  K.~Kavukcuoglu, R.~Pascanu, R.~Hadsell, Progressive neural networks, arXiv
+  preprint arXiv:1606.04671 (2016).
+
+\bibitem{9parisi2019continual}
+G.~I. Parisi, R.~Kemker, J.~L. Part, C.~Kanan, S.~Wermter, Continual lifelong
+  learning with neural networks: A review, Neural Networks 113 (2019) 54--71.
+
+\bibitem{10douillard2020podnet}
+A.~Douillard, M.~Cord, C.~Ollion, T.~Robert, E.~Valle, Podnet: Pooled outputs
+  distillation for small-tasks incremental learning, in: Computer Vision--ECCV
+  2020: 16th European Conference, Glasgow, UK, August 23--28, 2020,
+  Proceedings, Part XX 16, Springer, 2020, pp. 86--102.
+
+\bibitem{11rebuffi2017icarl}
+S.-A. Rebuffi, A.~Kolesnikov, G.~Sperl, C.~H. Lampert, icarl: Incremental
+  classifier and representation learning, in: 2017 IEEE Conference on Computer
+  Vision and Pattern Recognition (CVPR), IEEE Computer Society, 2017, pp.
+  5533--5542.
+
+\bibitem{12he2020incremental}
+J.~He, R.~Mao, Z.~Shao, F.~Zhu, Incremental learning in online scenario, in:
+  Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition, 2020, pp. 13926--13935.
+
+\bibitem{13robins1993catastrophic}
+A.~Robins, Catastrophic forgetting in neural networks: the role of rehearsal
+  mechanisms, in: Proceedings 1993 The First New Zealand International
+  Two-Stream Conference on Artificial Neural Networks and Expert Systems, IEEE,
+  1993, pp. 65--68.
+
+\bibitem{14lopez2017gradient}
+D.~Lopez-Paz, M.~Ranzato, Gradient episodic memory for continual learning,
+  Advances in neural information processing systems 30 (2017) 6467--6476.
+
+\bibitem{15chaudhry2018riemannian}
+A.~Chaudhry, P.~K. Dokania, T.~Ajanthan, P.~H. Torr, Riemannian walk for
+  incremental learning: Understanding forgetting and intransigence, in:
+  European Conference on Computer Vision, Springer, 2018, pp. 556--572.
+
+\bibitem{16he2016deep}
+K.~He, X.~Zhang, S.~Ren, J.~Sun, Deep residual learning for image recognition,
+  in: Proceedings of the IEEE conference on computer vision and pattern
+  recognition, 2016, pp. 770--778.
+
+\bibitem{17sokar2021self}
+G.~Sokar, D.~C. Mocanu, M.~Pechenizkiy, Self-attention meta-learner for
+  continual learning, in: Proceedings of the 20th International Conference on
+  Autonomous Agents and MultiAgent Systems, 2021, pp. 1658--1660.
+
+\bibitem{18wang2020eca}
+Q.~Wang, B.~Wu, P.~Zhu, P.~Li, W.~Zuo, Q.~Hu, Eca-net: Efficient channel
+  attention for deep convolutional neural networks, in: 2020 IEEE/CVF
+  Conference on Computer Vision and Pattern Recognition (CVPR), IEEE Computer
+  Society, 2020, pp. 11531--11539.
+
+\bibitem{19ioannou2017deep}
+Y.~Ioannou, D.~Robertson, R.~Cipolla, A.~Criminisi, Deep roots: Improving cnn
+  efficiency with hierarchical filter groups, in: 2017 IEEE Conference on
+  Computer Vision and Pattern Recognition (CVPR), IEEE, 2017, pp. 5977--5986.
+
+\bibitem{20krizhevsky2009learning}
+A.~Krizhevsky, G.~Hinton, et~al., Learning multiple layers of features from
+  tiny images (2009).
+
+\bibitem{21rajasegaran2020itaml}
+J.~Rajasegaran, S.~Khan, M.~Hayat, F.~S. Khan, M.~Shah, itaml: An incremental
+  task-agnostic meta-learning approach, in: 2020 IEEE/CVF Conference on
+  Computer Vision and Pattern Recognition (CVPR), IEEE, 2020, pp. 13585--13594.
+
+\bibitem{22chaudhry2019continual}
+A.~Chaudhry, M.~Rohrbach, M.~Elhoseiny, T.~Ajanthan, P.~K. Dokania, P.~H. Torr,
+  M.~Ranzato, Continual learning with tiny episodic memories (2019).
+
+\bibitem{23finn2019online}
+C.~Finn, A.~Rajeswaran, S.~Kakade, S.~Levine, Online meta-learning, in:
+  International Conference on Machine Learning, PMLR, 2019, pp. 1920--1930.
+
+\bibitem{24riemer2018learning}
+M.~Riemer, I.~Cases, R.~Ajemian, M.~Liu, I.~Rish, Y.~Tu, G.~Tesauro, Learning
+  to learn without forgetting by maximizing transfer and minimizing
+  interference, arXiv preprint arXiv:1810.11910 (2018).
+
+\end{thebibliography}

@@ -1,0 +1,28 @@
+\begin{algorithm}[H]
+\LinesNumbered
+\DontPrintSemicolon
+  \caption{
+  \textsc{Balanced Admission for Classification, Idiosyncrasy \& Delay}}\label{algo:bacid}
+  \KwData{$T, \{\ell_k, c_k, \mu_k\}_{k \in \set{K}}$ \qquad\qquad \textbf{Admission parameter:} 
+  $\beta \gets \sqrt{T / K}$}
+  \For{$t = 1$ \KwTo $T$}{
+    Observe a new job of type $\kappa(t)$\\
+    %\tcc{Classification}
+    \lIf{$c_{\kappa(t)} > 0$}{$Y(t) \gets -1$ 
+     \textbf{else} {$Y(t) \gets 1$}
+    \tcp*[f]{Classification} \label{line:bacid-classify}}
+    \lIf{$\beta \cdot \ell_{\kappa(t)}  \geq Q_{\kappa(t)}(t)$}{
+      $A(t) = 1$ \textbf{else} {$A(t) = 0$} 
+    \tcp*[f]{Admission}
+    \label{line:bacid-admit}
+    }
+    $k \gets \arg\max_{k' \in \mathcal{K}} \mu_{k'} \cdot Q_{k'}(t)$,~$M(t) \gets \text{first job in } \set{Q}_{k}(t) \text{ if any}$
+    \tcp*[f]{Scheduling} \label{line:bacid-schedule}
+    
+    \lIf{\emph{the review is successful (with probability $N(t) \cdot \mu_k$)}}
+    {
+      $\mathcal{S}(t) = M(t)$ \textbf{else} 
+      $\mathcal{S}(t) = \perp$ 
+    }
+    }    
+\end{algorithm}

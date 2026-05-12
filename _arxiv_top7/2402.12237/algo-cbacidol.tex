@@ -1,0 +1,31 @@
+\begin{algorithm}[H]
+\LinesNumbered
+\DontPrintSemicolon
+  \caption{  \textsc{Contextual} $\bacidol$ ($\conbacid$)}\label{algo:cbacidol}
+   \KwData{$\{\mu_k\}_{k \in \set{K}}$, upper bounds $U,c_{\max},\sigma_{\max}$, and group partition $\set{K}_{\set{G}}$ \\ \textbf{Admission parameters:} $\beta = \sqrt{T / (Gd^{1.5})}, \gamma = (T / (d^{2.5}\ln^{2}(T)))^{-1/3},~\delta \gets \min(\gamma,0.5/T),~\xi \gets \max(1,U^2)$}
+  \For{$t = 1$ \KwTo $T$}{
+    Observe a new job of type $\kappa(t)$ \\
+    Compute ridge estimator $\hat{\bTheta}(t-1)$ by \eqref{eq:regression}\;
+    \lIf{$\bphi_{\kappa(t)}^{\trans}\hat{\bolds{c}}(t-1)> 0$}{$Y(t) \gets -1$
+     \textbf{else} {$Y(t) \gets 1$}
+    \tcp*[f]{Empirical Classification} \label{line:conbacid-classify}}
+    \tcc{Label-Driven and Optimistic Admission}
+Calculate $\ubar{c}_{\kappa(t)}(t),\bar{c}_{\kappa(t)}(t),\bar{\ell}_{\kappa(t)}(t)$ by \eqref{eq:conf-h-feature} and \eqref{eq:conf-r-feature} \label{line:conbacid-esti}\;
+  \lIf{$\ubar{c}_{\kappa(t)}(t) < -\gamma < \gamma < \bar{c}_{\kappa(t)}(t)$ \emph{\textbf{and}} $|\set{Q}^{\ld}(t)|=0$}{
+  $E(t) \gets 1$~\textbf{else} $E(t)=0$\label{line:conbacid-lda}}
+    \lIf{$E(t) = 0$ \emph{\textbf{and}} $\beta \cdot \bar{\ell}_{\kappa(t)}(t)  \geq \tilde{Q}_{g(\kappa(t))}(t)$}{
+      $A(t) = 1$ \textbf{else} {$A(t) = 0$} 
+    \label{line:conbacid-admit}
+    }
+    \tcc{Forced Scheduling and Type-Aggregated \textsc{MaxWeight} Scheduling}
+    \lIf{$\set{Q}^{\ld}(t) \neq \emptyset$}{$M(t)\gets$ the job in $\set{Q}^{\ld}(t)$} \label{line:conbacid-prio}
+    \lElse{
+    $g \gets \arg\max_{g' \in \mathcal{G}} \tilde{\mu}_{g'} \cdot \tilde{Q}_{g'}(t)$,~$M(t) \gets \text{first job in } \tilde{\set{Q}}_g(t)   \text{ if any}$  \label{line:conbacid-schedule}
+    } 
+    \lIf{\emph{the review finishes (with probability $N(t) \cdot \mu_{\kappa(M(t))}$)}}
+    {
+      $\mathcal{S}(t) = M(t)$ \textbf{else} 
+      $\mathcal{S}(t) = \perp$ 
+    }
+  }
+\end{algorithm}

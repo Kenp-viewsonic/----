@@ -1,0 +1,23 @@
+\label{sec:experiments_f}
+
+\section{Experiments}
+%\include{dataset_f}
+%\subsection{Datasets}
+%\label{sec:dataset_f}
+
+\paragraph{Datasets:} Since there are no existing public datasets for contextual \pretty{IC} and \pretty{SL} task, we use two in-house datasets for evaluation - \textbf{Booking} dataset,\footnote{Dataset will be released to the public} which is a variation of \pretty{DSTC}-2 dataset \cite{williams2014dialog} with intent, slot and dialog act annotations, and \textbf{Cable} dataset, a synthetically created conversational dataset. 
+ %Table \ref{data_table} shows statistics of these four datasets.
+The Booking dataset contains 9,351 training utterances (2,200 conversations) and 6,727 test utterances, with 19 intents and 5 slot types. Cable dataset comprises 1856 training utterances, 1,814 validation utterances and 1,836 test utterances, with 21 intents and 26 slot types.\footnote{Detailed data stats provided in Appendix B}
+In addition, we also evaluate the model on non-contextual IC-SL public datasets - \pretty{ATIS} \cite{hemphill90} and \pretty{Snips} \cite{coucke2018snips}.
+
+\paragraph{Experimental setup:} 
+To emphasize the importance of contextual signals in modeling, we first devise a non-contextual baseline of our \pretty{Casa-nlu} model, \pretty{Nc-nlu}. It is similar to \pretty{Casa-nlu} in terms of model architecture except no contextual signals are used. 
+%the context fusion component is absent. 
+Since neither datasets nor implementation details were shared in previous works on contextual NLU \cite{Bhargava2013EasyCI, Shi2015ContextualSL}, we also implement another baseline, \pretty{Cgru-nlu} that uses \pretty{GRU} \cite{cho2014learning} instead of self-attention for temporal context fusion. For fair comparison to existing non-contextual baselines, no pre-trained embeddings are used in any of the experiments though the model design can easily benefit from pre-training.
+% Since neither datasets nor implementation details were shared in previous works on contextual NLU \cite{Bhargava2013EasyCI, Shi2015ContextualSL}, we first implement a baseline, \pretty{Cgru-nlu} that uses \pretty{GRU} \cite{cho2014learning} instead of self-attention for temporal context fusion.
+% Moreover, to establish the strength of our chosen self-attention framework for this task, we further devise a non contextual baseline of our \pretty{Casa-nlu} model, \pretty{Nc-nlu}. It is similar to \pretty{Casa-nlu} in terms of model architecture except the context fusion component is missing. 
+
+% \paragraph{Implementation Details:}
+% We use hidden layer size of 56 with dropout probability of 0.3. Context history window $K$ was varied from 1 to 5 and the optimal value of 3 was selected.
+% %,  Hyper-parameter optimization gave value of 3 for context history window $K$. 
+% We use embedding layer size of 56 as well, training the embeddings from scratch. Adam \cite{kingma2014adam} algorithm with initial learning rate of 0.01 gave the optimal performance. Concatenation window size $P$ of 3 is used. $\alpha$ and $\beta$ in loss objective are set to 0.9. Early stopping is used with patience of 10 and threshold of 0.5. Each model is trained for 3 seeds and scores averaged across the seeds are reported.

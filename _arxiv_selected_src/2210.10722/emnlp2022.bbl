@@ -1,0 +1,214 @@
+\begin{thebibliography}{29}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Akasaki and Kaji(2017)}]{Akasaki2017ChatDI}
+Satoshi Akasaki and Nobuhiro Kaji. 2017.
+\newblock Chat detection in an intelligent assistant: Combining task-oriented
+  and non-task-oriented spoken dialogue systems.
+\newblock \emph{ArXiv}, abs/1705.00746.
+
+\bibitem[{Bendale and Boult(2016)}]{Bendale2016TowardsOS}
+Abhijit Bendale and Terrance~E. Boult. 2016.
+\newblock Towards open set deep networks.
+\newblock \emph{2016 IEEE Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, pages 1563--1572.
+
+\bibitem[{Breunig et~al.(2000{\natexlab{a}})Breunig, Kriegel, Ng, and
+  Sander}]{breunig2000lof}
+Markus~M Breunig, Hans-Peter Kriegel, Raymond~T Ng, and J{\"o}rg Sander.
+  2000{\natexlab{a}}.
+\newblock Lof: identifying density-based local outliers.
+\newblock In \emph{Proceedings of the 2000 ACM SIGMOD international conference
+  on Management of data}, pages 93--104.
+
+\bibitem[{Breunig et~al.(2000{\natexlab{b}})Breunig, Kriegel, Ng, and
+  Sander}]{Breunig2000LOFID}
+Markus~M Breunig, Hans-Peter Kriegel, Raymond~T Ng, and J{\"o}rg Sander.
+  2000{\natexlab{b}}.
+\newblock Lof: identifying density-based local outliers.
+\newblock In \emph{Proceedings of the 2000 ACM SIGMOD international conference
+  on Management of data}, pages 93--104.
+
+\bibitem[{Casanueva et~al.(2020)Casanueva, Tem{\v{c}}inas, Gerz, Henderson, and
+  Vuli{\'c}}]{casanueva2020efficient}
+I{\~n}igo Casanueva, Tadas Tem{\v{c}}inas, Daniela Gerz, Matthew Henderson, and
+  Ivan Vuli{\'c}. 2020.
+\newblock Efficient intent detection with dual sentence encoders.
+\newblock \emph{arXiv preprint arXiv:2003.04807}.
+
+\bibitem[{Devlin et~al.(2019)Devlin, Chang, Lee, and
+  Toutanova}]{Devlin2019BERTPO}
+J.~Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2019.
+\newblock Bert: Pre-training of deep bidirectional transformers for language
+  understanding.
+\newblock In \emph{NAACL-HLT}.
+
+\bibitem[{Fei and Liu(2016)}]{Fei2016BreakingTC}
+Geli Fei and Bing Liu. 2016.
+\newblock Breaking the closed world assumption in text classification.
+\newblock In \emph{Proceedings of the 2016 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies}, pages 506--514.
+
+\bibitem[{Hendrycks and Gimpel(2017)}]{Hendrycks2017ABF}
+Dan Hendrycks and Kevin Gimpel. 2017.
+\newblock A baseline for detecting misclassified and out-of-distribution
+  examples in neural networks.
+\newblock \emph{ArXiv}, abs/1610.02136.
+
+\bibitem[{Hochreiter and Schmidhuber(1997)}]{Hochreiter1997LongSM}
+S.~Hochreiter and J.~Schmidhuber. 1997.
+\newblock Long short-term memory.
+\newblock \emph{Neural Computation}, 9:1735--1780.
+
+\bibitem[{Khosla et~al.(2020)Khosla, Teterwak, Wang, Sarna, Tian, Isola,
+  Maschinot, Liu, and Krishnan}]{Khosla2020SupervisedCL}
+Prannay Khosla, Piotr Teterwak, Chen Wang, Aaron Sarna, Yonglong Tian, Phillip
+  Isola, A.~Maschinot, Ce~Liu, and Dilip Krishnan. 2020.
+\newblock Supervised contrastive learning.
+\newblock \emph{ArXiv}, abs/2004.11362.
+
+\bibitem[{Kim and Kim(2018)}]{Kim2018JointLO}
+Joo-Kyung Kim and Young-Bum Kim. 2018.
+\newblock Joint learning of domain classification and out-of-domain detection
+  with dynamic class weighting for satisficing false acceptance rates.
+\newblock \emph{ArXiv}, abs/1807.00072.
+
+\bibitem[{Kingma and Ba(2014)}]{kingma2014adam}
+Diederik~P Kingma and Jimmy Ba. 2014.
+\newblock Adam: A method for stochastic optimization.
+\newblock \emph{arXiv preprint arXiv:1412.6980}.
+
+\bibitem[{Larson et~al.(2019)Larson, Mahendran, Peper, Clarke, Lee, Hill,
+  Kummerfeld, Leach, Laurenzano, Tang, and Mars}]{Larson2019AnED}
+Stefan Larson, Anish Mahendran, Joseph Peper, Christopher Clarke, Andrew Lee,
+  Parker Hill, Jonathan~K. Kummerfeld, Kevin Leach, Michael Laurenzano, Lingjia
+  Tang, and Jason Mars. 2019.
+\newblock An evaluation dataset for intent classification and out-of-scope
+  prediction.
+\newblock In \emph{EMNLP/IJCNLP}.
+
+\bibitem[{Lee et~al.(2018)Lee, Lee, Lee, and Shin}]{Lee2018ASU}
+Kimin Lee, Kibok Lee, Honglak Lee, and Jinwoo Shin. 2018.
+\newblock A simple unified framework for detecting out-of-distribution samples
+  and adversarial attacks.
+\newblock \emph{ArXiv}, abs/1807.03888.
+
+\bibitem[{Lin and Xu(2019)}]{Lin2019DeepUI}
+Ting-En Lin and Hua Xu. 2019.
+\newblock Deep unknown intent detection with margin loss.
+\newblock In \emph{Proceedings of the 57th Annual Meeting of the Association
+  for Computational Linguistics}, pages 5491--5496.
+
+\bibitem[{Ouyang et~al.(2021)Ouyang, Ye, Chen, Dai, Huang, and
+  Chen}]{ouyang-etal-2021-energy}
+Yawen Ouyang, Jiasheng Ye, Yu~Chen, Xinyu Dai, Shujian Huang, and Jiajun Chen.
+  2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.findings-acl.252}
+  {Energy-based unknown intent detection with data manipulation}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  ACL-IJCNLP 2021}, pages 2852--2861, Online. Association for Computational
+  Linguistics.
+
+\bibitem[{Pennington et~al.(2014)Pennington, Socher, and
+  Manning}]{pennington2014glove}
+Jeffrey Pennington, Richard Socher, and Christopher~D Manning. 2014.
+\newblock Glove: Global vectors for word representation.
+\newblock In \emph{Proceedings of the 2014 conference on empirical methods in
+  natural language processing (EMNLP)}, pages 1532--1543.
+
+\bibitem[{Ren et~al.(2019)Ren, Liu, Fertig, Snoek, Poplin, DePristo, Dillon,
+  and Lakshminarayanan}]{Ren2019LikelihoodRF}
+Jie Ren, Peter~J. Liu, Emily Fertig, Jasper Snoek, Ryan Poplin, Mark~A.
+  DePristo, Joshua~V. Dillon, and Balaji Lakshminarayanan. 2019.
+\newblock Likelihood ratios for out-of-distribution detection.
+\newblock \emph{ArXiv}, abs/1906.02845.
+
+\bibitem[{Shu et~al.(2017)Shu, Xu, and Liu}]{Shu2017DOCDO}
+Lei Shu, Hu~Xu, and Bing Liu. 2017.
+\newblock \href {https://doi.org/10.18653/v1/D17-1314} {Doc: Deep open
+  classification of text documents}.
+\newblock In \emph{Proceedings of the 2017 Conference on Empirical Methods in
+  Natural Language Processing}, pages 2911--2916.
+
+\bibitem[{Shum et~al.(2018)Shum, He, and Li}]{Shum2018FromET}
+H.~Shum, X.~He, and Di~Li. 2018.
+\newblock From eliza to xiaoice: challenges and opportunities with social
+  chatbots.
+\newblock \emph{Frontiers of Information Technology \& Electronic Engineering},
+  19:10--26.
+
+\bibitem[{Tulshan and Dhage(2018)}]{Tulshan2018SurveyOV}
+Amrita~S Tulshan and Sudhir~Namdeorao Dhage. 2018.
+\newblock Survey on virtual assistant: Google assistant, siri, cortana, alexa.
+\newblock In \emph{International symposium on signal processing and intelligent
+  recognition systems}, pages 190--201.
+
+\bibitem[{Wang et~al.(2018)Wang, Wang, Zhou, Ji, Gong, Zhou, Li, and
+  Liu}]{wang2018cosface}
+Hao Wang, Yitong Wang, Zheng Zhou, Xing Ji, Dihong Gong, Jingchao Zhou, Zhifeng
+  Li, and Wei Liu. 2018.
+\newblock Cosface: Large margin cosine loss for deep face recognition.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 5265--5274.
+
+\bibitem[{Xu et~al.(2020)Xu, He, Yan, Liu, Liu, and Xu}]{xu-etal-2020-deep}
+Hong Xu, Keqing He, Yuanmeng Yan, Sihong Liu, Zijun Liu, and Weiran Xu. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.coling-main.125} {A deep
+  generative distance-based classifier for out-of-domain detection with
+  mahalanobis space}.
+\newblock In \emph{Proceedings of the 28th International Conference on
+  Computational Linguistics}, pages 1452--1460, Barcelona, Spain (Online).
+  International Committee on Computational Linguistics.
+
+\bibitem[{Xu et~al.(2015)Xu, Wang, Tian, Xu, Zhao, Wang, and Hao}]{xu2015short}
+Jiaming Xu, Peng Wang, Guanhua Tian, Bo~Xu, Jun Zhao, Fangyuan Wang, and
+  Hongwei Hao. 2015.
+\newblock Short text clustering via convolutional neural networks.
+\newblock In \emph{Proceedings of the 1st Workshop on Vector Space Modeling for
+  Natural Language Processing}, pages 62--69.
+
+\bibitem[{Zeng et~al.(2021{\natexlab{a}})Zeng, He, Yan, Liu, Wu, Xu, Jiang, and
+  Xu}]{zeng-etal-2021-modeling}
+Zhiyuan Zeng, Keqing He, Yuanmeng Yan, Zijun Liu, Yanan Wu, Hong Xu, Huixing
+  Jiang, and Weiran Xu. 2021{\natexlab{a}}.
+\newblock \href {https://doi.org/10.18653/v1/2021.acl-short.110} {Modeling
+  discriminative representations for out-of-domain detection with supervised
+  contrastive learning}.
+\newblock In \emph{Proceedings of the 59th Annual Meeting of the Association
+  for Computational Linguistics and the 11th International Joint Conference on
+  Natural Language Processing (Volume 2: Short Papers)}, pages 870--878,
+  Online. Association for Computational Linguistics.
+
+\bibitem[{Zeng et~al.(2021{\natexlab{b}})Zeng, He, Yan, Xu, and
+  Xu}]{zeng-etal-2021-adversarial}
+Zhiyuan Zeng, Keqing He, Yuanmeng Yan, Hong Xu, and Weiran Xu.
+  2021{\natexlab{b}}.
+\newblock \href {https://doi.org/10.18653/v1/2021.naacl-main.447} {Adversarial
+  self-supervised learning for out-of-domain detection}.
+\newblock In \emph{Proceedings of the 2021 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies}, pages 5631--5639, Online. Association for Computational
+  Linguistics.
+
+\bibitem[{Zhang et~al.(2021)Zhang, Xu, and Lin}]{Zhang2021DeepOI}
+Hanlei Zhang, Hua Xu, and Ting-En Lin. 2021.
+\newblock Deep open intent classification with adaptive decision boundary.
+\newblock In \emph{AAAI}.
+
+\bibitem[{Zheng et~al.(2020)Zheng, Chen, and Huang}]{Zheng2020OutofDomainDF}
+Yinhe Zheng, Guanyi Chen, and Minlie Huang. 2020.
+\newblock Out-of-domain detection for natural language understanding in dialog
+  systems.
+\newblock \emph{IEEE/ACM Transactions on Audio, Speech, and Language
+  Processing}, 28:1198--1209.
+
+\bibitem[{Zhou et~al.(2022)Zhou, Liu, and Qiu}]{zhou-etal-2022-knn}
+Yunhua Zhou, Peiju Liu, and Xipeng Qiu. 2022.
+\newblock \href {https://doi.org/10.18653/v1/2022.acl-long.352}
+  {{KNN}-contrastive learning for out-of-domain intent classification}.
+\newblock In \emph{Proceedings of the 60th Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pages 5129--5141,
+  Dublin, Ireland. Association for Computational Linguistics.
+
+\end{thebibliography}

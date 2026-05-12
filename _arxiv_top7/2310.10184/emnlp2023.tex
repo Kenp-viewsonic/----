@@ -1,0 +1,660 @@
+% This must be in the first 5 lines to tell arXiv to use pdfLaTeX, which is strongly recommended.
+\pdfoutput=1
+% In particular, the hyperref package requires pdfLaTeX in order to break URLs across lines.
+
+\documentclass[11pt]{article}
+
+% Remove the "review" option to generate the final version.
+\usepackage[]{EMNLP2023}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{latexsym}
+
+% For proper rendering and hyphenation of words containing Latin characters (including in bib files)
+\usepackage[T1]{fontenc}
+% For Vietnamese characters
+% \usepackage[T5]{fontenc}
+% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+% This is not strictly necessary, and may be commented out.
+% However, it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+% This is also not strictly necessary, and may be commented out.
+% However, it will improve the aesthetics of text in
+% the typewriter font.
+\usepackage{inconsolata}
+
+% 自己加的宏包
+\usepackage{graphicx} % DO NOT CHANGE THIS
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+%刚加的
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{bbding}
+\usepackage{mathrsfs}
+\usepackage{subfigure}
+\usepackage{amssymb}
+\usepackage{mathtools}
+% If the title and author information does not fit in the area allocated, uncomment the following
+%
+%\setlength\titlebox{<dim>}
+%
+% and set <dim> to something 5cm or larger.
+
+\title{Continual Generalized Intent Discovery: Marching Towards Dynamic and Open-world Intent Recognition}
+%Title:Continual Generalized Intent Discovery: Moving Towards Dynamic and Open-world Intent Recognition
+
+
+% Author information can be set in various styles:
+% For several authors from the same institution:
+% \author{Author 1 \and ... \and Author n \\
+%         Address line \\ ... \\ Address line}
+% if the names do not fit well on one line use
+%         Author 1 \\ {\bf Author 2} \\ ... \\ {\bf Author n} \\
+% For authors from different institutions:
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \And  ... \And
+%         Author n \\ Address line \\ ... \\ Address line}
+% To start a seperate ``row'' of authors use \AND, as in
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \AND
+%         Author 2 \\ Address line \\ ... \\ Address line \And
+%         Author 3 \\ Address line \\ ... \\ Address line}
+
+% \author{First Author \\
+%   Affiliation / Address line 1 \\
+%   Affiliation / Address line 2 \\
+%   Affiliation / Address line 3 \\
+%   \texttt{email@domain} \\\And
+%   Second Author \\
+%   Affiliation / Address line 1 \\
+%   Affiliation / Address line 2 \\
+%   Affiliation / Address line 3 \\
+%   \texttt{email@domain} \\}
+\author{Xiaoshuai Song$^{1*}$, Yutao Mou$^{1*}$, Keqing He$^{2*}$,Yueyan Qiu$^{1}$,Pei Wang$^{1}$, 
+{\bf Weiran Xu$^{1}$}\thanks{\ \ The first three authors contribute equally. Weiran Xu is the corresponding author.}\\
+  $^1$Beijing University of Posts and Telecommunications, Beijing, China\\
+$^{2}$Meituan, Beijing, China\\
+  \texttt{\{songxiaoshuai,myt,yuanqiu,wangpei,xuweiran\}@bupt.edu.cn}\\
+  \texttt{hekeqing@meituan.com}
+}
+\begin{document}
+\maketitle
+\begin{abstract}
+In a practical dialogue system, users may input out-of-domain (OOD) queries. The Generalized Intent Discovery (GID) task aims to discover OOD intents from OOD queries and extend them to the in-domain (IND) classifier. However, GID only considers one stage of OOD learning, and needs to utilize the data in all previous stages for joint training, which limits its wide application in reality. In this paper, we introduce a new task, Continual Generalized Intent Discovery (CGID), which aims to continuously and automatically discover OOD intents from dynamic OOD data streams and then incrementally add them to the classifier with almost no previous data, thus moving towards dynamic intent recognition in an open world. Next, we propose a method called Prototype-guided Learning with Replay and Distillation (PLRD) for CGID, which bootstraps new intent discovery through class prototypes and balances new and old intents through data replay and feature distillation. Finally, we conduct detailed experiments and analysis to verify the effectiveness of PLRD and understand the key challenges of CGID for future research.\footnote{We  release our code at \url{https://github.com/songxiaoshuai/CGID}}
+\end{abstract}
+
+\section{Introduction}
+
+%Intent classification (IC) in a dialogue system aims to identify the goal of a user’s query, such as BookHotel or QueryTrain, which is an important component of task-oriented dialogue (TOD) systems. Traditional IC models are based on the closed-set assumption, which means that they rely on a predefined set of intents provided by domain experts and can only recognize limited intent categories within the domain (IND). However, in the real open world, users may input out-of-domain (OOD) queries.
+
+The traditional intent classification (IC) in a task-oriented dialogue system (TOD) is based on a closed set assumption \cite{chen2019bert, yang2021generalized,zeng-etal-2022-semi} and can only handle queries within a limited scope of in-domain (IND) intents. However, users may input out-of-domain (OOD) queries in the real open world. Recently, the research community has paid more attention to OOD problems. OOD detection \cite{lin-xu-2019-deep,zeng-etal-2021-modeling,wu-etal-2022-distribution,mou-etal-2022-uninl} aims to identify whether a user’s query is outside the range of the predefined intent set to avoid wrong operations. It can safely reject OOD intents, but it also ignores OOD concepts that are valuable for future development. OOD intent discovery \cite{lin2020discovering,zhang2021discovering,mou-etal-2022-disentangled,mou-etal-2022-watch} helps determine potential development directions by grouping unlabelled OOD data into different clusters, but still cannot incrementally expand the recognition scope of existing IND classifiers. Generalized Intent Discovery (GID) \cite{mou-etal-2022-generalized} further trains a network that can classify a set of labelled IND intent classes and simultaneously discover new classes from an unlabelled OOD set and incrementally add them to the classifier.
+
+\begin{figure}[t]
+    \centering
+    \resizebox{.5\textwidth}{!}{
+    \includegraphics{intro_motivation.pdf}}
+    % \vspace{-0.7cm}
+    \caption{Illustration of the defects of GID and the advantages of CGID. GID only perform single stage of OOD learning and requires all IND data for joint training. In contrast, CGID timely updates the system from dynamic OOD data streams through continual OOD learning stage and almost does not rely on previous data.}
+    \label{fig:motivation}
+    % \vspace{-0.6cm}
+\end{figure}
+
+%In contrast, CGID timely updates the system through continual OOD phases and only requires new OOD queries to improve the experience of subsequent users
+
+%Although GID improves the defect of OOD discovery that cannot expand the classifier, 
+Although GID realizes the incremental expansion of the recognition scope of the intent classifier without any new intents labels, two major problems limit the widespread application of GID in reality as shown in Fig \ref{fig:motivation}: (1) \textbf{GID only considers single-stage of OOD discovery and classifier expansion.} %In real scenarios, OOD data is gradually collected over time, which means that even if the current intent classifier is incrementally expanded, new OOD queries and intents will still appear; and the timeliness of increment: timely discovery of OOD intents and increment to the system helps improve the experience of subsequent users. 
+In real scenarios, OOD data is gradually collected over time. Even if the current intent classifier is incrementally expanded, new OOD queries and intents will continue to emerge. Besides, the timeliness of OOD discovery needs to be considered: timely discovery of new intents and expansion to the system can help improve the subsequent user experience.
+(2) \textbf{GID require data in all previous stages for joint training to maintain the classification ability for known intents.} Since OOD samples are collected from users' real queries, storing past data may bring serious privacy issues. In addition, unlike Class Incremental Learning (CIL) that require new classes with real labels, it is hard to obtain a large amount of dynamic labeled data in reality, and the label set for OOD queries is not predefined and needs to be mined from query logs.
+
+%Inspired by the above problems, we introduce a new task, \textbf{C}ontinual \textbf{G}eneralized \textbf{I}ntent \textbf{D}iscovery (\textbf{CGID}),  which aims to continuously and automatically discover and expand OOD intents from OOD data streams. CGID hopes that the model after completing IND classification training can continuously discover new intents from unlabelled OOD data streams and incrementally add them to the current classifier, while maintaining the ability to classify known categories with almost no need to store previous data. Through CGID, the system can continuously enhance the intent recognition system's ability from unlabelled OOD data, thus moving towards dynamic intent recognition in an open world. We show the difference between CGID and GID, as well as the CIL task in Fig \ref{fig:task_contrast}.
+
+Inspired by the above problems, in this paper, we introduce a new task, \textbf{C}ontinual \textbf{G}eneralized \textbf{I}ntent \textbf{D}iscovery (\textbf{CGID}), which aims to continually and automatically discover OOD intents from OOD data streams and expand them to the existing IND classifier. In addition, CGID requires the system to maintain the ability to classify known intents with almost no need to store previous data, which makes existing GID methods fails to be applied to CGID. Through CGID, the IC system can continually enhance the ability of intent recognition from unlabeled OOD data streams, thus moving towards dynamic intent recognition in an open world. We show the difference between CGID and GID, as well as the CIL task in Fig \ref{fig:task_contrast} and then leave the  definition and evaluation protocol in Section \ref{sec:Problem Definition}.
+
+\begin{figure}[t]
+    \centering
+    \resizebox{.5\textwidth}{!}{
+    \includegraphics{task_contrast.pdf}}
+    % \vspace{-0.3cm}
+    \caption{The comparison of CGID with GID and CIL.}
+    \label{fig:task_contrast}
+    % \vspace{-0.5cm}
+\end{figure}
+
+
+ %In this paper, we first introduce a new task for open-scenario dynamic recognition and incremental OOD intent discovery, Continual Generalized Intent Discovery (CGID) (Section \ref{sec:Problem Definition}). To solve the CGID task, we propose a framework called \textbf{P}rototype-guided \textbf{L}earning with \textbf{R}eplay and \textbf{D}istillation (PLRD). Specifically, PLRD consists of a main module composed of an encoder joint classifier and three sub-modules: (1) class prototype guides the generation of pseudo-labels for new OOD samples; (2) feature distillation reduces catastrophic forgetting; (3) Memory balances new class learning and old class classification tasks by replaying old class samples (Section \ref{sec:method}). To verify the effectiveness of PLRD, we constructed two public datasets and three baseline methods for CGID. The experimental results show that PLRD has significant performance improvement and lighter forgetting compared to the baseline, and can balance old class performance and new class discovery and incrementality well (Section \ref{sec:experiment}). In addition, we conduct detailed qualitative analysis experiments (Section \ref{sec:analysis}) to clarify the unique challenges faced by the CGID task. We found that the main challenges for future CGID work are conflicts between different sub-tasks, OOD pseudo-label noise propagation, continuous estimation of OOD category numbers, and selection strategies for replaying samples (Section \ref{sec:challenge}), which provide profound guidance for future CGID work.
+
+As CGID needs to continuously learn from unlabeled OOD data, it is foreseeable that the system will inevitably suffer from the catastrophic forgetting \cite{biesialska2020continual,masana2022class} of known knowledge as well as the interference and propagation of OOD noise \cite{wu2021ngc}. To address the issues, we propose the \textbf{P}rototype-guided \textbf{L}earning with \textbf{R}eplay and \textbf{D}istillation (PLRD) for CGID.  
+%Specifically, PLRD consists of a main module composed of an encoder joint classifier and three sub-modules: 
+Specifically, PLRD consists of a main module composed of an encoder and a joint classifier, as well as three sub-modules: (1) class prototype guides pseudo-labels for new OOD samples and alleviate the OOD noise; (2) feature distillation reduces catastrophic forgetting; (3) a memory balances new class learning and old class classification by replaying old class samples (Section \ref{sec:method}) \footnote{PLRD's memory mechanism stores only a tiny fraction of samples, offering a significant privacy advantage compared to GID, which stores all past data. PLRD serves not only to provide a privacy-conscious mode of learning but also takes into account the long-term stability of task performance. As for the methods that completely eliminate the need for prior data storage, we leave them for further exploration.}.
+Furthermore, to verify the effectiveness of PLRD, we construct two public datasets and three baseline methods for CGID. Extensive experiments prove that PLRD has significant performance improvement and the least forgetting compared to the baselines, and achieves a good balance among old classes classification, new class discovery and incremental learning (Section \ref{sec:experiment}). 
+To further shed light on the unique challenges faced by the CGID task, we conduct detailed qualitative analysis  (Section \ref{sec:analysis}). 
+We find that the main challenges of CGID are conflicts between different sub-tasks, OOD noise propagation, fine-grained OOD classes and strategies for replayed samples (Section \ref{sec:challenge}), which provide profound guidance for future work.
+
+Our contributions are three-fold: (1) We introduce a new task, Continual Generalized Intent Discovery (CGID), to achieve the dynamic and open-world intent recognition and then construct datasets and baselines for evaluating CGID. (2) We propose a practical method PLRD for CGID, which guides new samples through class prototypes and balances new and old tasks through data replay and feature distillation. (3) We conduct comprehensive experiments and in-depth analysis to verify the effectiveness of PLRD and understand the key challenges of CGID for future work.
+
+
+\section{Problem Definition}
+\label{sec:Problem Definition}
+In this section, we first briefly introduce the Generalized Intent Discovery(GID) task, 
+then delve into the details of the Continual Generalized Intent Discovery (CGID) task we proposed.
+
+% 方法框架图(草图)
+\begin{figure*}[t]
+    \centering
+    \resizebox{1\textwidth}{!}{
+    \includegraphics{method.pdf}}
+    % \vspace{-0.2cm}
+    \caption{The Overall architecture of our PLRD method. During the IND training stage, we only use the cross-entropy loss. In the OOD training stages, multiple  modules and learning objectives jointly optimize the model.}
+    \label{fig:method}
+    % \vspace{-0.4cm}
+\end{figure*}
+
+\subsection{GID}
+Given a set of labeled in-domain data $D^{IND}=\{(x^{IND}_i, y^{IND}_i)\}^{n}_{i =1}$ and unlabeled OOD data $D^{OOD}=\{(x^{OOD}_i)\}^ m_{ i=1}$, where $y^{IND}_i\in Y^{IND},Y^{IND}=\{1,2,…,N\}$, GID aims to train a joint classifier to classify an input query into the total label set $Y=\{1,…,N,N+1,……,N+M\}$, where the first N elements represent the labeled IND classes and the last M elements represent newly discovered unlabeled OOD classes.
+
+\subsection{CGID}
+In contrast, CGID provides data and expands the classifier in a sequential manner, which is more in line with real scenarios.
+
+First, we define $t\in[0,T]$, which denotes the current learning stage of CGID and $T$ denotes the maximum number of learning stages of CGID. In the IND learning stage ($t=0$), given a labeled in-domain dataset $D^{IND} = \{(x^{IND}_i, y^{IND}_i)\}$, the model needs to classify IND classes to a predefined set $Y_0=\{1,2,…, N\}$ and learn representations that are also helpful for subsequent stages.
+
+Then, a series of unlabeled out-of-domain datasets $\{D^{OOD}_t\}^T_{t=1}$ are given in sequence, where $D^{OOD}_t= \{x^{OOD_t}_{i}\}$. In the OOD learning stage $t\in[1,T]$, the model is expected to discover new OOD classes $Y_t$\footnote{Estimating $|Y_t|$ is out of the scope of this paper. In the following experiment, we assume that $|Y_t|$ is ground-truth and provide an analysis in Section \ref{app:estimate_k}.} from $D^{OOD}_t$ and incrementally extend $Y_t$ to the classifier while maintaining the ability to classify known classes $\{Y_{i\leq t}\}$. The ultimate goal of CGID is to obtain a joint classifier that can classify queries into the total label set $Y^{all}_T=Y_0\cup{Y_1}\cup…\cup{Y_T}$.
+
+\subsection{Evaluation Protocol}
+%We use accuracy (ACC) to evaluate the classification performance. $ACC^{IND}_T$ measures the classification performance for $Y^{IND}$ at the final stage $T$, while $ACC^{OOD}_{T}=\frac{1}{T}\sum^t_{i=1}ACC^{OOD_i}_{T}$ %evaluates the average performance of OOD classes,
+%evaluates the average performance of the joint classifier for the OOD categories added at different stages, 
+%where $ACC^{OOD_i}_{t}$ denotes the accuracy of $Y^{OOD}_i$. $ACC^{ALL}_{T}$ is calculated over all classes $Y_T$. 
+
+%It is foreseeable that CGID will suffer catastrophic forgetting of old classes during the learning of new classes. Therefore, we also introduce the metric of forgetting(FT). Specifically, 
+%\begin{itemize}[leftmargin=9pt,topsep=0pt, parsep=0pt,]
+%\item $FT^{IND}_T={ACC}^{IND}_{0}-{ACC}^{IND}_{T}$ measures the final forgetting of IND classes;
+%\item $FT^{OOD}_T=\frac{1}{T}\sum^{T}_{i=1}({ACC}^{{OOD}_i}_{i}-{ACC}^{OOD_i}_{T})$ measures the average forgetting degree of OOD;
+%\item $FT^{ALL}_T=\frac{|Y^{IND}|}{|Y_{T}|}FT^{IND}_T+\frac{|\{Y^{OOD}_{i \leq T}\}|}{|Y_{T}|}FT^{OOD}_t$ measures the forgetting  over all classes. 
+%\end{itemize}
+
+For CGID, we mainly focus on the classification performance along the training phase. Following \cite{mehta2021empirical}, we let $a_{t,i}$\footnote{Following \cite{zhang2021discovering}, we use the Hungarian algorithm \cite{kuhn1955hungarian} to obtain the mapping between the predicted OOD classes and ground-truth classes in the test set.} denote the accuracy on class set $Y_i$ after training on stage $t$. When $t$ > 0, we calculate the accuracy $A_t$ as follows:
+% \vspace{-0.3cm}
+\begin{equation}
+\begin{aligned}
+    & A^{IND}_t=a_{t,0}\quad A^{OOD}_{t}=\frac{1}{|\{Y_{1\leq i\leq t}\}|}\sum^t_{i=1}|Y_i|a_{t,i} \\ 
+    &A^{ALL}_{t}=\frac{1}{|Y^{all}_t|}\sum^t_{i=0}|Y_i|a_{t,i}
+\end{aligned}
+\end{equation}
+%\vspace{-0.3cm}
+%and the forgetting is computed as follows:
+Moreover, to measure catastrophic forgetting in CGID, we introduce the forgetting  $F_t$ as follows:
+%\vspace{-0.1cm}
+\begin{equation}
+\begin{aligned}
+& F^{IND}_t=a_{0,0}-a_{t,0} \\
+& F^{OOD}_t=\frac{1}{|\{Y_{1\leq i\leq t}\}|}\sum^t_{i=1}|Y_i|(a_{i,i}-a_{t,i})\\
+& F^{ALL}_t=\frac{1}{|Y^{all}_t|}\sum^t_{i=0}|Y_i|(a_{i,i}-a_{t,i})\\
+\end{aligned}
+\end{equation}
+On the whole, $A^{IND}_t$ and $F^{IND}_t$ measure the extent of maintaining the IND knowledge, while $A^{OOD}_{t}$ and $F^{OOD}_{t}$ denote the ability to learn the OOD classes. $A^{ALL}_{t}$ and $F^{ALL}_{t}$ are comprehensive metrics for CGID.
+
+\section{Method}
+\label{sec:method}
+
+
+
+\subsection{Overall Architecture}
+As shown in Fig \ref{fig:method}, our proposed PLRD framework consists of a main module which composed of an encoder and a joint classifier and three sub-modules: (1) \textbf{Memory module} is responsible for replaying known class samples to balance the learning of new classes and maintain known classes; (2) \textbf{Class prototype module} is responsible for generating pseudo-labels for new OOD samples; (3) \textbf{Feature distillation} is responsible for alleviating catastrophic forgetting of old classes. The joint classifier $h$ consists of an old class classification head $h^{old}$ and a new class classification head $h^{new}$, outputting logit $l=[l^{old};l^{new}]$. After stage $t$ ends, $l^{new}$ will be merged into $l^{old}$, i.e., $l^{old}\leftarrow [l^{old};l^{new}]$. Then, when stage $t+1$ starts, a new head  $l^{new}$ with the dimension $|Y_{t+1}|$ will be created.
+
+
+\subsection{Memory for Data Replay}
+We equip a memory module $M$ for PLRD. After each learning stage, $M$ stores a very small number of training samples and replays old class samples in the next learning stage to prevent catastrophic forgetting and encourage positive transfer. Specifically, in the IND learning stage, we randomly select $n$ samples for each IND class according to the ground-truth labels; in each OOD learning stage, since the ground-truth labels are unknown, we randomly select $n$ samples\footnote{In the following experiment, we set $n$=5 and analyze the effects of different $n$ in the Section \ref{sub:replay}.} for each new class according to the pseudo-labels and store them in $M$ together with the pseudo-labels. In the new learning stage, for each batch, we randomly select old class samples $\{x^{old}\}$ with the same number as new class samples $\{x^{new}\}$ from $M$ and input them into the BERT encoder $f(\cdot)$ together with new class samples $x^{new}$, i.e., $|\{x^{new}\}|=|\{x^{old}\}|$, $\{x\}=\{x^{new}\}\cup \{x^{old}\}$.
+
+\subsection{Prototype-guide Learning}
+%\citet{yu2020semantic} shows that metric-based representation networks have better anti-forgetting ability. Therefore, we construct class prototypes based on sample representations and maintain old class representations. Through the interaction between samples and prototypes, prototypes can maintain old class representations and construct pseudo-labels for new class unlabeled samples.
+Previous semantic learning studies \cite{yu2020semantic,wang2022pico,ma-etal-2022-decomposed,10095149,dong2023multitask} have shown that learned representations can help to disambiguate the noisy sample labels and mitigate forgetting. Therefore, we build prototypes through a linear projection layer $g(\cdot)$ after the encoder.
+%Therefore, in each OOD learning stage, we construct new class prototypes based on the representations of new OOD samples, while maintaining the existing prototypes. %By the interaction between samples and prototypes, we aim to maintain the representations of old classes and construct pseudo-labels for new  samples. 
+In stage $t>0$, we first randomly initialize new class prototype $\mu_j,j\in Y_t$.\footnote{When $t=1$, we additionally initialize the prototypes of IND classes. } For sample $x_i\in \{x\}$, we use an $|Y^{all}_t|$-dimensional vector $q_{i}$ representing the probabilities of $x_i$ being assigned to all prototypes:
+\begin{equation}
+\boldsymbol{q_i}= \begin{cases}{\operatorname{onehot}(y^{old}_i)} & {x_i} \in \{x^{old}\} \\ {\left[\mathbf{0}_{|Y^{all}_{t-1}|}; l_{i}^{new}\right]} & {x_i} \in \{x^{new}\}\end{cases}
+\end{equation}
+
+where $y^{old}_i$ is the ground-truth or pseudo label of $x_i$ in $M$ and $\mathbf{0}_{|Y^{all}_{t-1}|}$ is a $|Y^{all}_{t-1}|$-dimensional zero vector. Then we introduce prototypical contrastive learning (PCL) \cite{li2020prototypical} as follows:
+\begin{equation}
+    \mathcal{L}_{pcl}=-\sum_{i,j}q^j_i\operatorname{log}\frac{\operatorname{exp}(\operatorname{sim}(z_i,\mu_j)/\tau}{\sum_{r}\operatorname{exp}(\operatorname{sim}(z_i,\mu_r))/\tau}
+\end{equation}
+
+where $\tau$ denotes temperature, $q^j_{i}$ is the $j$-th element of $q_i$ and $z_i=g(f(x_i))$.
+% we obtain the representation $z_i=g(f(x_i))$ through a projection layer $g(\cdot)$ after passing $x_i$ through the output of $f(\cdot)$, and then introduce prototypical contrastive learning (PCL) \cite{li2020prototypical} as follows:
+% \begin{equation}
+%     \mathcal{L}_{pcl}=-\sum_{i,j}q^j_i\operatorname{log}\frac{\operatorname{exp}(\operatorname{sim}(z_i,\mu_j)/\tau}{\sum_{r}\operatorname{exp}(\operatorname{sim}(z_i,\mu_r)/\tau}
+% \end{equation}
+% where $\tau$ denotes temperature and  $q_{i}$ is an $|Y^{all}_t|$-dimensional vector representing the probabilities of $x_i$ being assigned to all the prototypes. 
+% \begin{equation}
+% \boldsymbol{q_i}= \begin{cases}{\operatorname{onehot}(y^{old}_i)} & {x_i} \in \{x^{old}\} \\ {\left[\mathbf{0}_{|Y^{all}_{t-1}|}; l_{i}^{new}\right]} & {x_i} \in \{x^{new}\}\end{cases}
+% \end{equation}
+% where $y^{old}_i$ is the ground-truth/pseudo label of $x_i$ in $M$ and $\mathbf{0}_{|Y^{all}_{t-1}|}$ is a $|Y^{all}_{t-1}|$-dimensional zero vector.
+%Specially, for $x^{old}_i$, $q_i$ is a one-hot vector of  its ground-truth/pseudo label $y^{old}_i$ in $M$; 
+%for $x^{new}_i$, $q_i=\left[\mathbf{0}_{|Y^{all}_{t-1}|}; l_{i}^{new}\right]$,where 
+%$\mathbf{0}_{|Y^{all}_{t-1}|}$ is a $|Y^{all}_{t-1}|$-dimentional zero vector.
+%For $x^{old}_i$, when $j$ equals its ground-truth/pseudo label $y^{old}_i$ in $M$, $q^{j}_{i}$ is 1; otherwise $q^{j}_{i}$ is 0.
+%For $x^{new}_i$, if $j\in(|Y^{all}_{t-1}|,|Y^{all}_t|)$, $q^{j}_{i}$ is the corresponding probability in  the output of the new classifier $l^{new}_i=h^{new}(f(x^{new}_i))$ and is calibrated by the SK algorithm \cite{cuturi2013sinkhorn}; otherwise it is 0. 
+%If  $x_i \in\{x^{old}\}$, $q^{j}_{i}$ is the one-hot vector of its ground-truth/pseudo label $y^{old}_i$ in $M$.
+%Else, $q^{j}_{i}$ is the output of the new classifier $l^{new}_i=h^{new}(f(x^{new}_i))$ and is calibrated by the SK algorithm \cite{cuturi2013sinkhorn}.  
+By pulling similar samples into the same prototype, PCL can learn clear intent representations for new classes and maintain representations for old classes.
+To further improve the generalization of representation, we also introduce the instance-level contrastive loss \cite{chen2020simple} to $x_i$ as follows:
+\begin{equation}
+    \mathcal{L}_{ins}=-\sum_{i} \operatorname{log} \frac{\operatorname{exp}(\operatorname{sim}(z_i,\hat{z}_i)/\tau)}{\sum_j\mathbf{1}_{[i\neq j]}\operatorname{exp}(\operatorname{sim}(z_i,z_j)/\tau)}
+\end{equation}
+
+where $\hat{z}_i$ denotes the dropout-augmented view of $z_i$.
+%During the training process, the class prototype embedding needs to be constantly updated. 
+Next, we update all new and old prototypes in a sample-wise moving average manner to reduce the computational complexity following \cite{wang2022pico}. For sample $x_i$, prototype $\mu_j$ is updated as follows:
+\begin{equation}
+    \mu_j=\gamma \mu_j+(1-\gamma)z_i
+\end{equation}
+
+where the moving average coefficient $\gamma$ is an adjustable hyperparameter and $j$ is the index of the maximum element in $q_i$. %For $x_i\in\{x^{old}\},j=y^{old}$; for $x_i\in\{x^{new}\},j=argmax {l^{new}_i}+|Y^{old}|$.
+
+Finally, for the new sample ${x_i} \in \{x^{new}\}$, its pseudo label is assigned as the index of the nearest new class prototype to its representation $z_i$.
+%, i.e., $y^{new}_i=argmax_{j\in (Y_{t-1}, Y_t]}\{{z^{new}_i}^T\mu_j\}$. 
+We optimize the joint classifier using cross-entropy $\mathcal{L}_{ce}$ over both the new and replayed samples.
+
+\begin{table}[t]
+\centering
+%\renewcommand\arraystretch{0.9}
+\resizebox{0.5\textwidth}{!}{%
+    \begin{tabular}{c|c|c|c||c|c|c}
+    \hline
+        \multirow{2}{*}{Stage} & \multicolumn{3}{c||}{Banking OOD Ratio}&\multicolumn{3}{c}{CLINC OOD Ratio } \\ \cline{2-7}
+
+        & 40\% & 60\%& 80\% & 40\% & 60\% & 80\% \\ \hline
+        \thead{0\\ 1\\ 2\\ 3} & \thead{47\\10\\10\\10} & \thead{32\\15\\15\\15} & \thead{17\\20\\20\\20}& \thead{90\\20\\20\\20}& \thead{60\\30\\30\\30}& \thead{30\\40\\40\\40}\\ \hline
+\end{tabular}
+}
+% \vspace{-0.3cm}
+\caption{The number of new classes at each stage.}
+\label{tab:ind_ood_spit}
+% \vspace{-0.3cm}
+\end{table}
+
+\begin{table*}[t]
+\centering
+\resizebox{1\textwidth}{!}{%
+\begin{tabular}{l||cc|cc|cc||cc|cc|cc||cc|cc|cc}
+\hline
+\multirow{3}{*}{Method} & \multicolumn{6}{c||}{$OOD Ratio=40\%$} & \multicolumn{6}{c||}{$OOD Ratio=60\%$} & \multicolumn{6}{c}{$OOD Ratio=80\%$} \\ \cline{2-19}
+& \multicolumn{2}{c|}{IND}  & \multicolumn{2}{c|}{OOD}  &\multicolumn{2}{c||}{ALL}    & \multicolumn{2}{c|}{IND}   & \multicolumn{2}{c|}{OOD} & \multicolumn{2}{c||}{ALL} & \multicolumn{2}{c|}{IND}   & \multicolumn{2}{c|}{OOD} & \multicolumn{2}{c}{ALL} \\
+& $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ \\ \hline 
+        Kmeans & \underline{77.94}  & \underline{15.64}  & 72.00  & 14.08  & 75.63  & 15.03  & \underline{72.55}  & \underline{22.13}  & 62.55  & 12.67  & 66.71  & \underline{16.60}  & 64.61  & 31.42  & 49.64  & 15.10  & 52.94  & 18.71  \\ 
+        DeepAligned & 77.91  & 15.67  & 73.39  &  \underline{12.13}  &  \underline{76.15}  &  \underline{14.29}  & 72.16  & 22.52  & 65.02  &  \underline{12.50}  & 67.98  & 16.67  &  \underline{68.04}  &  \underline{27.99}  & 58.78  &  \underline{12.19}  & 60.81  &  \underline{15.67} \\ 
+        E2E & 74.20  & 19.38  & \underline{74.91}  & 14.92  & 74.48  & 17.64  & 71.28  & 23.41  & \underline{69.44}  & 13.06  & \underline{70.20}  & 17.36  & 65.59  & 30.44  & \underline{62.81}  & 15.48  &  \underline{63.41}  & 18.78  \\ 
+        PLRD (Ours) & \textbf{83.94}  & \textbf{9.64}  & \textbf{76.70}  & \textbf{11.58}  & \textbf{81.11}  & \textbf{10.40}  & \textbf{81.07}  & \textbf{13.62}  & \textbf{70.30}  & \textbf{10.69}  & \textbf{74.77}  & \textbf{11.91}  & \textbf{76.23}  & \textbf{19.80}  & \textbf{63.19}  & \textbf{11.19}  & \textbf{66.06}  & \textbf{13.09} \\ \hline
+\end{tabular}
+}
+% \vspace{-0.2cm}
+\caption{Performance comparison on Banking after the final stage $T$=3. $\uparrow$ indicates higher is better, $\downarrow$ indicates lower is better. We bold the best results and underline the second-best results. Results are averaged over three random run (p < 0.01 under t-test).}
+% \vspace{-0.2cm}
+\label{tab:main Banking}
+\end{table*}
+
+
+
+\begin{table*}[t]
+\centering
+\resizebox{1\textwidth}{!}{%
+\begin{tabular}{l||cc|cc|cc||cc|cc|cc||cc|cc|cc}
+\hline
+\multirow{3}{*}{Method} & \multicolumn{6}{c||}{OOD Ratio=40\%} & \multicolumn{6}{c||}{OOD Ratio=60\%} & \multicolumn{6}{c}{OOD Ratio=80\%} \\ \cline{2-19}
+& \multicolumn{2}{c|}{IND}  & \multicolumn{2}{c|}{OOD}  &\multicolumn{2}{c||}{ALL}    & \multicolumn{2}{c|}{IND}   & \multicolumn{2}{c|}{OOD} & \multicolumn{2}{c||}{ALL} & \multicolumn{2}{c|}{IND}   & \multicolumn{2}{c|}{OOD} & \multicolumn{2}{c}{ALL} \\
+& $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ & $A_T\uparrow$         & $F_T\downarrow$ \\ \hline 
+        Kmeans & 91.38  & 6.82  & 85.37  & 5.55  & 88.98  & 6.31  & \underline{89.29}  & \underline{9.56}  & 81.58  & 5.67  & 84.66  & \underline{7.23}  & 81.93  & 17.11  & 72.94  & 6.36  & 74.74  & 8.51  \\ 
+        DeepAligned & \underline{91.98}  & \underline{6.22}  & 89.45  & \textbf{4.61}  & \underline{90.96}  & \underline{5.58}  & 88.04  & 10.82  & 86.15  & \underline{5.04}  & 86.91  & 7.35  & \underline{84.30}  & \underline{14.74}  & 80.59  & \underline{6.25}  & 81.33  & \underline{7.95}  \\ 
+        E2E & 89.16  & 9.04  & \underline{90.74}  & 7.33  & 89.79  & 8.36  & 84.96  & 13.89  & \underline{88.44}  & 6.82  & \underline{87.05}  & 9.65  & 79.33  & 19.70  & \textbf{85.74}  & 7.95  & \underline{84.46}  & 10.30  \\ 
+        PLRD (Ours) & \textbf{93.90}  & \textbf{4.29}  & \textbf{91.22}  & \underline{5.00}  & \textbf{92.83}  & \textbf{4.58}  & \textbf{92.15}  & \textbf{6.70}  & \textbf{89.09}  & \textbf{3.78}  & \textbf{90.31}  & \textbf{4.95}  & \textbf{89.56}  & \textbf{9.48}  & \underline{84.76}  & \textbf{5.33}  & \textbf{85.72}  & \textbf{6.16} \\ \hline
+\end{tabular}
+}
+% \vspace{-0.2cm}
+\caption{Performance comparison on CLINC.}
+% \vspace{-0.4cm}
+\label{tab:main CLINC}
+\end{table*}
+
+\subsection{Feature Distillation}
+It can be expected that the encoder features may change significantly when updating the network parameters in the new learning stage. This means that the network tends to forget the knowledge learned from the old classes before and suffers from catastrophic forgetting. To further remember the knowledge in the non-forgotten features, we integrate the feature distillation into PLRD. Specifically, at the beginning of stage $t$, we copy and freeze the encoder, denoted as $f^{init}(\cdot)$. Then given replayed samples $x_i\in\{x^{old}\}$ in a batch, we constrain the feature output $f(x_i)$ of the current encoder with the feature $f^{init}(x_i)$. Formally, the feature distillation loss is as follows:
+\begin{equation}
+    \mathcal{L}_{fd}=\sum^{|\{x^{old}\}|}_{i=1}(f(x_i)-f^{init}(x_i))^2
+\end{equation}
+\subsection{Overall Training}
+The total loss is defined as follows:
+\begin{equation}
+    \mathcal{L}=\mathcal{L}_{ce}+\mathcal{L}_{pcl}+\mathcal{L}_{ins}+\mathcal{L}_{fd}
+\end{equation}
+%It should be noted that during testing or inference, we only need to keep the main module.
+
+\section{Experiment}
+\label{sec:experiment}
+
+\subsection{Datasets}
+We construct the CGID datasets based on two widely used intent classification datasets, Banking \cite{casanueva-etal-2020-efficient} and CLINC \cite{larson-etal-2019-evaluation}. Banking covers only a single domain, containing 13,083 user queries and 77 intents, while CLINC contains 22,500 queries covering 150 intents across 10 domains. For the CLINC and Banking datasets, we randomly select a specified proportion of all intent classes (about 40\%, 60\%, and 80\% respectively) as OOD types, with the rest being IND types. Furthermore, we assign the maximum stage $T$=3, so we divide the OOD data into three equal parts for each OOD training stage. We show the number of classes at each stage in Table \ref{tab:ind_ood_spit} and leave the detailed statistics in Appendix \ref{app:datasets}.
+
+\subsection{Baselines}
+Since this is the first study on CGID, there are no existing methods that solve exactly the same task. We adopt three prevalent methods in OOD discovery and GID, and extend them to the CGID setting to develop the following competitive baselines\footnote{We leave the detailed implementation of these baselines in Appendix \ref{app:implementation}.}.
+%To achieve a fair comparison, we equip all baselines with the same Memory mechanism and the same IND training stage as PLRD.
+\begin{itemize}[itemsep=3pt,leftmargin=9pt,topsep=0pt, parsep=0pt,]
+\item \textbf{K-means} is a pipeline baseline which first use the clustering algorithm K-means \cite{macqueen1965some} to cluster the new samples to obtain pseudo labels and then combine these samples and replayed samples in the memory to train the joint classifier at each OOD training stage.
+\item \textbf{DeepAligned} is another pipeline baseline that leverages the iterative clustering algorithm DeepAligned \cite{zhang2021discovering}. At each OOD training phase, DeepAligned iteratively clusters the new data and then utilizes them along with the replayed samples for classification training.
+\item \textbf{E2E} is an end-to-end baseline. At each OOD training stage, E2E \cite{mou-etal-2022-generalized} amalgamates the new instances and replayed samples and then obtain the logits through the encoder and joint classifier. The model is optimized with a unified classification loss, where the new OOD pseudo-labels are obtained by swapping predictions \cite{caron2020unsupervised}.
+\end{itemize}
+
+\begin{figure*}[t]
+    \centering
+    \resizebox{1\textwidth}{!}{
+    \includegraphics{stage_visualization.pdf}}
+    % \vspace{-0.7cm}
+    \caption{Intents visualization of different learning stage under Banking OOD ratio = 40\% (index 0-2 belongs to $Y_0$, index 3-5 belongs to $Y_1$, index 6-8 belongs to $Y_2$ and index 9-11 belongs to $Y_3$). }
+    \label{fig:stage_visualization}
+    % \vspace{-0.3cm}
+\end{figure*}
+
+\subsection{Main Results}
+\label{sub:main results}
+We conduct experiments on Banking and CLINC with three different OOD ratios, as shown in Tables \ref{tab:main Banking} and \ref{tab:main CLINC}. In general, our proposed PLRD consistently outperform all the baselines with a large margin. Next, we analyze the results from three aspects:
+
+(1) \textbf{Comparison of different methods} We observe that DeepAligned roughly achieves the best IND performance while E2E has the best OOD performance among all baselines. However, our proposed PLRD consistently outperforms all baselines significantly in both IND and OOD, achieving best performance and new-old task balance. Specifically, under the average of three ratios, PLRD is better than the optimal baseline by 7.57\% ($A^{IND}_T$), 1.09\% ($A^{OOD}_T$), and 4.06\% ($A^{ALL}_T$) on Banking, and by 3.35\% ($A^{IND}_T$), 0.04\% ($A^{OOD}_T$), and 2.13\% ($A^{ALL}_T$) on CLINC. As for forgetting, E2E experiences a substantial performance drop on old classes when learning new classes, while PLRD is lower than the optimal baseline by 3.72\%, 1.69\% ($F^{ALL}_T$) on Banking and CLINC respectively. This indicates PLRD does not sacrifice too much performance on old classes when learning new classes and has the least forgetting among all methods.
+
+
+(2) \textbf{Comparison of different datasets} We validate the effectiveness of our method on different datasets, where CLINC is multi-domain and coarse-grained while Banking contains more fine-grained intent types within a single domain. We see that the performance of all methods on CLINC is significantly better than that on Banking. For example, PLRD is 11.72\% ($A^{ALL}_T$) higher on CLINC than on Banking at an OOD ratio of 60\%. In addition, at the same OOD ratio, PLRD shows an average increase of 7.53\% ($F^{IND}_T$), 6.45\% ($F^{OOD}_T$), and 6.57\% ($F^{ALL}_T$) on Banking over CLINC. We believe this could be because fine-grained new and old classes are easily confused, which leads to serious new-old task conflicts and high forgetting. However, PLRD achieves larger improvements than baselines on Banking, indicating that PLRD can better cope with challenges in fine-grained intent scenarios.
+
+(3) \textbf{Effect of different OOD ratios} %We compare the results of different OOD ratios on the same dataset. 
+We observe that as the OOD ratio increases, the forgetting of IND classes increases and accuracy of OOD classes decreases significantly for all methods. For PLRD, when the OOD ratio increases from 40\% to 80\% on Banking, $F^{IND}_T$ rises from 9.64\% to 19.80\%, and  $A^{OOD}_T$ drops from 76.70\% to 63.19\%. Intuitively, more OOD classes make it challenging to distinguish samples from different distributions, leading to noisy pseudo-labels. Moreover, in the incremental process, more OOD classes will update the model to a greater extent, resulting in more IND knowledge forgetting.
+
+\section{Qualitative Analysis}
+\label{sec:analysis}
+
+\begin{figure}[t]
+    \centering
+    \resizebox{0.5\textwidth}{!}{
+    \includegraphics{compactness.pdf}}
+    % \vspace{-0.75cm}
+    \caption{The compactness and accuracy of classes at different stages under Banking OOD ratio = 40\%.}
+    \label{fig:compactness}
+    % \vspace{-0.5cm}
+\end{figure}
+
+
+\subsection{Representation Learning}
+In order to better understand the evolution of CGID along different training stages, we visualize the intent representations after each training stage for PLRD in Fig \ref{fig:stage_visualization}. It can be seen that in the IND learning stage, the IND classes form compact clusters, while the OOD samples are scattered in space. As the stage progresses, the gray points are gradually colored and move from dispersion to aggregation, indicating that new OOD classes continue to be discovered and learned good representations. In addition, the already aggregated clusters are gradually dispersed (see "red" points), indicating that the representations of old classes are deteriorating.
+
+Next, to quantitatively measure the quality of representations, we calculate the intra-class and inter-class distances and use the ratio of inter-class distance to intra-class distance as the compactness following \cite{islam2021broad}. We report the compactness and accuracy in Fig \ref{fig:compactness}. 
+It can see that the compactness of OOD classes is much lower than that of IND classes, indicating that the representation learning with labeled IND samples outperforms that with unlabeled OOD samples. As the stage $t$ increases, the compactness of the IND classes gradually decreases. And the compactness of the $Y_i (i>0)$ classes increases significantly when $t$ equals $i$, and then gradually decreases. This demonstrates the learning and forgetting effects in CGID from a representation perspective. Furthermore, we observe that the maximal compactness of $Y_i$ decreases as $i$ increases, showing that the learning ability of new classes gradually declines. We attribute this to the noise in the OOD pseudo-labeled data and the greater need to suppress forgetting of more old classes. Finally, the trend of accuracy and compactness remains consistent, suggesting that representation is closely related to the classification performance of CGID.
+
+\subsection{Loss and Gain of CGID}
+
+\begin{figure}[t]
+    \centering
+    \resizebox{0.5\textwidth}{!}{
+    \includegraphics{loss_and_gain.pdf}}
+    % \vspace{-0.75cm}
+    \caption{The Loss and Gain of the classifier at different stage under Banking, where the maximal stage $T$=6, the number of IND classes is 17, and the number of new classes in each OOD stage is 10.}
+    \label{fig:loss_and_gain}
+    % \vspace{-0.2cm}
+\end{figure}
+
+During the CGID process, the performance of the classifier on IND classes gradually declined, while the number of supported OOD classes continually expanded. In order to quantify the change of the classifier, we define the Loss and the Gain in stage $t$  for CGID as follows:
+\vspace{0.1cm}
+\begin{equation}
+    \begin{aligned}
+        &Loss_t=\frac{-F^{IND}_t}{A^{IND}_0}\quad 
+        Gain_{t}=\frac{|Y^{all}_t|A^{ALL}_t}{|Y_0|A^{IND}_0}-1
+    \end{aligned}
+\end{equation}
+We illustrate the variations in Loss and Gain of all methods over stages in Fig \ref{fig:loss_and_gain}. The results show that as the training progresses, the Loss of all methods decreases overall and the Gain increases continuously. After finishing the training, although the Loss decrease by 20\% roughly, the increase in Gain of PLRD is greater, reaching over 200\%. This indicates that the Gain generated by CGID is much higher than the Loss and brings positive effects to the classifier as a whole. Compared with other methods, PLRD has the lowest Loss and highest Gain at each stage, and its advantage continuous amplifies over stages. These further consolidate the conclusion that PLRD outperforms the baselines. 
+
+
+\subsection{Effect of Replaying Samples in Memory}
+\label{sub:replay}
+
+\begin{table}[t]
+    \centering
+\resizebox{0.48\textwidth}{!}{%
+    \begin{tabular}{c||c|c||c|c|c}
+    \hline
+    \multirow{2}{*}{Strategy} & \multicolumn{2}{c||}{Replay} & \multirow{2}{*}{$A^{IND}_T$}        & \multirow{2}{*}{$A^{OOD}_T$}     & \multirow{2}{*}{$A^{ALL}_T$}  \\ \cline{2-3}
+         & Acc & Var &        &  & \\ \hline
+        \emph{random} & 77.78  & 0.31  & 80.39  & \textbf{70.00}  &\textbf{ 74.32}  \\ 
+        \emph{icarl} &\textbf{ 84.45}  & 0.10  & \textbf{80.55}  & 69.78  & 74.25  \\ 
+        \emph{icarl\_contrary} & 48.44  & \textbf{0.62}  & 78.44  & 61.00  & 68.25 \\ \hline
+    \end{tabular}
+}
+% \vspace{-0.2cm}
+\caption{Comparison of different selection strategies under Banking OOD ratio = 60\%.}
+% \vspace{-0.5cm}
+\label{tab:sample strategy}
+\end{table}
+
+\begin{figure}[t]
+    \centering
+    \resizebox{0.5\textwidth}{!}{
+    \includegraphics{n_replayed_sample.pdf}}
+    \vspace{-0.2cm}
+    \caption{The effect of different number of replayed samples under Banking OOD ratio = 60\%, where \emph{ALL} means storing all training data in the memory.}
+    \label{fig:n_replayed_sample}
+    \vspace{-0.5cm}
+\end{figure}
+
+In this section, we explore the effect of replayed samples from both selection strategies and quantity.
+
+\textbf{Selection Strategy} In the CIL task, since the samples are labeled, we only need to consider the diversity of replayed samples. However, in CGID, we need to take the quality of pseudo-labels into account additionally. We explore three selection strategies for replaying samples: \emph{random} (randomly sampling from training set), \emph{icarl} (selecting these closest to their prototypes, following \citet{rebuffi2017icarl}), and \emph{icarl\_contrary} (select the samples farthest from their prototypes). As shown in Table \ref{tab:sample strategy}, we report the pseudo-label accuracy (Acc) and average feature variance (Var) of replayed samples, as well as the final classifier accuracy of PLRD. We can see that \emph{icarl} has the highest pseudo-label accuracy while \emph{icarl\_contrary} has the largest sample variance and is inclined to diversity. However, PLRD under the \emph{random} strategy has the highest OOD and ALL accuracy. This demonstrates that neither accuracy nor diversity alone leads to better performance. CGID needs to strike a balance between diversity and accuracy of the replayed samples.
+
+\textbf{Quantity of Replayed Samples} Fig \ref{fig:n_replayed_sample} illustrates the effect of replaying different numbers of previous examples. It is evident that replaying more previous examples leads to higher accuracy. Compared with replaying no examples ($n$=0), storing just one example for each old class ($n$=1) significantly improves accuracy, demonstrating that replaying old samples is crucial. In addition, PLRD outperforms the baselines significantly when $n\leq10$, proving PLRD's effectiveness with few-shot samples replay. However, when all previous examples are replayed ($n$=\emph{ALL}), PLRD performs slightly worse than E2E. We believe this is because PLRD's anti-forgetting mechanism limits learning new classes lightly, and replaying all previous examples deviates from the setting of CGID.
+
+
+\subsection{Ablation Study}
+
+\begin{table}[t]
+    \centering
+\resizebox{0.5\textwidth}{!}{%
+    \begin{tabular}{l|c|c|c}
+    \hline
+    \rule{0pt}{12pt}
+        Model & \quad $A^{IND}_T$ \quad \ & \quad $A^{OOD}_T$ \quad \ & \quad $A^{ALL}_T$ \quad \ \\ \hline
+         \ E2E & 71.28  & 69.44  & 70.20  \\ \hline
+        \ PLRD & \textbf{80.39}  & \textbf{70.00}  & \textbf{74.32}  \\ 
+        \ \quad-w/o $\mathcal{L}_{fd}$ & 75.94  & 66.78  & 70.58  \\ 
+        \ \quad-w/o $\mathcal{L}_{ins}$ & 79.77  & 68.17  & 72.99  \\ 
+        \ \quad-w/o $\mathcal{L}_{pcl}$ & 80.16  & 69.50  & 73.93  \\ \hline
+        \ $\mathcal{L}_{ce}$ & 73.36  & 63.67  & 67.69 \\ \hline
+    \end{tabular}
+}
+% \vspace{-0.2cm}
+\caption{Ablation study of different learning objective for PLRD under Banking OOD ratio = 60\%.}
+% \vspace{-0.3cm}
+\label{tab:ablation}
+\end{table}
+
+As reported in Table \ref{tab:ablation}, we perform ablation study to investigate the effect of each learning objective on the PLRD framework. When removing  $\mathcal{L}_{fd}$, the performance declines significantly in both IND and OOD classes. This suggests that forgetting is one of the main challenges faced by CGID, and mitigating forgetting can bring positive effects to continual OOD learning stage by retaining prior knowledge. In addition, removing $\mathcal{L}_{ins}$ and $\mathcal{L}_{pcl}$ respectively leads to a certain degree of performance decline, indicating that prototype and instance-level contrastive learning are helpful for OOD discovery and relieving OOD noise. Finally, only retaining the $\mathcal{L}_{ce}$ of PLRD will result in the largest accuracy decline, proving the importance of multiple optimization objectives in PLRD.
+
+
+
+\subsection{Estimate the Number of OOD intents}
+\label{app:estimate_k}
+
+\begin{table}[t]
+    \centering
+\resizebox{0.5\textwidth}{!}{%
+    \begin{tabular}{c|c|ccc|ccc}
+        \hline
+    \multirow{2}{*}{} &\multirow{2}{*}{Method} & \multicolumn{3}{c|}{Num of Classes}& \multirow{2}{*}{$A^{IND}_T$}        & \multirow{2}{*}{$A^{OOD}_T$}     & \multirow{2}{*}{$A^{ALL}_T$} \\ \cline{3-5}
+& & t=1& t=2 & t=3 & & & \\ \hline
+        \multirow{3}{*}{\thead{Ground \\Truth}}&DeepAligned & 15 & 15 & 15 & 72.16  & 65.02  & 67.98  \\ 
+        &E2E & 15 & 15 & 15 & 71.28  & 69.44  & 70.20  \\ 
+        &PLRD & 15 & 15 & 15 & \textbf{81.07}  & \textbf{70.30}  & \textbf{74.77}  \\ \hline
+        \multirow{3}{*}{\thead{Estimate by \\model itself}}&DeepAligned & 13 & \textbf{14} & 7 & 71.25  & 49.56  & 58.57  \\ 
+        &E2E & 13 & 12 & 11 & 67.03  & 55.33  & 60.19  \\ 
+        &PLRD & \textbf{13} & \textbf{14} & \textbf{12} & \textbf{79.22}  & \textbf{66.28}  & \textbf{71.66}  \\ \hline
+       \multirow{3}{*}{\thead{Estimate by \\IND Model}}& DeepAligned & 13 & 12 & 11 & 72.42  & 56.94  & 63.38  \\ 
+        &E2E & 13 & 12 & 11 & 67.03  & 55.33  & 60.19  \\ 
+        &PLRD & 13 & 12 & 11 & \textbf{79.22}  & \textbf{60.72}  & \textbf{68.41} \\ \hline
+    \end{tabular}
+}
+\caption{Estimate the number of new classes at each OOD learning stage under Banking OOD ratio = 60\%.}
+\label{tab:predict_k}
+\end{table}
+
+In the previous experiments, we assumed that the number of new OOD classes at each stage is pre-defined and is ground-truth. However, in practical applications, the number of new classes usually needs to be estimated automatically. We adopt the same estimation algorithm as \citet{zhang2021discovering,mou-etal-2022-generalized}. 
+\footnote{We leave the details of the algorithm in Appendix \ref{app:predict_k}.}.
+Since the estimation algorithm is based on sample features, we use the model itself as the feature extractor at the beginning of each OOD learning stage. As shown in Table \ref{tab:predict_k}, when the estimated number of classes is inaccurate, the performance of all methods declines to some extent. However, PLRD can estimate the number most accurately and achieve the best performance. Then, in order to align different methods, we consistently use the frozen model after finishing the IND training stage as the feature extractor for subsequent stages. With the same estimation quality, PLRD still significantly outperforms each baseline, demonstrating that PLRD is robust.
+
+\section{Challenges}
+\label{sec:challenge}
+Based on the above experiments and analysis, we comprehensively summarize the unique challenges faced by CGID :
+
+\textbf{Conflicts between different sub-tasks} In CGID, the discovery and classification of new OOD classes tend towards different features, and learning new OOD classes interfere with existing knowledge about old classes inevitably. However, preventing forgetting will lead to model rigidity and is not conducive to the learning of new classes.
+
+\textbf{OOD noise accumulation and propagation} In the continual OOD learning stage, using pseudo-labeled OOD samples with noise to fine-tune the model as well as replaying samples with noise will cause the noise to accumulate and spread to the learning of new OOD samples in future stages. This will potentially affect the model's ability to learn effectively from new OOD samples in subsequent stages of learning. 
+
+\textbf{Fine-grained OOD classes} Section \ref{sub:main results} indicate that fine-grained data leads to high forgetting and poor performance. We believe this is because fine-grained new classes and old classes are easily confused, which brings serious conflicts between new and old tasks.
+
+\textbf{Strategy for replayed samples} The experiment in Section \ref{sub:replay} shows that CGID needs to consider the trade-off between replay sample diversity and accuracy as well as the trade-off between quantity of replayed samples and user privacy.
+
+\textbf{Continual quantity estimation of new classes} Section \ref{app:estimate_k} shows that even minor estimation errors for each stage can accumulate over stages, leading to severely biased estimation and deteriorated performance.
+
+\section{Related Work}
+
+\textbf{OOD Intent Discovery} OOD Intent Discovery aims to discover new intent concepts from unlabeled OOD data. Unlike simple text clustering tasks, it considers how to leverage IND prior to enhance the discovery of unknown OOD intents. \citet{lin2020discovering} use OOD representations to compute similarities as weak supervision signals. \citet{zhang2021discovering} propose an iterative method, DeepAligned, that performs representation learning and clustering assignment iteratively while \citet{mou-etal-2022-disentangled} perform contrastive clustering to jointly learn representations and clustering assignments. Nevertheless, it's essential to note that OOD intent discovery primarily focus on unveiling new intents, overlooking the integration of these newfound, unknown intents with the existing, well-defined intent categories.
+
+
+\textbf{Generalized Intent Discovery} To overcome the limitation of OOD intent discovery that cannot expand the existing classifier, \citet{mou-etal-2022-generalized} proposed the Generalized Intent Discovery (GID) task. GID takes both labeled IND data and unlabeled OOD data as input and performs joint classification over IND and OOD intents. As such, GID needs to discover semantic concepts from unlabeled OOD data and learn joint classification. However, GID can only perform one-off OOD learning stage and requires full data of known classes, severely limiting its practical use. Therefore, we introduce Continual Generalized Intent Discovery (CGID) to address the challenges of dynamic and continual open-world intent classification. 
+
+\textbf{Class Incremental Learning} The primary goal of class-incremental learning (CIL) is to acquire knowledge about new classes while preserving the information related to the previously learned ones, thereby constructing a unified classifier. Earlier studies \cite{ke-etal-2021-adapting,geng2021iterative,li-etal-2022-continual} mainly focused on preventing catastrophic forgetting and efficient replay in CIL. However, these studies assumed labeled data streams, whereas in reality large amounts of continuously annotated data are hard to obtain and the label space is undefined. Unlike CIL, CGID charts a distinct course by continuously identifying and assimilating new classes from unlabeled OOD data streams. This task presents a set of formidable challenges compared to conventional CIL.
+
+\section{Conclusion}
+In this paper, we introduce a more challenging yet practical task as Continuous Generalized Intent Discovery (CGID), which aims at continuously and automatically discovering new intents from OOD data streams and incrementally extending the classifier, thereby enabling dynamic intent recognition in an open-world setting. To address this task, we propose a new method called Prototype-guided Learning with Replay and Distillation (PLRD). Extensive experiments and qualitative analyses validate the effectiveness of PLRD and provide insights into the key challenges of CGID.
+
+\section*{Limitations}
+This paper proposes a new task as Continual General Intent Discovery (CGID) aimed at continually and automatically discovering new intents from unlabeled out-of-domain (OOD) data  and incrementally expand them to the existing classifier. Furthermore, a practical method Prototype-guided Learning with Replay and Distillation (PLRD) is proposed for CGID. However, there are still several directions to be improved: (1) Although PLRD achieves better performance than each baseline, the performance still has a large gap to improve compared with the theoretical upper bound of a model without forgetting previous knowledge.  (2) In addition, all baselines and PLRD use a small number of previous samples for replay. The CGID method without utilizing any previous samples is not explored in this paper and can be a direction for future work. (3) Although PLRD does not generate additional overhead during inference, it requires maintaining prototypes and a frozen copy of the encoder during training, resulting in additional resource occupancy. This can be further optimized in future work.
+
+%\section*{Ethics Statement}
+
+
+%\section*{Acknowledgements}
+
+
+% Entries for the entire Anthology, followed by custom entries
+\bibliography{anthology,custom}
+\bibliographystyle{acl_natbib}
+
+\appendix
+
+\section{Datasets}
+\label{app:datasets}
+
+\begin{table*}[t]
+	\centering
+ \resizebox{0.9\textwidth}{!}{%
+	\begin{tabular}{ccccccc}
+		\hline
+		Dataset & Classes &Training & Validation & Test & Vocabulary & Length (max / mean)\\ \hline
+		Banking & 77 & 9003 & 1000 & 3080 & 5028&79/11.91\\ 
+		CLINC & 150 & 18000 & 2250 &2250 &7283&28/8.31\\
+		\bottomrule
+	\end{tabular}
+ }
+ 	
+   %\vspace{-0.2cm}
+ \caption{Detailed statistics of original Banking and CLINC datasets.}
+ \label{tab:original_dataset}
+\end{table*}
+
+
+\begin{table*}[t]
+\centering
+\resizebox{0.98\textwidth}{!}{%
+\begin{tabular}{l|c|c|c|c|c|c|c}
+\hline
+        Dataset&OOD Ratio & New Classes & All Classes & Domains & Train samples & Val Samples & Test samples \\ \hline
+        \multirow{3}{*}{Banking}&40\% & 47/10/10/10 & 47/57/67/77 & 1/1/1/1 & 5445/1136/1222/1200 & 604/127/136/133 & 1880/2280/2680/3080 \\ \cline{2-8
+}
+        &60\% & 32/15/15/15 & 32/47/62/77 & 1/1/1/1 & 3612/1819/1848/1724 & 401/202/206/191 & 1280/1880/2480/3080 \\ \cline{2-8
+}
+        &80\% & 17/20/20/20 & 17/37/57/77 & 1/1/1/1 & 1919/2432/2329/2323 & 214/271/258/257 & 680/1480/2280/3080 \\ \hline
+        \multirow{3}{*}{CLINC}&40\% & 90/20/20/20 & 90/110/130/150 & 10/10/10/10 & 10800/2,400/2,400/2,400 & 1350/300/300/300 & 1350/1650/1950/2250 \\ \cline{2-8
+}
+        &60\% & 60/30/30/30 & 60/90/120/150 & 10/10/10/10 & 7200/3600/3600/3600 & 900/450/450/450 & 900/1350/1800/2250 \\ \cline{2-8
+}
+        &80\% & 30/40/40/40 & 30/70/110/150 & 10/10/10/10 & 3600/4800/4800/4800 & 450/600/600/600 & 450/1050/1650/2250 \\ \hline
+\end{tabular}
+}
+%\vspace{-0.2cm}
+\caption{Detailed statistics of the CGID datasets, where x/x/x/x respectively represent data under the stage 0/1/2/3.}
+%\vspace{-0.65cm}
+\label{tab:cgid_dataset}
+\end{table*}
+We present detailed statistics for the original dataset Banking and CLINC in Table \ref{tab:original_dataset}. Then, we show statistics of the CGID datasets that are constructed based on Banking and CLINC in Table \ref{tab:cgid_dataset}. Since we conduct three random partitions of classes under each OOD ratio and Banking is class-imbalanced, we report the the average number of samples.
+
+\section{Implementation Details}
+\label{app:implementation}
+To ensure a fair comparison for PLRD and all baselines, we consistently use the pre-trained BERT model (BERT-base uncased \footnote{https://github.com/google-research/bert}, with 12 layer transformer) as the network backbone and add a pooling layer to obtain the intent representation (dimension = 768). In addition, we freeze all but the last transformer layer parameters to achieve better performance with BERT backbone, and speed up the training process as suggested in \citet{lin2020discovering}. We use the same IND training phase and Memory mechanism for all methods. In the IND training stage, following \citet{zhang2021discovering}, we adopt Adam with linear warm-up as the optimizer, with a batch size of 128 and a learning rate of 5e-5, and select the best checkpoint according to the accuracy of  validation set. %At each learning stage, we randomly select 5 samples according to the ground-truth or pseudo labels for each new class and store them in Memory.
+
+During the continual OOD training stages, for the CGID baseline, we follow the hyperparameter settings of the original method as much as possible. Specifically, for DeepAligned and K-means, following \citet{zhang2021discovering}, we adopt Adam with linear warm-up as the optimizer and set the training batch size to 128, the learning rate to 5e-4. In addition, we set the weight coefficient $\lambda$ =3 of the cross-entropy loss corresponding to the replay samples, which is obtained by grid search $\lambda \in\{1,2,3,4,5\}$. For E2E, following \citet{mou-etal-2022-generalized}, we use SGD with momentum as the optimizer with linear warm-up and cosine annealing (warm-up ratio of 10\%, momentum of 0.9, maximum learning rate of 0.1, and weight decay of 1.5e-4). In addition, the temperature coefficient of cross-entropy is 0.1 and multi-head clustering (number of heads is 4) is used to improve performance for E2E.
+
+For all experiments of PLRD, we also use SGD with momentum as the optimizer (warm-up ratio is 10\%, momentum is 0.9, maximum learning rate is 0.01, and weight decay of 1.5e-4). Class prototype embedding (dimension=128) is obtained by a linear projection layer through the output feature (dimension=768) of the encoder. We set the temperature $\tau$ of prototype and instance-level contrastive learning to 0.5. For the construction of the augmented examples, we  set the dropout value is 0.5. Following \cite{mou-etal-2022-generalized}, we also calibrate the logit $l^{new}_i$ by the SK algorithm \cite{cuturi2013sinkhorn} when assigning prototypes. We set the corresponding hyperparameters such as number of iteration is 3 and $\epsilon$=0.05 as same as E2E. When OOD ratio=40\% or 60\%, the moving average coefficient $\gamma$=0.7, and when OOD ratio=80\%, $\gamma$=0.9. We believe that high OOD ratio will lead to high forgetting, while larger moving average coefficient can mitigate this by helping the model remember learned prototypes.
+
+For all methods, we train 200 epochs for each OOD learning stage to achieve sufficient convergence. The trainable model parameters of PLRD are almost consistent with the baseline (approximately 9.1M). However, PLRD adopts prototype learning and a frozen BERT for knowledge distillation, , which leads to additional memory occupation and training computation. It should be noted that PLRD only needs the classifier branch in the inference stage, so there is no additional computational and spatial overhead. All experiments use a single Nvidia RTX 3090 GPU (24 GB memory).
+
+
+\section{The algorithm of estimating the number of new classes}
+\label{app:predict_k}
+
+We follow the estimation algorithm \cite{zhang2021discovering} to estimate the number of new intents for each OOD stage. Specifically, We assign a big $K^{'}$ as the number of clusters (In this paper, it is twice the number of ground-truth classes) at the beginning of each OOD stage.  As a good feature initialization is helpful for partition-based methods (e.g., K-means) \cite{platt1999probabilistic}, we use the encoder $f(\cdot)$ to extract intent features of all new training examples. Then, we perform K-means with the extracted features. We suppose that real clusters tend to be dense even with $K^{'}$, and the size of more confident clusters is larger than some threshold $t$. Therefore, we drop the low confidence cluster which size smaller than $t$, and calculate $K$ with:
+\begin{equation}
+K=\sum^{K^{'}}_{i=1}\delta(|S_i| \ge t)
+\end{equation}
+where $|S_i|$ is the size of the $i^{th}$ produced cluster, and $\delta(\cdot)$ is an indicator function. It outputs 1 if the condition is satisfied, and outputs 0 if not. Notably, we assign the threshold $t$ as the expected cluster mean size $\frac{N}{K^{'}}$ in this formula.
+
+
+
+% \section{Estimate the Number of OOD intents}
+% \label{app:estimate_k}
+
+% \begin{table}[t]
+%     \centering
+% \resizebox{0.48\textwidth}{!}{%
+%     \begin{tabular}{c|c|ccc|ccc}
+%         \hline
+%     \multirow{2}{*}{} &\multirow{2}{*}{Method} & \multicolumn{3}{c|}{Num of Classes}& \multirow{2}{*}{$A^{IND}_T$}        & \multirow{2}{*}{$A^{OOD}_T$}     & \multirow{2}{*}{$A^{ALL}_T$} \\ \cline{3-5}
+% & & t=1& t=2 & t=3 & & & \\ \hline
+%         \multirow{3}{*}{\thead{Ground \\Truth}}&DeepAligned & 15 & 15 & 15 & 72.16  & 65.02  & 67.98  \\ 
+%         &E2E & 15 & 15 & 15 & 71.28  & 69.44  & 70.20  \\ 
+%         &PLRD & 15 & 15 & 15 & \textbf{81.07}  & \textbf{70.30}  & \textbf{74.77}  \\ \hline
+%         \multirow{3}{*}{\thead{Estimate by \\model itself}}&DeepAligned & 13 & \textbf{14} & 7 & 71.25  & 49.56  & 58.57  \\ 
+%         &E2E & 13 & 12 & 11 & 67.03  & 55.33  & 60.19  \\ 
+%         &PLRD & \textbf{13} & \textbf{14} & \textbf{12} & \textbf{79.22}  & \textbf{66.28}  & \textbf{71.66}  \\ \hline
+%        \multirow{3}{*}{\thead{Estimate by \\IND Model}}& DeepAligned & 13 & 12 & 11 & 72.42  & 56.94  & 63.38  \\ 
+%         &E2E & 13 & 12 & 11 & 67.03  & 55.33  & 60.19  \\ 
+%         &PLRD & 13 & 12 & 11 & \textbf{79.22}  & \textbf{60.72}  & \textbf{68.41} \\ \hline
+%     \end{tabular}
+% }
+% \vspace{-0.2cm}
+% \caption{Estimate the number of new classes at each OOD learning stage under Banking OOD ratio = 60\%.}
+% \vspace{-0.3cm}
+% \label{tab:predict_k}
+% \end{table}
+
+% In the previous experiments, we assumed that the number of new OOD classes at each stage is pre-defined and is ground-truth. However, in practical applications, the number of new classes usually needs to be estimated automatically. We adopt the same estimation algorithm as \citet{zhang2021discovering,mou-etal-2022-generalized}. 
+% %\footnote{We leave the details of the algorithm in Appendix \ref{app:predict_k}.}.
+% Since the estimation algorithm is based on sample features, we use the model itself as the feature extractor at the beginning of each OOD learning stage. As shown in Table \ref{tab:predict_k}, when the estimated number of classes is inaccurate, the performance of all methods declines to some extent. However, PLRD can estimate the number most accurately and achieve the best performance. Then, in order to align different methods, we consistently use the frozen model after finishing the IND training stage as the feature extractor for subsequent stages. With the same estimation quality, PLRD still significantly outperforms each baseline, demonstrating that PLRD is robust.
+
+% \textbf{Continual quantity estimation of new classes} Section \ref{app:estimate_k} shows that even minor estimation errors for each stage can accumulate over stages, leading to severely biased estimation and deteriorated performance
+
+
+\end{document}

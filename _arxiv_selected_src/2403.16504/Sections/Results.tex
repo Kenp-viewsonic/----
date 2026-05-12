@@ -1,0 +1,76 @@
+\section{Results and Discussions}
+% \subsection{LLM SFT Techniques}
+% \begin{table}[h!]
+% \centering
+% \begin{tabular}{||l l c c c||} 
+%  \hline
+%  MKT & Model & Compressed Generation & Cross-Lingual Label & Acc \\ 
+%  \hline\hline
+%  SG & Naive Expand & \- & \- & 60.52\% \\
+%  SG & Selective Expand & \- & \- & 56.99\% \\
+%  SG & Llama2-7B & 0 & 0 & 56.24\% \\ 
+%  SG & Llama2-7B & 1 & 0 & 61.47\% \\
+%  ID & Naive Expand & \- & \- & 60.61\% \\
+%  ID & Selective Expand & \- & \- & 63.23\% \\
+%  ID & SeaLLM-7B-chat & 1 & 0 & 52.49\% \\
+%  ID & SeaLLM-7B-chat &1 & 1 & 55.02\% \\ [1ex] 
+%  % prefix lm in ID is worse than selective expand, but better with naive expand
+%  \hline
+% \end{tabular}
+% \caption{Performance of LLM SFT techniques.}
+% \label{table:results_sft_llm}
+% \end{table}
+% Table \ref{table:results_sft_llm} shows the effectiveness of LLM SFT techniques introduced. Compressing the generation target lowers the difficulty of the task and significantly improves the performance. Interestingly, this technique also stopped LLM hallucination, i.e. generating label with no match in the original intent set. The hallucination rate without using compressed generation is about 2.5\%. In non-English market like ID, we find that \emph{cross-lingual label} which changes the generation target to English rather than in the local language also improved the performance. While the SFT approach performs satisfactory in English market, it still leaves a lot to be desired in non-English market.
+
+% \subsection{LARA vs SFT}
+% \begin{table}[h!]
+% \centering
+% \begin{tabular}{||l l c c c c||} 
+%  \hline
+%  Model & Prompt & BR & ID & MY & SG \\ [0.5ex] 
+%  \hline\hline
+%  SFT LLM &  & 48.39\% & 55.02\% & 60.83\% & 56.99\% \\
+%  Vicuna-7B & $\mathcal{P}$ & 51.88\% & 60.35\% & 62.88\% & 65.26\% \\ 
+%  SeaLLM-7B-chat & $\mathcal{P}$ & 51.34\% & 62.97\% & 65.00\% & 65.26\% \\ [1ex] 
+%  \hline
+% \end{tabular}
+% \caption{In-context learning vs SFT approach.}
+% \label{table:results_sft_icl}
+% \end{table}
+% From Table \ref{table:results_sft_icl}, we observe that in-context learning approach can outperform its SFT counterpart without going through the hassle of generating multi-turn training data which in turn might not be completely reliable. Using a multi-lingual model specific to certain markets, e.g. SeaLLM for Southeast Asia markets, can further improve the performance. 
+
+% \subsection{LARA experiment}
+
+% - ICL is the best methods in average
+% - symbolic intent is helpless in ICL, we still need related intents within ICL
+% - Symbolic answer is helpless in ICL, But can improve the RT
+% - but adding historical words in message fields can further improve the performance.
+Table \ref{table:results_icl} compares the performance of baselines and LARA on our multi-turn dataset. The single-turn approach has the worst performance due to the lack of context from history queries. The single-turn model with \emph{Naive concatenation} is lower than \emph{Selective concatenation} by 0.89\% on average, showing that naively including all history queries will introduce noises, which in turn jeopardizes the performance. However, pseudo-labelling the dataset used to train the concatenation decision model will need to be carefully carried out, and despite the extra steps, it will not necessarily be more effective than the naive method. 
+
+LARA, on the other hand, with prompt $\mathcal{P}_{formatted}$, achieves the best results on most markets without any multi-turn training data. On average, it improved accuracy by 3.67\% compared with \emph{Selective concatenation}. Especially on the non-English markets, it also improved by 2.96\%, 4.18\% and 4.00\% on TH, VN and BR separately. This highlights the linguistic-adaptivity of the method on broad languages. The only market that does not outperform the baselines is ID, which most probably can be attributed to the language ability of open-sourced LLMs in handling the local slang and abbreviations in casual conversation. After all, the backbone model used in baselines is pre-trained directly on the in-domain chat log data, while the LLM models are used out of the box.
+
+
+\begin{table*}[th!]
+\centering
+\scalebox{.8}{
+\begin{tabular}{||l l c c c c c c c c c||} 
+ \hline
+ Model & Prompt & BR & ID & MY & PH & SG & TH & TW & VN & avg \\ [0.5ex] 
+ \hline\hline
+ Single-turn & - & 30.98\% & 52.14\% & 56.81\% & 40.21\% & 51.13\% & 52.99\% & 58.07\% & 65.90\% & 53.76\% \\
+ Naive Concat. & - & 50.81\% & 60.61\% & 57.02\% & 47.62\% & 60.52\% & 56.97\% & 65.44\% & 76.95\% & 60.08\% \\
+ Selective Concat. & - & 52.69\% & \textbf{63.23}\% & 60.20\% & 51.32\% & 56.99\% & 57.77\% & 64.02\% & 74.10\% & 60.97\% \\ 
+ Vicuna-13B & $\mathcal{P}$ & 52.69\% & 61.48\% & \textbf{65.42}\% & \underline{54.50}\% & 65.26\% & 60.96\% & \textbf{67.14}\% & \underline{77.90}\% & \underline{64.18}\% \\
+ Vicuna-13B & $\mathcal{P}_{symbolic}$ & 51.88\% & 60.00\% & 64.57\% & 53.97\% & 65.26\% & 58.96\% & 65.44\% & 74.67\% & 62.92\% \\
+ Vicuna-13B & $\mathcal{P}_{prepend}$ & \underline{54.03}\% & 61.75\% & 64.50\% & 53.44\% & \textbf{65.94}\% & \underline{61.55}\% & \underline{66.86}\% & 75.81\% & 63.97\% \\
+ Vicuna-13B & $\mathcal{P}_{formatted}$ & \textbf{55.65}\% & \underline{62.88}\% & \underline{64.71}\% & \textbf{55.03}\% & \underline{65.40}\% & \textbf{61.95}\% & \underline{66.86}\% & \textbf{78.10}\% & \textbf{64.64}\% \\[1ex]
+ \hline
+\end{tabular}
+}
+\caption{Performance of LARA compared to baselines, the average here is weighted on the number of test samples in each market. The best performance for each dataset is in boldface, while the second best is underlined.}
+\label{table:results_icl}
+\vspace{-0.3cm}
+\end{table*}
+
+
+Replacing the label names with non-related symbols in $\mathcal{P}_{symbolic}$ significantly hurts the performance of in-context learning. On the other hand, minimal changes to label names in $\mathcal{P}_{prepend}$ does not heavily impact the performance. In turn, the inference time is improved by 77\%, from 0.75it/s to 1.32it/s on a single V100 card using Hugging Face python library. Interestingly, the model also stopped generating labels which cannot be matched with the options provided in demonstrations, while previously the rate is on average 1.6\% using $\mathcal{P}$. Finally, we also tried a new prompt $\mathcal{P}_{formatted}$ based on $\mathcal{P}_{prepend}$. Only a very slight change to the context format is done, but it can outperform the other prompt variants in all datasets, suggesting that giving $\mathcal{C}_{\mathcal{Q}}$ a closer format to $\mathcal{E}$ and the targeted $q_n$ will be more beneficial in the context utilization. Besides, this also hints that the prompt could also be worked on more in the future as it is not extensively tuned in this work. 

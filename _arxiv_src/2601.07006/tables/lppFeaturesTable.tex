@@ -1,0 +1,34 @@
+\begin{table}[h]
+\centering
+\caption{\textbf{Overview of LPP Feature Families.} Each category captures a distinct aspect of model uncertainty and is accessible via gray-box or black-box access. The full mathematical specification of all LPPs appears in Table~\ref{app:full_lpps} (Appendix~\ref{app:prompts}).}
+\small
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabularx}{\columnwidth}{@{}%
+  >{\raggedright\arraybackslash}p{0.24\columnwidth}%
+  >{\raggedright\arraybackslash}X%
+  >{\raggedright\arraybackslash}p{0.3\columnwidth}%
+@{}}
+\toprule
+\textbf{LPP Category} & \textbf{Signal Source \& Intuition} & \textbf{Example Features} \\
+\midrule
+\textbf{Post-Hoc Classification Uncertainty} (Gray-Box) &
+Confidence at the final decision boundary, derived from token log-probabilities over discrete classification outcomes. &
+Max Softmax Probability (MSP), Top-5 Entropy (Entropy), Top-2 Probability Margin (Top-2 Margin), Confidence Score \\
+\midrule
+\textbf{Internal Generation Uncertainty} (Gray-Box; excluded from reported results) &
+Signals from intermediate Chain-of-Thought (CoT) reasoning tokens. &
+Perplexity (Natural Base), Sequence Negative Log-Likelihood, Mean Token Entropy, Token Entropy Quantiles \\
+\midrule
+\textbf{Verbalized Confidence} (Black-Box) &
+Explicit, self-reported confidence stated by the LLM in structured natural language outputs. &
+Reported Confidence (Scalar), Confidence Bands (One-Hot; VL/L/M/H/VH) \\
+\midrule
+\textbf{Uncertainty Attribution Indicators} (Black-Box) &
+Uncertainty attribution indicators signals distinguishing aleatoric uncertainty (evidence deficits) from epistemic uncertainty (policy gaps). Enables interpretable routing. &
+Inconclusive Flag (Binary), Evidence-Deficit Indicator, Policy-Gap Indicator \\
+\bottomrule
+\end{tabularx}
+\label{tab:lpps}
+\end{table}
+\vspace{-11pt}

@@ -1,0 +1,604 @@
+% Use this file for citations not found in the ACL Anthology (contained in "anthology.bib").
+
+% Intro
+@article{
+verwimp2024continual,
+title={Continual Learning: Applications and the Road Forward},
+author={Eli Verwimp and Rahaf Aljundi and Shai Ben-David and Matthias Bethge and Andrea Cossu and Alexander Gepperth and Tyler L. Hayes and Eyke H{\"u}llermeier and Christopher Kanan and Dhireesha Kudithipudi and Christoph H. Lampert and Martin Mundt and Razvan Pascanu and Adrian Popescu and Andreas S. Tolias and Joost van de Weijer and Bing Liu and Vincenzo Lomonaco and Tinne Tuytelaars and Gido M van de Ven},
+journal={Transactions on Machine Learning Research},
+issn={2835-8856},
+year={2024},
+url={https://openreview.net/forum?id=axBIMcGZn9},
+note={}
+}
+@inproceedings{10.1007/978-3-030-58536-5_31,
+author = {Prabhu, Ameya and Torr, Philip H. S. and Dokania, Puneet K.},
+title = {GDumb: A Simple Approach that Questions Our Progress in Continual Learning},
+year = {2020},
+isbn = {978-3-030-58535-8},
+publisher = {Springer-Verlag},
+address = {Berlin, Heidelberg},
+url = {https://doi.org/10.1007/978-3-030-58536-5_31},
+doi = {10.1007/978-3-030-58536-5_31},
+abstract = {We discuss a general formulation for the Continual Learning (CL) problem for classification—a learning task where a stream provides samples to a learner and the goal of the learner, depending on the samples it receives, is to continually upgrade its knowledge about the old classes and learn new ones. Our formulation takes inspiration from the open-set recognition problem where test scenarios do not necessarily belong to the training distribution. We also discuss various quirks and assumptions encoded in recently proposed approaches for CL. We argue that some oversimplify the problem to an extent that leaves it with very little practical importance, and makes it extremely easy to perform well on. To validate this, we propose GDumb that (1) greedily stores samples in memory as they come and; (2) at test time, trains a model from scratch using samples only in the memory. We show that even though GDumb is not specifically designed for CL problems, it obtains state-of-the-art accuracies (often with large margins) in almost all the experiments when compared to a multitude of recently proposed algorithms. Surprisingly, it outperforms approaches in CL formulations for which they were specifically designed. This, we believe, raises concerns regarding our progress in CL for classification. Overall, we hope our formulation, characterizations and discussions will help in designing realistically useful CL algorithms, and GDumb will serve as a strong contender for the same.},
+booktitle = {Computer Vision – ECCV 2020: 16th European Conference, Glasgow, UK, August 23–28, 2020, Proceedings, Part II},
+pages = {524–540},
+numpages = {17},
+location = {<conf-loc content-type="InPerson">Glasgow, United Kingdom</conf-loc>}
+}
+@InProceedings{Araujo_2022_CVPR,
+    author    = {Araujo, Vladimir and Hurtado, Julio and Soto, Alvaro and Moens, Marie-Francine},
+    title     = {Entropy-Based Stability-Plasticity for Lifelong Learning},
+    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops},
+    month     = {June},
+    year      = {2022},
+    pages     = {3721-3728}
+}
+@ARTICLE{10.3389/fpsyg.2013.00504,
+AUTHOR={Mermillod, Martial  and Bugaiska, Aurélia  and BONIN, Patrick },
+TITLE={The stability-plasticity dilemma: investigating the continuum from catastrophic forgetting to age-limited learning effects},
+JOURNAL={Frontiers in Psychology},
+VOLUME={4},
+YEAR={2013},
+URL={https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2013.00504},
+DOI={10.3389/fpsyg.2013.00504},
+ISSN={1664-1078},
+}
+@incollection{MCCLOSKEY1989109,
+title = {Catastrophic Interference in Connectionist Networks: The Sequential Learning Problem},
+editor = {Gordon H. Bower},
+series = {Psychology of Learning and Motivation},
+publisher = {Academic Press},
+volume = {24},
+pages = {109-165},
+year = {1989},
+issn = {0079-7421},
+doi = {https://doi.org/10.1016/S0079-7421(08)60536-8},
+url = {https://www.sciencedirect.com/science/article/pii/S0079742108605368},
+author = {Michael McCloskey and Neal J. Cohen},
+abstract = {Publisher Summary
+Connectionist networks in which information is stored in weights on connections among simple processing units have attracted considerable interest in cognitive science. Much of the interest centers around two characteristics of these networks. First, the weights on connections between units need not be prewired by the model builder but rather may be established through training in which items to be learned are presented repeatedly to the network and the connection weights are adjusted in small increments according to a learning algorithm. Second, the networks may represent information in a distributed fashion. This chapter discusses the catastrophic interference in connectionist networks. Distributed representations established through the application of learning algorithms have several properties that are claimed to be desirable from the standpoint of modeling human cognition. These properties include content-addressable memory and so-called automatic generalization in which a network trained on a set of items responds correctly to other untrained items within the same domain. New learning may interfere catastrophically with old learning when networks are trained sequentially. The analysis of the causes of interference implies that at least some interference will occur whenever new learning may alter weights involved in representing old learning, and the simulation results demonstrate only that interference is catastrophic in some specific networks.}
+}
+@inproceedings{
+hu2022lora,
+title={Lo{RA}: Low-Rank Adaptation of Large Language Models},
+author={Edward J Hu and yelong shen and Phillip Wallis and Zeyuan Allen-Zhu and Yuanzhi Li and Shean Wang and Lu Wang and Weizhu Chen},
+booktitle={International Conference on Learning Representations},
+year={2022},
+url={https://openreview.net/forum?id=nZeVKeeFYf9}
+}
+@inproceedings{li-liang-2021-prefix,
+    title = "Prefix-Tuning: Optimizing Continuous Prompts for Generation",
+    author = "Li, Xiang Lisa  and
+      Liang, Percy",
+    editor = "Zong, Chengqing  and
+      Xia, Fei  and
+      Li, Wenjie  and
+      Navigli, Roberto",
+    booktitle = "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers)",
+    month = aug,
+    year = "2021",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.acl-long.353",
+    doi = "10.18653/v1/2021.acl-long.353",
+    pages = "4582--4597",
+    abstract = "Fine-tuning is the de facto way of leveraging large pretrained language models for downstream tasks. However, fine-tuning modifies all the language model parameters and therefore necessitates storing a full copy for each task. In this paper, we propose prefix-tuning, a lightweight alternative to fine-tuning for natural language generation tasks, which keeps language model parameters frozen and instead optimizes a sequence of continuous task-specific vectors, which we call the prefix. Prefix-tuning draws inspiration from prompting for language models, allowing subsequent tokens to attend to this prefix as if it were {``}virtual tokens{''}. We apply prefix-tuning to GPT-2 for table-to-text generation and to BART for summarization. We show that by learning only 0.1{\%} of the parameters, prefix-tuning obtains comparable performance in the full data setting, outperforms fine-tuning in low-data settings, and extrapolates better to examples with topics that are unseen during training.",
+}
+@inproceedings{wang-etal-2023-rehearsal,
+    title = "Rehearsal-free Continual Language Learning via Efficient Parameter Isolation",
+    author = "Wang, Zhicheng  and
+      Liu, Yufang  and
+      Ji, Tao  and
+      Wang, Xiaoling  and
+      Wu, Yuanbin  and
+      Jiang, Congcong  and
+      Chao, Ye  and
+      Han, Zhencong  and
+      Wang, Ling  and
+      Shao, Xu  and
+      Zeng, Wenqiu",
+    editor = "Rogers, Anna  and
+      Boyd-Graber, Jordan  and
+      Okazaki, Naoaki",
+    booktitle = "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = jul,
+    year = "2023",
+    address = "Toronto, Canada",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.acl-long.612",
+    doi = "10.18653/v1/2023.acl-long.612",
+    pages = "10933--10946",
+    abstract = "We study the problem of defying catastrophic forgetting when learning a series of language processing tasks. Compared with previous methods, we emphasize the importance of not caching history tasks{'} data, which makes the problem more challenging. Our proposed method applies the parameter isolation strategy. For each task, it allocates a small portion of private parameters and learns them with a shared pre-trained model. To load correct parameters at testing time, we introduce a simple yet effective non-parametric method. Experiments on continual language learning benchmarks show that our method is significantly better than all existing no-data-cache methods, and is comparable (or even better) than those using historical data.",
+}
+@inproceedings{
+razdaibiedina2023progressive,
+title={Progressive Prompts: Continual Learning for Language Models},
+author={Anastasia Razdaibiedina and Yuning Mao and Rui Hou and Madian Khabsa and Mike Lewis and Amjad Almahairi},
+booktitle={The Eleventh International Conference on Learning Representations },
+year={2023},
+url={https://openreview.net/forum?id=UJTgQBc91_}
+}
+@InProceedings{Wang_2022_CVPR,
+    author    = {Wang, Zifeng and Zhang, Zizhao and Lee, Chen-Yu and Zhang, Han and Sun, Ruoxi and Ren, Xiaoqi and Su, Guolong and Perot, Vincent and Dy, Jennifer and Pfister, Tomas},
+    title     = {Learning To Prompt for Continual Learning},
+    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    month     = {June},
+    year      = {2022},
+    pages     = {139-149}
+}
+@InProceedings{Smith_2023_CVPR,
+    author    = {Smith, James Seale and Karlinsky, Leonid and Gutta, Vyshnavi and Cascante-Bonilla, Paola and Kim, Donghyun and Arbelle, Assaf and Panda, Rameswar and Feris, Rogerio and Kira, Zsolt},
+    title     = {CODA-Prompt: COntinual Decomposed Attention-Based Prompting for Rehearsal-Free Continual Learning},
+    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    month     = {June},
+    year      = {2023},
+    pages     = {11909-11919}
+}
+@INPROCEEDINGS {10204648,
+author = {A. Prabhu and H. Al Kader Hammoud and P. Dokania and P. S. Torr and S. Lim and B. Ghanem and A. Bibi},
+booktitle = {2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+title = {Computationally Budgeted Continual Learning: What Does Matter?},
+year = {2023},
+volume = {},
+issn = {},
+pages = {3698-3707},
+abstract = {Continual Learning (CL) aims to sequentially train models on streams of incoming data that vary in distribution by preserving previous knowledge while adapting to new data. Current CL literature focuses on restricted access to previously seen data, while imposing no constraints on the computational budget for training. This is unreasonable for applications in-the-wild, where systems are primarily constrained by computational and time budgets, not storage. We revisit this problem with a large-scale benchmark and analyze the performance of traditional CL approaches in a compute-constrained setting, where effective memory samples used in training can be implicitly restricted as a consequence of limited computation. We conduct experiments evaluating various CL sampling strategies, distillation losses, and partial fine-tuning on two large-scale datasets, namely ImageNet2K and Continual Google Landmarks V2 in data incremental, class incremental, and time incremental settings. Through extensive experiments amounting to a total of over 1500 GPU-hours, we find that, under compute-constrained setting, traditional CL approaches, with no exception, fail to outperform a simple minimal baseline that samples uniformly from memory. Our conclusions are consistent in a different number of stream time steps, e.g., 20 to 200, and under several computational budgets. This suggests that most existing CL methods are particularly too computationally expensive for realistic budgeted deployment. Code for this project is available at: https://github.com/drimpossible/BudgetCL.},
+keywords = {training;computer vision;codes;computational modeling;memory management;streaming media;benchmark testing},
+doi = {10.1109/CVPR52729.2023.00360},
+url = {https://doi.ieeecomputersociety.org/10.1109/CVPR52729.2023.00360},
+publisher = {IEEE Computer Society},
+address = {Los Alamitos, CA, USA},
+month = {jun}
+}
+
+
+
+% CL + PLM
+@inproceedings{sun_lamol_2020,
+	title = {{LAMOL}: {LAnguage} {MOdeling} for {Lifelong} {Language} {Learning}},
+	shorttitle = {{LAMOL}},
+	url = {https://iclr.cc/virtual_2020/poster_Skgxcn4YDS.html},
+	abstract = {Most research on lifelong learning applies to images or games, but not language. We present LAMOL, a simple yet effective method for lifelong language learning (LLL) based on language modeling. LAMOL replays pseudo-samples of previous tasks while requiring no extra memory or model capacity. Specifically, LAMOL is a language model that simultaneously learns to solve the tasks and generate training samples. When the model is trained for a new task, it generates pseudo-samples of previous tasks for training alongside data for the new task. The results show that LAMOL prevents catastrophic forgetting without any sign of intransigence and can perform five very different language tasks sequentially with only one model. Overall, LAMOL outperforms previous methods by a considerable margin and is only 2-3\% worse than multitasking, which is usually considered the LLL upper bound. The source code is available at https://github.com/jojotenya/LAMOL.},
+	urldate = {2022-05-14},
+	author = {Sun, Fan-Keng and Ho, Cheng-Hao and Lee, Hung-Yi},
+	month = apr,
+    booktitle={International Conference on Learning Representations},
+    year={2020},
+    url={https://openreview.net/forum?id=Skgxcn4YDS}
+}
+@misc{zhou2024continual,
+      title={Continual Learning with Pre-Trained Models: A Survey}, 
+      author={Da-Wei Zhou and Hai-Long Sun and Jingyi Ning and Han-Jia Ye and De-Chuan Zhan},
+      year={2024},
+      eprint={2401.16386},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+@inproceedings{biesialska-etal-2020-continual,
+    title = "Continual Lifelong Learning in Natural Language Processing: A Survey",
+    author = "Biesialska, Magdalena  and
+      Biesialska, Katarzyna  and
+      Costa-juss{\`a}, Marta R.",
+    editor = "Scott, Donia  and
+      Bel, Nuria  and
+      Zong, Chengqing",
+    booktitle = "Proceedings of the 28th International Conference on Computational Linguistics",
+    month = dec,
+    year = "2020",
+    address = "Barcelona, Spain (Online)",
+    publisher = "International Committee on Computational Linguistics",
+    url = "https://aclanthology.org/2020.coling-main.574",
+    doi = "10.18653/v1/2020.coling-main.574",
+    pages = "6523--6541",
+    abstract = "Continual learning (CL) aims to enable information systems to learn from a continuous data stream across time. However, it is difficult for existing deep learning architectures to learn a new task without largely forgetting previously acquired knowledge. Furthermore, CL is particularly challenging for language learning, as natural language is ambiguous: it is discrete, compositional, and its meaning is context-dependent. In this work, we look at the problem of CL through the lens of various NLP tasks. Our survey discusses major challenges in CL and current methods applied in neural network models. We also provide a critical review of the existing CL evaluation methods and datasets in NLP. Finally, we present our outlook on future research directions.",
+}
+@article{Cossu2023,
+  title = {Continual Pre-Training Mitigates Forgetting in Language and Vision},
+  url = {http://dx.doi.org/10.2139/ssrn.4495233},
+  DOI = {10.2139/ssrn.4495233},
+  publisher = {Elsevier BV},
+  author = {Cossu,  Andrea and Carta,  Antonio and Passaro,  Lucia and Lomonaco,  Vincenzo and Tuytelaars,  Tinne and Bacciu,  Davide},
+  year = {2023}
+}
+
+@inproceedings{mhamdi-etal-2023-cross,
+    title = "Cross-lingual Continual Learning",
+    author = "M{'}hamdi, Meryem  and
+      Ren, Xiang  and
+      May, Jonathan",
+    editor = "Rogers, Anna  and
+      Boyd-Graber, Jordan  and
+      Okazaki, Naoaki",
+    booktitle = "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = jul,
+    year = "2023",
+    address = "Toronto, Canada",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.acl-long.217",
+    doi = "10.18653/v1/2023.acl-long.217",
+    pages = "3908--3943",
+    abstract = "The longstanding goal of multi-lingual learning has been to develop a universal cross-lingual model that can withstand the changes in multi-lingual data distributions. There has been a large amount of work to adapt such multi-lingual models to unseen target languages. However, the majority of work in this direction focuses on the standard one-hop transfer learning pipeline from source to target languages, whereas in realistic scenarios, new languages can be incorporated at any time in a sequential manner. In this paper, we present a principled Cross-lingual Continual Learning (CCL) evaluation paradigm, where we analyze different categories of approaches used to continually adapt to emerging data from different languages. We provide insights into what makes multilingual sequential learning particularly challenging. To surmount such challenges, we benchmark a representative set of cross-lingual continual learning algorithms and analyze their knowledge preservation, accumulation, and generalization capabilities compared to baselines on carefully curated datastreams. The implications of this analysis include a recipe for how to measure and balance different cross-lingual continual learning desiderata, which go beyond conventional transfer learning.",
+}
+@misc{wang2024rehearsalfree,
+      title={Rehearsal-Free Modular and Compositional Continual Learning for Language Models}, 
+      author={Mingyang Wang and Heike Adel and Lukas Lange and Jannik Strötgen and Hinrich Schütze},
+      year={2024},
+      eprint={2404.00790},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+@misc{
+cheng2024dynamic,
+title={Dynamic Adapter Merging for Continual Video Question-Answering Learning},
+author={Feng Cheng and Ziyang Wang and Yi-Lin Sung and Yan-Bo Lin and Mohit Bansal and Gedas Bertasius},
+year={2024},
+url={https://openreview.net/forum?id=L1FeTLOwzr}
+}
+
+
+% local adaptation
+@inproceedings{
+sprechmann2018memorybased,
+title={Memory-based Parameter Adaptation},
+author={Pablo Sprechmann and Siddhant Jayakumar and Jack Rae and Alexander Pritzel and Adria Puigdomenech Badia and Benigno Uria and Oriol Vinyals and Demis Hassabis and Razvan Pascanu and Charles Blundell},
+booktitle={International Conference on Learning Representations},
+year={2018},
+url={https://openreview.net/forum?id=rkfOvGbCW},
+}
+
+@inproceedings{NEURIPS2019_f8d2e80c,
+ author = {d\textquotesingle Autume, Cyprien de Masson and Ruder, Sebastian and Kong, Lingpeng and Yogatama, Dani},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {H. Wallach and H. Larochelle and A. Beygelzimer and F. d\textquotesingle Alch\'{e}-Buc and E. Fox and R. Garnett},
+ pages = {},
+ publisher = {Curran Associates, Inc.},
+ title = {Episodic Memory in Lifelong Language Learning},
+ url = {https://proceedings.neurips.cc/paper/2019/file/f8d2e80c1458ea2501f98a2cafadb397-Paper.pdf},
+ volume = {32},
+ year = {2019}
+}
+
+@inproceedings{wang-etal-2020-efficient,
+    title = "Efficient Meta Lifelong-Learning with Limited Memory",
+    author = "Wang, Zirui  and
+      Mehta, Sanket Vaibhav  and
+      Poczos, Barnabas  and
+      Carbonell, Jaime",
+    editor = "Webber, Bonnie  and
+      Cohn, Trevor  and
+      He, Yulan  and
+      Liu, Yang",
+    booktitle = "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)",
+    month = nov,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2020.emnlp-main.39",
+    doi = "10.18653/v1/2020.emnlp-main.39",
+    pages = "535--548",
+    abstract = "Current natural language processing models work well on a single task, yet they often fail to continuously learn new tasks without forgetting previous ones as they are re-trained throughout their lifetime, a challenge known as lifelong learning. State-of-the-art lifelong language learning methods store past examples in episodic memory and replay them at both training and inference time. However, as we show later in our experiments, there are three significant impediments: (1) needing unrealistically large memory module to achieve good performance, (2) suffering from negative transfer, (3) requiring multiple local adaptation steps for each test example that significantly slows down the inference speed. In this paper, we identify three common principles of lifelong learning methods and propose an efficient meta-lifelong framework that combines them in a synergistic fashion. To achieve sample efficiency, our method trains the model in a manner that it learns a better initialization for local adaptation. Extensive experiments on text classification and question answering benchmarks demonstrate the effectiveness of our framework by achieving state-of-the-art performance using merely 1{\%} memory size and narrowing the gap with multi-task learning. We further show that our method alleviates both catastrophic forgetting and negative transfer at the same time.",
+}
+
+@misc{
+moon2023multivariate,
+title={Multivariate Gaussian Representation of Previous Tasks for Continual Learning},
+author={HyungJun Moon and TAEHEON KIM and Sung-Bae Cho},
+year={2023},
+url={https://openreview.net/forum?id=uw9hk67tDEE}
+}
+
+% routing
+
+@inproceedings{
+shazeer2017,
+title={Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer},
+author={Noam Shazeer and *Azalia Mirhoseini and *Krzysztof Maziarz and Andy Davis and Quoc Le and Geoffrey Hinton and Jeff Dean},
+booktitle={International Conference on Learning Representations},
+year={2017},
+url={https://openreview.net/forum?id=B1ckMDqlg}
+}
+
+@inproceedings{wang-etal-2022-adamix,
+    title = "{A}da{M}ix: Mixture-of-Adaptations for Parameter-efficient Model Tuning",
+    author = "Wang, Yaqing  and
+      Agarwal, Sahaj  and
+      Mukherjee, Subhabrata  and
+      Liu, Xiaodong  and
+      Gao, Jing  and
+      Awadallah, Ahmed Hassan  and
+      Gao, Jianfeng",
+    editor = "Goldberg, Yoav  and
+      Kozareva, Zornitsa  and
+      Zhang, Yue",
+    booktitle = "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing",
+    month = dec,
+    year = "2022",
+    address = "Abu Dhabi, United Arab Emirates",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.emnlp-main.388",
+    doi = "10.18653/v1/2022.emnlp-main.388",
+    pages = "5744--5760",
+    abstract = "Standard fine-tuning of large pre-trained language models (PLMs) for downstream tasks requires updating hundreds of millions to billions of parameters, and storing a large copy of the PLM weights for every task resulting in increased cost for storing, sharing and serving the models. To address this, parameter-efficient fine-tuning (PEFT) techniques were introduced where small trainable components are injected in the PLM and updated during fine-tuning. We propose AdaMix as a general PEFT method that tunes a mixture of adaptation modules {--} given the underlying PEFT method of choice {--} introduced in each Transformer layer while keeping most of the PLM weights frozen. For instance, AdaMix can leverage a mixture of adapters like Houlsby or a mixture of low rank decomposition matrices like LoRA to improve downstream task performance over the corresponding PEFT methods for fully supervised and few-shot NLU and NLG tasks. Further, we design AdaMix such that it matches the same computational cost and the number of tunable parameters as the underlying PEFT method. By only tuning 0.1-0.2{\%} of PLM parameters, we show that AdaMix outperforms SOTA parameter-efficient fine-tuning and full model fine-tuning for both NLU and NLG tasks.",
+}
+
+@inproceedings{
+zadouri2024pushing,
+title={Pushing Mixture of Experts to the Limit: Extremely Parameter Efficient MoE for Instruction Tuning},
+author={Ted Zadouri and Ahmet {\"U}st{\"u}n and Arash Ahmadian and Beyza Ermis and Acyr Locatelli and Sara Hooker},
+booktitle={The Twelfth International Conference on Learning Representations},
+year={2024},
+url={https://openreview.net/forum?id=EvDeiLv7qc}
+}
+
+@inproceedings{dikkala-etal-2023-benefits,
+    title = "On the Benefits of Learning to Route in Mixture-of-Experts Models",
+    author = "Dikkala, Nishanth  and
+      Ghosh, Nikhil  and
+      Meka, Raghu  and
+      Panigrahy, Rina  and
+      Vyas, Nikhil  and
+      Wang, Xin",
+    editor = "Bouamor, Houda  and
+      Pino, Juan  and
+      Bali, Kalika",
+    booktitle = "Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing",
+    month = dec,
+    year = "2023",
+    address = "Singapore",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.emnlp-main.583",
+    doi = "10.18653/v1/2023.emnlp-main.583",
+    pages = "9376--9396",
+    abstract = "Mixture-of-Expert (MoE) Transformer models, such as the Switch Transformer, allow us to successfully scale up model sizes while keeping the amount of compute time fixed. Prior work has established the computational efficiency benefits of using these models. A core component of these models is a router that routes input tokens to different experts in a layer. We show theoretical and empirical evidence that the router{'}s ability to route tokens intelligently confers a significant advantage to MoE models. We study synthetic settings where the input data is distributed in clusters and show theoretically and empirically that the router learns to route the inputs according to these clusters. Then we perform experiments on real data using the T5X library, where we observe that a trainable router confers a non-trivial benefit instead of a non-trainable router.",
+}
+@article{
+muqeeth2024soft,
+title={Soft Merging of Experts with Adaptive Routing},
+author={Mohammed Muqeeth and Haokun Liu and Colin Raffel},
+journal={Transactions on Machine Learning Research},
+issn={2835-8856},
+year={2024},
+url={https://openreview.net/forum?id=7I199lc54z},
+note={Featured Certification}
+}
+@misc{muqeeth2024learning,
+      title={Learning to Route Among Specialized Experts for Zero-Shot Generalization}, 
+      author={Mohammed Muqeeth and Haokun Liu and Yufan Liu and Colin Raffel},
+      year={2024},
+      eprint={2402.05859},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+@inproceedings{ponti-etal-2023-combining,
+    title = "Combining Parameter-efficient Modules for Task-level Generalisation",
+    author = "Ponti, Edoardo Maria  and
+      Sordoni, Alessandro  and
+      Bengio, Yoshua  and
+      Reddy, Siva",
+    editor = "Vlachos, Andreas  and
+      Augenstein, Isabelle",
+    booktitle = "Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics",
+    month = may,
+    year = "2023",
+    address = "Dubrovnik, Croatia",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.eacl-main.49",
+    doi = "10.18653/v1/2023.eacl-main.49",
+    pages = "687--702",
+    abstract = "A modular design encourages neural models to disentangle and recombine different facets of knowledge to generalise more systematically to new tasks. In this work, we assume that each task is associated with a subset of latent skills from an (arbitrary size) inventory. In turn, each skill corresponds to a parameter-efficient (sparse / low-rank) model adapter. By jointly learning adapters and a routing function that allocates skills to each task, the full network is instantiated as the average of the parameters of active skills. We propose several inductive biases that encourage re-usage and composition of the skills, including variable-size skill allocation and a dual-speed learning rate. We evaluate our latent-skill model in two main settings: 1) multitask reinforcement learning for instruction following on 8 levels of the BabyAI platform; and 2) few-shot fine-tuning of language models on 160 NLP tasks of the CrossFit benchmark. We find that the modular design of our network enhances sample efficiency in reinforcement learning and few-shot generalisation in supervised learning, compared to a series of baselines. These include models where parameters are fully shared, task-specific, conditionally generated (HyperFormer), or sparse mixture-of-experts (TaskMoE).",
+}
+
+
+%method
+@inproceedings{araujo-etal-2022-relevant,
+    title = "How Relevant is Selective Memory Population in Lifelong Language Learning?",
+    author = "Araujo, Vladimir and
+      Balabin, Helena and
+      Hurtado, Julio and
+      Soto, Alvaro and
+      Moens, Marie-Francine",
+    booktitle = "Proceedings of the 2nd Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics and the 12th International Joint Conference on Natural Language Processing",
+    month = nov,
+    year = "2022",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    pages = "154--160",
+    url = "https://aclanthology.org/2022.aacl-short.20",
+}
+
+@misc{wistuba2024choice,
+      title={Choice of PEFT Technique in Continual Learning: Prompt Tuning is Not All You Need}, 
+      author={Martin Wistuba and Prabhu Teja Sivaprasad and Lukas Balles and Giovanni Zappella},
+      year={2024},
+      eprint={2406.03216},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+
+@inproceedings{10.5555/3666122.3666432,
+author = {Yadav, Prateek and Tam, Derek and Choshen, Leshem and Raffel, Colin and Bansal, Mohit},
+title = {TIES-MERGING: resolving interference when merging models},
+year = {2024},
+publisher = {Curran Associates Inc.},
+address = {Red Hook, NY, USA},
+abstract = {Transfer learning - i.e., further fine-tuning a pre-trained model on a downstream task - can confer significant advantages, including improved downstream performance, faster convergence, and better sample efficiency. These advantages have led to a proliferation of task-specific fine-tuned models, which typically can only perform a single task and do not benefit from one another. Recently, model merging techniques have emerged as a solution to combine multiple task-specific models into a single multitask model without performing additional training. However, existing merging methods often ignore the interference between parameters of different models, resulting in large performance drops when merging multiple models. In this paper, we demonstrate that prior merging techniques inadvertently lose valuable information due to two major sources of interference: (a) interference due to redundant parameter values and (b) disagreement on the sign of a given parameter's values across models. To address this, we propose our method, TRIM, ELECT SIGN \& MERGE (TIES-MERGING), which introduces three novel steps when merging models: (1) resetting parameters that only changed a small amount during fine-tuning, (2) resolving sign conflicts, and (3) merging only the parameters that are in alignment with the final agreed-upon sign. We find that TIES-MERGING outperforms several existing methods in diverse settings covering a range of modalities, domains, number of tasks, model sizes, architectures, and fine-tuning settings. We further analyze the impact of different types of interference on model parameters, and highlight the importance of resolving sign interference. Our code is available at https://github.com/prateeky2806/ties-merging},
+booktitle = {Proceedings of the 37th International Conference on Neural Information Processing Systems},
+articleno = {310},
+numpages = {23},
+location = {<conf-loc>, <city>New Orleans</city>, <state>LA</state>, <country>USA</country>, </conf-loc>},
+series = {NIPS '23}
+}
+
+@misc{shazeer2017outrageously,
+      title={Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer}, 
+      author={Noam Shazeer and Azalia Mirhoseini and Krzysztof Maziarz and Andy Davis and Quoc Le and Geoffrey Hinton and Jeff Dean},
+      year={2017},
+      eprint={1701.06538},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+
+
+@InProceedings{pmlr-v162-wortsman22a,
+  title = 	 {Model soups: averaging weights of multiple fine-tuned models improves accuracy without increasing inference time},
+  author =       {Wortsman, Mitchell and Ilharco, Gabriel and Gadre, Samir Ya and Roelofs, Rebecca and Gontijo-Lopes, Raphael and Morcos, Ari S and Namkoong, Hongseok and Farhadi, Ali and Carmon, Yair and Kornblith, Simon and Schmidt, Ludwig},
+  booktitle = 	 {Proceedings of the 39th International Conference on Machine Learning},
+  pages = 	 {23965--23998},
+  year = 	 {2022},
+  editor = 	 {Chaudhuri, Kamalika and Jegelka, Stefanie and Song, Le and Szepesvari, Csaba and Niu, Gang and Sabato, Sivan},
+  volume = 	 {162},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {17--23 Jul},
+  publisher =    {PMLR},
+  pdf = 	 {https://proceedings.mlr.press/v162/wortsman22a/wortsman22a.pdf},
+  url = 	 {https://proceedings.mlr.press/v162/wortsman22a.html},
+  abstract = 	 {The conventional recipe for maximizing model accuracy is to (1) train multiple models with various hyperparameters and (2) pick the individual model which performs best on a held-out validation set, discarding the remainder. In this paper, we revisit the second step of this procedure in the context of fine-tuning large pre-trained models, where fine-tuned models often appear to lie in a single low error basin. We show that averaging the weights of multiple models fine-tuned with different hyperparameter configurations often improves accuracy and robustness. Unlike a conventional ensemble, we may average many models without incurring any additional inference or memory costs—we call the results “model soups.” When fine-tuning large pre-trained models such as CLIP, ALIGN, and a ViT-G pre-trained on JFT, our soup recipe provides significant improvements over the best model in a hyperparameter sweep on ImageNet. The resulting ViT-G model, which attains 90.94% top-1 accuracy on ImageNet, achieved a new state of the art. Furthermore, we show that the model soup approach extends to multiple image classification and natural language processing tasks, improves out-of-distribution performance, and improves zero-shot performance on new downstream tasks. Finally, we analytically relate the performance similarity of weight-averaging and logit-ensembling to flatness of the loss and confidence of the predictions, and validate this relation empirically. Code is available at https://github.com/mlfoundations/model-soups.}
+}
+
+%experimental setup
+@INPROCEEDINGS{8260658,
+  author={Kowsari, Kamran and Brown, Donald E. and Heidarysafa, Mojtaba and Jafari Meimandi, Kiana and Gerber, Matthew S. and Barnes, Laura E.},
+  booktitle={2017 16th IEEE International Conference on Machine Learning and Applications (ICMLA)}, 
+  title={HDLTex: Hierarchical Deep Learning for Text Classification}, 
+  year={2017},
+  volume={},
+  number={},
+  pages={364-371},
+  keywords={Machine learning;Support vector machines;Computer architecture;Kernel;Mathematical model;Recurrent neural networks;Text Mining;Document Classification;Deep Neural Networks;Hierarchical Learning;Deep Learning},
+  doi={10.1109/ICMLA.2017.0-134}}
+
+@inproceedings{muhammad-etal-2023-afrisenti,
+    title = "{A}fri{S}enti: A {T}witter Sentiment Analysis Benchmark for {A}frican Languages",
+    author = "Muhammad, Shamsuddeen  and
+      Abdulmumin, Idris  and
+      Ayele, Abinew  and
+      Ousidhoum, Nedjma  and
+      Adelani, David  and
+      Yimam, Seid  and
+      Ahmad, Ibrahim  and
+      Beloucif, Meriem  and
+      Mohammad, Saif  and
+      Ruder, Sebastian  and
+      Hourrane, Oumaima  and
+      Jorge, Alipio  and
+      Brazdil, Pavel  and
+      Ali, Felermino  and
+      David, Davis  and
+      Osei, Salomey  and
+      Shehu-Bello, Bello  and
+      Lawan, Falalu  and
+      Gwadabe, Tajuddeen  and
+      Rutunda, Samuel  and
+      Belay, Tadesse  and
+      Messelle, Wendimu  and
+      Balcha, Hailu  and
+      Chala, Sisay  and
+      Gebremichael, Hagos  and
+      Opoku, Bernard  and
+      Arthur, Stephen",
+    editor = "Bouamor, Houda  and
+      Pino, Juan  and
+      Bali, Kalika",
+    booktitle = "Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing",
+    month = dec,
+    year = "2023",
+    address = "Singapore",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.emnlp-main.862",
+    doi = "10.18653/v1/2023.emnlp-main.862",
+    pages = "13968--13981",
+    abstract = "Africa is home to over 2,000 languages from over six language families and has the highest linguistic diversity among all continents. This includes 75 languages with at least one million speakers each. Yet, there is little NLP research conducted on African languages. Crucial in enabling such research is the availability of high-quality annotated datasets. In this paper, we introduce AfriSenti, a sentiment analysis benchmark that contains a total of {\textgreater}110,000 tweets in 14 African languages (Amharic, Algerian Arabic, Hausa, Igbo, Kinyarwanda, Moroccan Arabic, Mozambican Portuguese, Nigerian Pidgin, Oromo, Swahili, Tigrinya, Twi, Xitsonga, and Yoruba) from four language families. The tweets were annotated by native speakers and used in the AfriSenti-SemEval shared task (with over 200 participants, see website: https://afrisenti-semeval.github.io). We describe the data collection methodology, annotation process, and the challenges we dealt with when curating each dataset. We further report baseline experiments conducted on the AfriSenti datasets and discuss their usefulness.",
+}
+
+@inproceedings{alabi-etal-2022-adapting,
+    title = "Adapting Pre-trained Language Models to {A}frican Languages via Multilingual Adaptive Fine-Tuning",
+    author = "Alabi, Jesujoba O.  and
+      Adelani, David Ifeoluwa  and
+      Mosbach, Marius  and
+      Klakow, Dietrich",
+    editor = "Calzolari, Nicoletta  and
+      Huang, Chu-Ren  and
+      Kim, Hansaem  and
+      Pustejovsky, James  and
+      Wanner, Leo  and
+      Choi, Key-Sun  and
+      Ryu, Pum-Mo  and
+      Chen, Hsin-Hsi  and
+      Donatelli, Lucia  and
+      Ji, Heng  and
+      Kurohashi, Sadao  and
+      Paggio, Patrizia  and
+      Xue, Nianwen  and
+      Kim, Seokhwan  and
+      Hahm, Younggyun  and
+      He, Zhong  and
+      Lee, Tony Kyungil  and
+      Santus, Enrico  and
+      Bond, Francis  and
+      Na, Seung-Hoon",
+    booktitle = "Proceedings of the 29th International Conference on Computational Linguistics",
+    month = oct,
+    year = "2022",
+    address = "Gyeongju, Republic of Korea",
+    publisher = "International Committee on Computational Linguistics",
+    url = "https://aclanthology.org/2022.coling-1.382",
+    pages = "4336--4349",
+    abstract = "Multilingual pre-trained language models (PLMs) have demonstrated impressive performance on several downstream tasks for both high-resourced and low-resourced languages. However, there is still a large performance drop for languages unseen during pre-training, especially African languages. One of the most effective approaches to adapt to a new language is language adaptive fine-tuning (LAFT) {---} fine-tuning a multilingual PLM on monolingual texts of a language using the pre-training objective. However, adapting to target language individually takes large disk space and limits the cross-lingual transfer abilities of the resulting models because they have been specialized for a single language. In this paper, we perform multilingual adaptive fine-tuning on 17 most-resourced African languages and three other high-resource languages widely spoken on the African continent to encourage cross-lingual transfer learning. To further specialize the multilingual PLM, we removed vocabulary tokens from the embedding layer that corresponds to non-African writing scripts before MAFT, thus reducing the model size by around 50{\%}. Our evaluation on two multilingual PLMs (AfriBERTa and XLM-R) and three NLP tasks (NER, news topic classification, and sentiment classification) shows that our approach is competitive to applying LAFT on individual languages while requiring significantly less disk space. Additionally, we show that our adapted PLM also improves the zero-shot cross-lingual transfer abilities of parameter efficient fine-tuning methods.",
+}
+
+@inproceedings{devlin-etal-2019-bert,
+    title = "{BERT}: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+    author = "Devlin, Jacob  and
+      Chang, Ming-Wei  and
+      Lee, Kenton  and
+      Toutanova, Kristina",
+    editor = "Burstein, Jill  and
+      Doran, Christy  and
+      Solorio, Thamar",
+    booktitle = "Proceedings of the 2019 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers)",
+    month = jun,
+    year = "2019",
+    address = "Minneapolis, Minnesota",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/N19-1423",
+    doi = "10.18653/v1/N19-1423",
+    pages = "4171--4186",
+}
+@inproceedings{
+maddison2017the,
+title={The Concrete Distribution: A Continuous Relaxation of Discrete Random Variables},
+author={Chris J. Maddison and Andriy Mnih and Yee Whye Teh},
+booktitle={International Conference on Learning Representations},
+year={2017},
+url={https://openreview.net/forum?id=S1jE5L5gl}
+}
+
+@inproceedings{NIPS2015_250cf8b5,
+ author = {Zhang, Xiang and Zhao, Junbo and LeCun, Yann},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {C. Cortes and N. Lawrence and D. Lee and M. Sugiyama and R. Garnett},
+ pages = {},
+ publisher = {Curran Associates, Inc.},
+ title = {Character-level Convolutional Networks for Text Classification},
+ url = {https://proceedings.neurips.cc/paper_files/paper/2015/file/250cf8b51c773f3f8dc8b4be867a9a02-Paper.pdf},
+ volume = {28},
+ year = {2015}
+}
+
+@InProceedings{Hurtado_2023_ICCV,
+    author    = {Hurtado, Julio and Raymond-S\'aez, Alain and Araujo, Vladimir and Lomonaco, Vincenzo and Soto, Alvaro and Bacciu, Davide},
+    title     = {Memory Population in Continual Learning via Outlier Elimination},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) Workshops},
+    month     = {October},
+    year      = {2023},
+    pages     = {3481-3490}
+}
+
+@inproceedings{hayes2021selective,
+  title={Selective replay enhances learning in online continual analogical reasoning},
+  author={Hayes, Tyler L and Kanan, Christopher},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={3502--3512},
+  year={2021}
+}

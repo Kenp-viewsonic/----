@@ -1,0 +1,431 @@
+[
+  {
+    "link": "https://www.arxiv.org/abs/2204.07804",
+    "title": "Learning to Classify Open Intent via Soft Labeling and Manifold Mixup",
+    "publish_time": "20220416",
+    "authors": [
+      "Zifeng Cheng",
+      "Zhiwei Jiang",
+      "Yafeng Yin",
+      "Cong Wang",
+      "Qing Gu"
+    ],
+    "abstract": "Open intent classification is a practical yet challenging task in dialogue systems. Its objective is to accurately classify samples of known intents while at the same time detecting those of open (unknown) intents. Existing methods usually use outlier detection algorithms combined with K-class classifier to detect open intents, where K represents the class number of known intents. Different from them, in this paper, we consider another way without using outlier detection algorithms. Specifically, we directly train a (K+1)-class classifier for open intent classification, where the (K+1)-th class represents open intents. To address the challenge that training a (K+1)-class classifier with training samples of only K classes, we propose a deep model based on Soft Labeling and Manifold Mixup (SLMM). In our method, soft labeling is used to reshape the label distribution of the known intent samples, aiming at reducing model's overconfident on known intents. Manifold mixup is used to generate pseudo samples for open intents, aiming at well optimizing the decision boundary of open intents. Experiments on four benchmark datasets demonstrate that our method outperforms previous methods and achieves state-of-the-art performance. All the code and data of this work can be obtained at https://github.com/zifengcheng/SLMM.",
+    "score": 0.965594470500946
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2510.14110",
+    "title": "DROID: Dual Representation for Out-of-Scope Intent Detection",
+    "publish_time": "20251015",
+    "authors": [
+      "Wael Rashwan",
+      "Hossam M. Zawbaa",
+      "Sourav Dutta",
+      "and Haytham Assem"
+    ],
+    "abstract": "Detecting out-of-scope (OOS) user utterances remains a key challenge in task-oriented dialogue systems and, more broadly, in open-set intent recognition. Existing approaches often depend on strong distributional assumptions or auxiliary calibration modules. We present DROID (Dual Representation for Out-of-Scope Intent Detection), a compact end-to-end framework that combines two complementary encoders -- the Universal Sentence Encoder (USE) for broad semantic generalization and a domain-adapted Transformer-based Denoising Autoencoder (TSDAE) for domain-specific contextual distinctions. Their fused representations are processed by a lightweight branched classifier with a single calibrated threshold that separates in-domain and OOS intents without post-hoc scoring. To enhance boundary learning under limited supervision, DROID incorporates both synthetic and open-domain outlier augmentation. Despite using only 1.5M trainable parameters, DROID consistently outperforms recent state-of-the-art baselines across multiple intent benchmarks, achieving macro-F1 improvements of 6--15% for known and 8--20% for OOS intents, with the most significant gains in low-resource settings. These results demonstrate that dual-encoder representations with simple calibration can yield robust, scalable, and reliable OOS detection for neural dialogue systems.",
+    "score": 0.9453116655349731
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2304.10220",
+    "title": "Effective Open Intent Classification with K-center Contrastive Learning and Adjustable Decision Boundary",
+    "publish_time": "20230420",
+    "authors": [
+      "Xiaokang Liu",
+      "Jianquan Li",
+      "Jingjing Mu",
+      "Min Yang",
+      "Ruifeng Xu",
+      "and Benyou Wang"
+    ],
+    "abstract": "Open intent classification, which aims to correctly classify the known intents into their corresponding classes while identifying the new unknown (open) intents, is an essential but challenging task in dialogue systems. In this paper, we introduce novel K-center contrastive learning and adjustable decision boundary learning (CLAB) to improve the effectiveness of open intent classification. First, we pre-train a feature encoder on the labeled training instances, which transfers knowledge from known intents to unknown intents. Specifically, we devise a K-center contrastive learning algorithm to learn discriminative and balanced intent features, improving the generalization of the model for recognizing open intents. Second, we devise an adjustable decision boundary learning method with expanding and shrinking (ADBES) to determine the suitable decision conditions. Concretely, we learn a decision boundary for each known intent class, which consists of a decision center and the radius of the decision boundary. We then expand the radius of the decision boundary to accommodate more in-class instances if the out-of-class instances are far from the decision boundary; otherwise, we shrink the radius of the decision boundary. Extensive experiments on three benchmark datasets clearly demonstrate the effectiveness of our method for open intent classification. For reproducibility, we submit the code at: https://github.com/lxk00/CLAP",
+    "score": 0.9313266277313232
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2012.10209",
+    "title": "Deep Open Intent Classification with Adaptive Decision Boundary",
+    "publish_time": "20201218",
+    "authors": [
+      "Hanlei Zhang",
+      "Hua Xu",
+      "Ting-En Lin"
+    ],
+    "abstract": "Open intent classification is a challenging task in dialogue systems. On the one hand, it should ensure the quality of known intent identification. On the other hand, it needs to detect the open (unknown) intent without prior knowledge. Current models are limited in finding the appropriate decision boundary to balance the performances of both known intents and the open intent. In this paper, we propose a post-processing method to learn the adaptive decision boundary (ADB) for open intent classification. We first utilize the labeled known intent samples to pre-train the model. Then, we automatically learn the adaptive spherical decision boundary for each known class with the aid of well-trained features. Specifically, we propose a new loss function to balance both the empirical risk and the open space risk. Our method does not need open intent samples and is free from modifying the model architecture. Moreover, our approach is surprisingly insensitive with less labeled data and fewer known intents. Extensive experiments on three benchmark datasets show that our method yields significant improvements compared with the state-of-the-art methods. The codes are released at https://github.com/thuiar/Adaptive-Decision-Boundary.",
+    "score": 0.9035362005233765
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2412.13542",
+    "title": "Multi-Granularity Open Intent Classification via Adaptive Granular-Ball Decision Boundary",
+    "publish_time": "20241218",
+    "authors": [
+      "Yanhua Li",
+      "Xiaocao Ouyang",
+      "Chaofan Pan",
+      "Jie Zhang",
+      "Sen Zhao",
+      "Shuyin Xia",
+      "Xin Yang",
+      "Guoyin Wang",
+      "Tianrui Li"
+    ],
+    "abstract": "Open intent classification is critical for the development of dialogue systems, aiming to accurately classify known intents into their corresponding classes while identifying unknown intents. Prior boundary-based methods assumed known intents fit within compact spherical regions, focusing on coarse-grained representation and precise spherical decision boundaries. However, these assumptions are often violated in practical scenarios, making it difficult to distinguish known intent classes from unknowns using a single spherical boundary. To tackle these issues, we propose a Multi-granularity Open intent classification method via adaptive Granular-Ball decision boundary (MOGB). Our MOGB method consists of two modules: representation learning and decision boundary acquiring. To effectively represent the intent distribution, we design a hierarchical representation learning method. This involves iteratively alternating between adaptive granular-ball clustering and nearest sub-centroid classification to capture fine-grained semantic structures within known intent classes. Furthermore, multi-granularity decision boundaries are constructed for open intent classification by employing granular-balls with varying centroids and radii. Extensive experiments conducted on three public datasets demonstrate the effectiveness of our proposed method.",
+    "score": 0.8922312259674072
+  },
+  {
+    "link": "https://www.arxiv.org/abs/1909.02027",
+    "title": "An Evaluation Dataset for Intent Classification and Out-of-Scope Prediction",
+    "publish_time": "20190904",
+    "authors": [
+      "Stefan Larson",
+      "Anish Mahendran",
+      "Joseph J. Peper",
+      "Christopher Clarke",
+      "Andrew Lee",
+      "Parker Hill",
+      "Jonathan K. Kummerfeld",
+      "Kevin Leach",
+      "Michael A. Laurenzano",
+      "Lingjia Tang",
+      "Jason Mars"
+    ],
+    "abstract": "Task-oriented dialog systems need to know when a query falls outside their range of supported intents, but current text classification corpora only define label sets that cover every example. We introduce a new dataset that includes queries that are out-of-scope---i.e., queries that do not fall into any of the system's supported intents. This poses a new challenge because models cannot assume that every query at inference time belongs to a system-supported intent class. Our dataset also covers 150 intent classes over 10 domains, capturing the breadth that a production task-oriented agent must handle. We evaluate a range of benchmark classifiers on our dataset along with several different out-of-scope identification schemes. We find that while the classifiers perform well on in-scope intent classification, they struggle to identify out-of-scope queries. Our dataset and evaluation fill an important gap in the field, offering a way of more rigorously and realistically benchmarking text classification in task-driven dialog systems.",
+    "score": 0.8798459768295288
+  },
+  {
+    "link": "https://www.arxiv.org/abs/1904.08524",
+    "title": "Towards Open Intent Discovery for Conversational Text",
+    "publish_time": "20190417",
+    "authors": [
+      "Nikhita Vedula",
+      "Nedim Lipka",
+      "Pranav Maneriker",
+      "Srinivasan Parthasarathy"
+    ],
+    "abstract": "Detecting and identifying user intent from text, both written and spoken, plays an important role in modelling and understand dialogs. Existing research for intent discovery model it as a classification task with a predefined set of known categories. To generailze beyond these preexisting classes, we define a new task of \\textit{open intent discovery}. We investigate how intent can be generalized to those not seen during training. To this end, we propose a two-stage approach to this task - predicting whether an utterance contains an intent, and then tagging the intent in the input utterance. Our model consists of a bidirectional LSTM with a CRF on top to capture contextual semantics, subject to some constraints. Self-attention is used to learn long distance dependencies. Further, we adapt an adversarial training approach to improve robustness and perforamce across domains. We also present a dataset of 25k real-life utterances that have been labelled via crowd sourcing. Our experiments across different domains and real-world datasets show the effectiveness of our approach, with less than 100 annotated examples needed per unique domain to recognize diverse intents. The approach outperforms state-of-the-art baselines by 5-15% F1 score points.",
+    "score": 0.8659747242927551
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2010.13009",
+    "title": "Discriminative Nearest Neighbor Few-Shot Intent Detection by Transferring Natural Language Inference",
+    "publish_time": "20201025",
+    "authors": [
+      "Jian-Guo Zhang",
+      "Kazuma Hashimoto",
+      "Wenhao Liu",
+      "Chien-Sheng Wu",
+      "Yao Wan",
+      "Philip S. Yu",
+      "Richard Socher",
+      "Caiming Xiong"
+    ],
+    "abstract": "Intent detection is one of the core components of goal-oriented dialog systems, and detecting out-of-scope (OOS) intents is also a practically important skill. Few-shot learning is attracting much attention to mitigate data scarcity, but OOS detection becomes even more challenging. In this paper, we present a simple yet effective approach, discriminative nearest neighbor classification with deep self-attention. Unlike softmax classifiers, we leverage BERT-style pairwise encoding to train a binary classifier that estimates the best matched training example for a user input. We propose to boost the discriminative ability by transferring a natural language inference (NLI) model. Our extensive experiments on a large-scale multi-domain intent detection task show that our method achieves more stable and accurate in-domain and OOS detection accuracy than RoBERTa-based classifiers and embedding-based nearest neighbor approaches. More notably, the NLI transfer enables our 10-shot model to perform competitively with 50-shot or even full-shot classifiers, while we can keep the inference time constant by leveraging a faster embedding retrieval model.",
+    "score": 0.8167137503623962
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2106.14464",
+    "title": "Enhancing the Generalization for Intent Classification and Out-of-Domain Detection in SLU",
+    "publish_time": "20210628",
+    "authors": [
+      "Yilin Shen",
+      "Yen-Chang Hsu",
+      "Avik Ray",
+      "Hongxia Jin"
+    ],
+    "abstract": "Intent classification is a major task in spoken language understanding (SLU). Since most models are built with pre-collected in-domain (IND) training utterances, their ability to detect unsupported out-of-domain (OOD) utterances has a critical effect in practical use. Recent works have shown that using extra data and labels can improve the OOD detection performance, yet it could be costly to collect such data. This paper proposes to train a model with only IND data while supporting both IND intent classification and OOD detection. Our method designs a novel domain-regularized module (DRM) to reduce the overconfident phenomenon of a vanilla classifier, achieving a better generalization in both cases. Besides, DRM can be used as a drop-in replacement for the last layer in any neural network-based intent classifier, providing a low-cost strategy for a significant improvement. The evaluation on four datasets shows that our method built on BERT and RoBERTa models achieves state-of-the-art performance against existing approaches and the strong baselines we created for the comparisons.",
+    "score": 0.7972419261932373
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2203.05823",
+    "title": "Learning Discriminative Representations and Decision Boundaries for Open Intent Detection",
+    "publish_time": "20220311",
+    "authors": [
+      "Hanlei Zhang",
+      "Hua Xu",
+      "Shaojie Zhao",
+      "Qianrui Zhou"
+    ],
+    "abstract": "Open intent detection is a significant problem in natural language understanding, which aims to identify the unseen open intent while ensuring known intent identification performance. However, current methods face two major challenges. Firstly, they struggle to learn friendly representations to detect the open intent with prior knowledge of only known intents. Secondly, there is a lack of an effective approach to obtaining specific and compact decision boundaries for known intents. To address these issues, this paper presents an original framework called DA-ADB, which successively learns distance-aware intent representations and adaptive decision boundaries for open intent detection. Specifically, we first leverage distance information to enhance the distinguishing capability of the intent representations. Then, we design a novel loss function to obtain appropriate decision boundaries by balancing both empirical and open space risks. Extensive experiments demonstrate the effectiveness of the proposed distance-aware and boundary learning strategies. Compared to state-of-the-art methods, our framework achieves substantial improvements on three benchmark datasets. Furthermore, it yields robust performance with varying proportions of labeled data and known categories.",
+    "score": 0.7972366213798523
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2410.01627",
+    "title": "Intent Detection in the Age of LLMs",
+    "publish_time": "20241002",
+    "authors": [
+      "Gaurav Arora",
+      "Shreya Jain",
+      "Srujana Merugu"
+    ],
+    "abstract": "Intent detection is a critical component of task-oriented dialogue systems (TODS) which enables the identification of suitable actions to address user utterances at each dialog turn. Traditional approaches relied on computationally efficient supervised sentence transformer encoder models, which require substantial training data and struggle with out-of-scope (OOS) detection. The emergence of generative large language models (LLMs) with intrinsic world knowledge presents new opportunities to address these challenges. In this work, we adapt 7 SOTA LLMs using adaptive in-context learning and chain-of-thought prompting for intent detection, and compare their performance with contrastively fine-tuned sentence transformer (SetFit) models to highlight prediction quality and latency tradeoff. We propose a hybrid system using uncertainty based routing strategy to combine the two approaches that along with negative data augmentation results in achieving the best of both worlds ( i.e. within 2% of native LLM accuracy with 50% less latency). To better understand LLM OOS detection capabilities, we perform controlled experiments revealing that this capability is significantly influenced by the scope of intent labels and the size of the label space. We also introduce a two-step approach utilizing internal LLM representations, demonstrating empirical gains in OOS detection accuracy and F1-score by >5% for the Mistral-7B model.",
+    "score": 0.7765687704086304
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2211.05561",
+    "title": "Estimating Soft Labels for Out-of-Domain Intent Detection",
+    "publish_time": "20221110",
+    "authors": [
+      "Hao Lang",
+      "Yinhe Zheng",
+      "Jian Sun",
+      "Fei Huang",
+      "Luo Si",
+      "Yongbin Li"
+    ],
+    "abstract": "Out-of-Domain (OOD) intent detection is important for practical dialog systems. To alleviate the issue of lacking OOD training samples, some works propose synthesizing pseudo OOD samples and directly assigning one-hot OOD labels to these pseudo samples. However, these one-hot labels introduce noises to the training process because some hard pseudo OOD samples may coincide with In-Domain (IND) intents. In this paper, we propose an adaptive soft pseudo labeling (ASoul) method that can estimate soft labels for pseudo OOD samples when training OOD detectors. Semantic connections between pseudo OOD samples and IND intents are captured using an embedding graph. A co-training framework is further introduced to produce resulting soft labels following the smoothness assumption, i.e., close samples are likely to have similar labels. Extensive experiments on three benchmark datasets show that ASoul consistently improves the OOD detection performance and outperforms various competitive baselines.",
+    "score": 0.730370044708252
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2110.15063",
+    "title": "TEXTOIR: An Integrated and Visualized Platform for Text Open Intent Recognition",
+    "publish_time": "20210913",
+    "authors": [
+      "Hanlei Zhang",
+      "Xiaoteng Li",
+      "Hua Xu",
+      "Panpan Zhang",
+      "Kang Zhao",
+      "Kai Gao"
+    ],
+    "abstract": "TEXTOIR is the first integrated and visualized platform for text open intent recognition. It is composed of two main modules: open intent detection and open intent discovery. Each module integrates most of the state-of-the-art algorithms and benchmark intent datasets. It also contains an overall framework connecting the two modules in a pipeline scheme. In addition, this platform has visualized tools for data and model management, training, evaluation and analysis of the performance from different aspects. TEXTOIR provides useful toolkits and convenient visualized interfaces for each sub-module (Toolkit code: https://github.com/thuiar/TEXTOIR), and designs a framework to implement a complete process to both identify known intents and discover open intents (Demo code: https://github.com/thuiar/TEXTOIR-DEMO).",
+    "score": 0.7051293253898621
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2105.14289",
+    "title": "Modeling Discriminative Representations for Out-of-Domain Detection with Supervised Contrastive Learning",
+    "publish_time": "20210529",
+    "authors": [
+      "Zhiyuan Zeng",
+      "Keqing He",
+      "Yuanmeng Yan",
+      "Zijun Liu",
+      "Yanan Wu",
+      "Hong Xu",
+      "Huixing Jiang and Weiran Xu"
+    ],
+    "abstract": "Detecting Out-of-Domain (OOD) or unknown intents from user queries is essential in a task-oriented dialog system. A key challenge of OOD detection is to learn discriminative semantic features. Traditional cross-entropy loss only focuses on whether a sample is correctly classified, and does not explicitly distinguish the margins between categories. In this paper, we propose a supervised contrastive learning objective to minimize intra-class variance by pulling together in-domain intents belonging to the same class and maximize inter-class variance by pushing apart samples from different classes. Besides, we employ an adversarial augmentation mechanism to obtain pseudo diverse views of a sample in the latent space. Experiments on two public datasets prove the effectiveness of our method capturing discriminative representations for OOD detection.",
+    "score": 0.7051060199737549
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2107.12542",
+    "title": "Energy-based Unknown Intent Detection with Data Manipulation",
+    "publish_time": "20210727",
+    "authors": [
+      "Yawen Ouyang",
+      "Jiasheng Ye",
+      "Yu Chen",
+      "Xinyu Dai",
+      "Shujian Huang",
+      "Jiajun Chen"
+    ],
+    "abstract": "Unknown intent detection aims to identify the out-of-distribution (OOD) utterance whose intent has never appeared in the training set. In this paper, we propose using energy scores for this task as the energy score is theoretically aligned with the density of the input and can be derived from any classifier. However, high-quality OOD utterances are required during the training stage in order to shape the energy gap between OOD and in-distribution (IND), and these utterances are difficult to collect in practice. To tackle this problem, we propose a data manipulation framework to Generate high-quality OOD utterances with importance weighTs (GOT). Experimental results show that the energy-based detector fine-tuned by GOT can achieve state-of-the-art results on two benchmark datasets.",
+    "score": 0.6785511374473572
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2003.03504",
+    "title": "A Post-processing Method for Detecting Unknown Intent of Dialogue System via Pre-trained Deep Neural Network Classifier",
+    "publish_time": "20200307",
+    "authors": [
+      "Ting-En Lin",
+      "Hua Xu"
+    ],
+    "abstract": "With the maturity and popularity of dialogue systems, detecting user's unknown intent in dialogue systems has become an important task. It is also one of the most challenging tasks since we can hardly get examples, prior knowledge or the exact numbers of unknown intents. In this paper, we propose SofterMax and deep novelty detection (SMDN), a simple yet effective post-processing method for detecting unknown intent in dialogue systems based on pre-trained deep neural network classifiers. Our method can be flexibly applied on top of any classifiers trained in deep neural networks without changing the model architecture. We calibrate the confidence of the softmax outputs to compute the calibrated confidence score (i.e., SofterMax) and use it to calculate the decision boundary for unknown intent detection. Furthermore, we feed the feature representations learned by the deep neural networks into traditional novelty detection algorithm to detect unknown intents from different perspectives. Finally, we combine the methods above to perform the joint prediction. Our method classifies examples that differ from known intents as unknown and does not require any examples or prior knowledge of it. We have conducted extensive experiments on three benchmark dialogue datasets. The results show that our method can yield significant improvements compared with the state-of-the-art baselines",
+    "score": 0.6784776449203491
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2109.03079",
+    "title": "GOLD: Improving Out-of-Scope Detection in Dialogues using Data Augmentation",
+    "publish_time": "20210907",
+    "authors": [
+      "Derek Chen",
+      "Zhou Yu"
+    ],
+    "abstract": "Practical dialogue systems require robust methods of detecting out-of-scope (OOS) utterances to avoid conversational breakdowns and related failure modes. Directly training a model with labeled OOS examples yields reasonable performance, but obtaining such data is a resource-intensive process. To tackle this limited-data problem, previous methods focus on better modeling the distribution of in-scope (INS) examples. We introduce GOLD as an orthogonal technique that augments existing data to train better OOS detectors operating in low-data regimes. GOLD generates pseudo-labeled candidates using samples from an auxiliary dataset and keeps only the most beneficial candidates for training through a novel filtering mechanism. In experiments across three target benchmarks, the top GOLD model outperforms all existing methods on all key metrics, achieving relative gains of 52.4%, 48.9% and 50.3% against median baseline performance. We also analyze the unique properties of OOS data to identify key factors for optimally applying our proposed method.",
+    "score": 0.6508098244667053
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2507.22289",
+    "title": "Intent Recognition and Out-of-Scope Detection using LLMs in Multi-party Conversations",
+    "publish_time": "20250729",
+    "authors": [
+      "Galo Castillo-L\\'opez",
+      "Ga\\\"el de Chalendar",
+      "Nasredine Semmar"
+    ],
+    "abstract": "Intent recognition is a fundamental component in task-oriented dialogue systems (TODS). Determining user intents and detecting whether an intent is Out-of-Scope (OOS) is crucial for TODS to provide reliable responses. However, traditional TODS require large amount of annotated data. In this work we propose a hybrid approach to combine BERT and LLMs in zero and few-shot settings to recognize intents and detect OOS utterances. Our approach leverages LLMs generalization power and BERT's computational efficiency in such scenarios. We evaluate our method on multi-party conversation corpora and observe that sharing information from BERT outputs to LLMs leads to system performance improvement.",
+    "score": 0.6507980823516846
+  },
+  {
+    "link": "https://www.arxiv.org/abs/1909.03862",
+    "title": "Out-of-domain Detection for Natural Language Understanding in Dialog Systems",
+    "publish_time": "20190909",
+    "authors": [
+      "Yinhe Zheng",
+      "Guanyi Chen",
+      "Minlie Huang"
+    ],
+    "abstract": "Natural Language Understanding (NLU) is a vital component of dialogue systems, and its ability to detect Out-of-Domain (OOD) inputs is critical in practical applications, since the acceptance of the OOD input that is unsupported by the current system may lead to catastrophic failure. However, most existing OOD detection methods rely heavily on manually labeled OOD samples and cannot take full advantage of unlabeled data. This limits the feasibility of these models in practical applications. In this paper, we propose a novel model to generate high-quality pseudo OOD samples that are akin to IN-Domain (IND) input utterances, and thereby improves the performance of OOD detection. To this end, an autoencoder is trained to map an input utterance into a latent code. and the codes of IND and OOD samples are trained to be indistinguishable by utilizing a generative adversarial network. To provide more supervision signals, an auxiliary classifier is introduced to regularize the generated OOD samples to have indistinguishable intent labels. Experiments show that these pseudo OOD samples generated by our model can be used to effectively improve OOD detection in NLU. Besides, we also demonstrate that the effectiveness of these pseudo OOD data can be further improved by efficiently utilizing unlabeled data.",
+    "score": 0.6507226228713989
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2305.03237",
+    "title": "Out-of-Domain Intent Detection Considering Multi-Turn Dialogue Contexts",
+    "publish_time": "20230505",
+    "authors": [
+      "Hao Lang",
+      "Yinhe Zheng",
+      "Binyuan Hui",
+      "Fei Huang",
+      "Yongbin Li"
+    ],
+    "abstract": "Out-of-Domain (OOD) intent detection is vital for practical dialogue systems, and it usually requires considering multi-turn dialogue contexts. However, most previous OOD intent detection approaches are limited to single dialogue turns. In this paper, we introduce a context-aware OOD intent detection (Caro) framework to model multi-turn contexts in OOD intent detection tasks. Specifically, we follow the information bottleneck principle to extract robust representations from multi-turn dialogue contexts. Two different views are constructed for each input sample and the superfluous information not related to intent detection is removed using a multi-view information bottleneck loss. Moreover, we also explore utilizing unlabeled data in Caro. A two-stage training process is introduced to mine OOD samples from these unlabeled data, and these OOD samples are used to train the resulting model with a bootstrapping approach. Comprehensive experiments demonstrate that Caro establishes state-of-the-art performances on multi-turn OOD detection tasks by improving the F1-OOD score of over $29\\%$ compared to the previous best method.",
+    "score": 0.6217705607414246
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2402.17256",
+    "title": "Beyond the Known: Investigating LLMs Performance on Out-of-Domain Intent Detection",
+    "publish_time": "20240227",
+    "authors": [
+      "Pei Wang",
+      "Keqing He",
+      "Yejie Wang",
+      "Xiaoshuai Song",
+      "Yutao Mou",
+      "Jingang Wang",
+      "Yunsen Xian",
+      "Xunliang Cai",
+      "Weiran Xu"
+    ],
+    "abstract": "Out-of-domain (OOD) intent detection aims to examine whether the user's query falls outside the predefined domain of the system, which is crucial for the proper functioning of task-oriented dialogue (TOD) systems. Previous methods address it by fine-tuning discriminative models. Recently, some studies have been exploring the application of large language models (LLMs) represented by ChatGPT to various downstream tasks, but it is still unclear for their ability on OOD detection task.This paper conducts a comprehensive evaluation of LLMs under various experimental settings, and then outline the strengths and weaknesses of LLMs. We find that LLMs exhibit strong zero-shot and few-shot capabilities, but is still at a disadvantage compared to models fine-tuned with full resource. More deeply, through a series of additional analysis experiments, we discuss and summarize the challenges faced by LLMs and provide guidance for future work including injecting domain knowledge, strengthening knowledge transfer from IND(In-domain) to OOD, and understanding long instructions.",
+    "score": 0.5921800136566162
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2106.08616",
+    "title": "Out-of-Scope Intent Detection with Self-Supervision and Discriminative Training",
+    "publish_time": "20210616",
+    "authors": [
+      "Li-Ming Zhan",
+      "Haowen Liang",
+      "Bo Liu",
+      "Lu Fan",
+      "Xiao-Ming Wu",
+      "Albert Y.S. Lam"
+    ],
+    "abstract": "Out-of-scope intent detection is of practical importance in task-oriented dialogue systems. Since the distribution of outlier utterances is arbitrary and unknown in the training stage, existing methods commonly rely on strong assumptions on data distribution such as mixture of Gaussians to make inference, resulting in either complex multi-step training procedures or hand-crafted rules such as confidence threshold selection for outlier detection. In this paper, we propose a simple yet effective method to train an out-of-scope intent classifier in a fully end-to-end manner by simulating the test scenario in training, which requires no assumption on data distribution and no additional post-processing or threshold setting. Specifically, we construct a set of pseudo outliers in the training stage, by generating synthetic outliers using inliner features via self-supervision and sampling out-of-scope sentences from easily available open-domain datasets. The pseudo outliers are used to train a discriminative classifier that can be directly applied to and generalize well on the test task. We evaluate our method extensively on four benchmark dialogue datasets and observe significant improvements over state-of-the-art approaches. Our code has been released at https://github.com/liam0949/DCLOOS.",
+    "score": 0.5921324491500854
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2210.10722",
+    "title": "UniNL: Aligning Representation Learning with Scoring Function for OOD Detection via Unified Neighborhood Learning",
+    "publish_time": "20221019",
+    "authors": [
+      "Yutao Mou",
+      "Pei Wang",
+      "Keqing He",
+      "Yanan Wu",
+      "Jingang Wang",
+      "Wei Wu",
+      "Weiran Xu"
+    ],
+    "abstract": "Detecting out-of-domain (OOD) intents from user queries is essential for avoiding wrong operations in task-oriented dialogue systems. The key challenge is how to distinguish in-domain (IND) and OOD intents. Previous methods ignore the alignment between representation learning and scoring function, limiting the OOD detection performance. In this paper, we propose a unified neighborhood learning framework (UniNL) to detect OOD intents. Specifically, we design a K-nearest neighbor contrastive learning (KNCL) objective for representation learning and introduce a KNN-based scoring function for OOD detection. We aim to align representation learning with scoring function. Experiments and analysis on two benchmark datasets show the effectiveness of our method.",
+    "score": 0.5616776943206787
+  },
+  {
+    "link": "https://www.arxiv.org/abs/1906.00434",
+    "title": "Deep Unknown Intent Detection with Margin Loss",
+    "publish_time": "20190602",
+    "authors": [
+      "Ting-En Lin",
+      "Hua Xu"
+    ],
+    "abstract": "Identifying the unknown (novel) user intents that have never appeared in the training set is a challenging task in the dialogue system. In this paper, we present a two-stage method for detecting unknown intents. We use bidirectional long short-term memory (BiLSTM) network with the margin loss as the feature extractor. With margin loss, we can learn discriminative deep features by forcing the network to maximize inter-class variance and to minimize intra-class variance. Then, we feed the feature vectors to the density-based novelty detection algorithm, local outlier factor (LOF), to detect unknown intents. Experiments on two benchmark datasets show that our method can yield consistent improvements compared with the baseline methods.",
+    "score": 0.5615990161895752
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2210.08830",
+    "title": "Disentangling Confidence Score Distribution for Out-of-Domain Intent Detection with Energy-Based Learning",
+    "publish_time": "20221017",
+    "authors": [
+      "Yanan Wu",
+      "Zhiyuan Zeng",
+      "Keqing He",
+      "Yutao Mou",
+      "Pei Wang",
+      "Yuanmeng Yan",
+      "Weiran Xu"
+    ],
+    "abstract": "Detecting Out-of-Domain (OOD) or unknown intents from user queries is essential in a task-oriented dialog system. Traditional softmax-based confidence scores are susceptible to the overconfidence issue. In this paper, we propose a simple but strong energy-based score function to detect OOD where the energy scores of OOD samples are higher than IND samples. Further, given a small set of labeled OOD samples, we introduce an energy-based margin objective for supervised OOD detection to explicitly distinguish OOD samples from INDs. Comprehensive experiments and analysis prove our method helps disentangle confidence score distributions of IND and OOD data.\\footnote{Our code is available at \\url{https://github.com/pris-nlp/EMNLP2022-energy_for_OOD/}.}",
+    "score": 0.5307281017303467
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2409.11114",
+    "title": "Diversity-grounded Channel Prototypical Learning for Out-of-Distribution Intent Detection",
+    "publish_time": "20240917",
+    "authors": [
+      "Bo Liu",
+      "Liming Zhan",
+      "Yujie Feng",
+      "Zexin Lu",
+      "Chengqiang Xie",
+      "Lei Xue",
+      "Albert Y.S. Lam and Xiao-Ming Wu"
+    ],
+    "abstract": "In the realm of task-oriented dialogue systems, a robust intent detection mechanism must effectively handle malformed utterances encountered in real-world scenarios. This study presents a novel fine-tuning framework for large language models (LLMs) aimed at enhancing in-distribution (ID) intent classification and out-of-distribution (OOD) intent detection, which utilizes semantic matching with prototypes derived from ID class names. By harnessing the highly distinguishable representations of LLMs, we construct semantic prototypes for each ID class using a diversity-grounded prompt tuning approach. We rigorously test our framework in a challenging OOD context, where ID and OOD classes are semantically close yet distinct, referred to as \\emph{near} OOD detection. For a thorough assessment, we benchmark our method against the prevalent fine-tuning approaches. The experimental findings reveal that our method demonstrates superior performance in both few-shot ID intent classification and near-OOD intent detection tasks.",
+    "score": 0.5306985974311829
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2101.03778",
+    "title": "Revisiting Mahalanobis Distance for Transformer-Based Out-of-Domain Detection",
+    "publish_time": "20210111",
+    "authors": [
+      "Alex",
+      "er Podolskiy",
+      "Dmitry Lipin",
+      "Andrey Bout",
+      "Ekaterina Artemova",
+      "Irina Piontkovskaya"
+    ],
+    "abstract": "Real-life applications, heavily relying on machine learning, such as dialog systems, demand out-of-domain detection methods. Intent classification models should be equipped with a mechanism to distinguish seen intents from unseen ones so that the dialog agent is capable of rejecting the latter and avoiding undesired behavior. However, despite increasing attention paid to the task, the best practices for out-of-domain intent detection have not yet been fully established. This paper conducts a thorough comparison of out-of-domain intent detection methods. We prioritize the methods, not requiring access to out-of-domain data during training, gathering of which is extremely time- and labor-consuming due to lexical and stylistic variation of user utterances. We evaluate multiple contextual encoders and methods, proven to be efficient, on three standard datasets for intent classification, expanded with out-of-domain utterances. Our main findings show that fine-tuning Transformer-based encoders on in-domain data leads to superior results. Mahalanobis distance, together with utterance representations, derived from Transformer-based encoders, outperforms other methods by a wide margin and establishes new state-of-the-art results for all datasets. The broader analysis shows that the reason for success lies in the fact that the fine-tuned Transformer is capable of constructing homogeneous representations of in-domain utterances, revealing geometrical disparity to out of domain utterances. In turn, the Mahalanobis distance captures this disparity easily. The code is available in our GitHub repo: https://github.com/huawei-noah/noah-research/tree/master/Maha_OOD .",
+    "score": 0.5306569337844849
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2210.11034",
+    "title": "Enhancing Out-of-Distribution Detection in Natural Language Understanding via Implicit Layer Ensemble",
+    "publish_time": "20221020",
+    "authors": [
+      "Hyunsoo Cho",
+      "Choonghyun Park",
+      "Jaewook Kang",
+      "Kang Min Yoo",
+      "Taeuk Kim",
+      "Sang-goo Lee"
+    ],
+    "abstract": "Out-of-distribution (OOD) detection aims to discern outliers from the intended data distribution, which is crucial to maintaining high reliability and a good user experience. Most recent studies in OOD detection utilize the information from a single representation that resides in the penultimate layer to determine whether the input is anomalous or not. Although such a method is straightforward, the potential of diverse information in the intermediate layers is overlooked. In this paper, we propose a novel framework based on contrastive learning that encourages intermediate features to learn layer-specialized representations and assembles them implicitly into a single representation to absorb rich information in the pre-trained language model. Extensive experiments in various intent classification and OOD datasets demonstrate that our approach is significantly more effective than other works.",
+    "score": 0.4683387279510498
+  },
+  {
+    "link": "https://www.arxiv.org/abs/1912.12800",
+    "title": "Likelihood Ratios and Generative Classifiers for Unsupervised Out-of-Domain Detection In Task Oriented Dialog",
+    "publish_time": "20191230",
+    "authors": [
+      "Varun Gangal",
+      "Abhinav Arora",
+      "Arash Einolghozati",
+      "Sonal Gupta"
+    ],
+    "abstract": "The task of identifying out-of-domain (OOD) input examples directly at test-time has seen renewed interest recently due to increased real world deployment of models. In this work, we focus on OOD detection for natural language sentence inputs to task-based dialog systems. Our findings are three-fold: First, we curate and release ROSTD (Real Out-of-Domain Sentences From Task-oriented Dialog) - a dataset of 4K OOD examples for the publicly available dataset from (Schuster et al. 2019). In contrast to existing settings which synthesize OOD examples by holding out a subset of classes, our examples were authored by annotators with apriori instructions to be out-of-domain with respect to the sentences in an existing dataset. Second, we explore likelihood ratio based approaches as an alternative to currently prevalent paradigms. Specifically, we reformulate and apply these approaches to natural language inputs. We find that they match or outperform the latter on all datasets, with larger improvements on non-artificial OOD benchmarks such as our dataset. Our ablations validate that specifically using likelihood ratios rather than plain likelihood is necessary to discriminate well between OOD and in-domain data. Third, we propose learning a generative classifier and computing a marginal likelihood (ratio) for OOD detection. This allows us to use a principled likelihood while at the same time exploiting training-time labels. We find that this approach outperforms both simple likelihood (ratio) based and other prior approaches. We are hitherto the first to investigate the use of generative classifiers for OOD detection at test-time.",
+    "score": 0.40698495507240295
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2410.13649",
+    "title": "A new approach for fine-tuning sentence transformers for intent classification and out-of-scope detection tasks",
+    "publish_time": "20241017",
+    "authors": [
+      "Tianyi Zhang",
+      "Atta Norouzian",
+      "Aanchan Mohan",
+      "Frederick Ducatelle"
+    ],
+    "abstract": "In virtual assistant (VA) systems it is important to reject or redirect user queries that fall outside the scope of the system. One of the most accurate approaches for out-of-scope (OOS) rejection is to combine it with the task of intent classification on in-scope queries, and to use methods based on the similarity of embeddings produced by transformer-based sentence encoders. Typically, such encoders are fine-tuned for the intent-classification task, using cross-entropy loss. Recent work has shown that while this produces suitable embeddings for the intent-classification task, it also tends to disperse in-scope embeddings over the full sentence embedding space. This causes the in-scope embeddings to potentially overlap with OOS embeddings, thereby making OOS rejection difficult. This is compounded when OOS data is unknown. To mitigate this issue our work proposes to regularize the cross-entropy loss with an in-scope embedding reconstruction loss learned using an auto-encoder. Our method achieves a 1-4% improvement in the area under the precision-recall curve for rejecting out-of-sample (OOS) instances, without compromising intent classification performance.",
+    "score": 0.4069206416606903
+  }
+]

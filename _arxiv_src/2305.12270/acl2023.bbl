@@ -1,0 +1,278 @@
+\begin{thebibliography}{36}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Aljundi et~al.(2018)Aljundi, Babiloni, Elhoseiny, Rohrbach, and
+  Tuytelaars}]{aljundi2018memory}
+Rahaf Aljundi, Francesca Babiloni, Mohamed Elhoseiny, Marcus Rohrbach, and
+  Tinne Tuytelaars. 2018.
+\newblock Memory aware synapses: Learning what (not) to forget.
+\newblock In \emph{Proceedings of the European Conference on Computer Vision
+  (ECCV)}, pages 139--154.
+
+\bibitem[{Bang et~al.(2021)Bang, Kim, Yoo, Ha, and Choi}]{Bang_2021_CVPR}
+Jihwan Bang, Heesu Kim, YoungJoon Yoo, Jung-Woo Ha, and Jonghyun Choi. 2021.
+\newblock Rainbow memory: Continual learning with a memory of diverse samples.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition (CVPR)}, pages 8218--8227.
+
+\bibitem[{Cha et~al.(2021)Cha, Lee, and Shin}]{cha2021co2l}
+Hyuntak Cha, Jaeho Lee, and Jinwoo Shin. 2021.
+\newblock Co2l: Contrastive continual learning.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on
+  Computer Vision}, pages 9516--9525.
+
+\bibitem[{Chen et~al.(2020{\natexlab{a}})Chen, Kornblith, Norouzi, and
+  Hinton}]{Chen2020}
+Ting Chen, Simon Kornblith, Mohammad Norouzi, and Geoffrey Hinton.
+  2020{\natexlab{a}}.
+\newblock \href {https://doi.org/10.48550/ARXIV.2002.05709} {A simple framework
+  for contrastive learning of visual representations}.
+
+\bibitem[{Chen et~al.(2020{\natexlab{b}})Chen, Kornblith, Norouzi, and
+  Hinton}]{chen2020simple}
+Ting Chen, Simon Kornblith, Mohammad Norouzi, and Geoffrey Hinton.
+  2020{\natexlab{b}}.
+\newblock A simple framework for contrastive learning of visual
+  representations.
+\newblock In \emph{International conference on machine learning}, pages
+  1597--1607. PMLR.
+
+\bibitem[{De~Lange et~al.(2022)De~Lange, Aljundi, Masana, Parisot, Jia,
+  Leonardis, Slabaugh, and Tuytelaars}]{De}
+Matthias De~Lange, Rahaf Aljundi, Marc Masana, Sarah Parisot, Xu~Jia, Aleš
+  Leonardis, Gregory Slabaugh, and Tinne Tuytelaars. 2022.
+\newblock \href {https://doi.org/10.1109/TPAMI.2021.3057446} {A continual
+  learning survey: Defying forgetting in classification tasks}.
+\newblock \emph{IEEE Transactions on Pattern Analysis and Machine
+  Intelligence}, 44(7):3366--3385.
+
+\bibitem[{de~Masson~D'Autume et~al.(2019)de~Masson~D'Autume, Ruder, Kong, and
+  Yogatama}]{de2019episodic}
+Cyprien de~Masson~D'Autume, Sebastian Ruder, Lingpeng Kong, and Dani Yogatama.
+  2019.
+\newblock Episodic memory in lifelong language learning.
+\newblock \emph{Advances in Neural Information Processing Systems}, 32.
+
+\bibitem[{Fang et~al.(2020)Fang, Wang, Wang, Zhang, Yang, and
+  Liu}]{fang2020seed}
+Zhiyuan Fang, Jianfeng Wang, Lijuan Wang, Lei Zhang, Yezhou Yang, and Zicheng
+  Liu. 2020.
+\newblock Seed: Self-supervised distillation for visual representation.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Gao et~al.(2021)Gao, Yao, and Chen}]{gao-etal-2021-simcse}
+Tianyu Gao, Xingcheng Yao, and Danqi Chen. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.emnlp-main.552} {{S}im{CSE}:
+  Simple contrastive learning of sentence embeddings}.
+\newblock In \emph{Proceedings of the 2021 Conference on Empirical Methods in
+  Natural Language Processing}, pages 6894--6910, Online and Punta Cana,
+  Dominican Republic. Association for Computational Linguistics.
+
+\bibitem[{Huang et~al.(2021)Huang, Zhang, Chen, Wang, and
+  Yang}]{huang2021continual}
+Yufan Huang, Yanzhe Zhang, Jiaao Chen, Xuezhi Wang, and Diyi Yang. 2021.
+\newblock Continual learning for text classification with information
+  disentanglement based regularization.
+\newblock In \emph{Proceedings of the 2021 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies}, pages 2736--2746.
+
+\bibitem[{Kassner and Sch{\"u}tze(2020)}]{kassnerbert}
+Nora Kassner and Hinrich Sch{\"u}tze. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.findings-emnlp.307}
+  {{BERT}-k{NN}: Adding a k{NN} search component to pretrained language models
+  for better {QA}}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EMNLP 2020}, pages 3424--3430, Online. Association for Computational
+  Linguistics.
+
+\bibitem[{Ke and Liu(2022)}]{ke2022continual}
+Zixuan Ke and Bing Liu. 2022.
+\newblock Continual learning of natural language processing tasks: A survey.
+\newblock \emph{arXiv preprint arXiv:2211.12701}.
+
+\bibitem[{Khandelwal et~al.(2020)Khandelwal, Fan, Jurafsky, Zettlemoyer, and
+  Lewis}]{khandelwal2020nearest}
+Urvashi Khandelwal, Angela Fan, Dan Jurafsky, Luke Zettlemoyer, and Mike Lewis.
+  2020.
+\newblock Nearest neighbor machine translation.
+\newblock \emph{arXiv preprint arXiv:2010.00710}.
+
+\bibitem[{Khosla et~al.(2020)Khosla, Teterwak, Wang, Sarna, Tian, Isola,
+  Maschinot, Liu, and Krishnan}]{khosla2020supervised}
+Prannay Khosla, Piotr Teterwak, Chen Wang, Aaron Sarna, Yonglong Tian, Phillip
+  Isola, Aaron Maschinot, Ce~Liu, and Dilip Krishnan. 2020.
+\newblock Supervised contrastive learning.
+\newblock \emph{Advances in Neural Information Processing Systems},
+  33:18661--18673.
+
+\bibitem[{Kingma and Ba(2014)}]{kingma2014adam}
+Diederik~P Kingma and Jimmy Ba. 2014.
+\newblock Adam: A method for stochastic optimization.
+\newblock \emph{arXiv preprint arXiv:1412.6980}.
+
+\bibitem[{Kirkpatrick et~al.(2017)Kirkpatrick, Pascanu, Rabinowitz, Veness,
+  Desjardins, Rusu, Milan, Quan, Ramalho, Grabska-Barwinska
+  et~al.}]{kirkpatrick2017overcoming}
+James Kirkpatrick, Razvan Pascanu, Neil Rabinowitz, Joel Veness, Guillaume
+  Desjardins, Andrei~A Rusu, Kieran Milan, John Quan, Tiago Ramalho, Agnieszka
+  Grabska-Barwinska, et~al. 2017.
+\newblock Overcoming catastrophic forgetting in neural networks.
+\newblock \emph{Proceedings of the national academy of sciences},
+  114(13):3521--3526.
+
+\bibitem[{Li and Hoiem(2017)}]{li2017learning}
+Zhizhong Li and Derek Hoiem. 2017.
+\newblock Learning without forgetting.
+\newblock \emph{IEEE transactions on pattern analysis and machine
+  intelligence}, 40(12):2935--2947.
+
+\bibitem[{Lopez-Paz and Ranzato(2017)}]{lopez2017gradient}
+David Lopez-Paz and Marc'Aurelio Ranzato. 2017.
+\newblock Gradient episodic memory for continual learning.
+\newblock \emph{Advances in neural information processing systems}, 30.
+
+\bibitem[{Luo et~al.(2022)Luo, Guo, Liu, and Zhang}]{luo2022mere}
+Yun Luo, Fang Guo, Zihan Liu, and Yue Zhang. 2022.
+\newblock Mere contrastive learning for cross-domain sentiment analysis.
+\newblock \emph{arXiv preprint arXiv:2208.08678}.
+
+\bibitem[{Neelakantan et~al.(2022)Neelakantan, Xu, Puri, Radford, Han, Tworek,
+  Yuan, Tezak, Kim, Hallacy et~al.}]{neelakantan2022text}
+Arvind Neelakantan, Tao Xu, Raul Puri, Alec Radford, Jesse~Michael Han, Jerry
+  Tworek, Qiming Yuan, Nikolas Tezak, Jong~Wook Kim, Chris Hallacy, et~al.
+  2022.
+\newblock Text and code embeddings by contrastive pre-training.
+\newblock \emph{arXiv preprint arXiv:2201.10005}.
+
+\bibitem[{Rajpurkar et~al.(2016)Rajpurkar, Zhang, Lopyrev, and
+  Liang}]{rajpurkarsquad}
+Pranav Rajpurkar, Jian Zhang, Konstantin Lopyrev, and Percy Liang. 2016.
+\newblock \href {https://doi.org/10.18653/v1/D16-1264} {{SQ}u{AD}: 100,000+
+  questions for machine comprehension of text}.
+\newblock In \emph{Proceedings of the 2016 Conference on Empirical Methods in
+  Natural Language Processing}, pages 2383--2392, Austin, Texas. Association
+  for Computational Linguistics.
+
+\bibitem[{Rebuffi et~al.(2017)Rebuffi, Kolesnikov, Sperl, and
+  Lampert}]{Rebuffi_2017_CVPR}
+Sylvestre-Alvise Rebuffi, Alexander Kolesnikov, Georg Sperl, and Christoph~H.
+  Lampert. 2017.
+\newblock icarl: Incremental classifier and representation learning.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition (CVPR)}.
+
+\bibitem[{Riemer et~al.(2019)Riemer, Cases, Ajemian, Liu, Rish, Tu, and
+  Tesauro}]{riemer2019learning}
+Matthew Riemer, Ignacio Cases, Robert Ajemian, Miao Liu, Irina Rish, Yuhai Tu,
+  and Gerald Tesauro. 2019.
+\newblock Learning to learn without forgetting by maximizing transfer and
+  minimizing interference.
+\newblock In \emph{International Conference on Learning Representations}.
+  International Conference on Learning Representations, ICLR.
+
+\bibitem[{Rolnick et~al.(2019)Rolnick, Ahuja, Schwarz, Lillicrap, and
+  Wayne}]{NEURIPS2019_fa7cdfad}
+David Rolnick, Arun Ahuja, Jonathan Schwarz, Timothy Lillicrap, and Gregory
+  Wayne. 2019.
+\newblock \href
+  {https://proceedings.neurips.cc/paper/2019/file/fa7cdfad1a5aaf8370ebeda47a1ff1c3-Paper.pdf}
+  {Experience replay for continual learning}.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~32. Curran Associates, Inc.
+
+\bibitem[{Serra et~al.(2018)Serra, Suris, Miron, and Karatzoglou}]{serra18a}
+Joan Serra, Didac Suris, Marius Miron, and Alexandros Karatzoglou. 2018.
+\newblock \href {https://proceedings.mlr.press/v80/serra18a.html} {Overcoming
+  catastrophic forgetting with hard attention to the task}.
+\newblock In \emph{Proceedings of the 35th International Conference on Machine
+  Learning}, volume~80 of \emph{Proceedings of Machine Learning Research},
+  pages 4548--4557. PMLR.
+
+\bibitem[{Wang et~al.(2018)Wang, Singh, Michael, Hill, Levy, and
+  Bowman}]{wang2018glue}
+Alex Wang, Amanpreet Singh, Julian Michael, Felix Hill, Omer Levy, and Samuel
+  Bowman. 2018.
+\newblock Glue: A multi-task benchmark and analysis platform for natural
+  language understanding.
+\newblock In \emph{Proceedings of the 2018 EMNLP Workshop BlackboxNLP:
+  Analyzing and Interpreting Neural Networks for NLP}, pages 353--355.
+
+\bibitem[{Warstadt et~al.(2019)Warstadt, Singh, and
+  Bowman}]{warstadt2019neural}
+Alex Warstadt, Amanpreet Singh, and Samuel~R Bowman. 2019.
+\newblock Neural network acceptability judgments.
+\newblock \emph{Transactions of the Association for Computational Linguistics},
+  7:625--641.
+
+\bibitem[{Williams et~al.(2017)Williams, Nangia, and
+  Bowman}]{williams2017broad}
+Adina Williams, Nikita Nangia, and Samuel~R Bowman. 2017.
+\newblock A broad-coverage challenge corpus for sentence understanding through
+  inference.
+\newblock \emph{arXiv preprint arXiv:1704.05426}.
+
+\bibitem[{Wu et~al.(2018)Wu, Xiong, Yu, and Lin}]{wu2018unsupervised}
+Zhirong Wu, Yuanjun Xiong, Stella~X Yu, and Dahua Lin. 2018.
+\newblock Unsupervised feature learning via non-parametric instance
+  discrimination.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 3733--3742.
+
+\bibitem[{Yogatama et~al.(2019)Yogatama, d'Autume, Connor, Kocisky,
+  Chrzanowski, Kong, Lazaridou, Ling, Yu, Dyer et~al.}]{yogatama2019learning}
+Dani Yogatama, Cyprien de~Masson d'Autume, Jerome Connor, Tomas Kocisky, Mike
+  Chrzanowski, Lingpeng Kong, Angeliki Lazaridou, Wang Ling, Lei Yu, Chris
+  Dyer, et~al. 2019.
+\newblock Learning and evaluating general linguistic intelligence.
+\newblock \emph{arXiv preprint arXiv:1901.11373}.
+
+\bibitem[{Yoon et~al.(2018)Yoon, Yang, Lee, and Hwang}]{yoon2018lifelong}
+Jaehong Yoon, Eunho Yang, Jeongtae Lee, and Sung~Ju Hwang. 2018.
+\newblock Lifelong learning with dynamically expandable networks.
+\newblock In \emph{6th International Conference on Learning Representations,
+  ICLR 2018}. International Conference on Learning Representations, ICLR.
+
+\bibitem[{Yu et~al.(2020{\natexlab{a}})Yu, Twardowski, Liu, Herranz, Wang,
+  Cheng, Jui, and van~de Weijer}]{9156964}
+Lu~Yu, Bartłomiej Twardowski, Xialei Liu, Luis Herranz, Kai Wang, Yongmei
+  Cheng, Shangling Jui, and Joost van~de Weijer. 2020{\natexlab{a}}.
+\newblock \href {https://doi.org/10.1109/CVPR42600.2020.00701} {Semantic drift
+  compensation for class-incremental learning}.
+\newblock In \emph{2020 IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 6980--6989.
+
+\bibitem[{Yu et~al.(2020{\natexlab{b}})Yu, Kumar, Gupta, Levine, Hausman, and
+  Finn}]{NEURIPS2020_3fe78a8a}
+Tianhe Yu, Saurabh Kumar, Abhishek Gupta, Sergey Levine, Karol Hausman, and
+  Chelsea Finn. 2020{\natexlab{b}}.
+\newblock \href
+  {https://proceedings.neurips.cc/paper/2020/file/3fe78a8acf5fda99de95303940a2420c-Paper.pdf}
+  {Gradient surgery for multi-task learning}.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~33, pages 5824--5836. Curran Associates, Inc.
+
+\bibitem[{Zhang et~al.(2021)Zhang, Li, Xiao, Zhu, Nallapati, Arnold, and
+  Xiang}]{zhang-etal-2021-pairwise}
+Dejiao Zhang, Shang-Wen Li, Wei Xiao, Henghui Zhu, Ramesh Nallapati, Andrew~O.
+  Arnold, and Bing Xiang. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.emnlp-main.467} {Pairwise
+  supervised contrastive learning of sentence representations}.
+\newblock In \emph{Proceedings of the 2021 Conference on Empirical Methods in
+  Natural Language Processing}, pages 5786--5798, Online and Punta Cana,
+  Dominican Republic. Association for Computational Linguistics.
+
+\bibitem[{Zhang et~al.(2015)Zhang, Zhao, and LeCun}]{zhang2015character}
+Xiang Zhang, Junbo Zhao, and Yann LeCun. 2015.
+\newblock Character-level convolutional networks for text classification.
+\newblock \emph{Advances in neural information processing systems}, 28.
+
+\bibitem[{Zhao et~al.(2022)Zhao, Xu, Yang, and Gao}]{zhaoconsistent}
+Kang Zhao, Hua Xu, Jiangong Yang, and Kai Gao. 2022.
+\newblock \href {https://doi.org/10.18653/v1/2022.findings-acl.268} {Consistent
+  representation learning for continual relation extraction}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  ACL 2022}, pages 3402--3411, Dublin, Ireland. Association for Computational
+  Linguistics.
+
+\end{thebibliography}

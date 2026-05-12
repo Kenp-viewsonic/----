@@ -1,0 +1,162 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Aggarwal \bgroup \em et al.\egroup
+  }{2011}]{ICDE.2011.5767885}
+Charu~C. Aggarwal, Yuchen Zhao, and Philip~S. Yu.
+\newblock Outlier detection in graph streams.
+\newblock In {\em Proceedings of the 2011 IEEE 27th International Conference on
+  Data Engineering}, page 399–409, USA, 2011.
+
+\bibitem[\protect\citeauthoryear{Akoglu \bgroup \em et al.\egroup
+  }{2015}]{akoglu2015graph}
+Leman Akoglu, Hanghang Tong, and Danai Koutra.
+\newblock Graph based anomaly detection and description: a survey.
+\newblock {\em Data Mining and Knowledge Discovery}, 29(3):626--688, 2015.
+
+\bibitem[\protect\citeauthoryear{Cheng \bgroup \em et al.\egroup
+  }{2016}]{cheng2016ranking}
+Wei Cheng, Kai Zhang, Haifeng Chen, Guofei Jiang, Zhengzhang Chen, and Wei
+  Wang.
+\newblock Ranking causal anomalies via temporal and dynamical analysis on
+  vanishing correlations.
+\newblock In {\em SIGKDD}, pages 805--814. ACM, 2016.
+
+\bibitem[\protect\citeauthoryear{Chung \bgroup \em et al.\egroup
+  }{2014}]{chung2014empirical}
+Junyoung Chung, Caglar Gulcehre, KyungHyun Cho, and Yoshua Bengio.
+\newblock Empirical evaluation of gated recurrent neural networks on sequence
+  modeling.
+\newblock {\em arXiv preprint arXiv:1412.3555}, 2014.
+
+\bibitem[\protect\citeauthoryear{De~Choudhury \bgroup \em et al.\egroup
+  }{2009}]{de2009social}
+Munmun De~Choudhury, Hari Sundaram, Ajita John, and Dor{\'e}e~Duncan Seligmann.
+\newblock Social synchrony: Predicting mimicry of user actions in online social
+  media.
+\newblock In {\em CSE}, volume~4, pages 151--158. IEEE, 2009.
+
+\bibitem[\protect\citeauthoryear{Goodfellow \bgroup \em et al.\egroup
+  }{2016}]{goodfellow2016deep}
+Ian Goodfellow, Yoshua Bengio, and Aaron Courville.
+\newblock {\em Deep learning}.
+\newblock MIT press, 2016.
+
+\bibitem[\protect\citeauthoryear{Goyal \bgroup \em et al.\egroup
+  }{2018}]{goyal2018dyngem}
+Palash Goyal, Nitin Kamra, Xinran He, and Yan Liu.
+\newblock Dyngem: Deep embedding method for dynamic graphs.
+\newblock {\em arXiv preprint arXiv:1805.11273}, 2018.
+
+\bibitem[\protect\citeauthoryear{Goyal \bgroup \em et al.\egroup
+  }{2019}]{goyal2019dyngraph2vec}
+Palash Goyal, Sujit~Rokka Chhetri, and Arquimedes Canedo.
+\newblock dyngraph2vec: Capturing network dynamics using dynamic graph
+  representation learning.
+\newblock {\em Knowledge-Based Systems}, 2019.
+
+\bibitem[\protect\citeauthoryear{Grover and
+  Leskovec}{2016}]{grover2016node2vec}
+Aditya Grover and Jure Leskovec.
+\newblock node2vec: Scalable feature learning for networks.
+\newblock In {\em SIGKDD}, pages 855--864. ACM, 2016.
+
+\bibitem[\protect\citeauthoryear{Kingma and Ba}{2014}]{kingma2014adam}
+Diederik~P Kingma and Jimmy Ba.
+\newblock Adam: A method for stochastic optimization.
+\newblock {\em arXiv preprint arXiv:1412.6980}, 2014.
+
+\bibitem[\protect\citeauthoryear{Kipf and Welling}{2016}]{kipf2016semi}
+Thomas~N Kipf and Max Welling.
+\newblock Semi-supervised classification with graph convolutional networks.
+\newblock {\em arXiv preprint arXiv:1609.02907}, 2016.
+
+\bibitem[\protect\citeauthoryear{Kumar \bgroup \em et al.\egroup
+  }{2016}]{kumar2016edge}
+Srijan Kumar, Francesca Spezzano, VS~Subrahmanian, and Christos Faloutsos.
+\newblock Edge weight prediction in weighted signed networks.
+\newblock In {\em ICDM}, pages 221--230. IEEE, 2016.
+
+\bibitem[\protect\citeauthoryear{Kumar \bgroup \em et al.\egroup
+  }{2018}]{kumar2018rev2}
+Srijan Kumar, Bryan Hooi, Disha Makhija, Mohit Kumar, Christos Faloutsos, and
+  VS~Subrahmanian.
+\newblock Rev2: Fraudulent user prediction in rating platforms.
+\newblock In {\em WSDM}, pages 333--341. ACM, 2018.
+
+\bibitem[\protect\citeauthoryear{Luo \bgroup \em et al.\egroup
+  }{2018}]{luo2018tinet}
+Chen Luo, Zhengzhang Chen, Lu-An Tang, Anshumali Shrivastava, Zhichun Li,
+  Haifeng Chen, and Jieping Ye.
+\newblock Tinet: Learning invariant networks via knowledge transfer.
+\newblock In {\em SIGKDD}, pages 1890--1899. ACM, 2018.
+
+\bibitem[\protect\citeauthoryear{Mikolov \bgroup \em et al.\egroup
+  }{2013}]{mikolov2013distributed}
+Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg~S Corrado, and Jeff Dean.
+\newblock Distributed representations of words and phrases and their
+  compositionality.
+\newblock In {\em NIPS}, pages 3111--3119, 2013.
+
+\bibitem[\protect\citeauthoryear{Opsahl and
+  Panzarasa}{2009}]{opsahl2009clustering}
+Tore Opsahl and Pietro Panzarasa.
+\newblock Clustering in weighted networks.
+\newblock {\em Social Networks}, 31(2):155--163, 2009.
+
+\bibitem[\protect\citeauthoryear{Perozzi \bgroup \em et al.\egroup
+  }{2014}]{perozzi2014deepwalk}
+Bryan Perozzi, Rami Al-Rfou, and Steven Skiena.
+\newblock Deepwalk: Online learning of social representations.
+\newblock In {\em SIGKDD}, pages 701--710. ACM, 2014.
+
+\bibitem[\protect\citeauthoryear{Ranshous \bgroup \em et al.\egroup
+  }{2015}]{Ranshous:2015}
+Stephen Ranshous, Shitian Shen, Danai Koutra, Steve Harenberg, Christos
+  Faloutsos, and Nagiza~F. Samatova.
+\newblock Anomaly detection in dynamic networks: A survey.
+\newblock {\em WIREs Comput. Stat.}, 7(3):223--247, May 2015.
+
+\bibitem[\protect\citeauthoryear{Tang \bgroup \em et al.\egroup
+  }{2015}]{tang2015line}
+Jian Tang, Meng Qu, Mingzhe Wang, Ming Zhang, Jun Yan, and Qiaozhu Mei.
+\newblock Line: Large-scale information network embedding.
+\newblock In {\em WWW}, pages 1067--1077, 2015.
+
+\bibitem[\protect\citeauthoryear{von Luxburg}{2007}]{spectralclustering2007}
+Ulrike von Luxburg.
+\newblock A tutorial on spectral clustering.
+\newblock {\em CoRR}, abs/0711.0189, 2007.
+
+\bibitem[\protect\citeauthoryear{Xu \bgroup \em et al.\egroup
+  }{2018}]{xu2018representation}
+Keyulu Xu, Chengtao Li, Yonglong Tian, Tomohiro Sonobe, Ken-ichi Kawarabayashi,
+  and Stefanie Jegelka.
+\newblock Representation learning on graphs with jumping knowledge networks.
+\newblock In {\em ICML}, pages 5449--5458, 2018.
+
+\bibitem[\protect\citeauthoryear{Yu \bgroup \em et al.\egroup
+  }{2018}]{yu2018netwalk}
+Wenchao Yu, Wei Cheng, Charu~C Aggarwal, Kai Zhang, Haifeng Chen, and Wei Wang.
+\newblock Netwalk: A flexible deep embedding approach for anomaly detection in
+  dynamic networks.
+\newblock In {\em SIGKDD}, pages 2672--2681. ACM, 2018.
+
+\bibitem[\protect\citeauthoryear{Zhang \bgroup \em et al.\egroup
+  }{2005}]{zhang2005collecting}
+Beichuan Zhang, Raymond Liu, Daniel Massey, and Lixia Zhang.
+\newblock Collecting the internet as-level topology.
+\newblock {\em ACM SIGCOMM Computer Communication Review}, 35(1):53--61, 2005.
+
+\bibitem[\protect\citeauthoryear{Zhang \bgroup \em et al.\egroup
+  }{2018}]{zhang2018end}
+Muhan Zhang, Zhicheng Cui, Marion Neumann, and Yixin Chen.
+\newblock An end-to-end deep learning architecture for graph classification.
+\newblock In {\em AAAI}, 2018.
+
+\bibitem[\protect\citeauthoryear{Zhou \bgroup \em et al.\egroup
+  }{2018}]{zhou2018dynamic}
+Lekui Zhou, Yang Yang, Xiang Ren, Fei Wu, and Yueting Zhuang.
+\newblock Dynamic network embedding by modeling triadic closure process.
+\newblock In {\em AAAI}, 2018.
+
+\end{thebibliography}

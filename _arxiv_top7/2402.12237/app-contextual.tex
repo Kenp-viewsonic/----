@@ -1,0 +1,313 @@
+% !TEX root = main.tex
+\subsection{Comparison with Literature of Linear Contextual Bandits}\label{app:comparison}
+Contrasting to  linear contextual bandits, e.g. \cite{Abbasi-YadkoriPS11}, and linear contextual bandits with delays, such as \cite{VernadeCP17,blanchet2023delay}, there are four main distinctions.
+
+The first distinction is that our work needs to estimate the cost of accepting a job ($\ell_k^+ = \expectsub{k}{C_t^+}$) and the cost of rejecting a job ($\ell_k^- = \expectsub{k}{-C_t^-}$) while papers in multi-armed bandits only need to estimate the mean reward of an arm. The reason is that we need to identify the type with high error of classification by AI \textemdash ~in multi-armed bandits, one only cares about types with high average cost (or reward). Indeed, since $\ell_k^+ - \ell_k^- = c_k$, our setting requires to learn more information of the underlying cost distributions. This requirement adds challenge to our concentration bound analysis since it is apriori unclear if $C_t^+$ (or $C_t^-$) is still sub-Gaussian when the cost $C_t$ is sub-Gaussian. Fortunately, our result in Lemma~\ref{lem:sub-gaussian} affirmatively answers this question and shows that a Lipschitz function of a sub-Gaussian random variable is still sub-Gaussian but with twice variance proxy.
+
+The second distinction is that those works use a different estimator $\hat{\btheta}$ by including all arrived data points into the dataset (unobserved labels are set as $0$). In contract, our confidence set is constructed based on all \emph{reviewed} jobs in \eqref{eq:regression}, which is a subset of all \emph{arrived} jobs \emph{endogenously} determined by our algorithm. 
+
+The third distinction, as a result of the second, is that conditioned on the set of arrived jobs, the matrix $\bar{V}_t$ in \eqref{eq:regression} is a fixed matrix in their settings, but is a random matrix in our setting because it is constructed from the set of reviewed jobs. We should thus deal with the intricacy of the randomness in the regression.
+
+The fourth distinction lies in the analysis with queueing-delayed feedback.  The analysis of prior work crucially relies on an independence assumption, i.e., the event of observing feedback for a job within a particular delay period is independent from other jobs, which enables a concentration bound on the number of observed feedback.  In our setting, this is no longer the case as the delay in one job implies that other jobs wait in the queue and thus delays could correlate with each other. We thus resort to the more intuitive estimator and analyze it via properties of our queueing systems. 
+
+We note that \cite{blanchet2023delay} consider a setting where delays are correlated because they are generated from a Markov chain. That said, the proof requires concentration and stationary properties of the Markov chain, which are not available in our non-Markovian setting.
+
+\subsection{Regret guarantee of \textsc{COLBACID} (Theorem~\ref{thm:cbacidol})}\label{app:thm-cbacidol}
+\begin{proof}[Proof of Theorem~\ref{thm:cbacidol}]
+By definition of $B_{\delta}(T)$ in \eqref{eq:contextual-def-conf}, it holds that $B_{\delta}(T) \lesssim \sqrt{d\ln (T / \delta)} \lesssim \sqrt{d\ln T}$ where the last inequality is because $\delta^{-1} \lesssim T$ by its definition in Algorithm~\ref{algo:cbacidol}. Applying Lemmas~\ref{lem:contextual-delay},~\ref{lem:contextual-class} and \ref{lem:contextual-idio} to \eqref{eq:contextual-loss-decompose}, we have the loss of $\conbacid$ upper bounded by
+\begin{align*}
+\expect{\set{L}^{\conbacid}(T)} &= \textsc{Classification Loss} + \textsc{Idiosyncrasy Loss} + \textsc{Relaxed Delay Loss} \\
+&\hspace{-1.2in}\lesssim \set{L}^\star(T) + \Delta(\set{K}_{\set{G}})T + \gamma\indic{\gamma \geq \eta}T + \frac{d^{2.5}\ln^{2} T}{\max(\eta,\gamma)^2}+\frac{T}{\beta} + Gd^{1.5}\beta\sqrt{\ln T} + d\sqrt{GT\ln T} \\
+&\hspace{-1.2in}\lesssim \set{L}^\star(T)+ \Delta(\set{K}_{\set{G}})T+\min\left(\frac{d^{2.5}\ln^{2} T}{\eta^2}, d^{5/6}T^{2/3}\ln(T)^{2/3}\right)+ d\sqrt{GT\ln T},
+\end{align*}
+where we use the setting that $\beta = \sqrt{T / (Gd^{1.5})}, \gamma = (T / (d^{2.5}\ln^2 T))^{-1/3}.$ We finish the proof by
+\begin{align*}
+\textsc{Reg}^{\conbacid}(T) &= \set{L}^{\conbacid}(T) - \set{L}^\star(T) \\
+&\hspace{-0.4in}\lesssim \Delta(\set{K}_{\set{G}})T+\min\left(\frac{d^{2.5}\ln^{2} T}{\eta^2}, d^{5/6}T^{2/3}\ln(T)^{2/3}\right)+ d\sqrt{GT\ln T}.
+\end{align*}
+\end{proof}
+
+\subsection{Confidence Sets are Valid with High Probability (Lemma~\ref{lem:contextual-prob-good-event})}\label{app:lem-contextual-prob-good-event}
+\begin{proof}[Proof of Lemma~\ref{lem:contextual-prob-good-event}]
+The proof uses \cite[Theorem~2]{Abbasi-YadkoriPS11}, which we restate in Fact~\ref{fact:abbasi-bound}. Recall that $\set{C}^+_t$ is the set of vectors $\btheta^+$ and $\set{C}^-_t$ is the set of vectors $\btheta^-$ in the confidence sets as defined in \eqref{eq:contextual-def-conf}. The proof proceeds by showing that $\btheta^{\star,+} \in \set{C}^+_t$ and $\btheta^{\star,-} \in \set{C}^-_t$ with probability $1 - 2\delta$, which implies $\bTheta^\star \in \set{C}_t^+ \times \set{C}_t^-$ with probability $1-2\delta$.
+
+We first show that $\btheta^{\star,+} \in \set{C}^+_t$ with probability $1-\delta$. Recall that the datapoint for $\hat{\btheta}^+$ in period~$t$ is $C^+_{\set{S}(t)}$. Define $\varepsilon_{\set{S}(t)} = C^+_{\set{S}(t)} - \expectsub{\kappa(\set{S}(t))}{C^+_{\set{S}(t)}} = C^+_{\set{S}(t)} - \bphi_{\kappa(\set{S}(t))}^{\trans}\btheta^{\star,+}$. To apply Fact~\ref{fact:abbasi-bound}, it suffices to show that the sequence $\{\varepsilon_{\set{S}(t)}\}$ is conditionally sub-Gaussian with variance proxy $2\sigma^2_{\max}$ for the filtration $\set{F}_{t-1} = \sigma(\bolds{X}_1,\ldots,\bolds{X}_t,\varepsilon_{\set{S(1)},\ldots,\varepsilon_{\set{S}(t - 1)})}$, i.e., $\expect{e^{u\varepsilon_{\set{S}(t)}} \mid \set{F}_{t-1}} \leq \exp(u^2(2\sigma_{\max}^2)/2)$ for any $u \in \mathbb{R}$. Given that we assume that job costs are independent samples, it holds that $\expect{e^{u\varepsilon_{\set{S}(t)}} \mid \set{F}_{t-1}} = \expect{e^{u\varepsilon_{\set{S}(\tau)}}}$. Since we assume $C_{\set{S}(t)}$ is sub-Gaussian with variance proxy $\sigma_{\max}^2$ conditioned on the type of the job $\kappa(\set{S}(t)) = k$ and $\max(x,0)$ is a $1-$Lipschitz function, Lemma~\ref{lem:sub-gaussian} shows that $C_{\set{S}(t)}^+$ is sub-Gaussian with variance proxy $2\sigma_{\max}^2$. As a result, $\varepsilon_{\set{S}(t)}$ is also sub-Gaussian with variance proxy $2\sigma_{\max}^2$ and $\expect{e^{u\varepsilon_{\set{S}(t)}}} \leq \exp(u^2(2\sigma_{\max}^2) / 2)$, showing that thus $\{\varepsilon_{\set{S}(t)}\}$ is conditionally sub-Gaussian with variance proxy $2\sigma_{\max}^2$. Hence the conditions of Fact~\ref{fact:abbasi-bound} are met. Applying Fact~\ref{fact:abbasi-bound} and the definition of $\set{C}^{+}_t$  then gives $\btheta^{\star,+} \in \set{C}_t^+$ with probability at least $1-\delta$.
+
+By symmetry, the above argument applies to $\btheta^{\star,-}$ and thus $\btheta^{\star,-} \in \set{C}_t^-$ with probability at least $1 - \delta$. Using union bound gives that $\bTheta^\star \in \set{C}_t^+ \times \set{C}_t^-$ with probability at least $1-2\delta$.
+\end{proof}
+
+\subsection{Bounding the Number of Label-Driven Admissions  (Lemma~\ref{lem:bound-norm-selective})}\label{app:lem-bound-norm-selective}
+We define $\set{T}_E$ as the set of periods where a new job is admitted into the label-driven queue, i.e., $\set{T}_E = \{t\leq T\colon E(t) = 1\}$, and $\expect{\sum_{t=1}^T E(t)} = \expect{|\set{T}_E|}$. The following lemma connects $\expect{|\set{T}_E|}$ with the estimation error $\|\bphi_{\kappa(t)}\|_{\bar{\bolds{V}}_{t-1}^{-1}}^2$ for jobs admitted into the label-driven queue.
+\begin{lemma}\label{lem:conntect-te-norm}
+For $\delta \in (0,1)$, it holds that $\expect{|\set{T}_E|} \leq \frac{16B_{\delta}^2(T)\expect{\sum_{t \in \set{T}_E} \|\bphi_{\kappa(t)}\|_{\bar{\bolds{V}}_{t-1}^{-1}}^2}}{\max(\eta,\gamma)^2} + 2T\delta$.
+\end{lemma}
+\begin{proof}[Proof of Lemma~\ref{lem:conntect-te-norm}]
+By the law of total expectation, the fact that $|\set{T}_E| \leq T$, and Lemma~\ref{lem:contextual-prob-good-event} that $\Pr\{\set{E}^c\} \leq 2\delta$, it holds that 
+\begin{equation}\label{eq:te-condition-expect}
+    \expect{|\set{T}_E|} = \expect{|\set{T}_E| \mid \set{E}}\Pr\{\set{E}\} + \expect{|\set{T}_E \mid \set{E}^c|}\Pr\{\set{E}^c\} \leq \expect{|\set{T}_E| \mid \set{E}} + 2T\delta.
+\end{equation}
+It remains to upper bound $\expect{|\set{T}_E| \mid \set{E}}$. We condition on $\set{E}$, which implies that $\bTheta^\star \in \set{C}_t^+ \times \set{C}_t^-$ for any $t \geq 0$. Focusing on jobs that are admitted in the label-driven queue $t \in \set{T}_E$ and letting $k = \kappa(t)$ be the type of the job arrived in period $t$, it holds that $E(t) = 1$ and that $\ubar{c}_k(t) < -\gamma< \gamma < \bar{c}_k(t)$ by the label-driven admission rule (Line~\ref{line:conbacid-lda} of Algorithm~\ref{algo:cbacidol}). In addition, since $\bTheta^\star \in \set{C}_t^+ \times \set{C}_t^-$, it holds that $\ubar{c}_k(t) \leq c_k \leq \bar{c}_k(t)$. By the margin assumption $|c_k(t)| \geq \eta$, we must have $\bar{c}_k(t) - \ubar{c}_k(t) \geq \eta + \gamma \geq \max(\eta,\gamma)$. To see this, if $c_k \geq 0$, then $\bar{c}_k(t) \geq \eta$ and $\bar{c}_k(t) - \ubar{c}_k(t) \geq \eta - (-\gamma) = \eta + \gamma$; same analysis holds for $c_k < 0$. In addition, recall $\hat{\bolds{c}}(t-1) = \hat{\btheta}^+(t-1) - \hat{\btheta}^-(t-1)$. For any $\bolds{c} \in \set{C}_{t-1}$, there exists $\btheta^+ \in \set{C}^+_{t-1}$ and $\btheta^- \in \set{C}^-_{t-1}$ such that $\bolds{c} = \btheta^+ - \btheta^-$. Furthermore,
+\begin{align*}
+\left|\bphi_k^{\trans}\bolds{c} - \bphi_k^{\trans}\hat{\bolds{c}}_{t-1}\right| = \left|\bphi_k^{\trans}(\bolds{c} - \hat{\bolds{c}}_{t-1})\right| &\leq \|\bolds{c}-\hat{\bolds{c}}_{t-1}\|_{\bar{\bolds{V}}_{t-1}}\|\bphi_k\|_{\bar{\bolds{V}}_{t-1}^{-1}} \\
+&= \|\btheta^+ - \btheta^- - (\hat{\btheta}^+(t-1) - \hat{\btheta}^-(t-1))\|_{\bar{\bolds{V}}_{t-1}}\|\bphi_k\|_{\bar{\bolds{V}}_{t-1}^{-1}} \\
+&\hspace{-1in}\leq \left(\|\btheta^+- \hat{\btheta}^+(t-1)\|_{\bar{\bolds{V}}_{t-1}} + \|\btheta^- - \hat{\btheta}^-(t-1)\|_{\bar{\bolds{V}}_{t-1}}\right)\|\bphi_k\|_{\bar{\bolds{V}}_{t-1}^{-1}} \\
+&\leq 2B_{\delta}(t-1)\|\bphi_k\|_{\bar{\bolds{V}}_{t-1}^{-1}}
+\end{align*}
+where the first inequality is by Cauchy Inequality; the second inequality is by triangle inequality; and the last inequality is by the definition of $\set{C}^+_{t-1}, \set{C}^-_{t-1}$ in \eqref{eq:contextual-def-conf}.
+Combining this result with the definition of confidence intervals in \eqref{eq:conf-h-feature}, we have
+\[
+\max(\eta,\gamma)\leq \bar{c}_k(t) - \ubar{c}_k(t)
+\leq \max_{\bolds{c} \in \set{C}_{t-1}} \bphi_k^{\trans}\bolds{c} - \min_{\bolds{c} \in \set{C}_{t-1}} \bphi_k^{\trans}\bolds{c} \leq 4B_{\delta}(t-1)\|\bphi_k\|_{\bar{\bolds{V}}_{t-1}^{-1}},
+\]
+so $16B_{\delta}^2(T)\|\bphi_k\|_{\bar{\bolds{V}}_{t-1}^{-1}}^2 \geq \max(\eta,\gamma)^2$ and  $16B_{\delta}^2(T)\sum_{t \in |\set{T}_E|} \|\bphi_k\|_{\bar{\bolds{V}}_{t-1}^{-1}}^2 \geq |\set{T}_E|\max(\eta,\gamma)^2$ conditioned on~$\set{E}$. This shows that $\expect{|\set{T}_E| \mid \set{E}} \leq \frac{16B_{\delta}^2(T)\sum_{t \in |\set{T}_E|} \|\bphi_k\|_{\bar{\bolds{V}}_{t-1}^{-1}}^2}{\max(\eta,\gamma)^2}$, which finishes the proof by \eqref{eq:te-condition-expect}.
+\end{proof}
+To upper bound the estimation error, the following result shows that the estimation error for a feature vector is larger when using a subset of data points.
+\begin{lemma}\label{lem:norm-subset}
+Given $\xi > 0$ and two subsets $\set{T}_1,\set{T}_2$ of time periods such that $\set{T}_1 \subseteq \set{T}_2$, we define $\bolds{V}_1 = \xi \bI + \sum_{t \in \set{T}_1} \bphi_{\kappa(\set{S}(t))}\bphi_{\kappa(\set{S}(t))}^{\trans}$ and $\bolds{V}_2 = \xi \bI + \sum_{t \in \set{T}_2} \bphi_{\kappa(\set{S}(t))}\bphi_{\kappa(\set{S}(t))}^{\trans}$ coming from the data points in periods $\set{T}_1,\set{T}_2$ respectively. Then for any vector $\bolds{u} \in \mathbb{R}^d$, it holds that $\|\bolds{u}\|_{\bolds{V}_1^{-1}} \geq \|\bolds{u}\|_{\bolds{V}_2^{-1}}$.
+\end{lemma}
+\begin{proof}
+Let $\bV' = \bV_2 - \bV_1$. We have $\bV' = \sum_{t \in \set{T}_2 \setminus \set{T}_1} \|\bphi_{\kappa(\set{S}(t))}\|_{\bar{\bolds{V}}_{t-1}^{-1}}^2$, which is positive-semi definite (PSD). Also, $\bV_1^{-1/2}$ exists because $\bV_1$ is PSD. As a result, for any $\bolds{u} \in \mathbb{R}^d$, denoting the minimum eigenvalue of a matrix $\bolds{A}$ as $\lambda_{\min}(\bolds{A})$, we have 
+\begin{align*}
+\|\bolds{u}\|_{\bV_2^{-1}}^2 = \bolds{u}^{\trans}\bV_2^{-1}\bolds{u} = \bolds{u}^{\trans}(\bV_1+\bV')^{-1}\bolds{u}&=\bolds{u}^{\trans}\bV_1^{-1/2}\left(\bI + \bV_1^{1/2}\bV'\bV_1^{1/2}\right)^{-1}\bV_1^{-1/2}\bolds{u} \\
+&\hspace{-1in}\leq \frac{\|\bV_1^{-1/2}\bolds{u}\|_2^2}{\lambda_{\min}\left(\bI + \bV_1^{1/2}\bV'\bV_1^{1/2}\right)} \leq \|\bV_1^{-1/2}\bolds{u}\|_2^2 = \|\bolds{u}\|_{\bV_1^{-1}}^2
+\end{align*}
+where the first inequality is by the Courant-Fischer theorem and the fact that eigenvalues of a matrix inverse are inverses of the matrix; the second inequality is because $\bolds{V}_1,\bolds{V}'$ are PSD and thus $\lambda_{\min}\left(\bI + \bV_1^{1/2}\bV'\bV_1^{1/2}\right) \geq 1.$ 
+\end{proof}
+We next bound $\expect{|\set{T}_E|}$ by bounding $\sum_{t \in \set{T}_E} \|\bphi_{\kappa(t)}\|_{\bar{\bolds{V}}_{t-1}^{-1}}^2$.
+\begin{proof}[Proof of Lemma~\ref{lem:bound-norm-selective}]
+We denote elements in the set $\set{T}_E$ by $1 \leq t_1 < \ldots < t_M$ with $M = |\set{T}_E|$, and define $\widetilde{\bolds{V}}_m = \xi \bI + \sum_{i \leq m} \bphi_{\kappa(t_i)}\bphi^{\trans}_{\kappa(t_i)}$ for any $m \leq M$, which resembles the definition of $\bar{\bolds{V}}_t$ in \eqref{eq:regression} but is restricted to data collected from jobs sent to the label-driven queue. We fix $m \leq M$ and consider the norm $\|\bphi_{\kappa(t_m)}\|_{\bar{\bolds{V}}_{t_m-1}^{-1}}$. Since the label-driven admission rule (Line~\ref{line:conbacid-lda} in Algorithm~\ref{algo:cbacidol}) only admits a job to the label-driven queue when it is empty, it holds that in period $t_m$, jobs that arrived in periods $\{t_1,\ldots,t_{m-1}\}$ are already reviewed as they were admitted into the label-driven queue and the queue is now empty. As a result, jobs that arrived in periods $\{t_1,\ldots,t_{m-1}\}$ are in the dataset $\set{D}_{t_{m} - 1}$. By Lemma~\ref{lem:norm-subset}, it holds that $\|\bphi_{\kappa(t_m)}\|_{\bar{\bolds{V}}_{t_m-1}^{-1}}^2 \leq \|\bphi_{\kappa(t_m)}\|_{\widetilde{\bolds{V}}_{m-1}^{-1}}^2$ and thus
+\[
+\sum_{t \in \set{T}_E} \|\bphi_{\kappa(t)}\|_{\bar{\bolds{V}}_{t-1}^{-1}}^2 \leq \sum_{m=1}^M \|\bphi_{\kappa(t_m)}\|_{\widetilde{\bolds{V}}_{m-1}^{-1}}^2. 
+\]
+We can thus bound $\sum_{t \in \set{T}_E} \|\bphi_{\kappa(t)}\|_{\bar{\bolds{V}}_{t-1}^{-1}}^2$ by bounding
+\[
+\sum_{m=1}^M \|\bphi_{\kappa(t_m)}\|_{\widetilde{\bolds{V}}_{m-1}^{-1}}^2 \leq 2\ln \frac{\mathrm{det}(\widetilde{\bolds{V}}_M)}{\mathrm{det}(\xi \bI)} \leq 2\ln\frac{(\xi + MU^2/d)^d}{\xi^d} = 2d\ln(1+MU^2/(d\xi))\leq 2d\ln(1+T/d),
+\]
+where the first inequality is by Fact~\ref{fact:ellipsoid-bound} (with $\xi \geq \max(1,U^2)$); the second inequality is by Fact~\ref{fact:matrix-norm-bound}; the last inequality is by $\xi \geq U^2, M \leq T$. 
+
+Applying Lemma~\ref{lem:conntect-te-norm} gives $\expect{|\set{T}_E|} \leq \frac{32B_{\delta}^2(T)d\ln(1+T/d)}{\max(\eta,\gamma)^2} + 2T\delta \leq \frac{34B_{\delta}^2(T)d\ln(1+T/d)}{\max(\eta,\gamma)^2}$ where the last inequality is because $\max(\eta,\gamma) \leq 1$, $T\delta \leq 1 \leq B_{\delta}^2(T)d\ln(1+T/d)$ as $B_{\delta}^2(T) \geq \xi U^2 \geq 1$ (we assume $U \geq 1$) and $d\ln(1+T/d) \geq d\ln(1+3/d) \geq 1$ by $T \geq 3$ and Fact~\ref{fact:ln-property}.
+\end{proof}
+
+\subsection{Bounding Per-Period Classification Loss (Lemma~\ref{lem:con-period-class})}\label{app:lem-con-period-class}
+The proof is similar to that of Lemma~\ref{lem:bacidol-class-err} and we provide it here for completeness.
+\begin{proof}[Proof of Lemma~\ref{lem:con-period-class}]
+ Let us condition on $\set{E}$ (the event that the confidence set is correct) and bound 
+ \[
+ Z_k(t) = \Lambda_k(t)(Y(t)^+(\ell_k^+ - \ell_k) + Y(t)^-(\ell_k^- -\ell_k))(1-A(t)-E(t)).
+ \]
+ We fix a period $t$ and a type $k$ such that a type-$k$ job arrives in period $t$ and it is not admitted into the label-driven queue, i.e., $\Lambda_k(t) = 1$ and $E(t) = 0$; otherwise $Z_k(t) = 0$. Since $\set{E}$ holds, we have $\bolds{c}^\star \in \set{C}_{t-1}$ and thus $c_k \in [\ubar{c}_k(t),\bar{c}_k(t)]$ for any period $t$. We consider the three possible cases when the algorithm makes the classification decision $Y(t)$:
+\begin{itemize}
+\item $\ubar{c}_k(t) \geq -\gamma$: We first assume that $\bphi_k^{\trans}\hat{\bolds{c}}(t-1) > 0$ where $\hat{\bolds{c}}(t-1) = \hat{\btheta}^+(t-1) - \hat{\btheta}^-(t-1)$. In this case we classify the job by $Y(t) = \-1$ (Line~\ref{line:conbacid-classify} in Algorithm~\ref{algo:cbacidol}), so $Z_k(t) \leq (\ell_k^- - \ell_k)$. 
+\begin{itemize}
+    \item Then, if $c_k > 0$, it holds that $Z_k(t) = 0$ since $\ell_k^- = \ell_k^+ - c_k \leq \ell_k^+$ and thus $\ell_k = \ell_k^-$.
+    \item If $c_k \leq 0$, it holds that $-\gamma \leq \ubar{c}_k(t) \leq c_k \leq 0$ and thus $|c_k|\leq \gamma$. Given the margin assumption ($|c_k|\geq \eta$), this implies that $\gamma\geq \eta$ and thus $Z_k(t) \leq \gamma \indic{\gamma \geq \eta}$ as in~\eqref{eq:bound-z-k-positive}. 
+\end{itemize}
+We next consider the scenario where  $\bphi_k^{\trans}\hat{\bolds{c}}(t-1)\leq 0$. 
+\begin{itemize}
+    \item If $\bar{c}_k(t) \leq \gamma$ then $c_k \in [\ubar{c}_k(t),\bar{c}_k(t)] \subseteq [-\gamma,\gamma]$. Given the margin assumption  ($|c_k|\geq \eta$), this again implies that $\gamma\geq \eta$ and thus  $Z_k(t) \leq \gamma\indic{\gamma \geq \eta}$.
+    \item If $\bar{c}_k(t) > \gamma$, then there exists $\bolds{c} \in \set{C}_{t-1}$ such that $\bphi_k^{\trans}\bolds{c} > \gamma$. By definition of $\set{C}_{t-1}$, there exist $\btheta^+ \in \set{C}^+_{t-1}$ and $\btheta^- \in \set{C}^-_{t-1}$ such that $\bolds{c} = \btheta^+ - \btheta^-$. 
+    We consider the symmetric points of $\btheta^+$ and $\btheta^-$ in the confidence sets:  $\btheta^{',+} \coloneqq 2\hat{\btheta}^+(t-1) - \btheta^+$ and $\btheta^{',-} \coloneqq 2\hat{\btheta}^-(t-1) - \btheta^-$. The corresponding difference, e.g., the symmetric point for $\bolds{c}$, is $\bolds{c}^{'} \coloneqq \btheta^{',+} - \btheta^{',-}.$  We know $\btheta^{',+} \in \set{C}^+_{t-1}$ since $\btheta^{',+} - \hat{\btheta}^+(t-1) = -(\btheta^{+} - \hat{\btheta}(t-1))$. Similarly  $\btheta^{',-} \in \set{C}^-_{t-1}$ and thus $\bolds{c}^{'} \in \set{C}_{t-1}.$ However, recall that we are in the scenario where $\bphi_k^{\trans}\hat{\bolds{c}}(t-1)\leq 0$ and thus $\bphi_k^{\trans}\bolds{c}^{'} = \bphi_k^{\trans}(2\hat{\bolds{c}}(t-1) - \bolds{c}) < 0 - \gamma = -\gamma$. This contradicts the assumption that $\ubar{c}_k(t) = \min_{\bolds{c} \in \set{C}_{t-1}} \bphi_k^{\trans}\bolds{c} \geq -\gamma$. Therefore, $\bar{c}_k(t) > \gamma$ is impossible.
+\end{itemize}
+\item $\bar{c}_k(t) \leq \gamma$: We also have $Z_k(t) \leq \gamma \indic{\gamma \geq \eta}$ by a symmetric argument of the above case;
+\item $\ubar{c}_k(t) \leq -\gamma < \gamma \leq \bar{c}_k(t)$: in this case the label-driven admission will admit the job unless $Q^{\ld}(t) = 1$. Since $E(t) = 0$, we must have $Q^{\ld}(t) = 1$, and thus $Z_k(t) \leq c_{\max} Q^{\ld}(t)$.
+\end{itemize}
+Combining the above cases, $Z_k(t) \leq (\gamma\indic{\gamma \geq \eta} +c_{\max}Q^{\ld}(t))\Lambda_k(t)$ conditioned on $\set{E}$. 
+\end{proof}
+
+\subsection{Idiosyncrasy Loss and Lagrangians with Type-Aggregated Duals (Lemma~\ref{lem:cbacidol-idio-lag})}\label{app:lem-cbacidol-idio-lag}
+The proof is close to that of Lemmas~\ref{lem:connect-idio-lag} and \ref{lem:bacidol-idio-lag}, but relies on the analysis of a different Lyapunov function.
+\begin{proof}
+By definition, $\tilde{L}(1) = 0$ and $\expect{\tilde{L}(T + 1) / \beta}$ upper bounds the idiosyncrasy loss, which proves the first inequality. For the second inequality, for any period $t$:
+\begin{align*}
+&\hspace{0.2in}\expect{\tilde{L}(t+1) - \tilde{L}(t)} \\
+&=\beta\expect{\ell_{\kappa(t)}(1 - A(t) - E(t))}+\expect{\sum_{g \in \set{G}}\frac{1}{2}\left((\tilde{Q}_g(t+1))^2 - (\tilde{Q}_g(t))^2\right)} \\
+&= \expect{\beta\ell_{\kappa(t)}(1 - A(t) - E(t))}+\frac{1}{2}\expect{\sum_{g \in \set{G}}\left(\sum_{k:g(k) = g} (A_k(t) - S_k(t))\right)^2} \\
+&\hspace{0.3in} + \expect{\sum_{g \in \set{G}} \tilde{Q}_g(t)\left(\sum_{k:g(k) = g} (A_k(t) - S_k(t))\right)} \\
+&\overset{(a)}{\leq} 1 + \beta\sum_{k \in \set{K}} \ell_k \lambda_k(t) + \expect{-\beta \ell_{\kappa(t)}(A(t) + E(t)) + \sum_{k \in \set{K}} \tilde{Q}_{g(k)}(t)\left(A_k(t) - S_k(t)\right)} \\
+&\leq 1 + \beta\sum_{k \in \set{K}} \ell_k\lambda_k(t) + \expect{-\beta\sum_{k \in \set{K}} \ell_k \bar{A}_k(t)+ \sum_{k \in \set{K}} \tilde{Q}_{g(k)}(t)\left(\bar{A}_k(t) - S_k(t)\right)}
+\end{align*}
+where inequality (a) is because there is at most one type with $A_k(t) = 1$ and at most one type with $S_k(t) = 1$; the last inequality is because $A_k(t) \leq \bar{A}_k(t) \leq A_k(t) + E(t)$. In addition, $\expect{S_k(t) \mid \psi_k(t)} = \mu_kN(t)\psi_k(t)$. As a result, recalling the definition of $f_t$ from \eqref{eq:per-period-lag},
+\begin{align*}
+\expect{\tilde{L}(t+1) - \tilde{L}(t)} 
+&\leq 1 + \beta\sum_{k \in \set{K}} \ell_k\lambda_k(t) - \expect{\sum_{k \in \set{K}} \bar{A}_k(t)\left(\beta \ell_k -\tilde{Q}_{g(k)}(t)\right) + \sum_{k \in \set{K}} \tilde{Q}_{g(k)}(t)\psi_k(t)\mu_k N(t)} \\
+&= 1 + \expect{f_t(\bolds{\bar{A}}(t),\bolds{\psi}(t), \bolds{Q}^{\ta}(t))}
+\end{align*}
+where $Q^{\ta}_k(t) = \tilde{Q}_{g(k)}(t)$. We obtain the desired result by telescoping from $t = 1$ to $t = T$.
+\end{proof}
+
+\subsection{Lagrangians with Type-Aggregated Duals and Fluid Benchmark (Lemma~\ref{lem:context-benchmark-lagran})}\label{app:lem-context-benchmark-lagran}
+Denote the optimal admission and service vectors to \eqref{eq:fluid} by $\{\bolds{a}^\star(t),\bolds{\nu}^\star(t)\}_{t \in [T]}$. The proof follows a similar structure with the proof of Lemma~\ref{lem:lagrang-bacid} (Section~\ref{sec:lagrang-bacid}) but uses a different dual $\bolds{Q}^{\ta}$. We define a new vector of dual variables $\bolds{u}^\star$ such that the dual $u^\star_{t,k}$ takes the corresponding queue length in $\bolds{Q}^{\ta}$, i.e.,  $u^\star_{t,k} = Q^{\ta}_k(t) = \tilde{Q}_{g(k)}(t)$ for $t \in [T], k \in \set{K}$. Then
+\begin{align}
+&\hspace{0.1in}\sum_{t=1}^T \expect{f_t(\bolds{A}^{\tabacid}(t),\bolds{\psi}^{\tabacid}(t),\bolds{Q}^{\ta}(t))} - \beta\set{L}^\star(T) \nonumber\\
+&= \expect{f(\{\bolds{a}^\star(t)\}_t,\{\bolds{\nu}^\star(t)\}_t,\bolds{u}^\star)}-\beta\set{L}^\star(T)\label{eq:context-primary-lagrang} \\
+&\hspace{-0.5in}+\sum_{t=1}^T \left(\expect{f_t(\bolds{A}^{\tabacid}(t),\bolds{\psi}^{\tabacid}(t),\bolds{Q}^{\ta}(t))} - \expect{f_t(\bolds{a}^\star(t),\bolds{\nu}^\star(t),\bolds{Q}^{\ta}(t))}\right) \label{eq:context-per-period-subopt}.
+\end{align}
+The first term (difference between a Lagrangian and the primal) is non-positive by Lemma~\ref{lem:bound-lagrang}. 
+
+The next lemma is a per-period bound of  \eqref{eq:context-per-period-subopt}.
+\begin{lemma}\label{lem:cbacid-optimal}
+For any $t$, 
+\[\expect{f_t(\bolds{A}^{\tabacid}(t),\bolds{\psi}^{\tabacid}(t),\bolds{Q}^{\ta}(t))} \leq  \expect{f_t(\bolds{a}^\star(t),\bolds{\nu}^\star(t),\bolds{Q}^{\ta}(t))} + 2\beta c_{\max}\Delta(\set{K}_{\set{G}}).\]
+\end{lemma}
+\begin{proof}
+For any $\bolds{\tilde{q}}$ such that $\tilde{q}_g \leq 2\beta c_{\max}$, we expand the expectation on the left hand side, conditioning on $\bolds{\tilde{Q}}(t) = \bolds{\tilde{q}}$, by 
+\begin{align}
+&\hspace{0.1in}\expect{f_t(\bolds{A}^{\tabacid}(t),\bolds{\psi}^{\tabacid}(t),\bolds{Q}^{\ta}(t)) \mid \bolds{\tilde{Q}}(t) = \bolds{\tilde{q}}} \nonumber\\
+&=\beta\sum_{k \in \set{K}} \ell_k\lambda_k(t) - \left(\sum_{k \in \set{K}} \lambda_k(t)\indic{\beta \ell_k \geq \tilde{q}_{g(k)}}(\beta \ell_k - \tilde{q}_{g(k)}) + \sum_{k \in \set{K}} \psi^{\tabacid}_k(t)\tilde{q}_{g(k)}\mu_k N(t)\right) \nonumber\\
+&\overset{(a)}{\leq} \beta\sum_{k \in \set{K}} \ell_k\lambda_k(t) - \sum_{k \in \set{K}} a_k^\star(t)(\beta \ell_k - \tilde{q}_{g(k)}) - \sum_{k \in \set{K}} \psi^{\tabacid}_k(t)\tilde{q}_{g(k)}\mu_k N(t) \nonumber\\
+&\overset{(b)}{\leq} \beta\sum_{k \in \set{K}} \ell_k\lambda_k(t) - \sum_{k \in \set{K}} a_k^\star(t)(\beta \ell_k - \tilde{q}_{g(k)}) - \sum_{g \in \set{G}} \tilde{\mu}_g \tilde{q}_g N(t)\sum_{k\in \set{K}_g} \psi^{\tabacid}_k(t) \nonumber \\
+&\overset{(c)}{\leq} \beta\sum_{k \in \set{K}} \ell_k\lambda_k(t) - \sum_{k \in \set{K}} a_k^\star(t)(\beta \ell_k - \tilde{q}_{g(k)}) - \sum_{g \in \set{G}} \tilde{\mu}_g \tilde{q}_g N(t)\sum_{k\in \set{K}_g} \nu^\star_k(t) \nonumber\\
+&\overset{(d)}{\leq} \beta\sum_{k \in \set{K}} \ell_k\lambda_k(t) - \sum_{k \in \set{K}} a_k^\star(t)(\beta \ell_k - \tilde{q}_{g(k)}) - \sum_{g \in \set{G}} \tilde{q}_g \sum_{k\in \set{K}_g} \left(N(t)\mu_k - \Delta(\set{K}_{\set{G}})\right)\nu^\star_k(t) \nonumber\\
+&\overset{(e)}{\leq} \beta\sum_{k \in \set{K}} \ell_k\lambda_k(t) - \sum_{k \in \set{K}} a_k^\star(t)(\beta \ell_k - \tilde{q}_{g(k)}) - \sum_{g \in \set{G}} \tilde{q}_g N(t)\sum_{k\in \set{K}_g} \mu_k\nu^\star_k(t) + 2\beta c_{\max}\Delta(\set{K}_{\set{G}}) \nonumber\\
+&= f_t(\bolds{a}^\star,\bolds{\nu}^\star, \bolds{Q}^{\ta}(t)) + 2\beta c_{\max}\Delta(\set{K}_{\set{G}}), \label{eq:bound-lag-gap}
+\end{align}
+where the first equality is by the admission rule of $\tabacid$; Inequality $(a)$ is because $a_k^\star(t) \leq \lambda_k(t)$ and $(\beta \ell_k-\tilde{q}_{g(k)}) \leq \indic{\beta \ell_k\geq\tilde{q}_{g(k)}}(\beta \ell_k-\tilde{q}_{g(k)})$; Inequality (b) is because $\tilde{\mu}_g = \min_{k \in \set{K}_g} \mu_k$; Inequality (c) is by the scheduling rule of $\tabacid$ that picks a group maximizing $\tilde{\mu}_g\tilde{Q}_g(t)$ for review; Inequality (d) is by the definition of aggregation gap in Section~\ref{sec:aggregate}; and inequality (e) is because $\tilde{q}_g \leq 2\beta c_{\max}$ for any group $g$ and $\sum_{k \in \set{K}} \nu^\star_k(t) \leq 1$. 
+
+As in the proof of Lemma~\ref{lem:bacidol-delay}, we always have $\tilde{Q}_g(t) \leq 2\beta c_{\max}$. We then finish the proof by
+\begin{align*}
+&\hspace{0.1in}\expect{f_t(\bolds{A}^{\tabacid}(t),\bolds{\psi}^{\tabacid}(t),\bolds{Q}^{\ta}(t))} \\
+&= \expect{f_t(\bolds{A}^{\tabacid}(t),\bolds{\psi}^{\tabacid}(t),\bolds{Q}^{\ta}(t))\indic{\forall g,\tilde{Q}_g(t) \leq 2c_{\max}}}  \\
+&\overset{\eqref{eq:bound-lag-gap}}{\leq} \expect{(f_t(\bolds{a}^\star,\bolds{\nu}^\star, \bolds{Q}^{\ta}(t)) + 2\beta c_{\max}\Delta(\set{K}_{\set{G}}))\indic{\forall g, \tilde{Q}_g(t) \leq 2\beta c_{\max}}} \\
+&= \expect{f_t(\bolds{a}^\star(t),\bolds{\nu}^\star(t),\bolds{Q}^{\ta}(t))} + 2\beta c_{\max}\Delta(\set{K}_{\set{G}}).
+\end{align*}
+\end{proof}
+\begin{proof}[Proof of Lemma~\ref{lem:context-benchmark-lagran}]
+By the discussion in the beginning of this section, it holds that: 
+\begin{align*}
+\sum_{t=1}^T \expect{f_t(\bolds{A}^{\tabacid}(t),\bolds{\psi}^{\tabacid}(t),\bolds{Q}^{\ta}(t))} - \beta\set{L}^\star(T) &= \eqref{eq:context-primary-lagrang} + \eqref{eq:context-per-period-subopt} \\
+&\leq 0 + 2\beta c_{\max}\Delta(\set{K}_{\set{G}})T,
+\end{align*}
+where we use Lemmas~\ref{lem:bound-lagrang} and \ref{lem:cbacid-optimal} to bound the two terms respectively.
+\end{proof}
+
+\subsection{Bounding the regret in scheduling (Lemma~\ref{lem:cbacid-regS})}\label{app:lem-cbacid-regS}
+The proof is similar to that of Lemma~\ref{lem:bacidol-regs} and we include it for completeness.
+\begin{proof}
+For a period $t$, by the scheduling decision of $\conbacid$ and $\tabacid$, we have $\psi_k(t) = \psi_k^{\tabacid}(t)$ for any $k$ if $Q^{\ld}(t) = 0$. Otherwise, if $Q^{\ld}(t) = 1$, then $\psi_k(t) = 0$ because of forced scheduling. As a result,
+\begin{align*}
+\textsc{RegS}(T) &= \expect{\sum_{t=1}^T \sum_{k \in \set{K}} \psi_k^{\tabacid}(t)\tilde{Q}_{g(k)}(t)\mu_k N(t) Q^{\ld}(t)} \\
+&\leq 2\beta c_{\max}\expect{\sum_{t=1}^T \sum_{k \in \set{K}} \psi_k^{\tabacid}(t)Q^{\ld}(t)} \\
+&\leq 2\beta c_{\max}\expect{\sum_{t=1}^T Q^{\ld}(t)} \leq \frac{68\beta c_{\max}B_{\delta}^2(T)d\ln(1+T/d)}{\max(\eta,\gamma)^2\hat{\mu}_{\min}},
+\end{align*}
+where the first inequality is because $\tilde{Q}_g(t) \leq 2\beta c_{\max}$; the second one is by $\sum_{k \in \set{K}} \psi_k^{\tabacid}(t) \leq 1$; the last one is by Lemmas~\ref{lem:connect-et-qe} and \ref{lem:bound-norm-selective} that together bound $\expect{\sum_{t=1}^T Q^{\ld}(t)}$.
+\end{proof}
+
+\subsection{Bounding the Regret in Admission (Lemma~\ref{lem:conbacid-rega})}\label{app:lem-conbacid-rega}
+We first need a lemma that bounds $\bar{\ell}_k(t) - \ell_k$.
+\begin{lemma}\label{lem:bound-r-k-bar}
+Conditioned on $\set{E}$, it holds that $\bar{\ell}_k(t) - \ell_k \leq 2B_{\delta}(T)\|\bphi_k\|_{\bar{V}_{t-1}^{-1}}$ for any type $k$.
+\end{lemma}
+\begin{proof}
+Conditioning on $\set{E}$ gives $\btheta^{\star,+} \in \set{C}^+_{t-1}$ and $\btheta^{\star,-} \in \set{C}^-_{t-1}$. As a result, for any $\btheta^+ \in \set{C}^+_{t-1}$, 
+\begin{align*}
+|\bphi_k^{\trans}\btheta^+ - \ell_k^+| = |\bphi_k^{\trans}\btheta^+ - \bphi_k^{\trans}\btheta^{\star,+}| &\leq |\bphi_k^{\trans}\btheta^+ - \bphi_k^{\trans}\hat{\btheta}^+(t-1)| + |\bphi_k^{\trans}\hat{\btheta}^+(t-1) - \bphi_k^{\trans}\btheta^{\star,+}| \\
+&\leq \|\bphi_k\|_{\bar{V}_{t-1}^{-1}}\left(\|\btheta^+ - \hat{\btheta}^+(t-1)\|_{\bar{V}_{t-1}} + \|\btheta^{\star,+} - \hat{\btheta}^+(t-1)\|_{\bar{V}_{t-1}}\right) \tag{Cauchy-Schwarz inequality} \\
+&\leq 2B_{\delta}(T)\|\bphi_k\|_{\bar{V}_{t-1}^{-1}} \tag{By \eqref{eq:contextual-def-conf} and that $\btheta^{\star,+},\btheta^+ \in \set{C}^+_{t-1}$}.
+\end{align*}
+Similarly, we also have $|\bphi_k^{\trans}\btheta^- - \ell_k^-| \leq 2B_{\delta}(T)\|\bphi_k\|_{\bar{V}_{t-1}^{-1}}$ for any $\btheta^- \in \set{C}_{t-1}^-.$ As a result, for any $\btheta^+ \in \set{C}_{t-1}^+, \btheta^- \in \set{C}_{t-1}^-$,
+\[
+\min(\bphi_k^{\trans}\btheta^+,\bphi_k^{\trans}\btheta^-) \leq \min(\ell_k^+ + 2B_{\delta}(T)\|\bphi_k\|_{\bar{V}_{t-1}^{-1}},\ell_k^- + 2B_{\delta}(T)\|\bphi_k\|_{\bar{V}_{t-1}^{-1}}) = \min(\ell_k^+,\ell_k^-) + 2B_{\delta}(T)\|\bphi_k\|_{\bar{V}_{t-1}^{-1}}.
+\]
+The definition of $\bar{\ell}_k(t)$ in \eqref{eq:conf-r-feature} then gives
+\[
+\bar{\ell}_k(t) - \ell_k = \max_{\btheta^+ \in \set{C}_{t-1}^+, \btheta^- \in \set{C}_{t-1}^-} \min(\bphi_k^{\trans}\btheta^+,\bphi_k^{\trans}\btheta^-) - \min(\ell_k^+,\ell_k^-) \leq 2B_{\delta}(T)\|\bphi_k\|_{\bar{V}_{t-1}^{-1}}.
+\]
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:conbacid-rega}]
+Recall that the $\tabacid$ and optimistic admission decisions are \[A_k^{\tabacid}(t) = \Lambda_k(t)\indic{\beta \ell_k \geq \tilde{Q}_{g(k)}(t)}\quad\text{and}\quad~\bar{A}_k(t) = \Lambda_k(t)\indic{\beta \bar{\ell}_k(t) \geq \tilde{Q}_{g(k)}(t)}.\] Recall also the good event $\set{E}$ for which $\bolds{\Theta}^\star \in \set{C}_t^+ \times \set{C}_t^-$ for any $t \geq 0$. The regret in admission is
+\begin{align}
+\textsc{RegA}(T)&=\expect{\sum_{t=1}^T \sum_{k\in\set{K}} (A_k^{\tabacid}(t) - \bar{A}_k(t))(\beta \ell_k-\tilde{Q}_{g(k)}(t))} \nonumber\\
+&= \expect{\sum_{t=1}^T \sum_{k\in\set{K}} (A_k^{\tabacid}(t) - \bar{A}_k(t))(\beta \ell_k-\tilde{Q}_{g(k)}(t))\left(\indic{\set{E}} + \indic{\set{E}^c}\right)} \nonumber\\
+&\leq \expect{\sum_{t=1}^T \sum_{k\in\set{K}} (A_k^{\tabacid}(t) - \bar{A}_k(t))(\beta \ell_k-\tilde{Q}_{g(k)}(t))\indic{\set{E}}} + \Pr\{\set{E}^c\}\sum_{t=1}^T 3\beta c_{\max} \nonumber\\
+&\leq \expect{\sum_{t=1}^T \sum_{k\in\set{K}} (A_k^{\tabacid}(t) - \bar{A}_k(t))(\beta \ell_k-\tilde{Q}_{g(k)}(t))\indic{\set{E}}} + 3\beta c_{\max} \label{eq:con-rega-decomp}
+\end{align}
+where the first inequality is by $\sum_k A_k^{\tabacid}(t) \leq 1, \sum_k \bar{A}_k(t) \leq 1$ and $\tilde{Q}_{g(k)}(t) \leq 2\beta c_{\max}$; the last one is by Lemma~\ref{lem:contextual-prob-good-event} that $\Pr\{\set{E}^c\} \leq 2\delta$ and the assumption that~$\delta \leq 1 / (2T)$. 
+
+We next upper bound the first term in \eqref{eq:con-rega-decomp}. Conditioning on $\set{E}$, we bound $(A_k^{\tabacid}(t) - \bar{A}_k(t))(\beta \ell_k-\tilde{Q}_{g(k)}(t))$ for a fixed period $t$ and a fixed type $k$. Since $\bTheta^\star \in \set{C}^+_{t-1} \times \set{C}^-_{t-1}$ by $\set{E}$, it holds that $\bar{\ell}_k(t) \geq \ell_k$. If there is no type-$k$ arrival, i.e., $\Lambda_k(t) = 0$, we have that $A_k^{\tabacid}(t) = \bar{A}_k(t) = 0$ and thus the term is zero. Otherwise, since $\bar{\ell}_k(t) \geq \ell_k$, $\bar{A}_k(t) = \indic{\beta \bar{\ell}_k(t) \geq \tilde{Q}_{g(k)}(t)} \geq \indic{\beta \ell_k \geq \tilde{Q}_{g(k)}(t)} = A_k^{\tabacid}(t)$. Therefore, $(A_k^{\tabacid}(t) - \bar{A}_k(t))(\beta \ell_k-\tilde{Q}_{g(k)}(t))$ is positive only if $A_k^{\tabacid}(t) = 0$ and $\bar{A}_k(t) = 1$, under which we have
+\begin{align}
+(A_k^{\tabacid}(t) - \bar{A}_k(t))(\beta \ell_k-\tilde{Q}_{g(k)}(t)) &= (\tilde{Q}_{g(k)}(t) - \beta \ell_k)\bar{A}_k(t) \nonumber\\
+&= (\tilde{Q}_{g(k)}(t) - \beta \bar{\ell}_k(t) + \beta \bar{\ell}_k(t) - \beta \ell_k)\bar{A}_k(t) \nonumber\\
+&\leq \beta \left(\bar{\ell}_k(t) - \ell_k\right)\bar{A}_k(t), \label{eq:cont-trans-reward-gap}
+\end{align}
+where the last inequality is because the optimistic admission rule only admits a job ($\bar{A}_k(t) = 1$) when $\tilde{Q}_{g(k)}(t) \leq \beta \bar{\ell}_k(t)$. We complete the proof by
+\begin{align*}
+&\hspace{0.1in}\expect{\sum_{t=1}^T \sum_{k\in\set{K}} (A_k^{\tabacid}(t) - \bar{A}_k(t))(\beta \ell_k-\tilde{Q}_{g(k)}(t))} \\
+&\leq \expect{\sum_{t=1}^T \sum_{k \in \set{K}} \beta (\bar{\ell_k}(t)-\ell_k)\bar{A}_k(t)\indic{\set{E}}} + 3\beta c_{\max} \tag{By \eqref{eq:con-rega-decomp} and \eqref{eq:cont-trans-reward-gap}}  \\
+&\leq 3\beta c_{\max}B_{\delta}(T)\left(\expect{\sum_{t=1}^T \sum_{k \in \set{K}} \|\bphi_k\|_{\bar{V}_{t-1}^{-1}}\bar{A}_k(t)} + 1\right) \tag{By Lemma~\ref{lem:bound-r-k-bar}} \\
+&\leq 3\beta c_{\max}B_{\delta}(T)\left(d\ln(1+T/d)\left(4GQ_{\max} + \frac{34B_{\delta}^2(T)}{\max(\eta,\gamma)^2}\right) + \sqrt{2GTd\ln(1+T/d)}\right)
+\end{align*} where we use Lemma~\ref{lem:conbacid-error} for the last inequality.
+\end{proof}
+
+\subsection{Bounding estimation error with fixed delay (Lemma~\ref{lem:bound-delayed-error})}\label{app:lem-bound-delayed-error}
+\begin{proof}
+We first bound the case when there is no delay, i.e., $q = 1$, which is the case in \cite{Abbasi-YadkoriPS11}. In particular, assuming that we have $M$ data points, by Cauchy-Schwarz Inequality
+\begin{align}
+\sum_{i=1}^M \|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}} \leq \sqrt{M\sum_{i=1}^M \|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}}^2} \leq \sqrt{2M\ln(\det(\hat{\bV}_n) / \xi^d))} &\leq  \sqrt{2Md\ln(1+MU^2/(d\xi))} \nonumber\\
+&\leq \sqrt{2Md\ln(1+M/d)}, \label{eq:bound-q=1}
+\end{align}
+where we use Fact~\ref{fact:ellipsoid-bound} for the second inequality, Fact~\ref{fact:matrix-norm-bound} for the third inequality, and $\xi \geq U^2$ (assumption in the lemma) for the last inequality. To bound for arbitrary $q$, we observe that 
+\begin{equation}\label{eq:trans-q-to-1}
+\sum_{i=q}^M \|\hat{\bphi}_i\|_{\hat{\bV}_{i-q}^{-1}} \leq \sum_{i=q}^M \|\hat{\bphi}_i\|_{\hat{\bV}_{i-q}^{-1}} + \sum_{i=1}^{q-1} \|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}} =  \sum_{i=1}^M\|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}} + \sum_{i=q}^M \left(\|\hat{\bphi}_i\|_{\hat{\bV}_{i-q}^{-1}} - \|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}}\right).
+\end{equation}
+Note that the term $\sum_{i=1}^M\|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}}$ is bounded by \eqref{eq:bound-q=1}. The term $\sum_{i=q}^M \left(\|\hat{\bphi}_i\|_{\hat{\bV}_{i-q}^{-1}} - \|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}}\right)$ measures the difference between the estimation errors when there is no delay and when there is a delay of $q$. We next upper bound the second term for a fixed data point $i$ by 
+\begin{align}
+\|\hat{\bphi}_i\|_{\hat{\bV}_{i-q}^{-1}} - \|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}} &= \left(\sqrt{\hat{\bphi}_i^{\trans}\hat{\bV}_{i-q}^{-1}\hat{\bphi_i}} - \sqrt{\hat{\bphi}_i^{\trans}\hat{\bV}_{i-1}^{-1}\hat{\bphi_i}}\right) \nonumber\\
+&\leq \frac{\hat{\bphi}_i^{\trans}\left(\hat{\bV}_{i-q}^{-1}-\hat{\bV}_{i-1}^{-1}\right)\hat{\bphi_i}}{\|\hat{\bphi}_i\|_{\hat{\bV}_{i-q}^{-1}}} \tag{$\forall a,b > 0$, $\sqrt{a} - \sqrt{b} =\frac{a-b}{\sqrt{a}+\sqrt{b}} \leq \frac{a-b}{\sqrt{a}}$} \nonumber\\
+&\hspace{-1in}=\frac{\hat{\bphi}_i^{\trans}\hat{\bV}_{i-1}^{-1}\hat{\bV}_{i-1}\left(\hat{\bV}_{i-q}^{-1}-\hat{\bV}_{i-1}^{-1}\right)\hat{\bV}_{i-q}\hat{\bV}_{i-q}^{-1}\hat{\bphi}_i}{\|\hat{\bphi}_i\|_{\hat{\bV}_{i-q}^{-1}}} = \frac{\hat{\bphi}_i^{\trans}\hat{\bV}_{i-1}^{-1}\left(\sum_{\tau=i-q+1}^{i-1} \hat{\bphi}_{\tau}\hat{\bphi}_{\tau}^{\trans}\right)\hat{\bV}_{i-q}^{-1}\hat{\bphi}_i}{\|\hat{\bphi}_i\|_{\hat{\bV}_{i-q}^{-1}}}. \label{eq:expand-last}
+\end{align}
+Further expanding \eqref{eq:expand-last}, we have
+\begin{align*}
+\|\hat{\bphi}_i\|_{\hat{\bV}_{i-q}^{-1}} - \|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}} &\leq \frac{\sum_{\tau=i-q+1}^{i-1} \hat{\bphi}_i^{\trans}\hat{\bV}_{i-1}^{-1}\hat{\bphi}_{\tau}\hat{\bphi}_{\tau}^{\trans}\hat{\bV}_{i-q}^{-1}\hat{\bphi}_i}{\|\hat{\bphi}_i\|_{\hat{\bV}_{i-q}^{-1}}} \\
+&\hspace{-1in}\leq \frac{\sum_{\tau=i-q+1}^{i-1} \|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}}\|\hat{\bphi}_{\tau}\|_{\hat{\bV}_{i-1}^{-1}}\|\hat{\bphi}_{\tau}\|_{\hat{\bV}_{i-q}^{-1}}\cancel{\|\hat{\bphi}_i\|_{\hat{\bV}_{i-q}^{-1}}}}{\cancel{\|\hat{\bphi}_i\|_{\hat{\bV}_{i-q}^{-1}}}} \\
+&\hspace{-1in}\leq \sum_{\tau=i-q+1}^{i-1} \|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}}\|\hat{\bphi}_{\tau}\|_{\hat{\bV}_{i-1}^{-1}}
+\end{align*}
+where the second inequality is because \[\hat{\bphi}_i^{\trans}\hat{\bV}_{i-1}^{-1}\hat{\bphi}_{\tau} = \left(\hat{\bV}_{i-1}^{-1/2}\hat{\bphi}_i\right)^{\trans}\left(\hat{\bV}_{i-1}^{-1/2}\hat{\bphi}_{\tau}\right) \leq \|\hat{\bV}_{i-1}^{-1/2}\hat{\bphi}_i\|_2 \|\hat{\bV}_{i-1}^{-1/2}\hat{\bphi}_{\tau}\|_2 = \|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}}\|\hat{\bphi}_{\tau}\|_{\hat{\bV}_{i-1}^{-1}}\]
+by Cauchy-Schwarz Inequality (same argument for $\hat{\bphi}_{\tau}^{\trans}\hat{\bV}_{i-q}^{-1}\hat{\bphi}_i$); the last inequality is because $\|\hat{\bphi}_{\tau}\|_{\hat{\bV}_{i-q}^{-1}} \leq 1$ under the assumption that $\xi \geq U^2$. As a result, 
+\begin{align}
+\sum_{i=q}^M \left(\|\hat{\bphi}_i\|_{\hat{\bV}_{i-q}^{-1}} - \|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}}\right) &\leq \sum_{i=q}^M \left(\sum_{\tau=i-q+1}^{i-1} \|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}}\|\hat{\bphi}_{\tau}\|_{\hat{\bV}_{i-1}^{-1}}\right) \nonumber\\
+&\hspace{-1in}\leq \frac{1}{2}\sum_{i=q}^M \sum_{\tau=i-q+1}^{i-1} \left(\|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}}^2 + \|\hat{\bphi}_{\tau}\|_{\hat{\bV}_{i-1}^{-1}}^2\right) \tag{$ab \leq (a^2+b^2) / 2$} \nonumber\\
+&\leq q\sum_{i=1}^M \|\hat{\bphi}_i\|_{\hat{\bV}_{i-1}^{-1}}^2 \leq 2qd\ln(1+M/d),\label{eq:bound-diff}
+\end{align}
+where the third inequality is because every term is counted for $q$ times; and the last two inequalities again follow again from Facts~\ref{fact:ellipsoid-bound} and \ref{fact:matrix-norm-bound}. Combining \eqref{eq:bound-q=1}, \eqref{eq:trans-q-to-1}, and \eqref{eq:bound-diff}, we complete the proof by
+\[
+\sum_{i=q}^M \|\hat{\bphi}_i\|_{\hat{\bV}_{i-q}^{-1}} \leq \sqrt{2Md\ln(1+M/d)}+2qd\ln(1+M/d).
+\]
+\end{proof}
+
+\subsection{Bounding Estimation Error with Queueing Delays (Lemma~\ref{lem:conbacid-error})}\label{app:lem-conbacid-error}
+Our proof starts by bounding $\sum_{t=1}^T \sum_k \|\bphi_k\|_{\bar{\bV}_{t-1}^{-1}}A_k(t)$ where recall that $A_k(t) = \bar{A}_k(t)(1-E(t))$ denotes whether a job is admitted by the optimistic admission rule (Line~\ref{line:conbacid-admit}). We bound the estimation error separately for different groups. In particular, fixing a group $g$, suppose that in the first $T$ periods there are $M_g$ group-$g$ jobs such that $A_k(t) = 1$ where $k$ is the type of this job and $t$ is the period it arrives. We denote the sequence of these jobs by $\set{J}_g$, their arrival periods by $t_{g,1}^A<\ldots<t_{g,M_g}^A$, and the time these jobs are reviewed by $t_{g,1}^R,\ldots, t_{g,M_g}^R$, where we denote $t_{g,i}^R = T+i$ if the $i-$th job is not reviewed by period $T$. 
+
+Denoting $\hat{\bphi}_{g,i} = \bphi_{\kappa(t_{g,i}^A)}$, which is the feature vector of the $i-$ arrival in group $g$ ($\kappa(t_{g,i}^A)$ is its type), the estimation error of the $i-$th job on sequence $\set{J}_g$ is $\|\hat{\bphi}_{g,i}\|_{\bar{\bV}_{t_{g,i}^A - 1}^{-1}}$. Akin to the matrix $\bar{\bV}_t$ in \eqref{eq:regression} but only with the first $i$ jobs in $\set{J}_g$, we define $\widehat{\bV}_{g,i} = \xi \bI+\sum_{i'=1}^i \hat{\bphi}_{g,i'}\hat{\bphi}_{g,i'}^{\trans}$. Our first result connects the estimation error of a job in a setting with queueing delayed feedback, to a setting where the feedback delay is fixed to $Q_{\max}=2\beta c_{\max}$, the maximum number of group-$g$ jobs in the review queue.
+\begin{lemma}\label{lem:connect-fix-delay}
+For any group $g$ and $i \geq Q_{\max}$, the estimation error is $\|\hat{\bphi}_{g,i}\|_{\bar{\bV}_{t_{g,i}^A - 1}^{-1}} \leq \|\hat{\bphi}_{g,i}\|_{\widehat{\bV}_{g,i - Q_{\max}}}$.
+\end{lemma}
+\begin{proof}
+Fix a group $g$. Since $\conbacid$ follows a first-come-first-serve scheduling rule for jobs of the same group in the review queue (Line~\ref{line:conbacid-schedule} in Algorithm~\ref{algo:cbacidol}), it holds that $t_{g,1}^R < \ldots < t_{g,M_g}^R$. Since $Q_{\max}$ upper bounds the number of group-$g$ jobs in the review queue by Lemma~\ref{lem:contextual-delay}, for the $i-$th job with $i \geq Q_{\max}$, the first $(i-Q_{\max})$ jobs must have already been reviewed before the admission of job $i$. Otherwise there would be $Q_{\max}+1$ group-$g$ jobs in the review system when we admit job $i$, which contradicts the fact that $Q_{\max}$ upper bounds the queue length. As a result, when we admit the $i-$th job, the first $i-Q_{\max}$ jobs in $\set{J}_g$ are already reviewed by the first-come-first-serve scheduling and are all accounted in $\bar{\bV}_{t_{g,i}^A - 1}$. By Lemma~\ref{lem:norm-subset}, it holds that $\|\hat{\bphi}_{g,i}\|_{\bar{\bV}_{t_{g,i}^A - 1}^{-1}} \leq \|\hat{\bphi}_{g,i}\|_{\widehat{\bV}_{g,i - Q_{\max}}}$. 
+\end{proof}
+As a result of Lemma~\ref{lem:connect-fix-delay}, the estimation error of jobs in sequence $\set{J}_g$ behaves as if having a fixed feedback delay. This allows the use of Lemma~\ref{lem:bound-delayed-error} to bound their total estimation error. Aggregating the error across groups gives the following result.
+\begin{lemma}\label{lem:error-total}
+The total estimation error of jobs admitted by the optimistic admission rule is bounded by $3GQ_{\max}d\ln(1+T/d) + \sqrt{2GTd\ln(1+T/d)}$.
+\end{lemma}
+\begin{proof}
+The estimation error can be decomposed into groups by 
+\begin{align*}
+\sum_{t=1}^T \sum_k
+\|\bphi_k\|_{\bar{\bV}_{t-1}^{-1}}A_k(t) = \sum_{g \in \set{G}} \sum_{i=1}^{M_g} \|\hat{\bphi}_{g,i}\|_{\bar{\bV}_{t_{g,i}^A - 1}^{-1}} &\leq  \sum_{g\in\set{G}} \sum_{i=1}^{Q_{\max}}  \|\hat{\bphi}_{g,i}\|_{(\xi \bI)^{-1}} + \sum_{g \in \set{G}} \sum_{i=Q_{\max}}^{M_g} \|\hat{\bphi}_{g,i}\|_{\bar{\bV}_{t_{g,i}^A - 1}^{-1}} \\
+&\hspace{-1in}\leq GQ_{\max} + \sum_{g \in \set{G}} \sum_{i=Q_{\max}}^{M_g} \|\hat{\bphi}_{g,i}\|_{\widehat{\bV}_{g,i-Q_{\max}}} \tag{By $\xi \geq U^2$ and Lemma~\ref{lem:connect-fix-delay}} \\
+&\hspace{-2in}\leq GQ_{\max} + \sum_{g\in\set{G}}\left(\sqrt{2M_gd\ln(1+T/d)}+2Q_{\max}d\ln(1+T/d)\right) \tag{By Lemma~\ref{lem:bound-delayed-error}} \\
+&\hspace{-1in}\leq 3GQ_{\max}d\ln(1+T/d) + \sqrt{2GTd\ln(1+T/d)}
+\end{align*}
+where the last inequality is by $\sum_{g \in \set{G}} M_g \leq T$ and Cauchy-Schwarz Inequality.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:conbacid-error}]
+Recall that $\bar{A}_k(t) = \Lambda_k(t)\indic{\beta \bar{\ell}_k(t) \geq \tilde{Q}_{g(k)}(t)}$ captures whether the optimistic admission would have admitted a type-$k$ job, $E(t)$ captures whether the label-driven admission admits a new job, and $A_k(t) = \bar{A}_k(t)(1-E(t))$ captures whether the optimistic admission ends up admitting a type-$k$ job into the review queue. We finish the proof by combining Lemma~\ref{lem:error-total} with the impact of label-driven admissions:
+\begin{align*}
+\expect{\sum_{t=1}^T \sum_k \|\bphi_k\|_{\bar{\bV}_{t-1}^{-1}}\bar{A}_k(t)} &\leq 
+\expect{\sum_{t=1}^T \sum_k \|\bphi_k\|_{\bar{\bV}_{t-1}^{-1}} (A_k(t) + E(t)\Lambda_k(t))} \tag{$A_k(t) = \bar{A}_k(t)(1-E(t))$} \\
+&\leq \expect{\sum_{t=1}^T \sum_k \|\bphi_k\|_{\bar{\bV}_{t-1}^{-1}} A_k(t)} + \expect{\sum_{t=1}^T E(t)} \tag{$\|\bphi_k\|_{\bar{\bV}_{t-1}^{-1}} \leq 1$} \\
+&\hspace{-1in}\leq 3GQ_{\max}d\ln(1+T/d) + \sqrt{2GTd\ln(1+T/d)} + \frac{34B_{\delta}^2(T)d\ln(1+T/d)}{\max(\eta,\gamma)^2} \tag{By Lemmas~\ref{lem:bound-norm-selective} and \ref{lem:error-total}}  \\
+&\leq d\ln(1+T/d)\left(3G Q_{\max} + \frac{34B_{\delta}^2(T)}{\max(\eta,\gamma)^2}\right) + \sqrt{2GTd\ln(1+T/d)}.
+\end{align*} 
+\end{proof}

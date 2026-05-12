@@ -1,0 +1,110 @@
+\section{Method}
+ The overall SCCL framework is illustrated in Figure \ref{framework}, consisting of four parts. First, we introduce the contrastive learning objective of SCCL in Section 3.1. Second, the selection of learned representations is shown in Section 3.2. Third, an instance-wise distillation module and a  memory replay module are introduced to preserve learned knowledge in Section 3.3 and 3.4, respectively. Fourth, the kNN inference procedure  is shown in  3.5, respectively. The training algorithm is shown in Algorithm 1. 
+
+Formally, a model learns several tasks denoted as $\{T^i\}, i = 1,2,...,n$ ($i$ is the number of tasks).  Each task $T^i$ contains a limited set of labels $C^i$.  During the training of the task $T^i$, only the corresponding data $D^i = \{(x^i_j,y^i_j)\}$ are available, where $x^i_j$ is the input text and $y^i_j \in C^i$ is the corresponding label. In the scenario of task-incremental continual training, the task id can be observed when carrying out inference, and for generality, we consider the label set $C^j\cap  C^k = \emptyset, $ if $i\neq j$. 
+
+
+\subsection{Supervised Contrastive Continual Training (SCCL)}
+During the learning on the task $T^i$, we first feed the input $x^i_j$ into a pre-trained language model to obtain hidden states.  The hidden states of a special token $[CLS]$ (the beginning token of the pre-trained language model) are regarded as the representation of the input sequence:
+\begin{equation}
+    {h}^i_j = Norm(LM^{i}(x^i_j)[CLS]),
+\end{equation}
+where $Norm(\cdot)$ refers to normalization, $LM^{i}$ is the language model encoder trained for the task $T^{i}$, and $LM^0$ is the initial pre-trained language model. 
+
+
+
+We denote the data samples in a mini-batch as $A$ (we omit the corner mark $i$ during task $T^i$ for simplicity). For each data sample $j$, we denote $\mathcal{N}(j)\equiv A/\{j\}$, and the positive neighbor set of it as $P(j) = \{u| y_u = y_j  \ and \ u\in N(j)\}$. To push the representations with different labels away, and pull them with the same labels together, we use  supervised contrastive learning objective following \citet{khosla2020supervised}:
+\begin{equation}\small
+    \mathcal{L}_{cl} = \sum_{j\in A} \frac{-1}{|P(j)|}\sum_{p \in P(j)} log \frac{exp({h}^i_j\cdot{h}^i_p/\kappa)}{\sum_{a\in N(j)}exp({h}^i_j\cdot{h}^i_a/\kappa)}
+\end{equation}
+where $\kappa$ is the hyper-parameter of temperature.
+% and the $sim(\cdot,\cdot)$ is the cosine similarity of two representations:
+% \begin{equation}
+% sim(\textbf{h}_j, \textbf{h}_k) = \frac{\textbf{h}_j\cdot \textbf{h}_k}{||\textbf{h}_j|| \cdot ||\textbf{h}_k||}.
+% \end{equation}
+% The usage of in-batch negatives enables the re-use of computation both in the forward and backward pass making training highly efficient. 
+
+% \footnote{Without losing generality, we select samples according to the label numbers but not focus on limiting the overall number of the memory buffer.} 
+\subsection{Sample Selection}
+After training on each task $T^i$, we select $m$ samples from training data of $D^i$ to keep the representation distribution with respect to the labels (Algorithm 1 (18-22)). In particular, we adopt a K-means module to aggregate the data $D^i(c)$ of each label ($c \in C^i$) to clusters. Then we randomly select samples according to the data density to keep representation distribution, which can be formulated as:
+\begin{equation}
+    \mathcal{M}^c = Sample(Kmeans(D^i(c)),c,\frac{m}{|C^i|}).
+\end{equation}
+The selected samples for task $T^i$ are the union of selected data for each label $c$ that $\mathcal{M}^i = \cup_{c \in C^i} \mathcal{M}^c$.  $\mathcal{M}^i$ is saved in the  memory buffer and serves as the classification criteria for task $T^i$  in the continual learning process.
+
+%  Then we randomly select the samples for each cluster proportionally according to  the  density of each cluster:
+% \begin{equation}
+%     N_{b^y} \propto k *  \frac{|b^y|}{|D^i|}
+% \end{equation}
+% where $b^y \in \mathcal{B}^y$
+
+\subsection{Instance-wise Relation Distillation (IRD)}
+To preserve the knowledge learned for previous tasks, inspired by \citet{fang2020seed} and \citet{cha2021co2l}, we use an instance-wise relation distillation term to control representation drift (Algorithm 1 (7-9)). During the learning on task $T^i, i>1$, the normalized instance-wise similarity in the mini-batch $A$ is calculated as:
+\begin{equation}
+    s_{j,p}^i  =\frac{exp({h}^i_j\cdot{h}^i_p/\tau)}{\sum_{a\in N(j)}exp({h}^i_j\cdot{h}^i_a/\tau)},
+\end{equation}
+where $\mathcal{N}(j)\equiv A/\{j\}$, the representations are encoded by the model $LM^i$ and $\tau$ is the hyper-parameter temperature. Then the IRD regularization term follows: 
+\begin{equation}
+    \mathcal{L}_{IRD} = \frac{1}{|A|^2}\sum_j\sum_{p} s_{j,p}^{i-1}\ log \ s_{j,p}^{i}.
+\end{equation}
+
+The IRD regularization term aims to  estimate the discrepancy of current representations to those learned in the previous model, and mitigate the representation drift through optimization.  In this way, the knowledge of previous  models is preserved and the CF problem can be mitigated.
+
+The overall training objective can be denoted as follows:
+\begin{equation}
+    \mathcal{L} = \mathcal{L}_{cl}+\mathcal{L}_{IRD}.
+\end{equation}
+
+\begin{algorithm}[t]\small
+\caption{SCCL Training}
+\label{alg}
+\begin{algorithmic}[1]
+\REQUIRE
+A set of training task $\{T^i\}^n$, the corresponding data set $\{D^i\}^n$,  sets of disjoint classes $\{C^i\}^n$. Training steps $S$ and memory replay frequency $f$. Memory buffer size $m$.  Initial pre-trained language model $LM^0$. 
+\ENSURE Trained language model encoder $LM^{n}$ and memory buffer $\mathcal{M}$.
+\STATE Load pre-trained language model $LM^0$;
+\STATE $\mathcal{M} = []$
+\FOR{$i = 1,...,n$}
+\FOR{$t = 1,...,S$}
+\STATE Draw mini-batch $A$ from $D^i$;
+\STATE Calculate $\mathcal{L}_{cl}$ of $A$  with $LM^i$ (Eq (1-2));
+\IF{$i>1$}
+\STATE Calculate $\mathcal{L}_{IRD}$ of $A$  (Eq (5));
+\STATE $\mathcal{L} = \mathcal{L}_{cl}+\mathcal{L}_{IRD}$;
+  \ELSE 
+    \STATE $\mathcal{L} =\mathcal{L}_{cl}$;
+\ENDIF
+ \STATE Update model parameters with $\mathcal{L}$;
+ \IF{$i\ \%\ f == 0$}
+ \STATE Update model parameters with memory relay;
+\ENDIF
+ \ENDFOR
+\FOR{$c \in C^i$}
+\STATE Obtain k-means clusters of data with label $c$;
+\STATE $\mathcal{M}^c = Sample(Kmeans(D^i(c)),c,\frac{m}{|C^i|})$;
+\STATE $\mathcal{M}^i=\mathcal{M}^i \cup \mathcal{M}^c$;
+  \ENDFOR
+\STATE $\mathcal{M}$ = $\mathcal{M} +\mathcal{M}^i $;
+
+\ENDFOR
+
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Memory Replay (MR)}
+To make full use of the memory buffer saved during training, we use a memory replay module \cite{de2019episodic} to further recover the knowledge learned in the previous tasks (Algorithm 1 (14-16)). In the training on the task  $T^i, i>1$, we revisit the samples in the memory buffer and train the model with the same loss in Eq (2) after training every $f$ step on the current task.
+
+
+\subsection{Inference}
+ After learning the task $T^i$, we can obtain the model  $LM^i$. During the inference for previous tasks $T^u,\ u<=i$, we feed each test data $x^u_j$ into $LM^i$ and obtain the corresponding representation ${h}^u_j$. Then  we retrieve the $k$ buffered data from  $\mathcal{M}^u$ whose cosine similarity with ${h}^u_j$ is the largest. Note that the representations of buffered data are obtained using the current model, which can adapt to the representation drift  for parameter update.  We denote the $k$ nearest neighbors as ${({h}^u_k,y^u_k)\in \mathcal{K}^u_j}$. The retrieved set is converted to a probability distribution over the labels by applying a softmax with temperature $T$ to the similarity. Using the temperature $T>1$ can flatten the distribution, and prevent over-fitting to the most similar searches \cite{khandelwal2020nearest}. The probability distribution on the labels is expressed as follows:
+\begin{equation}
+p_{k}(y_j) \propto \sum_{{(h^u_k,y^u_k)\in \mathcal{K}^u_j}} \mathds{1}_{y_j=y^u_k} \cdot exp(\frac{{h}_j^u \cdot {h}_k^u}{T} ),
+\end{equation}
+and the label with the largest probability is taken as the prediction result.
+
+
+
+
+
+
+

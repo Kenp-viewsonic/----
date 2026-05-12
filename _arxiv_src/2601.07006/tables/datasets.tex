@@ -1,0 +1,28 @@
+\begin{table}[t]
+\centering
+\caption{\textbf{Summary of datasets.}}
+\small
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabularx}{\columnwidth}{@{}%
+  >{\raggedright\arraybackslash}p{0.22\columnwidth}%
+  >{\raggedright\arraybackslash}p{0.12\columnwidth}%
+  >{\raggedright\arraybackslash}p{0.22\columnwidth}%
+  >{\raggedright\arraybackslash}X%
+@{}}
+\toprule
+\textbf{Dataset} & \textbf{Size} & \textbf{Languages / Modalities} & \textbf{Categories} \\
+\midrule
+OpenAI Moderation~\cite{markov2023holisticapproachundesiredcontent} &
+1{,}680 texts &
+English / Text &
+Hate, Self-harm, Sexual, Violence (with subcategories) \\
+\midrule
+Multimodal Moderation~\cite{levi+al:25} &
+1{,}500 videos &
+12 languages / Text, Thumbnail, Transcript, Video/Frames &
+DIMC (Death/Injury/Military Conflict), DAT (Drugs/Alcohol/Tobacco), Kids \\
+\bottomrule
+\end{tabularx}
+\label{tab:datasets}
+\end{table}

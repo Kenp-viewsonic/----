@@ -1,0 +1,52 @@
+
+%%% NOT USED ANYMORE. SEE CDISAN_F %%%
+
+
+\section{CASA NLU: Context-Aware Self-Attentive NLU}
+\label{sec:model_f}
+
+% Below is the formalization of contextual NLU framework. For a conversation with n turns, we have: \\
+% %Agent Utterances: $A = \{a_1, a_2, \ldots, a_n\}$\\
+% User Utterances: $U = \{u_1, u_2, \ldots, u_n\}$  \\
+% Intents: $I = \{i_1, i_2, \ldots, i_n\}$ \\
+% Slot Labels: $SL = \{sl_1, sl_2, \ldots, sl_n\}$  \\
+% Dialog Acts\footnote{Dialog Act signifies the actions taken by agent like Close (when an intent is fulfilled) ConfirmIntent, ElicitSlot etc. }: $DA = \{da_1, da_2, \ldots, da_n\}$ 
+% %Slot Elicitation\footnote{Slot Elicitation signifies the slots to elicit when the dialog act is ElicitSlot}: $SLE = \{sle_1, sle_2, \ldots, sle_n\}$ \\
+
+% For a traditional non-contextual NLU system, for turn $t$, the intent and slots are given by:
+% $$i_t, sl_t = f_{no\_context}(u_t)$$
+% where, $f_{no\_context}$ is typically an encoder-decoder architecture with attention \cite{joint_ic_sl, Goo2018SlotGatedMF}.
+
+% For the contextual NLU system with a context window, i.e. length of contextual history, of $K$, for turn $t$, the intent and slots are given by:
+% $$i_t, sl_t = f_{context}(u_t, c_t)$$
+% where, 
+% \begin{equation}
+% \begin{split}
+% c_t = & < u_{t-K}, \ldots, u_{t-1}, da_{t-K+1}, \ldots, da_t,\\
+% %& da_{t-K+1}, \ldots, da_t,\\
+% & i_{t-K}, \ldots, i_{t-1} >
+% \end{split}
+% \end{equation}
+
+% \begin{equation}
+% \begin{split}
+% c_t = & < a_{t-K+1}, \ldots, a_t, u_{t-K}, \ldots, u_{t-1},\\
+% & da_{t-K+1}, \ldots, da_t, i_{t-K}, \ldots, i_{t-1},\\
+% & sle_{t-K}, \ldots, sle_{t} >
+% \end{split}
+% \end{equation}
+
+Our architecture is divided into three sub sections - signal encoding, context fusion and IC-SL predictions
+%To learn this $f_{context}$, we propose two different models that take turn history over $K$ turns  into account along with the current utterance: contextual self-attention model (cSA) and contextual Memory network (cMemN)
+
+% To solve the task of contextual NLU, we propose two different models that take turn history over long period into account along with the current utterance: contextual self-attention model (cSA) and memory network (MemN).
+% Dialog history includes utterances from user and agent sides in each turn. For $n$ turns, we denote agent prompts as $A = \{a_1, a_2, \ldots, a_n\}$, while user utterances as $U = \{u_1, u_2, \ldots, u_n\}$. 
+\input{cdisan_f}
+%\input{memnw}
+
+
+
+
+
+
+

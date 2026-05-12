@@ -1,0 +1,124 @@
+% !TEX root = main.tex
+Our starting point is the simpler setting where the cost distribution $\set{F}_k$ is known for every type and the number of types $K$ is small. In this setting, classification can be directly optimized by accepting a job if and only if it has weakly negative mean cost, i.e., $Y(t) = -\sign(c_{\kappa(t)})$. 
+The two additional decisions (admission and scheduling) are not as straightforward and give rise to an interesting trade-off. To understand this trade-off, consider a new job $t$ of type~$k$. 
+\begin{itemize}
+    \item If the job is not admitted for review, it incurs an idiosyncrasy loss of $\ell_k$ due to cost uncertainty: the platform either accepts it ($c_k \leq 0$) and incurs an expected loss $\ell_k^+$, or rejects it ($c_k > 0$) and incurs an expected loss $\ell_k^-$. In either case, the loss of $\ell_k = \min(\ell_k^+,\ell_k^-)$ is unavoidable for an un-admitted job because of the \emph{cost idiosyncrasy} of jobs with the same type.
+    \item If the job is admitted for review, the platform temporarily avoids its idiosyncrasy loss because humans have a chance to later review this job. However, if the job is not reviewed by the end of the horizon, the platform still suffers from this idiosyncrasy loss. Since this loss arises from the \emph{delay} in human reviews, we refer to it as the delay loss of a policy.
+\end{itemize} 
+Formally, let $\set{Q}_k(t)$ be the set of type-$k$ jobs in the review queue $\set{Q}(t)$ in period $t$ and let $Q_k(t) = |\set{Q}_k(t)|$. The above discussion thus shows that: 
+\begin{align}
+\expect{\set{L}^{\pi}(T)} &= \expect{\sum_{t=1}^T (1-A(t))|C_t|\indic{Y(t) \neq \sign(C_t)} + \sum_{t \in \set{Q}(T+1)} |C_t|\indic{Y(t) \neq \sign(C_t)}} \nonumber\\
+&= \underbrace{\expect{\sum_{t=1}^T  \ell_{\kappa(t)}(1-A(t))}}_{\text{Idiosyncrasy loss}} + \underbrace{\expect{\sum_{k \in \set{K}} Q_k(T+1)\ell_k}}_{\text{Delay loss}} \label{eq:loss-decompose},
+\end{align}
+where for the second equation, we recall that a job $t$ with type $\perp$ always has zero cost, so $\ell_{\perp} = 0$.
+
+This decomposition highlights the necessity of employing an AI-human pipeline. On the one hand, relying on AI and not sending any jobs to humans leads to idiosyncrasy loss for all the jobs (due to the misclassification errors of the AI). On the other hand, abstaining from AI use and sending all the jobs to humans yields delay loss from most of the jobs that would end up in the queue (due to the limited human capacity). Admitting more jobs for human review helps reduce the idiosyncracy loss but, at the same time, increases delay loss, showcasing the underlying tension. 
+
+\subsection{Balanced admission control for idiosyncrasy and delay (\textsc{BACID})}
+Our algorithm (Algorithm~\ref{algo:bacid}) adopts a simple admission rule to balance the two losses; we henceforth call it \textsc{Balanced Admission for Classification, Idiosyncrasy and Delay}, or $\textsc{BACID}$.
+
+The main idea is to admit a job if and only if the benefit from admission exceeds the externality it causes on later jobs due to increased congestion. Specifically, for a new job $t$, the platform rejects it if $c_{\kappa(t)} > 0$ and accepts it otherwise (Line~\ref{line:bacid-classify}). The platform admits this job to review if its idiosyncrasy loss $\ell_{\kappa(t)}$, scaled by an admission parameter $\beta$ is greater than the congestion externality caused by such admission, estimated by the current number of type-$\kappa(t)$ jobs in the review queue, $Q_{\kappa(t)}(t)$. Formally, the admission decision is $A(t) = \indic{ \beta \ell_{\kappa(t)} \geq Q_{\kappa(t)}(t)}$ (Line~\ref{line:bacid-admit}). For convenience, we take $Q_{\perp}(t) \equiv 1$ so that this rule never admits a job with type $\perp$ as $\ell_{\perp} = 0.$ Implementing this rule requires the value of $\ell_{\kappa(t)}$, which is known in this section because the cost distribution $\set{F}_{\kappa(t)}$ is assumed known. 
+
+For scheduling (Line~\ref{line:bacid-schedule}), we follow the \textsc{MaxWeight} algorithm \citep{tassiulas1992stability} and select the earliest job in $\set{Q}_{k}(t)$ (first-come-first serve) from the type $k$ that maximizes the product of service rate and queue length, i.e., $k \in \arg\max_{k' \in \set{K}} \mu_{k'} Q_{k'}(t)$ (breaking ties arbitrarily). We then update the queues and the dataset by $\set{Q}(t+1) = \set{Q}(t) \cup \{\mathcal{A}(t)\}\setminus \{\mathcal{S}(t)\}$,~$\mathcal{D}(t+1) = \mathcal{D}(t) \cup \{(\mathcal{S}(t), c_{\mathcal{S}(t)})\}$. 
+
+\input{algo-bacid}
+
+Our main result is that \textsc{BACID} with $\beta = \sqrt{T/K}$ achieves a regret of $O(\sqrt{KT})$.
+\begin{theorem}\label{thm:bacid}
+The regret of \textsc{BACID} is upper bounded by $\reg^{\bacid}(T)\lesssim \sqrt{KT}+K.$
+\end{theorem}
+
+The next theorem (proof in Appendix~\ref{app:lower-bound}) shows that the dependence on $\sqrt{T}$ is tight. 
+
+\begin{theorem}\label{thm:lower-bound}
+There exists a setting where even with the knowledge of distributions $\{\set{F}_k\}_{k \in \set{K}}$, any feasible policy must incur $\Omega(\sqrt{T})$ regret.
+\end{theorem}
+
+To prove Theorem~\ref{thm:bacid}, we rely on the loss decomposition in \eqref{eq:loss-decompose}. 
+ We first upper bound the idiosyncrasy loss by showing that its difference to the fluid benchmark \eqref{eq:fluid} is bounded by $T/\beta$. 
+ As $\beta$ increases (corresponding to more admissions), the idiosyncrasy loss thus decreases. The proof relies on a coupling with the benchmark using Lyapunov analysis and is given in Section~\ref{ssec:bacid-idiosyncrasy}. 
+ \begin{lemma}\label{lem:known-idiosyncrasy}
+\textsc{BACID}'s idiosyncrasy loss is
+$\expect{\sum_{t=1}^T  \ell_{\kappa(t)}(1 - A(t))} \leq \loss^\star(T)+\frac{T}{\beta}$.
+\end{lemma}
+
+Moreover, the policy admits a new job when $\beta \ell_{\kappa(t)} \geq Q_{\kappa(t)}(t)$, which upper bounds the queue length by $\beta \ell_{\kappa(t)} + 1$. This implies a delay loss of $Kc_{\max}(\beta c_{\max}+1)$ because $c_{\max}$ upper bounds $\expectsub{k}{|C_j|}$ and thus upper bounds $\ell_k$ for any $k \in \set{K}$. Hence, a larger $\beta$ leads to more delay loss, which matches our intuition on the trade-off between idiosyncrasy and delay loss. Setting $\beta = \sqrt{T/K}$ balances this trade-off.
+
+\begin{lemma}\label{lem:known-delay}
+\textsc{BACID}'s delay loss is
+$\expect{\sum_{k \in \set{K}} \ell_k Q_k(T+1)} \leq Kc_{\max} (\beta c_{\max}+1)$.
+\end{lemma}
+\begin{proof}
+By induction on $t=1,2,\ldots$, we show that, for any type $k$, $Q_k(t) \leq \beta \ell_k + 1$. The basis of the induction ($Q_k(1) = 0$) holds as the queue is initially empty. Our admission rule implies that $Q_k(t+1) = Q_k(t)$ for $k \neq \kappa(t)$ and that $Q_{k}(t+1)\leq Q_{k}(t) + A(t) \leq Q_{k}(t) + \indic{\beta \ell_{k} \geq Q_k(t)}$ for $k = \kappa(t), k \neq \perp$ (types $\perp$ are never admitted by our rule). Combined with the induction hypothesis, $Q_k(t) \leq \beta \ell_k + 1$, this implies that $Q_k(t+1) \leq \beta \ell_k + 1$, proving the induction step. The lemma then follows as $\expect{\sum_{k \in \set{K}} \ell_k Q_k(T+1)} \leq c_{\max}\sum_{k\in \set{K}} \beta (\ell_k + 1) \leq c_{\max}K(\beta c_{\max}+1)$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:bacid}]
+Applying Lemma~\ref{lem:known-idiosyncrasy} and Lemma~\ref{lem:known-delay} to \eqref{eq:loss-decompose} gives
+\begin{align*}
+\expect{\loss^{\bacid}(T)} &\leq  \loss^\star(T) + \frac{T}{\beta}+c_{\max}K(\beta c_{\max}+1). \quad\text{Using that $\beta = \sqrt{T / K}$,}\\
+\reg^{\bacid}(T)&\leq 2c^2_{\max}\sqrt{KT} + Kc_{\max} \lesssim \sqrt{KT}+K.
+\end{align*}
+\end{proof}
+
+\subsection{Coupling with the fluid benchmark (Lemma~\ref{lem:known-idiosyncrasy})}\label{ssec:bacid-idiosyncrasy}
+Let $\{a^\star_k(t), \nu^\star_k(t)\}_{k \in \set{K},t \in [T]}$ be the optimal solution to the fluid benchmark \eqref{eq:fluid}. The problem \eqref{eq:fluid} is a linear program and multiplying the objective by $\beta$ does not impact its optimal solution; the optimal value is simply multiplied by $\beta$. Taking the Lagrangian of the scaled program on capacity constraints and letting
+\[f(\{\bolds{a}(t)\}_{t \in [T]},\{\bolds{\nu}(t)\}_{t \in [T]},\bolds{u}) = \beta\sum_{t=1}^T \sum_{k \in \set{K}} \ell_k(\lambda_k(t) - a_k(t))-\sum_{t=1}^T\sum_{k\in\set{K}}u_{t,k}\left(\mu_kN(t)\nu_k(t) - a_k(t)\right),\]
+where $\bolds{u} = (u_{t,k})_{t \in [T], k \in \set{K}} \geq 0$ are dual variables for the capacity constraints, the Lagrangian is
+\begin{equation}
+\begin{aligned}
+f(\bolds{u})\coloneqq&\min_{\{\bolds{a}(t)\}_{t \in [T]},\{\bolds{\nu}(t)\}_{t \in [T]}} f(\{\bolds{a}(t)\}_{t \in [T]},\{\bolds{\nu}(t)\}_{t \in [T]},\bolds{u})  \\
+\text{s.t.}\quad& a_k(t) \leq \lambda_k(t),~\nu_k(t) \geq 0,~\sum_{k' \in \set{K}} \nu_{k'}(t) \leq 1,~\forall k \in \set{K}, t\in [T].
+\end{aligned}
+\end{equation}
+If the dual $\bolds{u}$ is fixed, the optimal solution is given by $a_k(t) = \lambda_k(t) \indic{\beta \ell_k \geq u_{t,k}}$ and $\nu_k(t) = \indic{k \in \arg \max_{k' \in \set{K}} \mu_{k'} {u_{t,k'}}}$ for any $t$. Comparing the induced optimal solution with \textsc{BACID}, \textsc{BACID} uses the queue length information $\bolds{Q}(t) = (Q_k(t))_{k \in \set{K}}$ as the dual to make decisions by setting $u_{t,k} = Q_k(t)$. Under this setting of duals, the per-period Lagrangian is 
+\begin{equation}\label{eq:per-period-lag}
+f_t(\bolds{a}(t), \bolds{\nu}(t), \bolds{Q}(t)) \coloneqq \beta \sum_{k \in \set{K}} \ell_k\lambda_k(t) - \left(\sum_{k \in \set{K}} a_k(t)(\beta \ell_k - Q_k(t)) + \sum_{k \in \set{K}} \nu_k(t) Q_k(t)\mu_kN(t)\right).
+\end{equation}
+Abusing the notation, we define the admission vector $\bolds{A}(t) = (A_k(t))_{k \in \set{K}}$ where $A_k(t) = 1$ if and only if job $t$ is of type $k$ and is admitted for human review, i.e., $A_k(t) = \Lambda_k(t) \cdot A(t)$. Moreover, recall the service vector $\bolds{\psi}(t) = (\psi_k(t))_{k \in \set{K}}$ with $\psi_k(t) = \indic{\kappa(M(t))= k}$ indicating whether humans review a type-$k$ job at time $t$. The expected Lagrangian of
+\textsc{BACID} is then $\sum_{t=1}^T \expect{f_t(\bolds{A}(t), \bolds{\psi}(t), \bolds{Q}(t))}$. Our proof of Lemma~\ref{lem:known-idiosyncrasy} relies on a Lyapunov analysis of the function 
+\[L(t) = \beta\sum_{t'=1}^{t-1} \ell_{\kappa(t')}\left(1 - A(t')\right) + \frac{1}{2}\sum_{k \in \set{K}} Q_k^2(t),\]
+which connects the idiosyncrasy loss to the Lagrangian by the next lemma (proof in Appendix~\ref{app:lem-connect-idio-lag}).
+\begin{lemma}\label{lem:connect-idio-lag}
+The expected Lagrangian of \textsc{BACID} upper bounds its idiosyncrasy loss as following:
+\[
+\beta \expect{\sum_{t=1}^{T} \ell_{\kappa(t)}(1-A(t))} \leq \expect{L(T+1)-L(1)} \leq T + \sum_{t=1}^T \expect{f_t(\bolds{A}(t), \bolds{\psi}(t), \bolds{Q}(t))}.
+\]
+\end{lemma}
+Our second lemma shows that the expected Lagrangian of \textsc{BACID} is close to the optimal fluid, which we prove in Section~\ref{sec:lagrang-bacid}. 
+\begin{lemma}\label{lem:lagrang-bacid}
+The expected Lagrangian of \textsc{BACID} is upper bounded by:
+\[
+\sum_{t=1}^T \expect{f_t(\bolds{A}(t), \bolds{\psi}(t), \bolds{Q}(t))}  \leq \beta \loss^\star(T).
+\]
+\end{lemma}
+\begin{remark}
+Lemma~\ref{lem:lagrang-bacid} holds even if the queue length sequence $\{\bolds{Q}(t)\}$ is generated by another policy (instead of \textsc{BACID}); $\bolds{A}(t)$ and $\bolds{\psi}(t)$ are still the decisions made by \textsc{BACID} in period $t$ given $\bolds{Q}(t)$. This generalization is useful when we apply the lemma to a learning setting in Section~\ref{sec:unknown}.
+\end{remark}
+\begin{proof}[Proof of Lemma~\ref{lem:known-idiosyncrasy}]
+Combining Lemmas~\ref{lem:connect-idio-lag} and \ref{lem:lagrang-bacid} gives $\beta \expect{\sum_{t=1}^{T} \ell_{\kappa(t)}(1-A(t))} \leq \beta \loss^\star(T) + T$, which finishes the proof by dividing both sides by $\beta$.
+\end{proof}
+
+\subsection{Connecting Lagrangian of \textsc{BACID} with Fluid Optimal (Lemma~\ref{lem:lagrang-bacid})}\label{sec:lagrang-bacid} 
+We connect the scaled primal objective $\beta \set{L}^\star(T)$ to the Lagrangian $f(\{\bolds{a}^\star(t)\}_{t \in [T]},\{\bolds{\nu}^\star(t)\}_{t \in [T]},\bolds{u})$ by setting the duals equal to the queue length:
+\begin{align}
+\sum_{t=1}^T \expect{f_t(\bolds{A}(t), \bolds{\psi}(t), \bolds{Q}(t))} - \beta \loss^\star(T) &= \expect{f(\{\bolds{a}^\star(t)\}_{t \in [T]},\{\bolds{\nu}^\star(t)\}_{t \in [T]},\{\bolds{Q}(t)\}_{t \in [T]})} - \beta \loss^\star(T) \label{eq:lagran-relax}\\
+&\hspace{-1in}+\sum_{t=1}^T\left(\expect{f_t(\bolds{A}(t), \bolds{\psi}(t), \bolds{Q}(t))} -\expect{f_t(\bolds{a}^\star(t), \bolds{\nu}^\star(t), \bolds{Q}(t))}\right) \label{eq:bacid-step-subopt}.
+\end{align}
+Hence, \textsc{BACID}'s suboptimality is captured by the sum of two terms:
+\eqref{eq:lagran-relax}, the difference between the Lagrangian and the primal and \eqref{eq:bacid-step-subopt}, the difference in Lagrangian compared to the optimal fluid solution when the dual is given by per-period queue length. Our proof bounds these two terms independently. 
+
+The first step is to show that \eqref{eq:lagran-relax} is non-positive because of the definition of Lagrangian (proof in Appendix~\ref{app:lem-bound-lagrang}). 
+\begin{lemma}\label{lem:bound-lagrang}
+For any dual
+$\bolds{u}=(u_{t,k})_{t \in [T], k \in \set{K}} \geq 0$, 
+$f(\{\bolds{a}^\star(t)\}_{t\in[T]},\{\bolds{\nu}^\star(t)\}_{t\in[T]},\bolds{u}) - \beta \set{L}^\star(T) \leq 0.$
+\end{lemma}
+Our next lemma (proof in Appendix~\ref{app:lem-bacid-mw}) shows that  \eqref{eq:bacid-step-subopt} is nonpositive as \textsc{BACID} explicitly optimizes the per-period Lagrangian based on $\bolds{Q}(t)$.
+\begin{lemma}\label{lem:bacid-mw}
+For every period $t$,
+$\expect{f_t(\bolds{A}(t),\bolds{\psi}(t),\bolds{Q}(t)) \mid \bolds{Q}(t)} - f_t(\bolds{a}^\star(t),\bolds{\nu}^\star(t),\bolds{Q}(t)) \leq 0$.  
+\end{lemma}
+
+\begin{proof}[Proof of Lemma~\ref{lem:lagrang-bacid}]
+The proof follows by applying Lemmas~\ref{lem:bound-lagrang} and \ref{lem:bacid-mw} in \eqref{eq:lagran-relax} and \eqref{eq:bacid-step-subopt}.
+\end{proof}

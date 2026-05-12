@@ -1,0 +1,67 @@
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems}
+\usepackage{multirow}
+\usepackage{caption}
+
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage{fontawesome}
+\usepackage{caption}
+\usepackage{booktabs}
+\usepackage{arydshln} % for dashed lines
+%% \usepackage{xcolor}
+\usepackage{wrapfig,booktabs}
+%\usepackage{subcaption}
+
+
+\usepackage{tikz}
+
+\usepackage{booktabs, multirow, xcolor, graphicx, colortbl, fontawesome}
+
+\definecolor{lightblue}{RGB}{173,216,230}
+\definecolor{lightyellow}{RGB}{255,255,224}
+\definecolor{lightgreen}{RGB}{144,238,144}
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[fill=blue!30,shape=circle,draw,inner sep=0.5pt] (char) {#1};}}
+
+\newcommand{\method}[1]{\textsc{QUestion-only replay with Attention Distillation}}
+
+\newcommand{\qstmethod}[1]{\textsc{Question-only replay with Attention Distillation}}
+\newcommand{\setting}{VQACL-QR}
+
+
+%\newcommand{\methodshort}[1]{\textsc{QADAD}}
+\newcommand{\qstmethodshort}[1]{\textsc{QUAD}}
+
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+
+
+%
+% --- inline annotations
+%
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\todo}[1]{{\color{red}#1}}
+\newcommand{\TODO}[1]{\textbf{\color{red}[TODO: #1]}}
+
+
+\newcommand{\rcircle}[1]{\textcolor{red}{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=1pt] (char) {#1};}}}
+
+\newcommand\imad[1]{\textcolor{blue}{#1}}
+\newcommand\enzo[1]{\textcolor{orange}{Enzo: #1}}
+\newcommand\steph[1]{\textcolor{red}{Steph: #1}}
+
+% Define custom dark green color
+\definecolor{darkgreen}{rgb}{0.0, 0.5, 0.0} % You can adjust the values for a different shade
+
+\definecolor{lightblue}{RGB}{173,216,230}
+\definecolor{lightyellow}{RGB}{255,255,224}
+\definecolor{lightgreen}{RGB}{144,238,144}
+
+% --- disable by uncommenting  
+% \renewcommand{\TODO}[1]{}
+% \renewcommand{\todo}[1]{#1}
+

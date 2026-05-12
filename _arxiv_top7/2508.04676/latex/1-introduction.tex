@@ -1,0 +1,67 @@
+% \ifCLASSOPTIONcompsoc
+% \IEEEraisesectionheading{\section{Introduction}}
+% \else
+% \section{Introduction}
+% \fi
+
+\section{Introduction}
+
+\IEEEPARstart{C}{ontinual} learning (CL) of large language models (LLMs) remains challenging for real-world applications. For instance, continual finetuning often degrades general capabilities, particularly over long task sequences. The finetuned model forgets its original world knowledge or basic instruction-following skills~\cite{luo2023empirical,zheng2024concept}. Additionally, the overall performance on sequential downstream tasks often deteriorates due to forgetting of previously learned tasks, caused by inter-task conflicts.
+This phenomenon, also known as catastrophic forgetting, often compels practitioners to seek complex CL solutions. However, the contemporary LLM system, marked by architectural bulkiness and computational heaviness, is imperative to call for a simple yet stable approach to effectively mitigate forgetting.
+In this context, our research aims to review and develop an efficient and general anti-forgetting method of CL adapted to the LLM era.
+
+\begin{figure}[tbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figtab/intro.pdf}
+    \caption{
+    Traditional replay vs. GeRe: unlike traditional replay requiring laborious collection of an increasing set of downstream replay samples, GeRe simply employs a fixed set of general replay samples to not only retain general capabilities in continual learning, but also enhance the overall performance of learned downstream tasks. The blue oval is the threshold-based margin loss that imposes consistency constraint on neural activation state under GeRe frameworks.
+    }
+    \label{fig:intro}
+\end{figure}
+
+
+Historically, solutions for CL are primarily categorized into three traditional branches: replay-based, regularization-based, and architecture-based methods~\cite{shi2024continual}.
+Considering the massive number of parameters in LLMs and their widely accepted fixed structures, it appears prohibitive and impractical to regularize all parameters or frequently expand the architecture for every new task. 
+Thus current practice in LLMs continual learning regularly prioritizes replay-based methods due to its simplicity.
+For instance, practitioners commonly mix a certain proportion of general task samples during finetuning for downstream tasks \cite{touvron2023llama,yang2024qwen2}. However, the underlying mechanisms and optimal strategies of these replay-based methods tailored for LLMs remain insufficiently explored and analyzed.
+
+
+In this work, we
+(1) systematically revisit the replay mechanisms targeting LLMs under a newly introduced general sample replay (GeRe) framework and,
+(2) present a threshold-based margin (TM) loss for activation state constrained optimization.
+Specifically, we prepares a fixed, permanently reusable set of general replay samples (e.g., the commonly used pretraining texts) and leverages the TM loss to maintain consistent neuron activation states, ultimately resisting various forms of forgetting.
+
+The approach is motivated by two ideas:
+(1) From a cognitive perspective, a learner obtaining superior general capabilities is more likely to achieve better generalization and robustness in downstream tasks. Leveraging its comprehensive knowledge, such a learner can reduce conflicts arising from overfitting to specific tasks, thereby mitigating task forgetting. Consequently, it is worth exploring how to utilize general replay samples to retain general capabilities.
+(2) In the human brain, critical information is sparsely distributed across a few activated neurons \cite{olshausen1996emergence,wolfe2010sparse}.
+Therefore, in replay-based continual learning (replay learning), the activation states of neurons evoked by replay samples may require deeper attention. By designing an activation state constrained optimization, we seek a less rigid but more informative target that enables the replay learning to be more robust and generalizable.
+
+Through the paper we have explored and answered 2 pressing questions in real-world LLMs continual learning scenario:
+
+\noindent
+\textbf{Q1: Can we simply select a fixed set of replay samples once and for all?}
+To retain general capabilities, contemporary strategies for mixing replay samples in LLM training may be as laborious as feature engineering, requiring careful selection of both the proper size and specific replay samples tailored to the particular downstream task.
+For instance, even with a fixed mixing ratio, we still need to frequently resize the replay samples set and select an appropriate subset or superset to adapt to the varying data scale of incoming tasks.
+For this question, we have empirically validated that constructing a fixed set of randomly selected general replay samples (e.g., 1k texts from the widely available general pretraining corpus) can be durably applied to fulfill all replay needs in subsequent tasks, while successfully preserving general capabilities.
+This becomes more pronounced when integrating replay with feature-based distillation, as it fully exploits information from these limited replay samples rather than merely fitting their explicit labels.
+To our knowledge, we are the first to propose that a fixed set of general replay samples can efficiently adapt to real-world continual learning scenario involving long sequences of tasks under full or LoRA settings, which holds significant practical implications.
+
+\noindent
+\textbf{Q2: Can general replay samples alone facilitate continual learning in sequential downstream tasks, typically without any of task replay samples?}
+Normally, collecting task replay samples from each old task in subsequent learning is necessary to maintain their long-term performance. However, we believe that the learning  efficacy of any downstream task fundamentally depends on the LLM's general knowledge. For this question, we have encouragingly validated that the aforementioned fixed set of general replay samples, under our optimization approach, can effectively promote the persistent retention of previously learned task knowledge, mitigating the forgetting induces by inter-task conflicts.
+The results demonstrate the feasibility of conveniently utilizing only predetermined general replay samples to resist task-specific forgetting in future applications.
+
+These answers highlight the advantages of the proposed GeRe framework. Furthermore, we enhance feature-based replay learning under GeRe by introducing activation state constrained optimization, which statistically determines activation states and optimizes using a threshold-based margin loss. This relatively lightweight constraint on feature values empirically exhibits better robustness and generalizability compared to the conventional yet rigid L1/L2 fitting manner.
+
+Our contributions are as follows:
+\begin{itemize}[leftmargin=*, align=left]
+
+\item \textbf{1. \textit{GeRe}}: We first demonstrate that a fixed set of predefined general replay samples can be reused throughout the entire continual finetuning process, effectively preserving LLM's original general capabilities. Crucially, replaying any downstream task sample proves unnecessary, as maintaining general capabilities alone enhances overall downstream tasks performance.
+
+\item \textbf{2. \textit{TM loss}}: We pioneer a comprehensive comparison of commonly used replay-based practices for continual learning in LLMs, exploring their integration with various knowledge distillation strategies. Among these, our proposed threshold-based margin loss, motivated by the previously overlooked activation state constraint, achieves SoTA performance.
+
+\item \textbf{3.}
+Our method shows robustness not only to learning rate---a critical hyperparameter seriously impacting both knowledge updating and retention---but also to intrinsic optimization dynamics, as evidenced by optimization landscape visualization, highlighting its practical utility.
+
+\end{itemize}
+

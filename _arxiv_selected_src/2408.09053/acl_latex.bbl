@@ -1,0 +1,173 @@
+\begin{thebibliography}{34}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Alabi et~al.(2022)Alabi, Adelani, Mosbach, and Klakow}]{alabi-etal-2022-adapting}
+Jesujoba~O. Alabi, David~Ifeoluwa Adelani, Marius Mosbach, and Dietrich Klakow. 2022.
+\newblock \href {https://aclanthology.org/2022.coling-1.382} {Adapting pre-trained language models to {A}frican languages via multilingual adaptive fine-tuning}.
+\newblock In \emph{Proceedings of the 29th International Conference on Computational Linguistics}, pages 4336--4349, Gyeongju, Republic of Korea. International Committee on Computational Linguistics.
+
+\bibitem[{Araujo et~al.(2022{\natexlab{a}})Araujo, Balabin, Hurtado, Soto, and Moens}]{araujo-etal-2022-relevant}
+Vladimir Araujo, Helena Balabin, Julio Hurtado, Alvaro Soto, and Marie-Francine Moens. 2022{\natexlab{a}}.
+\newblock \href {https://aclanthology.org/2022.aacl-short.20} {How relevant is selective memory population in lifelong language learning?}
+\newblock In \emph{Proceedings of the 2nd Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics and the 12th International Joint Conference on Natural Language Processing}, pages 154--160, Online. Association for Computational Linguistics.
+
+\bibitem[{Araujo et~al.(2022{\natexlab{b}})Araujo, Hurtado, Soto, and Moens}]{Araujo_2022_CVPR}
+Vladimir Araujo, Julio Hurtado, Alvaro Soto, and Marie-Francine Moens. 2022{\natexlab{b}}.
+\newblock Entropy-based stability-plasticity for lifelong learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops}, pages 3721--3728.
+
+\bibitem[{Cheng et~al.(2024)Cheng, Wang, Sung, Lin, Bansal, and Bertasius}]{cheng2024dynamic}
+Feng Cheng, Ziyang Wang, Yi-Lin Sung, Yan-Bo Lin, Mohit Bansal, and Gedas Bertasius. 2024.
+\newblock \href {https://openreview.net/forum?id=L1FeTLOwzr} {Dynamic adapter merging for continual video question-answering learning}.
+
+\bibitem[{Devlin et~al.(2019)Devlin, Chang, Lee, and Toutanova}]{devlin-etal-2019-bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2019.
+\newblock \href {https://doi.org/10.18653/v1/N19-1423} {{BERT}: Pre-training of deep bidirectional transformers for language understanding}.
+\newblock In \emph{Proceedings of the 2019 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers)}, pages 4171--4186, Minneapolis, Minnesota. Association for Computational Linguistics.
+
+\bibitem[{Dikkala et~al.(2023)Dikkala, Ghosh, Meka, Panigrahy, Vyas, and Wang}]{dikkala-etal-2023-benefits}
+Nishanth Dikkala, Nikhil Ghosh, Raghu Meka, Rina Panigrahy, Nikhil Vyas, and Xin Wang. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.emnlp-main.583} {On the benefits of learning to route in mixture-of-experts models}.
+\newblock In \emph{Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing}, pages 9376--9396, Singapore. Association for Computational Linguistics.
+
+\bibitem[{d\textquotesingle Autume et~al.(2019)d\textquotesingle Autume, Ruder, Kong, and Yogatama}]{NEURIPS2019_f8d2e80c}
+Cyprien de~Masson d\textquotesingle Autume, Sebastian Ruder, Lingpeng Kong, and Dani Yogatama. 2019.
+\newblock \href {https://proceedings.neurips.cc/paper/2019/file/f8d2e80c1458ea2501f98a2cafadb397-Paper.pdf} {Episodic memory in lifelong language learning}.
+\newblock In \emph{Advances in Neural Information Processing Systems}, volume~32. Curran Associates, Inc.
+
+\bibitem[{Hayes and Kanan(2021)}]{hayes2021selective}
+Tyler~L Hayes and Christopher Kanan. 2021.
+\newblock Selective replay enhances learning in online continual analogical reasoning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pages 3502--3512.
+
+\bibitem[{Hu et~al.(2022)Hu, yelong shen, Wallis, Allen-Zhu, Li, Wang, Wang, and Chen}]{hu2022lora}
+Edward~J Hu, yelong shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu~Wang, and Weizhu Chen. 2022.
+\newblock \href {https://openreview.net/forum?id=nZeVKeeFYf9} {Lo{RA}: Low-rank adaptation of large language models}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Hurtado et~al.(2023)Hurtado, Raymond-S\'aez, Araujo, Lomonaco, Soto, and Bacciu}]{Hurtado_2023_ICCV}
+Julio Hurtado, Alain Raymond-S\'aez, Vladimir Araujo, Vincenzo Lomonaco, Alvaro Soto, and Davide Bacciu. 2023.
+\newblock Memory population in continual learning via outlier elimination.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) Workshops}, pages 3481--3490.
+
+\bibitem[{Kowsari et~al.(2017)Kowsari, Brown, Heidarysafa, Jafari~Meimandi, Gerber, and Barnes}]{8260658}
+Kamran Kowsari, Donald~E. Brown, Mojtaba Heidarysafa, Kiana Jafari~Meimandi, Matthew~S. Gerber, and Laura~E. Barnes. 2017.
+\newblock \href {https://doi.org/10.1109/ICMLA.2017.0-134} {Hdltex: Hierarchical deep learning for text classification}.
+\newblock In \emph{2017 16th IEEE International Conference on Machine Learning and Applications (ICMLA)}, pages 364--371.
+
+\bibitem[{Li and Liang(2021)}]{li-liang-2021-prefix}
+Xiang~Lisa Li and Percy Liang. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.acl-long.353} {Prefix-tuning: Optimizing continuous prompts for generation}.
+\newblock In \emph{Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers)}, pages 4582--4597, Online. Association for Computational Linguistics.
+
+\bibitem[{Maddison et~al.(2017)Maddison, Mnih, and Teh}]{maddison2017the}
+Chris~J. Maddison, Andriy Mnih, and Yee~Whye Teh. 2017.
+\newblock \href {https://openreview.net/forum?id=S1jE5L5gl} {The concrete distribution: A continuous relaxation of discrete random variables}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{McCloskey and Cohen(1989)}]{MCCLOSKEY1989109}
+Michael McCloskey and Neal~J. Cohen. 1989.
+\newblock \href {https://doi.org/10.1016/S0079-7421(08)60536-8} {Catastrophic interference in connectionist networks: The sequential learning problem}.
+\newblock volume~24 of \emph{Psychology of Learning and Motivation}, pages 109--165. Academic Press.
+
+\bibitem[{Muhammad et~al.(2023)Muhammad, Abdulmumin, Ayele, Ousidhoum, Adelani, Yimam, Ahmad, Beloucif, Mohammad, Ruder, Hourrane, Jorge, Brazdil, Ali, David, Osei, Shehu-Bello, Lawan, Gwadabe, Rutunda, Belay, Messelle, Balcha, Chala, Gebremichael, Opoku, and Arthur}]{muhammad-etal-2023-afrisenti}
+Shamsuddeen Muhammad, Idris Abdulmumin, Abinew Ayele, Nedjma Ousidhoum, David Adelani, Seid Yimam, Ibrahim Ahmad, Meriem Beloucif, Saif Mohammad, Sebastian Ruder, Oumaima Hourrane, Alipio Jorge, Pavel Brazdil, Felermino Ali, Davis David, Salomey Osei, Bello Shehu-Bello, Falalu Lawan, Tajuddeen Gwadabe, Samuel Rutunda, Tadesse Belay, Wendimu Messelle, Hailu Balcha, Sisay Chala, Hagos Gebremichael, Bernard Opoku, and Stephen Arthur. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.emnlp-main.862} {{A}fri{S}enti: A {T}witter sentiment analysis benchmark for {A}frican languages}.
+\newblock In \emph{Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing}, pages 13968--13981, Singapore. Association for Computational Linguistics.
+
+\bibitem[{Ponti et~al.(2023)Ponti, Sordoni, Bengio, and Reddy}]{ponti-etal-2023-combining}
+Edoardo~Maria Ponti, Alessandro Sordoni, Yoshua Bengio, and Siva Reddy. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.eacl-main.49} {Combining parameter-efficient modules for task-level generalisation}.
+\newblock In \emph{Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics}, pages 687--702, Dubrovnik, Croatia. Association for Computational Linguistics.
+
+\bibitem[{Prabhu et~al.(2023)Prabhu, Hammoud, Dokania, Torr, Lim, Ghanem, and Bibi}]{10204648}
+A.~Prabhu, H.~Al~Kader Hammoud, P.~Dokania, P.~S. Torr, S.~Lim, B.~Ghanem, and A.~Bibi. 2023.
+\newblock \href {https://doi.org/10.1109/CVPR52729.2023.00360} {Computationally budgeted continual learning: What does matter?}
+\newblock In \emph{2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, pages 3698--3707, Los Alamitos, CA, USA. IEEE Computer Society.
+
+\bibitem[{Prabhu et~al.(2020)Prabhu, Torr, and Dokania}]{10.1007/978-3-030-58536-5_31}
+Ameya Prabhu, Philip H.~S. Torr, and Puneet~K. Dokania. 2020.
+\newblock \href {https://doi.org/10.1007/978-3-030-58536-5_31} {Gdumb: A simple approach that questions our progress in continual learning}.
+\newblock In \emph{Computer Vision – ECCV 2020: 16th European Conference, Glasgow, UK, August 23–28, 2020, Proceedings, Part II}, page 524–540, Berlin, Heidelberg. Springer-Verlag.
+
+\bibitem[{Razdaibiedina et~al.(2023)Razdaibiedina, Mao, Hou, Khabsa, Lewis, and Almahairi}]{razdaibiedina2023progressive}
+Anastasia Razdaibiedina, Yuning Mao, Rui Hou, Madian Khabsa, Mike Lewis, and Amjad Almahairi. 2023.
+\newblock \href {https://openreview.net/forum?id=UJTgQBc91_} {Progressive prompts: Continual learning for language models}.
+\newblock In \emph{The Eleventh International Conference on Learning Representations}.
+
+\bibitem[{Shazeer et~al.(2017{\natexlab{a}})Shazeer, Mirhoseini, Maziarz, Davis, Le, Hinton, and Dean}]{shazeer2017}
+Noam Shazeer, *Azalia Mirhoseini, *Krzysztof Maziarz, Andy Davis, Quoc Le, Geoffrey Hinton, and Jeff Dean. 2017{\natexlab{a}}.
+\newblock \href {https://openreview.net/forum?id=B1ckMDqlg} {Outrageously large neural networks: The sparsely-gated mixture-of-experts layer}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Shazeer et~al.(2017{\natexlab{b}})Shazeer, Mirhoseini, Maziarz, Davis, Le, Hinton, and Dean}]{shazeer2017outrageously}
+Noam Shazeer, Azalia Mirhoseini, Krzysztof Maziarz, Andy Davis, Quoc Le, Geoffrey Hinton, and Jeff Dean. 2017{\natexlab{b}}.
+\newblock \href {https://arxiv.org/abs/1701.06538} {Outrageously large neural networks: The sparsely-gated mixture-of-experts layer}.
+\newblock \emph{Preprint}, arXiv:1701.06538.
+
+\bibitem[{Smith et~al.(2023)Smith, Karlinsky, Gutta, Cascante-Bonilla, Kim, Arbelle, Panda, Feris, and Kira}]{Smith_2023_CVPR}
+James~Seale Smith, Leonid Karlinsky, Vyshnavi Gutta, Paola Cascante-Bonilla, Donghyun Kim, Assaf Arbelle, Rameswar Panda, Rogerio Feris, and Zsolt Kira. 2023.
+\newblock Coda-prompt: Continual decomposed attention-based prompting for rehearsal-free continual learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, pages 11909--11919.
+
+\bibitem[{Sprechmann et~al.(2018)Sprechmann, Jayakumar, Rae, Pritzel, Badia, Uria, Vinyals, Hassabis, Pascanu, and Blundell}]{sprechmann2018memorybased}
+Pablo Sprechmann, Siddhant Jayakumar, Jack Rae, Alexander Pritzel, Adria~Puigdomenech Badia, Benigno Uria, Oriol Vinyals, Demis Hassabis, Razvan Pascanu, and Charles Blundell. 2018.
+\newblock \href {https://openreview.net/forum?id=rkfOvGbCW} {Memory-based parameter adaptation}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Verwimp et~al.(2024)Verwimp, Aljundi, Ben-David, Bethge, Cossu, Gepperth, Hayes, H{\"u}llermeier, Kanan, Kudithipudi, Lampert, Mundt, Pascanu, Popescu, Tolias, van~de Weijer, Liu, Lomonaco, Tuytelaars, and van~de Ven}]{verwimp2024continual}
+Eli Verwimp, Rahaf Aljundi, Shai Ben-David, Matthias Bethge, Andrea Cossu, Alexander Gepperth, Tyler~L. Hayes, Eyke H{\"u}llermeier, Christopher Kanan, Dhireesha Kudithipudi, Christoph~H. Lampert, Martin Mundt, Razvan Pascanu, Adrian Popescu, Andreas~S. Tolias, Joost van~de Weijer, Bing Liu, Vincenzo Lomonaco, Tinne Tuytelaars, and Gido~M van~de Ven. 2024.
+\newblock \href {https://openreview.net/forum?id=axBIMcGZn9} {Continual learning: Applications and the road forward}.
+\newblock \emph{Transactions on Machine Learning Research}.
+
+\bibitem[{Wang et~al.(2024)Wang, Adel, Lange, Strötgen, and Schütze}]{wang2024rehearsalfree}
+Mingyang Wang, Heike Adel, Lukas Lange, Jannik Strötgen, and Hinrich Schütze. 2024.
+\newblock \href {https://arxiv.org/abs/2404.00790} {Rehearsal-free modular and compositional continual learning for language models}.
+\newblock \emph{Preprint}, arXiv:2404.00790.
+
+\bibitem[{Wang et~al.(2022{\natexlab{a}})Wang, Agarwal, Mukherjee, Liu, Gao, Awadallah, and Gao}]{wang-etal-2022-adamix}
+Yaqing Wang, Sahaj Agarwal, Subhabrata Mukherjee, Xiaodong Liu, Jing Gao, Ahmed~Hassan Awadallah, and Jianfeng Gao. 2022{\natexlab{a}}.
+\newblock \href {https://doi.org/10.18653/v1/2022.emnlp-main.388} {{A}da{M}ix: Mixture-of-adaptations for parameter-efficient model tuning}.
+\newblock In \emph{Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing}, pages 5744--5760, Abu Dhabi, United Arab Emirates. Association for Computational Linguistics.
+
+\bibitem[{Wang et~al.(2023)Wang, Liu, Ji, Wang, Wu, Jiang, Chao, Han, Wang, Shao, and Zeng}]{wang-etal-2023-rehearsal}
+Zhicheng Wang, Yufang Liu, Tao Ji, Xiaoling Wang, Yuanbin Wu, Congcong Jiang, Ye~Chao, Zhencong Han, Ling Wang, Xu~Shao, and Wenqiu Zeng. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.acl-long.612} {Rehearsal-free continual language learning via efficient parameter isolation}.
+\newblock In \emph{Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 10933--10946, Toronto, Canada. Association for Computational Linguistics.
+
+\bibitem[{Wang et~al.(2022{\natexlab{b}})Wang, Zhang, Lee, Zhang, Sun, Ren, Su, Perot, Dy, and Pfister}]{Wang_2022_CVPR}
+Zifeng Wang, Zizhao Zhang, Chen-Yu Lee, Han Zhang, Ruoxi Sun, Xiaoqi Ren, Guolong Su, Vincent Perot, Jennifer Dy, and Tomas Pfister. 2022{\natexlab{b}}.
+\newblock Learning to prompt for continual learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, pages 139--149.
+
+\bibitem[{Wang et~al.(2020)Wang, Mehta, Poczos, and Carbonell}]{wang-etal-2020-efficient}
+Zirui Wang, Sanket~Vaibhav Mehta, Barnabas Poczos, and Jaime Carbonell. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.emnlp-main.39} {Efficient meta lifelong-learning with limited memory}.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)}, pages 535--548, Online. Association for Computational Linguistics.
+
+\bibitem[{Wistuba et~al.(2024)Wistuba, Sivaprasad, Balles, and Zappella}]{wistuba2024choice}
+Martin Wistuba, Prabhu~Teja Sivaprasad, Lukas Balles, and Giovanni Zappella. 2024.
+\newblock \href {https://arxiv.org/abs/2406.03216} {Choice of peft technique in continual learning: Prompt tuning is not all you need}.
+\newblock \emph{Preprint}, arXiv:2406.03216.
+
+\bibitem[{Wortsman et~al.(2022)Wortsman, Ilharco, Gadre, Roelofs, Gontijo-Lopes, Morcos, Namkoong, Farhadi, Carmon, Kornblith, and Schmidt}]{pmlr-v162-wortsman22a}
+Mitchell Wortsman, Gabriel Ilharco, Samir~Ya Gadre, Rebecca Roelofs, Raphael Gontijo-Lopes, Ari~S Morcos, Hongseok Namkoong, Ali Farhadi, Yair Carmon, Simon Kornblith, and Ludwig Schmidt. 2022.
+\newblock \href {https://proceedings.mlr.press/v162/wortsman22a.html} {Model soups: averaging weights of multiple fine-tuned models improves accuracy without increasing inference time}.
+\newblock In \emph{Proceedings of the 39th International Conference on Machine Learning}, volume 162 of \emph{Proceedings of Machine Learning Research}, pages 23965--23998. PMLR.
+
+\bibitem[{Yadav et~al.(2024)Yadav, Tam, Choshen, Raffel, and Bansal}]{10.5555/3666122.3666432}
+Prateek Yadav, Derek Tam, Leshem Choshen, Colin Raffel, and Mohit Bansal. 2024.
+\newblock Ties-merging: resolving interference when merging models.
+\newblock In \emph{Proceedings of the 37th International Conference on Neural Information Processing Systems}, NIPS '23, Red Hook, NY, USA. Curran Associates Inc.
+
+\bibitem[{Zhang et~al.(2015)Zhang, Zhao, and LeCun}]{NIPS2015_250cf8b5}
+Xiang Zhang, Junbo Zhao, and Yann LeCun. 2015.
+\newblock \href {https://proceedings.neurips.cc/paper_files/paper/2015/file/250cf8b51c773f3f8dc8b4be867a9a02-Paper.pdf} {Character-level convolutional networks for text classification}.
+\newblock In \emph{Advances in Neural Information Processing Systems}, volume~28. Curran Associates, Inc.
+
+\bibitem[{Zhou et~al.(2024)Zhou, Sun, Ning, Ye, and Zhan}]{zhou2024continual}
+Da-Wei Zhou, Hai-Long Sun, Jingyi Ning, Han-Jia Ye, and De-Chuan Zhan. 2024.
+\newblock \href {https://arxiv.org/abs/2401.16386} {Continual learning with pre-trained models: A survey}.
+\newblock \emph{Preprint}, arXiv:2401.16386.
+
+\end{thebibliography}

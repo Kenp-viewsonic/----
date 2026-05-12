@@ -1,0 +1,590 @@
+%%%% ijcai20.tex
+
+\typeout{IJCAI--PRICAI--20 Instructions for Authors}
+
+% These are the instructions for authors for IJCAI-20.
+
+\documentclass{article}
+\pdfpagewidth=8.5in
+\pdfpageheight=11in
+% The file ijcai20.sty is NOT the same than previous years'
+\usepackage{ijcai20}
+
+% Use the postscript times font!
+\usepackage{times}
+\usepackage{soul}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[small]{caption}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\urlstyle{same}
+
+
+
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{algpseudocode}
+\usepackage{color}
+\newcommand{\zach}[1]{\textcolor{red}{(zach: #1)}}
+\newcommand{\nop}[1]{}
+\newcommand{\model}{\textbf{StrGNN}~}
+\newcommand{\modele}{\textbf{StrGNN}}
+
+% the following package is optional:
+%\usepackage{latexsym} 
+
+% See https://www.overleaf.com/learn/latex/theorems_and_proofs
+% for a nice explanation of how to define new theorems, but keep
+% in mind that the amsthm package is already included in this
+% template and that you must *not* alter the styling.
+
+
+% Following comment is from ijcai97-submit.tex:
+% The preparation of these files was supported by Schlumberger Palo Alto
+% Research, AT\&T Bell Laboratories, and Morgan Kaufmann Publishers.
+% Shirley Jowell, of Morgan Kaufmann Publishers, and Peter F.
+% Patel-Schneider, of AT\&T Bell Laboratories collaborated on their
+% preparation.
+
+% These instructions can be modified and used in other conferences as long
+% as credit to the authors and supporting agencies is retained, this notice
+% is not changed, and further modification or reuse is not restricted.
+% Neither Shirley Jowell nor Peter F. Patel-Schneider can be listed as
+% contacts for providing assistance without their prior permission.
+
+% To use for other conferences, change references to files and the
+% conference appropriate and use other authors, contacts, publishers, and
+% organizations.
+% Also change the deadline and address for returning papers and the length and
+% page charge instructions.
+% Put where the files are available in the appropriate places.
+
+\title{Structural Temporal Graph Neural Networks\\ for Anomaly Detection in Dynamic Graphs}
+
+% Single author syntax
+\author{
+Lei Cai$^{1,2,}$\thanks{Work done during an internship at NEC Labs America.}\and
+Zhengzhang Chen$^{2,}$\thanks{Corresponding author: \{zchen\}@nec-labs.com.}\and
+Chen Luo$^3$\and
+Jiaping Gui$^2$\and\\
+Jingchao Ni $^2$\and
+Ding Li$^2$\and
+Haifeng Chen$^2$ 
+\affiliations
+$^1$Washington State University, USA\\
+$^2$NEC Laboratories America, USA\\
+$^3$Rice University, USA\\
+% $^4$Fourth Affiliation
+}
+
+% Multiple author syntax (remove the single-author syntax above and the \iffalse ... \fi here)
+% Check the ijcai20-multiauthor.tex file for detailed instructions
+\iffalse
+\author{
+
+}
+\fi
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Detecting anomalies in dynamic graphs is a vital task, with numerous practical applications in areas such as security, finance, and social media. Previous network embedding based methods have been mostly focusing on learning good node representations, %studies have been mostly focusing on finding a good feature extraction/representation learning technique that can capture and preserve the graph structure, 
+whereas largely ignoring the subgraph structural changes related to the target nodes in dynamic graphs. %Network embedding methods are useful but very challenging for anomalous edge detection in dynamic graphs due to variation of scalability. That is, the size and volume of graphs are dynamically changed along the time axis. The variation of dynamic graphs limits the performance of embedding based method. In order to detect the anomalous edges, the network embedding should be combined with traditional anomaly detection methods, such as density-based method. whereas largely ignoring the structural temporal dynamics
+In this paper, we propose \modele, an end-to-end structural temporal Graph Neural Network model for detecting anomalous edges in dynamic graphs. In particular, we first extract the $h$-hop enclosing subgraph centered on the target edge and propose the node labeling function to identify the role of each node in the subgraph. Then, we leverage graph convolution operation and Sortpooling layer to extract the fixed-size feature from each snapshot/timestamp. Based on the extracted features, we utilize Gated recurrent units (GRUs) to capture the temporal information for anomaly detection. Extensive experiments on six benchmark datasets and a real enterprise security system demonstrate the effectiveness of \modele. %We also apply \model to a real enterprise security system for intrusion detection. \model achieves superior detection performance with zero false negatives. 
+\end{abstract}
+
+
+\section{Introduction}
+
+
+%ref1:http://www.stephenranshous.com/papers/Anomaly%20Detection%20in%20Dynamic%20Networks:%20A%20Survey_WIREs2015.pdf
+%ref2: https://pdfs.semanticscholar.org/bd47/99e6d1f6f998ba2699580d67c467fc5b95de.pdf
+%ref3: https://www.ijcai.org/proceedings/2019/0614.pdf
+%ref4: https://arxiv.org/pdf/1404.4679.pdf
+
+
+Recent studies of dynamic graphs/networks have witnessed a growing interest. Such dynamic graphs model a variety of systems including societies, ecosystems, the Internet, and others. For example, %to understand the dynamic behaviors of an enterprise system, one can model the interactions between different system entities (such as process, file, and Internet sockets) as dynamic graphs using the system streaming data \cite{luo2018tinet}. 
+in enterprise dynamic network~\cite{luo2018tinet}, the node represents a system entity (such as process, file, and Internet sockets) and an edge indicates the corresponding interaction between two system entities. \nop{Other examples include world wide web connecting websites across the world, and social networks that connect users, businesses, or customers using relationships such as hyperlinks, friendship, or collaborations.} These dynamic networks, unlike static networks, are constantly changing. Possible changes include graph structure change or modification of node attributes.
+
+A fundamental task on dynamic graph analysis is anomaly detection---identifying objects, relationships, or subgraphs, whose ``behaviors'' significantly deviate from underlying majority of the network~\cite{ICDE.2011.5767885,Ranshous:2015}. In this work, we focus on the anomalous edge detection in dynamic graphs. 
+Detecting anomalous edges can help understand the system status and diagnose system fault \cite{Ranshous:2015,akoglu2015graph}. For example, in an enterprise dynamic network, some system entity pairs, such as a user software and system-specific internet socket ports (\textit{e.g.}, port number $\leq 1024$), never form an edge (interaction/connection) in-between in normal system environments. Once occurring, these suspicious interactions/activities may indicate some serious cyber-attack happened and could significantly damage the enterprise system~\cite{cheng2016ranking}. %These anomalies can be captured by dynamic graph anomalous edge detection.
+
+\nop{In particular, network datasets often record the interactions and/or
+	transactions among a set of entities—for example, personal
+	communication (e.g., email, phone), online social network
+	interactions (e.g., Twitter, Facebook), web trac between
+	servers and hosts, and router trac among autonomous systems. A notable characteristic of these activity networks, is that the structure of the networks change over time (e.g.,
+	as people communicate with different friends). These temporal dynamics are key to understanding system behavior,
+	thus it is critical to model and predict the network changes
+	over time. An improved understanding of temporal patterns
+	will facilitate for example, the development of software systems to optimally manage data flow, to detect fraud and
+	intrusions, and to allocate resources for growth over time}
+\nop{
+	\begin{figure}[t]
+		\includegraphics[width=\columnwidth]{strdg.pdf}
+		\caption{Comparison between accumulated graph modeling and time-evolving graph modeling for enterprise network.} \label{fig:strdg}
+\end{figure}}
+
+\nop{To detect such anomalous interactions in dynamic graphs, a typical approach is to build a two-stage model \cite{Ranshous:2015}. % that can capture the underlying factors %/regularities
+%of dynamic graphs~\cite{Ranshous:2015}.
+In the first stage, data-specific features or low-dimensional representations (such as scan statistics~\cite{Priebe2005}, Eigen equation compression~\cite{Hirose:2009}, or graph embedding~\cite{yu2018netwalk}) are generated by finding the best mapping from dynamic graphs to a vector of real numbers. Then in the second step, a traditional anomaly detector, such as the support vector machines and the local outlier factor algorithm, is applied to identify anomalies~\cite{Ranshous:2015}. As can be seen, the key step of the two-stage approach is to learn effective low-dimensional representations/features from dynamic graphs.}%The key part of the two-stage model is the low-dimensional representations/features that can capture and preserve the graph structure. }
+
+Recently, graph embedding has shown to be a powerful tool in learning the low-dimensional representations in networks that can capture and preserve the graph structure. However, most existing graph embedding approaches are designed for static graphs, and thus may not be suitable for a dynamic environment in which the network representation has to be constantly updated. Only a few advanced embedding-based methods (such as NetWalk \cite{yu2018netwalk}) are suitable for updating the representation dynamically as the network evolves. However, these methods require the knowledge of the nodes over the whole time span and thus can hardly promise the performance on new nodes in the future.\nop{These methods first learn the node embeddings to encode edges. Then, a density-based method (such as K-means clustering) is used to flag anomalous edges. %These methods learn the embedding for each node while considering the temporal dependency. The node embeddings are used to encode edges. 
+However, similar to all other two-stage approaches, they cannot be trained end-to-end because the parameters in the two stages are not learned jointly and the objective of embedding learning is not designed for the anomaly detection task. Thus, the learned embedding may not be distinguishable for detecting the anomalies in dynamic graphs. In addition, these embedding based methods %model the dynamic graphs in an accumulated way, 
+learn the graph embedding in an incremental way,
+\textit{i.e.}, using all vertices and edges until the current timestamp to learn the node embedding. Thus, %it can only capture the vertex and edge additions. However, in some time-evolving dynamic networks (\textit{e.g.}, Food Web), the vertex and edge removals may naturally indicate some temporal relationship (\textit{e.g.}, seasonal trophic relationship) changes. 
+it can not capture some temporal dynamics like vertex removal or edge removal, which often indicates important temporal relationship changes. %such as food/trophic chain changes in Food Web. 
+For example, one host/machine, which was removed (\textit{i.e.,} a vertex removal) from the enterprise network for a long time, suddenly starts to connect to some other active hosts. It may indicate the target host has been compromised and tried to spread Trojan or other malware.} More importantly, these methods neglect a notable characteristic of the dynamic networks---the subgraph structural changes related to the target nodes.
+%Fig.~\ref{fig:strdg} shows an example of modeling the system behavior using dynamic graphs.
+%Using accumulated methods to model the system behavior is suffered by the lack of structure evolving information. By using the time-evolving graph modeling, all the structural temporal information will be modeled. 
+These structural temporal dynamics are key to understanding system behavior. For example, in Figure ~\ref{fig:intro}, the target edge at timestamp $t$ is marked as a double red line, and the $1$-hop subgraph centered on the target edge is marked with gray. It can be seen from Figure \ref{fig:intro} (A) that the interactions between nodes of the subgraph (\textit{i.e.}, gray nodes) become more frequent. Therefore, the target edge in Figure \ref{fig:intro} (A) is reasonable to be a normal edge. In contrast, in Figure \ref{fig:intro} (B), there is no interactions between the neighbors of the subgraph from timestamp $t-3$ to $t-1$. Therefore, the target edge at timestamp $t$ is more likely to be an anomalous edge. Thus, it is critical to model and detect the structural changes over time for the anomaly detection task.
+
+%The recent work on network walk model (NetWalk \cite{}), is to our knowledge, one of the few methods suitable for updating the representation dynamically as the network evolves. The NetWalk learns the embedding for each node while considering the temporal dependency. The embedding is used to encode edges. However, as a two-stage method, Netwalk is not trained end-to-end. Thus, the learned embedding may not be distinguishable for detecting the anomalies in dynamic graphs. More importantly, the NetWalk models the dynamic graphs in an accumulated way, \textit{i.e.}, using all vertices and edges until the current timestamp to learn the node embedding. Thus, a notable characteristic of the dynamic networks---the neighborhood structural change related to the target nodes over time has been largely neglected. \zach{add a motivative example figure such as citation network and description here} These structural temporal dynamics are key to understanding system behavior, thus it is critical to model and detect the structural changes over time for the anomaly detection task.
+
+
+%a common approach is to build a model that can capture the underlying factors/regularities of data. However, events with multiple heterogeneous entities are difficult to model in a systematic and unified framework due to two major challenges: (1) the lack of intrinsic distance measures among entities and events, and (2) the exponentially large event space.
+
+%Although some recent research has focused on low-dimensional representation learning of network structure.
+
+\nop{Recently,
+	network embedding has proven a powerful tool in learning the
+	low-dimensional representations of vertices in networks that can
+	capture and preserve the network structure. However, most existing
+	network embedding approaches are designed for static networks,
+	and thus may not be perfectly suited for a dynamic environment in
+	which the network representation has to be constantly updated  }
+
+%The recent work on network walk model (NetWalk \cite{}), is to our knowledge, one of the only methods suitable for updating the representation dynamically as the network evolves. The NetWalk models......However, Netwalk....More importantly, the NetWalk model is not...
+
+%\zach{The introduction section must be self contained. It is a marketing speech that helps you sell your paper. It has to have all the key elements. The motivation, specific technical problem addressed, why it is technically challenging, what approaches have been proposed to address the problem, what specific limitations of the existing approaches that your paper addressed, how it fixes the limitation and the summary of the results that lets the reader's conclude that the issues that have been addressed.}
+
+%\zach{First sentence of the paragraph gives the gist summary of what the paragraph is about. The rest of the paragraph is a more detailed explanation of the idea.
+%	The first sentence of each paragraph should tell the story/key points and logical structure of the paper should become apparent.}
+
+%\zach{The outline of the introduction in my mind: paragraph 1: Anomaly detection in dynamic graphs is very important in many applications. paragraph2: what are the traditional anomaly detection techniques for dynamic graphs, and they can be categorized into three groups: node, edge and subgraph. paragraph 3: the recent advances of deep learning based methods for graph-based anomaly detection. paragraph 4: what are the limitations of existing methods and/or what are the challenges in our problem (better if provide motivative examples). paragraph 5: How do we address these limitations and challenges.}
+
+%Graph technology provides an efficient tool to model and analyze the real-world application data, such as social networks, finical networks, and computer networks \cite{li2011thermocast,mcglohon2009snare,ding2012intrusion,fischer2001communities}. However, there commonly exists anomalous data in the networks. For example, in computer networks, attackers can inject trojan into other users' computers \cite{sun2008less}. In the email system, spam emails can raise lots of unnecessary cost in the network and decrease the user experience \cite{dai2012detecting}. The anomalies in the network can raise significant damage to the systems as well as users. Therefore, identifying the anomalies is highly required to the real-world applications. In real-world applications, data are commonly constructed either by static graphs or dynamic graphs. Dynamic graphs are more widely used in network applications than static graphs due to the high capacity of capturing complex data. However, they are more challenging to analyze considering the variation of scalability in dynamic graphs. The vertices and edges can be added or removed in the graphs. In addition, there exists a dependency between graphs of different timestamps. The scalability and temporal dependency must be considered during the analyzing produce, which make the analysis for dynamic graphs more complex.
+
+%The anomaly in dynamic graphs can be described into three categories including anomalous nodes \cite{sun2006beyond}, anomalous edges \cite{eswaran2018sedanspot}, and anomalous subgraphs \cite{beutel2013copycatch}. In this work, we focus on the anomalous edge detection in dynamic graphs. Numerous techniques have been developed for anomalous edge detection in dynamic graphs. The state-of-the-art method NetWalk \cite{yu2018netwalk} learned the embedding for each node while considering the temporal dependency. The embedding is used to encode edges. The embedding based methods are commonly combined with traditional anomaly detection method such as the density-based method to identify anomalous edges\zach{Any supportive references??? More detailed explanation is required here.}. However, the embedding based method has two drawbacks. Firstly, the embedding based method is not efficient enough when dealing with the scalability of dynamic graphs. Secondly, the embedding based method is not trained end-to-end. The learned embedding may not be efficient for detecting the anomalies in dynamic graphs. \zach{ More detailed explanation is required here.}
+
+\begin{figure}[t]
+    \includegraphics[width=\columnwidth]{intro.pdf}
+	\caption{An example of structural changes in dynamic graphs.} \label{fig:intro}
+%	\vspace{-10pt}
+\end{figure} 
+
+To address the aforementioned issues, we propose \modele, a \underline{str}uctural \underline{g}raph \underline{n}eural \underline{n}etwork to identify anomalous edges in dynamic graphs. %The key to our proposed
+\model is designed to detect unusual subgraph structures centered on the target edge in a given time window while considering the temporal dependency. %An illustration of our proposed method is shown in Figure ~\ref{fig:intro}. The target edge at timestamp $t$ is marked as double red line, and the $1$-hop subgraph centered on the target edge is marked with green. It can be seen from Figure \ref{fig:intro} (A) that the interactions between nodes of the subgraph (\textit{i.e.}, green nodes) become more frequent. Therefore, the target edge in Figure \ref{fig:intro} (A) is reasonable to be a normal edge. In contrast, in Figure \ref{fig:intro} (B), there is no interactions between the neighbors of the subgraph from timestamp $t-3$ to $t-1$. Therefore, the target edge at timestamp $t$ is more likely to be an anomalous edge. 
+\model consists of three sub-models: \textbf{ESG} (Enclosing Subgraph Generation), \textbf{GSFE} (Graph Structural Feature Extraction), and \textbf{TDN} (Temporal Detection Network).
+First, \textbf{ESG} extracts a $h$-hop enclosing subgraph centered on the target edge from each graph snapshot. Subgraphs extracted based on different edges can result in the same topology structure. Thus, a node labeling function is proposed to indicate the role of each node in the subgraph. %Since the number of nodes in the graph is different from the graph of each timestamp, we use graph convolution operation and Sortpooling layer to extract fixed-size feature. The temporal information is modeled by GRU network to detect the anomaly in the graph. 
+Then, \textbf{GSFE} module leverages Graph Convolution Neural Network and pooling technologies to extract fixed-size feature from each subgraph. Based on the extracted features, %as the final step,
+\textbf{TDN} employs the Gated recurrent units (GRUs) to capture the temporal dependency for anomaly detection. Different from the previous embedding based methods, the whole process of \model can be trained end-to-end, \textit{i.e.}, \model takes the test edges along with the original dynamic graphs as input and directly outputs the category (\textit{i.e.}, anomaly or normal) for each test edge. Moreover, our proposed \model framework focuses on mining the structural temporal patterns in a given time window. Therefore, node embedding is not required to learn and \model is not sensitive to the edge and vertex changes (such as new nodes) in the dynamic graphs. 
+%Moreover, \model can be applied to two different dynamic graph settings: accumulated graph and time-evolving graph, while the embedding based methods can only be applied to the accumulated graph.  %it is not sensitive to the vertex and edge changes in the dynamic graphs.
+We conduct extensive experiments on six benchmark datasets to evaluate the performance of \modele. The results demonstrate the effectiveness of our proposed algorithm. We also apply \model to a real enterprise security system for intrusion detection. By using \modele, we can reduce false positives of the state-of-the-art methods by at least 50\%, while keeping zero false negatives.
+
+\nop{The main contribution of the paper has been summarized as follows:
+	
+	\begin{enumerate}
+		\item We propose a novel structural Graph Neural Network \model to identify anomalous edges in dynamic graphs.
+		\item The proposed \model focuses on detecting subgraph structural changes centered on the target edge in given time window. Thus, it is not sensitive to the vertex and edge changes in the dynamic graphs. And our proposed method can be trained end-to-end. 
+		\item We conduct extensive experiments on real-world information networks with injected anomalies and real intrusion attacks. Experimental results demonstrate the effectiveness of \modele.
+	\end{enumerate}
+}
+
+\nop{
+\section{Problem Statement}
+\label{sec:pro}
+%In anomalous edge detection tasks for dynamic graphs, our goal is to detect the anomalous edges in a given timestamp. The anomalous edges commonly indicate the connection between sparse components in a graph. Both illegal transactions in the transaction graph and network attacks in the network hosts graph belong to anomalous edges. 
+Given a temporal network $\{G(t)=\{V(t), E(t)\}\}_{t=1}^n$, where $G(t)$ is the graph snapshot at timestamp $t$ consisting of vertices $V(t)$ and edges $E(t)$. Our goal is to detect the anomalous edges at any timestamp t during the testing stage.
+
+\noindent \textbf{Accumulated Graph and Time-evolving Graph}. Typically, there are two ways to model dynamic systems as dynamic graphs, namely, accumulated graph and time-evolving graph \cite{Zaki2016ComprehensiveSO}. The accumulated graph %automatically and
+incrementally constructs an entire graph using all vertices and edges until the current timestamp. Therefore, the vertex set $V(t)$ at time-stamp $t$ is the union of all vertices from timestamp $1$ to $t$, \textit{i.e.}, $V(t)=\bigcup\limits_{i=1}^{t} V(i)$. Similarly, $E(t)=\bigcup\limits_{i=1}^{t} E(i)$. In contrast, the time-evolving graph is constructed using vertices and edges only appearing in the current timestamp. Therefore, each snapshot represents the graph state at a single instant of time, \textit{i.e.}, the snapshot $G(i)$ consists of a set of vertices $V(i)$ and a set of edges $E(i)$, which can be added or removed in later snapshots. %To capture the real system behaviors, 
+In real-world applications, the accumulated graph is often applied to model the highly dynamic/streaming systems, while the time-evolving graph is applied to model less dynamic ones. }
+%the vertex sets and edge sets are commonly different in different time stamps. That is, $V(i) \neq V(j)$, and $E(i) \neq E(j)$ if $i \neq j$. 
+
+
+
+%In dynamic graphs, both the vertex and edge sets changes over time. Therefore, two strategies are proposed to construct dynamic graphs namely historical graph and time-evolving graph, respectively. The historical graph automatically and incrementally constructs a graph using all vertices and edges until the current timestamp. Therefore, the vertex set $V(t)$ at time-stamp $t$ is the union of all vertices from timestamp $1$ to $t$ and $V(t)={V(i)}_{i=1}^{t}$. Similarly, $E(t)={E(i)}_{i=1}^t$. In the time-evolving graph, the graph is constructed using vertices and edges in the current timestamp. Therefore, the vertex sets and edge sets are commonly different in different time stamps. That is, $V(i) \neq V(j)$, and $E(i) \neq E(j)$ if $i \neq j$. 
+
+%In this work, we propose a structural temporal Graph Neural Networks for anomaly detection in both accumulated graphs and time-evolving graphs.
+
+\section{Related Work}
+In this section, we briefly introduce previous work on embedding based anomaly detection in graphs.  
+
+\nop{\subsection{Anomaly Detection}
+	Many traditional machine learning methods have been proposed to tackle anomaly detection tasks. One-class SVM \cite{scholkopf2000support} was proposed to learn the boundary of normal samples, and detect the anomaly based on the learned boundary. Due to the computation cost, it takes more time on the large scale dataset. Robust covariance \cite{pena2001multivariate} fits the data with a pre-defined distribution, and detect the anomaly by computing the distance between the sample and estimated distribution. Isolation forest \cite{liu2008isolation}  was proposed to isolate and detect the anomaly. Local outliers detection \cite{breunig2000lof} estimates the density of a given dataset and detects the anomaly. When the feature space of a given dataset can represent the relationship between samples, the density-based method is efficient to detect the anomaly. Anomaly detection is more challenging in graph setting due to the complexity of the data. Lots of work were proposed to learn the network embedding of the graph, which can further be employed to detect anomaly combing with the tradition anomaly detection method. }
+
+\subsection{Anomaly Detection on Static Graphs}
+Inspired by word embedding methods~\cite{mikolov2013distributed} %\cite{bengio2003neural,mikolov2013distributed} 
+in natural language processing tasks, recent advances such as DeepWalk~\cite{perozzi2014deepwalk}, LINE~\cite{tang2015line}, and Node2Vec~\cite{grover2016node2vec} have been proposed to learn node embedding via the \textbf{skip-gram} technology. The DeepWalk generates random walks for each vertex with a given length and picks the next step uniformly from the neighbors. %The skip-gram is employed to learn the embedding from the node sequence. To preserve the local connection relationship, the spectral embedding generates the node embedding by maximizing the similarity between neighborhood nodes.
+Different from DeepWalk, the LINE~\cite{tang2015line} preserves not only the first-order (observed tie strength) relations but also the second-order proximities (shared neighborhood structures of the vertices). Node2Vec~\cite{grover2016node2vec} uses two different sampling strategies (breadth-first sampling and depth-first sampling) for vertices that result in different feature representations. Through the network embedding technology, both anomalous node and edge detection tasks can be performed with traditional anomaly detection methods.
+
+\subsection{Anomaly Detection on Dynamic Graphs}
+Dynamic graphs are more complex due to the variation of the graph structure. That is, the vertices and edges are changing along the time dimension. %Network embedding methods such as DeepWalk, LINE, NODE2VEC can only learn the embedding on a given graph. When dealing with a series of graphs, these methods cannot capture the dependency across different graphs/snapshots. 
+To capture the dependency between different graphs along the time dimension, recently few network embedding based methods have been proposed~\cite{zhou2018dynamic}. Dyngem \cite{goyal2018dyngem} employs the auto-encoder method to learn the embedding for each graph, and a constraint loss function is employed to minimize the difference between all graphs. Dyngraph2vec~\cite{goyal2019dyngraph2vec} uses the Recurrent Neural Network to capture the temporal information and learn the embedding using auto-encoder technology. Recently, NetWalk~\cite{yu2018netwalk}, one of the state-of-the-art methods for anomaly detection in dynamic networks, is proposed to learn the embedding while considering the temporal dependency and detect the anomaly using the density-based method. The NetWalk generates several random walks for each vertex and learns a unified embedding for each node using auto-encoder technology. The embedding representation is updated along the time dimension. %The drawback of 
+%However, all these methods can only be applied to accumulated graphs, while our proposed method can be applied to both accumulated graphs and time-evolving graphs.% \zach{Compare the features of related work with the proposed method}
+
+
+%{\color{red} Chen: It's better to have a name for the model, such as STGNN, so that we can use that as the section name.}
+%\section{StrGNN: Structural Temporal Graph Neural Networks}
+\section{Method}
+In this section, we introduce our method in detail. We start with the overall framework of our proposed Structural Temporal Graph Neural Networks for anomaly detection in dynamic graphs. The details of each component in our proposed method are introduced afterwards.% following the overall framework. 
+
+
+
+\subsection{Overall Framework}
+Compared with the anomaly detection in a static graph, dynamic graphs are more complex and challenging in two perspectives: (1) The anomalous edges cannot be determined by the graph from a single timestamp. The detection procedure must take the previous graphs into consideration; (2) Both the vertex and edge sets are changing over time. To tackle these challenges, we propose \modele, a structural temporal Graph Neural Network framework. The key idea of our proposed method is to capture structural changes centered on the target edge in a given time window and determine the category (\textit{i.e.}, anomaly or normal) of the target edge based on the structural changes. Our proposed \model framework consists of three key components: \textbf{ESG} (Enclosing Subgraph Generation), \textbf{GSFE} (Graph Structural Feature Extraction), and \textbf{TDN} (Temporal Detection Network), as illustrated in Figure \ref{fig:frame}.
+
+
+\nop{As the first step of our proposed \model algorithm, \textbf{ESG} module generates the structural patterns related to the target edge in a time window with length of $w$. Since the detection is most relevant to the local subgraph, we employ the $h$-hop enclosing subgraph centered on each target edge to preserve graph structure and enable a more efficient computation. In addition, the $h$-hop enclosing subgraph can help alleviate the impacts from noisy data. The \textbf{ESG} module generates $h$-hop enclosing subgraph for each timestamp in the detection window. Then, the \textbf{GSFE} module takes these subgraphs as the input and leverages the graph pooling technology to generate fixed-size feature for each subgraph. Since the anomalous edges must be determined by considering the historical graphs, as the last step, \textbf{TDN} module employs Gated recurrent units (GRUs) to capture the temporal information. GRUs take the graph structural feature from the current timestamp and temporal feature from the previous timestamp as the input and generate the temporal feature. The temporal feature from the last timestamp is employed to predict anomalous edges using a neural network. We introduce the details of each component in the following sections.}
+
+\begin{figure*}[t]
+%\vspace{-8pt}
+	\centering
+	\includegraphics[width=0.9\textwidth]{frame.pdf}
+	\caption{Illustration of our proposed \model framework.} \label{fig:frame}
+	%\vspace{-8pt}
+\end{figure*}
+
+\subsection{\textbf{ESG}: Enclosing Subgraph Generation}
+For the first module, Enclosing Subgraph Generation, our goal is to generate enclosing subgraph structure related to the target edge so as to detect the anomalies more efficiently. Directly employing the whole graph for analysis can be highly computational expensive, especially considering the real-world networks with thousands or even millions of nodes and edges. Recent work~\cite{xu2018representation} also proved that in Graph Neural Networks, each node is most influenced by its neighbors.   
+%In graph-related tasks, the whole graph is directly employed for analysis. In some specific applications, using the subgraph instead of the whole graph enable the analysis procedure more efficiently. For instance, using subgraph is more efficient for learning the embedding of the isolated subgraph in the whole graph. \cite{xu2018representation} also proved that in Graph Neural Networks each node is most influenced by its neighbors. Therefore, in anomalous edges detection tasks, the subgraph structure centered on the target edge can be employed to detect anomaly more efficiently both in memory and computation aspects. 
+
+Definition 1. (Enclosing subgraph in static graphs) For a static network $G=(V, E)$, given a target edge $e$ with source node $x$ and destination node $y$, the $h-$hop enclosing subgraph $G_{x,y}^h$ centered on edge $e$ can be obtained by $\{i|d(i,x) \leq h \lor d(i,y) \leq h\}$, where $d(i,x)$ is the shortest path distance between node $i$ and node $x$. 
+
+Definition 2. (Enclosing subgraph in dynamic graphs) For a temporal network $\{G(i)=\{V(i), E(i)\}\}_{i=t-w}^t$ with window size $w$, given a target edge $e^t$ with source node $x^t$ and destination node $y^t$, the $h-$hop enclosing subgraph $G_{x_t,y_t}^h$ centered on edge $e^t$ is a collection of all subgraph centered on $e^t$ in the temporal network $\{G(i)_{x_t, y_t}^h | t-w \leq i \leq t \}$.
+
+%\zach{hop-level attention: Enclosing subgraphs with different distances/hops should considered differently; Also consider the possibilities of using transformer with GRU to learn the temporal dependency}
+
+For a target edge $e^t$, we extract the enclosing subgraph in dynamic graphs based on Definition 2. %The subgraph from each timestamp is extracted centered on the target edge to capture the structural change over time. The category of target edge can be determined by analyzing the structural change in the given time window. 
+However, the extracted subgraph only contains topological information. Subgraphs extracted based on different edges can result in the same topological structure. %Therefore, nodes in the subgraph must be annotated with different labels that can represent the role of a node in the subgraph. 
+To distinguish the role of each node in the subgraph, in this work, we propose to annotate the nodes in the subgraph with different labels. %proposed by \cite{zhang2018link}.
+A good node labeling function should convey the following information: 1) which edge is the target edge in the current subgraph, and 2) the contribution of each node in identifying the category of each edge. More specifically, given the edge $e^t$ and the corresponding source and destination node $x^t$ and $y^t$, our node labeling function for the enclosing subgraph $G(i)_{x_t, y_t}^h$ is defined as follows:
+\begin{eqnarray} \label{eq: label}
+f(i, x_t, y_t) = 1+ \min(d(i,x^t),d(i,y^t)) \\ \nonumber
++ (d_{sum} / 2)[(d_{sum}/2) + (d_{sum} \% 2) -1] ,
+\end{eqnarray}
+where $d(i,x^t)$ is the shortest path distance between node $i$ and node $x^t$, and $d_{sum}=d(i,x^t)+d(i,y^t)$. In addition, the two center nodes are labeled with 1. If a node $i$ satisfies $d(i,x^t)=\infty$ or $d(i,y^t)=\infty$, it will be labeled as 0. The label will be converted into a one-hot vector as the attribute $X$ for each node. By employing the node labeling function, we can generate the label for each node, which can represent structure information for the given subgraph. The category of the target edge $e^t$ at timestamp $t$ can be predicted by analyzing the labeled subgraph in the given time window.
+
+\subsection{\textbf{GSFE}: Graph Structural Feature Extraction}
+
+To analyze the structure of each enclosing subgraph from the given time period, the Graph Convolution Neural Network (GCN)~\cite{kipf2016semi} can be employed to project the subgraph into an embedding space. In GCN, the graph convolution layer was proposed to learn the embedding of each node in the graph and aggregate the embedding from its neighbors. The layer-wise forward operation of graph convolution layer can be described as follows:
+\begin{equation}
+G(X,A) = \sigma(\hat{D}^{-1/2}\hat{A}\hat{D}^{-1/2}XW),
+\end{equation}
+where $\hat{A} = A + I $ is the summation of the adjacency matrix and identity matrix, $\sigma (\cdot)$ denotes an activation function, such as the $ReLU(\cdot) = max(0, \cdot)$, and $W$ is the trainable weight matrix. By employing the graph convolution layer, each node can aggregate the embedding from its neighbors. By stacking the graph convolution layer in the neural network, each node can obtain more information from other nodes. For example, each node can obtain information from its $2$-hop neighbors by stacking two graph convolution layers. 
+
+GCN can generate node embedding for detecting anomalous edges in a single graph. However, in our dynamic graph setting, the anomalies should be determined in the context of $\{G(i)_{x_t, y_t}^h | t-w \leq i \leq t \}$. The number of nodes in different enclosing subgraphs is commonly different, thus results in different sizes of the feature vector in different subgraphs. Therefore, it is challenging to analyze the dynamic graphs using Graph Neural Networks due to the various sizes of the input. 
+
+To tackle this problem, we leverage the graph pooling technology to extract the fixed-size feature for each enclosing subgraph. Any graph pooling method can be employed in our proposed \model framework to extract the fixed-size feature for further analysis. In this work, we employ the Sortpooling layer proposed by \cite{zhang2018end}, which can sort the nodes in the enclosing subgraph based on their importance and select the feature from the top $K$ nodes.
+
+Given the node embedding $H_i$ corresponding to graph $G(i)_{x_t, y_t}^h$, the importance score for each node in the Sortpooling layer is defined as follows:
+\begin{equation}\label{score}
+S(H_i, A) = \sigma(\hat{D}^{-1/2}\hat{A}\hat{D}^{-1/2}H_i W^1), 
+\end{equation}
+where $A$ is the adjacency matrix of graph $G(i)_{x_t, y_t}^h$, and $W^1$ is the projection matrix with output channel 1. Each node can obtain the importance score by using Equation~\ref{score}. All nodes in the enclosing subgraph will be sorted in order of the importance score. And only the top $K$ nodes will be selected for further analysis. For the subgraphs that contain less than $K$ nodes, the zero-padding will be employed to guarantee that each subgraph contains the same fixed-size feature.
+
+\subsection{\textbf{TDN}: Temporal Detection Network}
+\label{subsec:tdn}
+The Graph Structural Feature Extraction module can generate low-dimensional features for anomaly detection. However, it does not consider the temporal information, which is of great importance for determining the category (\textit{i.e.}, anomaly or normal) of an edge in the dynamic setting. 
+
+%{\color{red} Chen: After reading some papers, I think we don't have to use attention mechanism here, as the GRU or LSTM already considers the long-short term weighting for the past evets}
+
+Given the extracted structural feature $\{\hat{H_i}\}_{i=t-w}^t$,  $H_i \in R^{K \times d}$, where $K$ is the number of selected nodes in each graph, and $d$ is the dimension of feature for each node, in this work, we employ the Gated recurrent units (GRUs) \cite{chung2014empirical}, which can alleviate the vanishing and exploding gradient problems \cite{goodfellow2016deep}, to capture the temporal information as:
+\begin{eqnarray}
+z_t &=& \sigma(W_z\hat{H}_t+U_zh_{t-1}+b_z)\\
+r_t &=& \sigma(W_r\hat{H}_t+U_rh_{t-1}+b_r)\\
+h_t^{'} &=& \tanh(W_h\hat{H}_t+U_h(r_t\circ h_{t-1})+b_h)\\
+h_t &=& z_t\circ h_{t-1} + (1-z_t)\circ h_t^{'},
+\end{eqnarray}
+where $\circ$ represents the element-wise product operation, $W$, $U$, and $b$ are parameters. The GRU network takes the feature at each timestamp as input, and feeds the output of current timestamp into the next timestamp. Therefore, the temporal information can be modeled by the GRU network. The output of last timestamp $h_t$ is employed to analyze the category of the target edge $e^t$. The anomalous edge detection problem can be formulated as follows:
+\begin{equation} \label{eq:loss}
+L = -(y^t\log(g(h_t)) + (1-y^t)\log(1-g(h_t))),
+\end{equation}
+where $g(\cdot)$ is a fully connected network, and $y^t$ is the category of edge $e^t$.
+
+For the anomaly detection task, in many real-world cases, the dataset does not contain any anomalous samples or only contain a small number of anomalous samples. 
+
+One straightforward way of generating negative samples is to draw samples from a ``context-independent'' noise distribution (such as Random sampling or injected sampling \cite{akoglu2015graph}), where a negative sample is independently and does not depend on the observed samples. %Random sampling or injected sampling \cite{akoglu2015graph} is the example of this. 
+However, due to the large anomalous edge space, this noise distribution would be very different from the data distribution, which would lead to poor model learning. Thus, in this work, we propose ``context-dependent'' negative sampling strategy. %we use data depended distribution to construct negative samples.
+
+%In this work we propose a data dependent distribution for constructing negative samples. 
+The intuition behind our strategy is to generate negative samples from ``context-dependent'' noise distribution. Here, the ``context-dependent'' noise distribution for the sampled data $E'$ is defined as: $P_{E'} \sim P(E)*(\frac{1}{N*|E|})$, where $P(E)$ denotes the observed data distribution, $|E|$ is the number of edges in the graph, and $N$ is the number of nodes in the graph. Specifically, we first randomly sample a normal vertex pair $ e= \{x_a,x_b\}$ in the graph. Then, we replace one of the nodes, say $x_a$ with a randomly sampled node $x'$ in the graph and form a new negative sample $e' = \{x',x_b\}$. If $e'$ is not belongs to the normal graph, we retain the sample, otherwise, we delete it. 
+
+The proposed \model framework is quite flexible and easy to be customized. Any network that can capture the temporal information can be used in our proposed framework, such as Convolution Neural Network (CNN) and Vanilla Recurrent Neural Network (RNN). 
+
+
+%\noindent \textbf{End-to-End Training}.
+
+\nop{
+\begin{algorithm}[t]
+	\caption{\modele: Structural Graph Neural Networks for Anomaly Detection in Dynamic Graphs}\label{algo:train}
+	\begin{algorithmic}[1]
+		\floatname{algorithm}{Algorithm}
+		\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+		\renewcommand{\algorithmicensure}{\textbf{Output:}}
+		\algnewcommand\AND{\textbf{and }}
+		
+		% \Procedure{GetBatchNodes}{$adj, N, size, initSize$}
+		\Require $\{G(t)=\{V(t), E(t)\}\}_{t=1}^n$, the number of hops $h$, and window size $w$. 
+		
+		\State Inject anomalous edges if required;
+		\State Extract $h$-hop enclosing subgraphs based on Definition 2;
+		\State Generate the label for each node in the subgraph using Equation \ref{eq: label};
+		\State Extract the graph structure features;
+		\State Model the temporal information using GRU;
+		\State Train the classifier using Equation \ref{eq:loss}.
+		
+	\end{algorithmic}
+\end{algorithm}
+}
+
+\section{Experiments}
+In this section, we evaluate \model on six benchmark datasets and a real enterprise network.
+
+\subsection{Datasets}
+We conduct experiments on six public datasets from different domains. %We construct one accumulated graph and one time-evolving graph per timestamp, respectively, for each dataset. 
+%The statistics of the preprocessed datasets are shown in Table~\ref{tbl:his} and Table~\ref{tbl:envolving}. 
+The UCI Messages dataset \cite{opsahl2009clustering} is collected from an online community platform of students at the University of California, Irvine. Each node in the constructed graph represents a user in the platform. And the edge indicates that there is a message interaction between two users. The Digg dataset \cite{de2009social} is collected from a news website digg.com. Each node represents a user of the website, and each edge represents a reply between two users. The Email dataset is a dump of emails of Democratic National Committee. Each node corresponds to a person. And the edge indicates an email communication between two persons. The Topology \cite{zhang2005collecting} dataset is the network connections between autonomous systems of the Internet. Nodes are autonomous systems, and edges are connections between autonomous systems. The Bitcoin-alpha and Bitcoin-otc \cite{kumar2016edge,kumar2018rev2} datasets are collected from two Bitcoin platform named Alpha and OTC, respectively. Nodes represent users from the platform. If one user rates another user on the platform, there is an edge between them.
+
+\nop{
+\begin{table}[t]
+	\caption{Statistics of the datasets in accumulated graph setting.}
+	\label{tbl:his}
+	\centering
+	\resizebox{0.45\textwidth}{!}{
+		\begin{tabular}{lccccc}
+			\hline
+			Dataset & \#Vertex & \#Edge  & \#Timestamp \\
+			\hline
+			\hline
+			UCI Messages & 1,899 & 13,838  & 190 \\
+			Digg & 30,360 & 85,155 & 16  \\
+			Email & 2,029 & 3,724 & 20 \\
+			Topology & 34,761 & 107,661 & 21 \\
+			Bitcoin-alpha & 3,783 & 14,124 & 63 \\
+			Bitcoin-otc & 5,881 & 21,492 & 63 \\ 
+			\hline
+		\end{tabular}
+	}
+\end{table}
+
+
+\begin{table}[t]
+	\caption{Statistics of the datasets in time-evolving graph setting.}
+	\label{tbl:envolving}
+	\centering
+	\resizebox{0.45\textwidth}{!}{
+		\begin{tabular}{lccccc}
+			\hline
+			Dataset & \#Vertex & \#Edge  & \#Timestamp \\
+			\hline
+			\hline
+			UCI Messages & 1,899 & 59,835  & 190 \\
+			Digg & 30,360 & 87,627 & 16  \\
+			Email & 2,029 & 39,264 & 20 \\
+			Topology & 34,761  & 171,403 & 21 \\
+			Bitcoin-alpha & 3,783 & 24,186 & 63 \\
+			Bitcoin-otc & 5,881 & 35,592 & 63 \\ 
+			\hline
+		\end{tabular}
+	}
+\end{table}
+}
+\begin{table}[t]
+	\caption{AUC results with different hops of enclosing subgraph on UCI Messages.}
+	\label{tbl:uci}
+	\centering
+	\begin{tabular}{lccc}
+		\hline
+		& 1\% & 5\% & 10\%\\
+		\hline
+		\hline
+	%	$1$-hop enclosing subgraph & 0.7933 & 0.7947 & 0.7959\\
+	%	$2$-hop enclosing subgraph & 0.7985 & 0.8005 & 0.7967 \\
+	%	$3$-hop enclosing subgraph & 0.8002 & 0.8026 & 0.7967 \\
+		$1$-hop enclosing subgraph & 0.8179 & 0.8252 & 0.7959\\
+		$2$-hop enclosing subgraph & 0.8216 & 0.8274 & 0.7987\\
+		$3$-hop enclosing subgraph & 0.8227 & 0.8294 & 0.8005\\
+		%remove 3 hop results later
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table*}[ht]
+	\caption{AUC comparison on benchmark datasets.}
+	\label{tbl:rh}
+	\centering
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{l|ccc|ccc|ccc}
+			\hline
+			\multirow{2}{*}{Methods} & \multicolumn{3}{c|}{UCI} & \multicolumn{3}{c|}{Digg}& \multicolumn{3}{c}{Email}  \\
+			
+			&    1\%   &   5\%    &    10\% &    1\%   &   5\%    &    10\%&    1\%   &   5\%    &    10\% \\ \hline
+			Node2Vec &  0.7371     &  0.7433     &  0.6960   &   0.7364    &   0.7081    & 0.6508 &    0.7391   &  0.7284  & 0.7103   \\
+			Spectral Clustering &  0.6324     &  0.6104     &  0.5794   &   0.5949    &   0.5823    & 0.5591 &    0.8096  &  0.7857     & 0.7759 \\
+			DeepWalk &  0.7514     &  0.7391     &  0.6979   &   0.7080    &   0.6881    & 0.6396 &    0.7481   &  0.7303  &  0.7197  \\
+			NetWalk &  0.7758     &  0.7647     &  0.7226   &   0.7563    &   0.7176    & 0.6837 &    0.8105   &  0.8371  & 0.8305 \\
+		%	AddGraph & 0.8083     &    0.8090   & 0.7688 &  \textbf{0.8341}     &  \textbf{0.8470}  & \textbf{0.8369} &   0.8446    &  0.8643  &  0.8624  \\
+		%	SedanSpot & 0.7342      &    0.7156    & 0.7061 &  0.6976      &  0.6784  & 0.6396  &  0.7427     & 0.7362  &  0.7235 \\
+			\modele &  \textbf{0.8179}     &  \textbf{0.8252}     &  \textbf{0.7959}   &   0.8162    &   0.8254    & 0.8272 &   \textbf{ 0.8775}   &  \textbf{0.9103}     & \textbf{0.9080}   \\
+			\hline 
+			\multirow{2}{*}{Methods} & \multicolumn{3}{c|}{Bitcoin-Alpha}& \multicolumn{3}{c|}{Bitcoin-otc}& \multicolumn{3}{c}{Topology}  \\
+			
+			&    1\%   &   5\%    &    10\% &    1\%   &   5\%    &    10\%&    1\%   &   5\%    &    10\% \\ \hline
+			
+			Node2Vec &  0.6910     &    0.6802   & 0.6785 &  0.6951     &   0.6883    & 0.6745 &  0.6821  &  0.6752  &  0.6668  \\
+			Spectral Clustering &  0.7401     &    0.7275   & 0.7167 &  0.7624     &   0.7376    & 0.7047 &   0.6685    &  0.6563     &  0.6498  \\
+			DeepWalk  &  0.6985     &    0.6874   & 0.6793 &  0.7423     &   0.7356    & 0.7287 &  0.6844  &  0.6793  &  0.6682  \\
+			NetWalk & 0.8385     &    0.8357   & 0.8350 &  0.7785     &  0.7694  & 0.7534 &   0.8018    &  0.8066  &  0.8058  \\
+	%		AddGraph & 0.8276     &    0.8264   & 0.8248 &  0.8447     &  0.8364  & 0.8273 &   0.7943    &  0.7961  &  0.7942  \\
+	%		SedanSpot & 0.7380     &    0.7264   & 0.7085 &  0.7346     &  0.7284  & 0.7156 &   0.6873    &  0.6742  &  0.6672  \\
+			\modele &  \textbf{0.8574}     &    \textbf{0.8667}   & \textbf{0.8627} &  \textbf{0.9012}  & \textbf{0.8775}  & \textbf{0.8836} & \textbf{0.8553}    &  \textbf{0.8352}  &  \textbf{0.8271}  \\
+			\hline
+		\end{tabular}
+	}
+\end{table*}
+
+\nop{
+\begin{table*}[ht]
+	\caption{AUC comparison on time-evolving graph setting.}
+	\label{tbl:te}
+	\centering
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{l|ccc|ccc|ccc}
+			\hline
+			\multirow{2}{*}{Methods} & \multicolumn{3}{c|}{UCI} & \multicolumn{3}{c|}{Digg}& \multicolumn{3}{c}{Email}  \\
+			
+			&    1\%   &   5\%    &    10\% &    1\%   &   5\%    &    10\%&    1\%   &   5\%    &    10\% \\ \hline
+			Structrual GNN + CNN &  \textbf{0.8179} & 0.8128 & 0.8109 & 0.7387 & 0.7564 & 0.7613 & 0.949 & 0.9577 & 0.9558   \\
+			Structrual GNN + RNN &  0.8158 & \textbf{0.8252} & \textbf{0.8243} & 0.7561 & \textbf{0.7583} & 0.7562 & 0.9466 & 0.9574 & \textbf{0.9563} \\
+			Structrual GNN + GRU &  0.8119 & 0.8225 & 0.8224 & \textbf{0.7564} & 0.7582	& \textbf{0.7590} & \textbf{0.9481} & \textbf{0.9581} & 0.9552 \\
+			
+			\hline 
+			\multirow{2}{*}{Methods} & \multicolumn{3}{c|}{Bitcoin-Alpha}& \multicolumn{3}{c|}{Bitcoin-otc}& \multicolumn{3}{c}{Topology}  \\
+			
+			&    1\%   &   5\%    &    10\% &    1\%   &   5\%    &    10\%&    1\%   &   5\%    &    10\% \\ \hline
+			Structrual GNN + CNN & 0.8537 & 0.8318 &   0.8485 & 0.8745 & 0.8603 & 0.8698 & 0.7716 & 0.7695 & 0.7900 \\
+			Structrual GNN + RNN & 0.8352 &	0.8265 & 0.8412 & 0.8727 & 0.8586 & 0.8689 & 0.7736 & 0.772 & 0.7922  \\
+			Structrual GNN + GRU & \textbf{0.8541} & \textbf{0.8290} & \textbf{0.8537} & \textbf{0.8765} & \textbf{0.8611} & \textbf{0.8700} & \textbf{0.7877} & \textbf{0.7826} & \textbf{0.8028} \\
+			\hline
+		\end{tabular}
+	} %result for last two datasets changed: CNN and GRU
+\end{table*}
+}
+
+
+\begin{figure*}[t]
+	\centering
+	\vspace{-4pt}
+	\includegraphics[width=\textwidth]{embedding.pdf}
+	
+	\caption{The embeddings generated by \modele. Red dots are anomalies and blue ones are normal samples.} \label{fig:emb}
+	\vspace{-5pt}
+\end{figure*}
+
+\subsection{Baselines}
+%We employ network embedding based methods combined with density-based detection as baselines. We briefly introduce the baseline methods used in the work as follows.
+We compare \model with four network embedding based baselines. 
+
+\textbf{DeepWalk}~\cite{perozzi2014deepwalk}: DeepWalk generates the random walks with given length starting from a node and learns the embedding using Skip-gram. 
+
+\textbf{Node2Vec}~\cite{grover2016node2vec}: Node2Vec combines breadth-first traversal and depth-first traversal in the random walks generation procedure. The embedding is learned using Skip-gram technology. 
+
+\textbf{Spectral Clustering}~\cite{spectralclustering2007}: To preserve the local connection relationship, the spectral embedding generates the node embedding by maximizing the similarity between nodes in the neighborhood.
+
+\textbf{NetWalk}~\cite{yu2018netwalk}: NetWalk generates several random walks for each vertex and learns a unified embedding for each node using auto-encoder technology. The embedding representation will be updated along the time dimension.
+
+%\textbf{AddGraph}~\cite{ijcai2019addgraph}: AddGraph is a semi-supervised learning
+framework, using an extended temporal GCN with an attention-based GRU.
+
+%\textbf{SedanSpot}~\cite{EswaranF18}: SedanSpot is a principled randomized algorithm. It uses a holistic random walk based edge anomaly scoring function to compare an incoming edge with the whole (sampled) graph.
+
+For the first three baselines, after representation learning, the same K-means clustering based method~\cite{yu2018netwalk} (as in NetWalk) is used for anomaly detection. 
+
+\subsection{Experiment Setup}
+
+The parameters of \model can be tuned by 5-fold cross-validation on a rolling basis. Here, by default, we set the window size $w$ to $5$ and the number of hops $h$ in enclosing subgraph to $1$. We evaluate the influence of each parameter. The AUC results of \model with different $h$ on UCI Messages are shown in Table \ref{tbl:uci}. \model with $2$-hop or $3$-hop subgraph achieves similar performance as $1$-hop but requiring way more computational cost. The parameter $w$ (with $w \geq 5$) shares similar influence as $h$ on the performance of \modele. %We extract $1$-hop neighbors for each target edge in the graph to represent the structure since it is more efficient compared with high order neighbors. 
+We employ a Graph Neural Network with three graph convolution layers to extract graph features. The size of the output feature map is set to $32$ for all three layers. The outputs of all three layers are concatenated as the embedding feature. The selected rate in the Sortpooling layer is set to $0.6$. In terms of the temporal neural network, the hidden size of GRU is set to $256$. We employ Adam method \cite{kingma2014adam} to train the network. The learning rate of Adam is set to $1e-4$. We employ batch training in the experiments and the batch size is set to $32$ for our proposed \model method. \model is end-to-end trained for $50$ epochs. We use the first $50\%$ edges as the training dataset, and the rest as the test dataset. Since the anomalous edges do not exist in the six benchmark datasets, we follow the approach used in~\cite{yu2018netwalk} to inject $1\%$, $5\%$, $10\%$ anomalous edges in the test dataset to evaluate the performance of each model. The metric used to compare the performance of different methods is AUC (the area under the ROC curve). %is employed to evaluate the performance. ROC-AUC is widely used as an evaluation metric in previous anomaly detection methods. 
+The higher AUC value indicates the high quality of the method.
+
+
+
+\subsection{Results on Benchmark Datasets}
+\label{sec: syn}
+
+
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=0.4\textwidth]{AUC.pdf}
+	\caption{Stability over the training percentage of \model on UCI Messages with $10\%$ anomalies.}
+	\label{fig:auc}
+\end{figure}
+
+
+
+We first compare \model with the baseline methods on six benchmark datasets. %The AUC value of different methods on six datasets are shown in Table \ref{tbl:rh}.
+The experimental results in Table \ref{tbl:rh} show that \model outperforms all four baseline methods on all the benchmark datasets. And even if 10\% anomalies are injected, the performance of \model is still acceptable. %In particular, on Bitcoin-otc data, \model has gained more than $10\%$ improvement over all four baseline methods. 
+This outstanding effect proves that \model can exploit the structural and temporal features effectively and the learned representation of the dynamic graph structure is well suited for the anomaly detection task. %The results also show that all the network embedding-based approaches (\textit{e.g.}, Node2Vec, DeepWalk, NetWalk) outperform the traditional random walk based model (SedanSpot). %Compared with the embedding based method, our proposed \model method can be trained end-to-end. Therefore, the feature extraction module can be trained more efficient to capture the structural variation for anomaly detection. However, the embedding based method is used to generate embedding for each node in the graph. The training of embedding does not take the anomaly detection into consideration. This also limits the performance of embedding based method. 
+%The results also show that compared with the baseline methods, \model is less sensitive to the number of injected anomalies. %That is, our proposed method is a classification based method. 
+%This is because all the baselines are two-stage methods, in which the objective of embedding learning is not designed for the anomaly detection task. Thus, the learned representation may not still have the same distinguishing power when the percentage of anomalous edges increases. %should be combined with a traditional anomaly detector like K-means clustering for anomaly detection tasks. When the percentage of anomalous edges increases, the performance of the traditional anomaly detector will be affected. 
+
+%We also evaluate \model on time-evolving graph setting. Since all four baseline methods cannot be directly applied to time-evolving graphs, we add two more baselines by considering two variants of our proposed framework. More specifically, instead of using GRU (see Section \ref{subsec:tdn}), the CNN and Vanilla RNN are used as the temporal detection network in our framework. The experimental results in Table \ref{tbl:te} show that different temporal detection networks achieve competitive performance. This effect proves that our framework can exploit the structural feature effectively. Our framework is trained end-to-end. When the structural features are well extracted, different temporal networks can all achieve satisfactory performance. By comparing Table \ref{tbl:te} and Table \ref{tbl:rh}, we also observe that \model achieves similar performance on the two different graph settings although time-evolving graphs are more complex due to the high variance of both vertex sets and edge sets. This effect proves that \model is not easily affected by the variance of vertex and edge sets. 
+
+To further demonstrate the effectiveness of our \model method, we visualize the output embeddings from the GRU network of \modele. The embeddings are projected into two-dimensional space using the PCA method. The visualization results in Figure \ref{fig:emb} show that the anomalies can be easily detected using the embeddings generated by our proposed method.
+
+In the experiments, we also evaluate our proposed model using training data with different ratios. The AUC results on UCI Messages are shown in Figure \ref{fig:auc}. It can be seen from the results that the AUC increases with the percentage of training data ranging from $50\%$ to $75\%$, and then the performance stays relatively stable.
+
+
+\subsection{Intrusion Detection Application} 
+
+%Our previous experiments employ benchmark datasets with injected anomalies. In order to evaluate the performance of \model method on real-world applications with existing anomalies, we test \model on detecting realistic network attacks in enterprise networks.
+To evaluate the effectiveness of \model on practical applications with real anomalies, we apply it to detect malware attacks in the enterprise environment.
+We collect a $4$-week period of data from a real enterprise network composed of $109$ hosts ($87$ Windows hosts and $22$ Linux hosts). In total, there are about ten thousand normal network event records and $82$ attack records by executing $9$ different types of attacks including ATP attacks, Trojan attacks, and Puishing Email attacks at different periods. Based on the network event data, we construct an accumulated graph per day with nodes representing hosts and edges representing the network connection relationships. Based on the constructed graphs, we apply \model and the baseline methods to detect the attacks.
+
+The AUC results are shown in Table \ref{tbl:asi}. We can see that \model achieves an increase of $9\%-28\%$ in AUC over the four baseline methods. Based on the experimental results, we also find that with the optimal hyperparameter setting, \model can capture all $82$ true alerts, while the baseline methods can only capture $72$ true alerts at most. Meanwhile, \model only generates $164$ false positives while the baseline methods generate at least $335$ false positives. The results demonstrate the effectiveness of \model in solving real-world anomaly detection tasks. 
+
+%outperforms other baseline methods significantly in the real-world intrusion detection application. In this task, we employ injected anomalies to train our model and detect the real anomalies in the test dataset. The results also demonstrate that our injection method is efficient to solve the real world problem. 
+
+\begin{table}[t]
+%	\vspace{-8pt}
+	\caption{Results on intrusion detection.}
+	\label{tbl:asi}
+	\centering
+	\begin{tabular}{lc}
+		\hline
+		Method & AUC \\
+		\hline
+		\hline
+		Node2Vec & 0.71  \\
+		DeepWalk & 0.76   \\
+		Spectral Clustering & 0.75  \\
+		Netwalk & 0.90   \\
+		\modele & \textbf{0.99}  \\
+		\hline
+	\end{tabular}
+%	\vspace{-10pt}
+\end{table}
+
+
+\section{Conclusion}
+In this paper, we investigated an important and challenging problem of anomaly detection in dynamic graphs. Different from network embedding based methods that focus on learning good node representations, we proposed \modele, a structural temporal Graph Neural Network to detect anomalous edges by mining the unusual temporal subgraph structures. \model can be trained end-to-end and it is not sensitive to the percentage of anomalies. %Moreover, \model can be applied to both accumulated graphs and time-evolving graphs, while existing embedding-based methods can only be applied to accumulated graphs. 
+We evaluated the proposed framework using extensive experiments on six benchmark datasets. The experimental results convince us of the effectiveness of our approach. We also applied \model to a real enterprise security system for intrusion detection. Our method achieved superior detection performance with zero false negatives.
+
+
+
+
+%% The file named.bst is a bibliography style file for BibTeX 0.99c
+\bibliographystyle{named}
+\bibliography{refshort}
+
+\end{document}
+

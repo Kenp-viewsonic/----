@@ -1,0 +1,536 @@
+%
+% File emnlp2019.tex
+%
+%% Based on the style files for ACL 2019, which were
+%% Based on the style files for EMNLP 2018, which were
+%% Based on the style files for ACL 2018, which were
+%% Based on the style files for ACL-2015, with some improvements
+%%  taken from the NAACL-2016 style
+%% Based on the style files for ACL-2014, which were, in turn,
+%% based on ACL-2013, ACL-2012, ACL-2011, ACL-2010, ACL-IJCNLP-2009,
+%% EACL-2009, IJCNLP-2008...
+%% Based on the style files for EACL 2006 by 
+%%e.agirre@ehu.es or Sergi.Balari@uab.es
+%% and that of ACL 08 by Joakim Nivre and Noah Smith
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[hyperref]{emnlp-ijcnlp-2019}
+\usepackage{times}
+\usepackage{latexsym}
+
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{breakurl}
+\usepackage{pifont}
+\usepackage{verbatim}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{graphics}
+\usepackage{xspace}
+\usepackage{float}
+\usepackage{tikz}
+\restylefloat{table}
+
+% number circles
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=1.4pt] (char) {#1};}}
+
+% checkmarks for table
+\newcommand{\cmark}{\textcolor{green}{\ding{51}}}%
+\newcommand{\xmark}{\textcolor{red}{\ding{55}}}%
+
+% dataset name
+\newcommand{\dataset}{\textit{Chatbot-150}\@\xspace}
+\newcommand{\datasetsmall}{\textit{Chatbot-150-small}\@\xspace}
+\newcommand{\datasetimbalanced}{\textit{Chatbot-150-imbalanced}\@\xspace}
+\newcommand{\datasetoos}{\textit{Chatbot-150-oos}\@\xspace}
+
+% platform names
+\newcommand{\dialogflow}{Dialogflow}
+\newcommand{\luis}{Luis}
+\newcommand{\lex}{Lex}
+\newcommand{\convai}{Conversational AI}
+
+\newcommand*\rot{\rotatebox{90}}
+\usepackage{array,graphicx}
+
+% Convenient way to have something look like a \paragraph{} but not use extra space
+\newcommand{\tightparagraph}[1]{\noindent\textbf{#1:}}
+
+%\setlength\titlebox{5cm}
+% You can expand the titlebox if you need extra space
+% to show all the authors. Please do not make the titlebox
+% smaller than 5cm (the original size); we will check this
+% in the camera-ready version and ask you to change it back.
+
+% Spacing around floats
+\setlength{\floatsep}{7pt plus 2pt minus 4pt}
+\setlength{\textfloatsep}{7pt plus 2pt minus 4pt}
+\setlength{\dblfloatsep}{\floatsep}
+\setlength{\dbltextfloatsep}{7pt plus 2pt minus 4pt}
+\setlength{\intextsep}{\floatsep}
+\setlength{\abovecaptionskip}{4pt plus 3pt minus 2pt}
+
+\newcommand\BibTeX{B{\sc ib}\TeX}
+
+\aclfinalcopy % Uncomment this line for the final submission
+
+%\setlength\titlebox{5cm}
+% You can expand the titlebox if you need extra space
+% to show all the authors. Please do not make the titlebox
+% smaller than 5cm (the original size); we will check this
+% in the camera-ready version and ask you to change it back.
+
+\newcommand\confname{EMNLP-IJCNLP 2019}
+\newcommand\conforg{SIGDAT}
+
+\title{An Evaluation Dataset for Intent Classification\\and Out-of-Scope Prediction}
+
+\author{Stefan Larson ~~~~Anish Mahendran ~~~~Joseph J. Peper ~~~~Christopher Clarke\\ \textbf{Andrew Lee ~~~~Parker Hill ~~~~Jonathan K. Kummerfeld ~~~~Kevin Leach}\\
+\textbf{Michael A. Laurenzano ~~~~Lingjia Tang ~~~~Jason Mars}\\
+  Clinc, Inc.\\
+  Ann Arbor, MI, USA \\
+  %{\tt email@domain} \\\And
+  %Second Author \\
+  %Affiliation / Address line 1 \\
+  %Affiliation / Address line 2 \\
+  %Affiliation / Address line 3 \\
+  {\tt stefan@clinc.com}
+  \\}
+
+\date{}
+
+% ACL abstract:
+%\begin{abstract}
+%Correctly classifying a user's query into a system-supported intent or identifying it as not fitting any known intent is a key part of task-driven dialog systems. However, current text classification corpra are not a good fit for the challenges that face a chatbot. We introduce a new dataset, \dataset, that is novel in several ways. First, it covers 150 intent classes over 10 domains, which captures the breadth a chatbot needs to handle. Second, the training data for each intent is limited to 100 utterances, which is representative of the resources available to a small team. Third, we include \emph{out-of-scope} queries, which do not fit any of the intents, requiring the chatbot to model what it cannot do as well as what it can. We evaluate a range of benchmark classifiers on our dataset and find they perform well on intent classification, but struggle to identify out-of-scope queries. \dataset fills a key gap in the field, offering a way of holistically evaluating text classification in dialog.
+%\end{abstract}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+%Correctly classifying a user's query into a system-supported intent, or identifying it as not fitting any known intent is a key part of task-driven dialog systems. Correctly handling queries that are \emph{out-of-scope}---those that do not fit into any known intent class---is an important part of any successful dialog system, yet current text classification corpora have not addressed this aspect. We introduce and analyze a new dataset that is novel in several ways. First, the dataset covers 150 intent classes over 10 domains, which captures the breadth a task-driven dialog system needs to handle. Second, the training data for each intent is limited to 100 utterances, which is representative of the resources available to a small team. Third, we include \emph{out-of-scope} queries, which do not fit any of the intents, requiring the system to model what it cannot do as well as what it can. We evaluate a range of benchmark classifiers on our dataset along with several different \emph{out-of-scope} prediction schemes. We find that while the classifiers perform well on intent classification, they struggle to identify \emph{out-of-scope} queries. Our dataset and evaluation fill a key gap in the field, offering a way of more rigorously benchmarking text classification in task-driven dialog systems.
+%Task-oriented dialog systems need to know when a query falls outside their range of skills, but current text classification corpora only define label sets that cover every example.
+Task-oriented dialog systems need to know when a query falls outside their range of supported intents, but current text classification corpora only define label sets that cover every example.
+%We introduce a new dataset that includes out-of-scope queries, which do not fit any of the intents, requiring the system to model what it cannot do, as well as what it can.
+We introduce a new dataset that includes queries that are out-of-scope---i.e., queries that do not fall into any of the system's supported intents. This poses a new challenge because models cannot assume that every query at inference time belongs to a system-supported intent class.
+Our dataset also covers 150 intent classes over 10 domains, capturing the breadth that a production task-oriented agent must handle.
+We evaluate a range of benchmark classifiers on our dataset along with several different out-of-scope identification schemes.
+We find that while the classifiers perform well on in-scope intent classification, they struggle to identify out-of-scope queries.
+Our dataset and evaluation fill an important gap in the field, offering a way of more rigorously and realistically benchmarking text classification in task-driven dialog systems.
+\end{abstract}
+
+%% ML TODO: I would clean up the lexicon when discussing  "queries"/"utterances" and "out-of-scope queries"/"out-of-scope utterances". It creates a little bit of murkiness to use these interchangeably. If too much work to do this throughout, do it only in the abstract, intro and conclusion.
+
+%% ML TODO: the intro goes straight from background about dialog systems to our solution with only 1 paragraph (2nd paragraph) describing the problem we're solving. I would break this down into three paragraphs with more meat in them: (1) the role of intent classification in dialog systems and what out-of-scope queries are, (2) why identifying out-of-scope queries correctly is important and why current classification approaches don't handle it well, and (3) the state of classifier benchmarks (more examples than in the current version) and the lack of useful datasets that include out-of-scope as a meaningful component of the data.
+
+\section{Introduction}
+Task-oriented dialog systems have become ubiquitous, providing a means for billions of people to interact with computers using natural language. Moreover, the recent influx of platforms and tools such as Google's DialogFlow or Amazon's Lex for building and deploying such systems makes them even more accessible to various industries and demographics across the globe.
+
+Tools for developing such systems start by guiding developers to collect training data for intent classification: the task of identifying which of a fixed set of actions the user wishes to take based on their query.
+%\footnote{We use the nouns \textit{utterance}, \textit{query}, and \textit{sample} interchangeably.}
+% XXX-kleach notes this is usually undesirable.  Why wouldn't we replace all occurrences of "query" and "sample" with "utterance"?
+Relatively few public datasets exist for evaluating performance on this task, and those that do exist typically cover only a very small number of intents (e.g. \citet{snips}, which has 7 intents).
+%\citep[e.g.][which consists of 7 intents]{snips}.
+Furthermore, such resources do not facilitate analysis of \emph{out-of-scope} queries: queries that users may reasonably make, but fall outside of the scope of the system-supported intents.
+% XXX-kleach thinks it's bad to use "outside of the scope" when you're trying to define "out-of-scope"...
+
+\begin{figure}
+    \centering
+            %0.86 works
+            \includegraphics[width=0.8\linewidth]{oos8.pdf}
+    %\scalebox{0.75}{\fbox{\begin{minipage}{\columnwidth}
+    %    \includegraphics[width=\linewidth]{oos.pdf}
+    %\end{minipage}}}
+    \caption{\label{fig:example}
+    %caption
+    Example exchanges between a user (blue, right side) and a task-driven dialog system for personal finance (grey, left side). The system correctly identifies the user's query in \circled{1}, but in \circled{2} the user's query is mis-identified as in-scope, and the system gives an unrelated response. In \circled{3} the user's query is correctly identified as out-of-scope and the system gives a fallback response.
+    %XXX-kleach wonders if this caption should call the example system "... a banking task-driven dialog system..." to clarify why sports-related queries should be called out-of-scope
+    }
+\end{figure}
+
+%XXX-kleach again, should we call it a "banking system"?  Basically we want to make sure the reader knows that we want a system that knows its own limits, but current systems don't.
+Figure \ref{fig:example} shows example query-response exchanges between a user and a task-driven dialog system for personal finance. In the first user-system exchange, the system correctly identifies the user's intent as an in-scope \textsc{balance} query. In the second and third exchanges, the user queries with out-of-scope inputs. In the second exchange, the system incorrectly identifies the query as in-scope and yields an unrelated response.
+%the response is wrong and embarrassing. 
+%XXX-kleach thinks the word "embarrassing" is weird...  
+In the third exchange, the system correctly classifies the user's query as out-of-scope, and yields a fallback response.
+
+Out-of-scope queries are inevitable for a task-oriented dialog system, as most users will not be fully cognizant of the system's capabilities, which are limited by the fixed number of intent classes. 
+%Handling out-of-scope utterances involves correctly identifying when then occur, and responding with a ``fallback" message indicating to the user that their utterance was not fully understood. 
+Correctly identifying out-of-scope cases is thus crucial in deployed systems---both to avoid performing the wrong action and also to identify potential future directions for development.  
+However, this problem has seen little attention in analyses and evaluations of intent classification systems.
+
+\begin{table*}[ht!]
+\centering
+\input{sample-data.tex}
+\caption{\label{samples}
+Sample queries from our dataset. The out-of-scope queries are similar in style to the in-scope queries.
+}
+\end{table*}
+
+This paper fills this gap by analyzing intent classification performance with a focus on out-of-scope handling.
+To do so, we constructed a new dataset with 23,700 queries that are short and unstructured, in the same style made by real users of task-oriented systems.
+The queries cover 150 intents, plus out-of-scope queries that do not fall within any of the 150 in-scope intents.
+
+We evaluate a range of benchmark classifiers and out-of-scope handling methods on our dataset.
+BERT~\citep{bert} yields the best in-scope accuracy, scoring 96\% or above even when we limit the training data or introduce class imbalance. 
+However, all methods struggle with identifying out-of-scope queries.
+Even when a large number of out-of-scope examples are provided for training, there is a major performance gap, with the best system scoring 66\% out-of-scope recall.
+Our results show that while current models work on known classes, they have difficulty on out-of-scope queries, particularly when data is not plentiful.
+This dataset will enable future work to address this key gap in the research and development of dialog systems. All data introduced in this paper can be found at \url{https://github.com/clinc/oos-eval}.
+
+\section{Dataset}
+
+%\paragraph{Dataset Collection}
+We introduce a new crowdsourced dataset of 23,700 queries, including 22,500 in-scope queries covering 150 intents, which can be grouped into 10 general domains. The dataset also includes 1,200 out-of-scope queries.
+Table \ref{samples} shows examples of the data.\footnote{See the supplementary material for a full list of domains and intents, as well as additional examples.}
+
+
+%\tightparagraph{Collection}
+%\tightparagraph{In-Scope Collection}
+\subsection{In-Scope Data Collection}
+We defined the intents with guidance from queries collected using a \emph{scoping} crowdsourcing task, which prompted crowd workers to provide questions and commands related to topic domains in the manner they would interact with an artificially intelligent assistant. We manually grouped data generated by \emph{scoping} tasks into intents. To collect additional data for each intent, we used the \emph{rephrase} and \emph{scenario} crowdsourcing tasks proposed by \citet{naacl18data}.\footnote{
+  In all cases, crowd workers were paid \$0.20 per task.
+  See the supplementary material for examples of each task.
+  %See the supplementary material for more info on crowdsourcing
+}
+For each intent, there are 100 training queries, which is representative of what a team with a limited budget could gather while developing a task-driven dialog system. Along with the 100 training queries, there are 20 validation and 30 testing queries per intent.
+
+%\tightparagraph{Out-of-Scope Collection}
+\subsection{Out-of-Scope Data Collection}
+Out-of-scope queries were collected in two ways.
+First, using worker mistakes: queries written for one of the 150 intents that did not actually match any of the intents.
+Second, using \emph{scoping} and \emph{scenario} tasks with prompts based on topic areas found on Quora, Wikipedia, and elsewhere.
+To help ensure the richness of this additional out-of-scope data, each of these task prompts contributed to at most four queries.
+Since we use the same crowdsourcing method for collecting out-of-scope data, these queries are similar in style to their in-scope counterparts.
+
+The out-of-scope data is difficult to collect, requiring expert knowledge of the in-scope intents to painstakingly ensure that no out-of-scope query sample is mistakenly labeled as in-scope (and vice versa).
+Indeed, roughly only 69\% of queries collected with prompts targeting out-of-scope yielded out-of-scope queries.
+Of the 1,200 out-of-scope queries collected, 100 are used for validation and 100 are used for training, leaving 1,000 for testing.
+
+\subsection{Data Preprocessing and Partitioning}
+For all queries collected, all tokens were down-cased, and all end-of-sentence punctuation was removed.
+Additionally, all duplicate queries were removed and replaced.
+
+In an effort to reduce bias in the in-scope data, we placed all queries from a given crowd worker in a single split (train, validation, or test). This avoids the potential issue of similar queries from a crowd worker ending up in both the train and test sets, for instance, which would make the train and test distributions unrealistically similar. We note that this is a recommendation from concurrent work by \citet{geva-2019}. We also used this procedure for the out-of-scope set, except that we split the data into train/validation/test based on task prompt instead of worker.
+
+\subsection{Dataset Variants}
+In addition to the full dataset, we consider three variations.
+First, \textbf{Small}, in which there are only 50 training queries per each in-scope intent, rather than 100.
+Second, \textbf{Imbalanced}, in which intents have either 25, 50, 75, or 100 training queries.
+Third, \textbf{OOS+}, in which there are 250 out-of-scope training examples, rather than 100.
+These are intended to represent production scenarios where data may be in limited or uneven supply.
+
+\section{Benchmark Evaluation}
+
+To quantify the challenges that our new dataset presents, we evaluated the performance of a range of classifier models\footnote{See the supplementary material for model details.}
+and out-of-scope prediction schemes.
+
+\subsection{Classifier Models}
+
+\tightparagraph{SVM}
+A linear support vector machine with bag-of-words sentence representations.
+%
+%\tightparagraph{\textit{k}-nn [CITE]}
+%Classify instances based on the most common class in their \textit{k}-nearest neighbors.
+%We calculate distance as the cosine similarity of USE sentence embeddings \citep{USE}.
+%
+
+\tightparagraph{MLP}
+A multi-layer perceptron with USE embeddings \citep{USE} as input.
+%and one 400-dim hidden layer and a tanh non-linearity.
+
+\tightparagraph{FastText}
+A shallow neural network that averages embeddings of \textit{n}-grams \citep{fasttext}.
+
+\tightparagraph{CNN}
+%A convolutional neural network with the structure defined by \citet{cnnguide}. We use non-static word embeddings initialized with GloVe \citep{glove}.
+A convolutional neural network with non-static word embeddings initialized with GloVe \citep{glove}.
+
+%\tightparagraph{LSTM} %\citep{lstm}
+%A recurrent neural network with Long Short-Term Memory cells.
+%We use 300-dim static GloVe embeddings as input.
+
+\tightparagraph{BERT}
+A neural network that is trained to predict elided words in text and then fine-tuned on our data \citep{bert}.
+%We use the BERT-large uncased model in our experiments.
+
+\tightparagraph{Platforms}
+Several platforms exist for the development of task-oriented agents.
+We consider Google's DialogFlow\footnote{\url{https://dialogflow.com}} and Rasa NLU\footnote{\url{https://github.com/RasaHQ/rasa}} with spacy-sklearn.
+%, Microsoft's \luis, IBM's Watson, and Rasa NLU with spacy-sklearn.
+
+\subsection{Out-of-Scope Prediction}
+We use three baseline approaches for the task of predicting whether a query is out-of-scope: (1) \textbf{\emph{oos-train}}, where we train an additional (i.e. $151^{st}$) intent on out-of-scope training data; (2) \textbf{\emph{oos-threshold}}, where we use a threshold on the classifier's probability estimate; and (3) \textbf{\emph{oos-binary}}, a two-stage process where we first classify a query as in- or out-of-scope, then classify it into one of the 150 intents if classified as in-scope. 
+
+To reduce the severity of the class imbalance between in-scope versus out-of-scope query samples (i.e., 15,000 versus 250 queries for OOS+), we investigate two strategies when using \emph{oos-binary}: one where we undersample the in-scope data and train using 1,000 in-scope queries sampled evenly across all intents (versus 250 out-of-scope), and another where we augment the 250 OOS+ out-of-scope training queries with 14,750 sentences sampled from Wikipedia.
+
+From a development point of view, the \emph{oos-train} and \emph{oos-binary} methods both require careful curation of an out-of-scope training set, and this set can be tailored to individual systems. The \emph{oos-threshold} method is a more general decision rule that can be applied to any model that produces a probability. In our evaluation, the out-of-scope threshold was chosen to be the value which yielded the highest validation score across all intents, treating out-of-scope as its own intent.
+
+\begin{table*}
+\centering
+\input{classifier-results.tex}
+\caption{\label{tab:classifier-results}
+Benchmark classifier results under each data condition using the \emph{oos-train} (top half) and \emph{oos-threshold} (bottom half) prediction methods.
+}
+\end{table*}
+
+
+\subsection{Metrics}
+
+We consider two performance metrics for all scenarios:
+(1) accuracy over the 150 intents, and
+(2) recall on out-of-scope queries.
+We use recall to evaluate out-of-scope since we are more interested in cases where such queries are predicted as in-scope, as this
+%would mean a system gives a completely wrong response to the user rather than a fallback response.
+would mean a system gives the user a response that is completely wrong. Precision errors are less problematic as the fallback response will prompt the user to try again, or inform the user of the system's scope of supported domains.
+
+%\subsection{Results}
+\section{Results}
+%\paragraph{Results with \emph{oos-train}}
+\subsection{Results with \emph{oos-train}}
+Table~\ref{tab:classifier-results} presents results for all models across the four variations of the dataset.
+%The first and second sections of the table refer to the results when using the \emph{oos-train} and \emph{oos-threshold} out-of-scope methods, respectively. We observe two dominant trends in our findings. 
+% [ we see that bert hasThere are two dominant trends.
+First, BERT is consistently the best approach for in-scope, followed by MLP. Second, out-of-scope query performance is much lower than in-scope across all methods. Training on less data (Small and Imbalanced) yields models that perform slightly worse on in-scope queries.
+The trend is mostly the opposite when evaluating out-of-scope, where recall increases under the Small and Imbalanced training conditions. Under these two conditions, the size of the in-scope training set was decreased, while the number of out-of-scope training queries remained constant. This indicates that out-of-scope performance can be increased by increasing the relative number of out-of-scope training queries. We do just that in the OOS+ setting---where the models were trained on the full training set as well as 150 additional out-of-scope queries---and see that performance on out-of-scope increases substantially, yet still remains low relative to in-scope accuracy.
+
+%\tightparagraph{\datasetsmall Performance}
+%[discuss the variation in performance between the regular data and the small one]
+%Training on less data yields smaller in-scope accuracies for all models. The story is mostly the opposite for out-of-scope performance, since the number of out-of-scope training samples in the Small dataset was kept at 100, while the in-scope intents had 50 each.
+%
+%\tightparagraph{\datasetimbalanced Performance}
+%[discuss the variation in performance between the regular data and the imbalanced one]
+%Similar to the Small dataset, most of the classifiers perform consistently worse on the Imbalanced dataset for in-scope data.
+%However, there appears to be no consistent pattern for the out-of-scope data between Full and Imbalanced.
+
+%\tightparagraph{Out-of-scope}
+%[discuss the results on out-of-scope]
+%[discuss the impact of increasing the training data]
+%Correctly identifying out-of-scope data was a challenging task for all classifiers.
+%BERT and Rasa perform strongly compared to the other models.
+%Interestingly, while DialogFlow is the strongest in-scope platform, its out-of-scope predictions are worse than the others.
+%For all classifiers, training on more out-of-scope samples helped out-of-scope performance, as shown by the right-most column.
+
+%In most models we saw a clear increase in recall performance when using the OOS+ dataset. As the OOS+ has 250 training out-of-scope examples -- over double that that of the other datasets, we see that many classifiers struggled to learn the out-of-scope space. With the OOS+ dataset, the classifiers had more confidence in their learned predictions. it appears that  was consistently lower than in-scope accuracy for all models and datasets. BERT, Luis, and Rasa perform strongly compared to the other models. The OOS+ dataset  Training on more out-of-scope data tends to improve out-of-scope performance, as shown by the differences between OOS+ and Full on out-of-scope recall. Interestingly, while DialogFlow is the strongest in-scope platform, it's out-of-scope predictions are worse than the others. The key takeaway is that out-of-scope data trained as an intent -- namely forcing a model to "learn what it doesn't know" helps to further clarify the decision space for the in-scope intents. In constrast, the oos-threshold approach offered no incentive to a model to 
+%\subsubsection{Results with \emph{oos-threshold}}
+%In-scope accuracy for the threshold out-of-scope approach was largely comparable to that of the \emph{oos-train} method, however most classifiers had significantly lower recall on the out-of-scope set. As the models trained only on in-scope data one might expect in-scope performance to be higher, however, it appears in some cases, training on out-of-scope data can result in a model that performs better on in-scope data as well. We also found our method of predicting the threshold using the total validation score provided inconsistent results, particularly with FastText and MLP.
+%\tightparagraph{Results with \emph{oos-threshold}}
+\subsection{Results with \emph{oos-threshold}}
+In-scope accuracy using the \emph{oos-threshold} approach is largely comparable to \emph{oos-train}. Out-of-scope recall tends to be much higher on Full, but several models suffer greatly on the limited datasets. BERT and MLP are the top \emph{oos-threshold} performers, and for several models the threshold approach provided erratic results, particularly FastText and Rasa.
+
+
+
+\subsection{Results with \emph{oos-binary}}
+Table~\ref{binary} compares classifier performance using the \emph{oos-binary} scheme. In-scope accuracy suffers for all models using the undersampling scheme when compared to training on the full dataset using the \emph{oos-train} and \emph{oos-threshold} approaches shown in Table~\ref{tab:classifier-results}. However, out-of-scope recall improves compared to \emph{oos-train} on Full but not OOS+. Augmenting the out-of-scope training set appears to help improve both in-scope and out-of-scope performance compared to undersampling, but out-of-scope performance remains weak.
+
+\begin{table}[t]
+\begin{center}
+\scalebox{0.85}{
+\begin{tabular}{ c c c c c } 
+ \toprule
+ & \multicolumn{2}{c}{\textbf{In-Scope}} & \multicolumn{2}{c}{\textbf{Out-of-Scope}} \\
+ & \multicolumn{2}{c}{\textbf{Accuracy}} & \multicolumn{2}{c}{\textbf{Recall}} \\
+ \textbf{Classifier} & \textbf{under} & \textbf{wiki aug} & \textbf{under} & \textbf{wiki aug} \\
+ \hline
+ DialogFlow & 84.7 & --- & 37.3 & --- \\
+ Rasa & 87.5 & ---  & 37.7 & --- \\
+ FastText & 88.1 & 87.0 & 22.7 & 31.4 \\
+ SVM & 88.4 & 89.3 & 32.2 & 37.7 \\
+ CNN & 89.8 & 90.1 & 25.6 & 39.7 \\
+ MLP & 90.1 & 92.9 & \textbf{52.8} & 32.4 \\
+ BERT & \textbf{94.4} & \textbf{96.0} & 46.5 & \textbf{40.4} \\
+ \hline
+\end{tabular}}
+\end{center}
+\caption{\label{binary}
+Results of \emph{oos-binary} experiments on OOS+, where we compare performance of undersampling (under) and augmentation using sentences from Wikipedia (wiki aug). The wiki aug approach was too large for the DialogFlow and Rasa classifiers.
+}
+\end{table}
+
+\section{Prior Work}
+\begin{table*}
+\centering
+\scalebox{1}{
+\input{data-comparison}}
+\caption{\label{tab:data}
+Classification dataset properties.
+Ours has the broadest range of intents and specially collected out-of-scope queries. We consider ``chatbot style" queries to be short, possibly unstructured questions and commands.
+}
+\end{table*}
+%A key addition of our analysis is the inclusion of out-of-scope queries.
+In most other analyses and datasets, the idea of out-of-scope data is not considered, and instead the output classes are intended to cover all possible queries (e.g., TREC \citep{TREC}).
+Recent work by \citet{hendrycks17baseline} considers a similar problem they call out-of-distribution detection.
+They use other datasets or classes excluded during training to form the out-of-distribution samples.
+This means that the out-of-scope samples are from a small set of coherent classes that differ substantially from the in-distribution samples.
+Similar experiments were conducted for evaluating unknown intent discovery models in \citet{lin-xu-2019-deep}.
+In contrast, our out-of-scope queries cover a broad range of phenomena and are similar in style and often similar in topic to in-scope queries, representing things a user might say given partial knowledge of the capabilities of a system.
+
+Table~\ref{tab:data} compares our dataset with other short-query intent classification datasets.
+The Snips \citep{snips} dataset and the dataset presented in \citet{sds-eval} are the most similar to the in-scope part of our work, with the same type of conversational agent requests.
+Like our work, both of these datasets were bootstrapped using crowdsourcing.
+However, the Snips dataset has only a small number of intents and an enormous number of examples of each.
+Snips does present a low-data variation, with 70 training queries per intent, in which performance drops slightly.
+The dataset presented in \citet{sds-eval} has a large number of intent classes, yet also contains a wide range of samples per intent class (ranging from 24 to 5,981 queries per intent, and so is not constrained in all cases).
+
+\citet{cbc} created datasets with constrained training data, but with very few intents, presenting a very different type of challenge.
+We also include the TREC query classification datasets \citep{TREC}, which have a large set of labels, but they describe the desired response type (e.g., distance, city, abbreviation) rather than the action intents we consider.
+Moreover, TREC contains only questions and no commands.
+Crucially, none of the other datasets summarized in Table \ref{tab:data} offer a feasible way to evaluate out-of-scope performance.
+
+The Dialog State Tracking Challenge (DSTC) datasets are another related resource.
+Specifically, DSTC 1 \cite{dstc1}, DSTC 2 \cite{dstc2}, and DSTC 3 \cite{dstc3} contain ``chatbot style" queries, but the datasets are focused on state tracking. Moreover, most if not all queries in these datasets are in-scope.  In contrast, the focus of our analysis is on both in- and out-of-scope queries that challenge a virtual assistant to determine whether it can provide an acceptable response.
+
+%For general text categorization, a range of standard benchmarks exist, such as RCV-1 \citep{rcv1} and 20 Newsgroups \citep{20newsgroups}.
+%These consider input that is longer form text, typically entire news articles, rather than single sentence utterances like the ones we consider here.
+%Their output space is also quite different, covering a diverse set of topics, rather than the closely related intents we consider.
+%
+%One key addition of our dataset is the inclusion of out-of-scope queries.
+%In most other datasets this idea is not considered, while in some the output classes are intended to cover all possible queries (e.g., TREC).
+%Recent work by \citet{hendrycks17baseline} considers a similar problem they call out-of-distribution detection.
+%They use other datasets or classes excluded during training to form the out-of-distribution samples.
+%This means that the samples are from a small set of coherent classes that differ substantially from the in-distribution samples.
+%In contrast, our out-of-scope utterances are intentionally similar to the in-scope data, representing things a user might say given partial knowledge of the capabilities of a system.
+
+\section{Conclusion}
+%Proper analysis of intent classification requires proper tools and data. This paper closes the gap between the task of intent classification and analysis by introducing a new and relevant dataset for analyzing intent classification in the presence of out-of-scope samples. Our findings indicate there is room for improvement in the classification of out-of-scope data.
+This paper analyzed intent classification and out-of-scope prediction methods with a new dataset consisting of carefully collected out-of-scope data. Our findings indicate that certain models like BERT perform better on in-scope classification, but all methods investigated struggle with identifying out-of-scope queries. Models that incorporate more out-of-scope training data tend to improve on out-of-scope performance, yet such data is expensive and difficult to generate. We believe our analysis and dataset will lead to developing better, more robust dialog systems.
+
+All datasets introduced in this paper can be found at \url{https://github.com/clinc/oos-eval}.
+
+%\section*{Acknowledgments}
+%The authors thank Eric Guldan, Sean Stapleton, Rishi Tekriwal, and the anonymous reviewers for their helpful comments and feedback.
+
+% commented out for arxiv
+%\bibliography{emnlp-ijcnlp-2019}
+
+% bbl contents added for arxiv:
+\begin{thebibliography}{15}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Braun et~al.(2017)Braun, Hernandez-Mendez, Matthes, and Langen}]{cbc}
+Daniel Braun, Adrian Hernandez-Mendez, Florian Matthes, and Manfred Langen.
+  2017.
+\newblock \href {http://aclweb.org/anthology/W17-5522} {Evaluating natural
+  language understanding services for conversational question answering
+  systems}.
+\newblock In \emph{Proceedings of the 18th Annual SIGdial Meeting on Discourse
+  and Dialogue (SIGDIAL)}.
+
+\bibitem[{Cer et~al.(2018)Cer, Yang, Kong, Hua, Limtiaco, St.~John, Constant,
+  Guajardo-Cespedes, Yuan, Tar, Strope, and Kurzweil}]{USE}
+Daniel Cer, Yinfei Yang, Sheng-yi Kong, Nan Hua, Nicole Limtiaco, Rhomni
+  St.~John, Noah Constant, Mario Guajardo-Cespedes, Steve Yuan, Chris Tar,
+  Brian Strope, and Ray Kurzweil. 2018.
+\newblock \href {http://aclweb.org/anthology/D18-2029} {Universal sentence
+  encoder for {E}nglish}.
+\newblock In \emph{Proceedings of the 2018 Conference on Empirical Methods in
+  Natural Language Processing: System Demonstrations (EMNLP)}.
+
+\bibitem[{Coucke et~al.(2018)Coucke, Saade, Ball, Bluche, Caulier, Leroy,
+  Doumouro, Gisselbrecht, Caltagirone, Lavril, Primet, and Dureau}]{snips}
+Alice Coucke, Alaa Saade, Adrien Ball, Th{\'{e}}odore Bluche, Alexandre
+  Caulier, David Leroy, Cl{\'{e}}ment Doumouro, Thibault Gisselbrecht,
+  Francesco Caltagirone, Thibaut Lavril, Ma{\"{e}}l Primet, and Joseph Dureau.
+  2018.
+\newblock \href {http://arxiv.org/abs/1805.10190} {Snips voice platform: an
+  embedded spoken language understanding system for private-by-design voice
+  interfaces}.
+\newblock \emph{CoRR}, abs/1805.10190.
+
+\bibitem[{Devlin et~al.(2019)Devlin, Chang, Lee, and Toutanova}]{bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2019.
+\newblock \href {https://www.aclweb.org/anthology/N19-1423} {{BERT}:
+  Pre-training of deep bidirectional transformers for language understanding}.
+\newblock In \emph{Proceedings of the 2019 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies (NAACL)}.
+
+\bibitem[{{Geva} et~al.(2019){Geva}, {Goldberg}, and {Berant}}]{geva-2019}
+Mor {Geva}, Yoav {Goldberg}, and Jonathan {Berant}. 2019.
+\newblock \href {http://arxiv.org/abs/1908.07898} {{Are We Modeling the Task or
+  the Annotator? An Investigation of Annotator Bias in Natural Language
+  Understanding Datasets}}.
+\newblock \emph{arXiv e-prints}, page arXiv:1908.07898.
+
+\bibitem[{Henderson et~al.(2014{\natexlab{a}})Henderson, Thomson, and
+  Williams}]{dstc2}
+Matthew Henderson, Blaise Thomson, and Jason~D. Williams. 2014{\natexlab{a}}.
+\newblock \href {https://www.aclweb.org/anthology/W14-4337} {The second dialog
+  state tracking challenge}.
+\newblock In \emph{Proceedings of the 15th Annual Meeting of the Special
+  Interest Gorup on Discourse and Dialogue (SIGDIAL)}.
+
+\bibitem[{Henderson et~al.(2014{\natexlab{b}})Henderson, Thomson, and
+  Williams}]{dstc3}
+Matthew Henderson, Blaise Thomson, and Jason~D. Williams. 2014{\natexlab{b}}.
+\newblock \href
+  {https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/write_up.pdf}
+  {The third dialog state tracking challenge}.
+\newblock In \emph{Spoken Language Technology Workshop (SLT)}.
+
+\bibitem[{Hendrycks and Gimpel(2017)}]{hendrycks17baseline}
+Dan Hendrycks and Kevin Gimpel. 2017.
+\newblock \href {https://arxiv.org/pdf/1610.02136.pdf} {A baseline for
+  detecting misclassified and out-of-distribution examples in neural networks}.
+\newblock In \emph{Proceedings of International Conference on Learning
+  Representations (ICLR)}.
+
+\bibitem[{Joulin et~al.(2017)Joulin, Grave, Bojanowski, and Mikolov}]{fasttext}
+Armand Joulin, Edouard Grave, Piotr Bojanowski, and Tomas Mikolov. 2017.
+\newblock \href {http://aclweb.org/anthology/E17-2068} {Bag of tricks for
+  efficient text classification}.
+\newblock In \emph{Proceedings of the 15th Conference of the European Chapter
+  of the Association for Computational Linguistics (EACL)}.
+
+\bibitem[{Kang et~al.(2018)Kang, Zhang, Kummerfeld, Hill, Hauswald, Laurenzano,
+  Tang, and Mars}]{naacl18data}
+Yiping Kang, Yunqi Zhang, Jonathan~K. Kummerfeld, Parker Hill, Johann Hauswald,
+  Michael~A. Laurenzano, Lingjia Tang, and Jason Mars. 2018.
+\newblock \href {http://aclweb.org/anthology/N18-3005} {Data collection for
+  dialogue system: A startup perspective}.
+\newblock In \emph{Proceedings of the 2018 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies (NAACL)}.
+
+\bibitem[{Li and Roth(2002)}]{TREC}
+Xin Li and Dan Roth. 2002.
+\newblock \href {https://doi.org/10.3115/1072228.1072378} {Learning question
+  classifiers}.
+\newblock In \emph{Proceedings of the 19th International Conference on
+  Computational Linguistics (COLING)}.
+
+\bibitem[{Lin and Xu(2019)}]{lin-xu-2019-deep}
+Ting-En Lin and Hua Xu. 2019.
+\newblock \href {https://www.aclweb.org/anthology/P19-1548} {Deep unknown
+  intent detection with margin loss}.
+\newblock In \emph{Proceedings of the 57th Annual Meeting of the Association
+  for Computational Linguistics (ACL)}.
+
+\bibitem[{Liu et~al.(2019)Liu, Eshghi, Swietojanski, and Rieser}]{sds-eval}
+Xingkun Liu, Arash Eshghi, Pawel Swietojanski, and Verena Rieser. 2019.
+\newblock \href {https://arxiv.org/pdf/1903.05566.pdf} {Benchmarking natural
+  language understanding services for building conversational agents}.
+\newblock In \emph{Proceedings of the Tenth International Workshop on Spoken
+  Dialogue Systems Technology (IWSDS)}.
+
+\bibitem[{Pennington et~al.(2014)Pennington, Socher, and Manning}]{glove}
+Jeffrey Pennington, Richard Socher, and Christopher~D. Manning. 2014.
+\newblock \href {https://www.aclweb.org/anthology/D14-1162} {Glove: Global
+  vectors for word representation}.
+\newblock In \emph{Proceedings of the 2014 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}.
+
+\bibitem[{Williams et~al.(2013)Williams, Raux, Ramachandran, and Black}]{dstc1}
+Jason Williams, Antoine Raux, Deepak Ramachandran, and Alan Black. 2013.
+\newblock \href {https://www.aclweb.org/anthology/W13-4065} {The dialog state
+  tracking challenge}.
+\newblock In \emph{Proceedings of the 14th Annual Meeting of the Special
+  Interest Group on Discourse and Dialogue (SIGDIAL)}.
+
+\end{thebibliography}
+
+\bibliographystyle{acl_natbib}
+\end{document}

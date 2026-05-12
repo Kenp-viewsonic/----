@@ -1,0 +1,124 @@
+\begin{thebibliography}{24}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Brown et~al.(2020)Brown, Mann, Ryder, Subbiah, Kaplan, Dhariwal, Neelakantan, Shyam, Sastry, Askell, Agarwal, Herbert-Voss, Krueger, Henighan, Child, Ramesh, Ziegler, Wu, Winter, Hesse, Chen, Sigler, Litwin, Gray, Chess, Clark, Berner, McCandlish, Radford, Sutskever, and Amodei}]{gpt3}
+Tom~B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel~M. Ziegler, Jeff Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. 2020.
+\newblock \href {https://api.semanticscholar.org/CorpusID:218971783} {Language models are few-shot learners}.
+\newblock \emph{ArXiv}, abs/2005.14165.
+
+\bibitem[{Budzianowski et~al.(2018)Budzianowski, Wen, Tseng, Casanueva, Ultes, Ramadan, and Ga{\v{s}}i{\'c}}]{budzianowski2018multiwoz}
+Pawe{\l} Budzianowski, Tsung-Hsien Wen, Bo-Hsiang Tseng, Inigo Casanueva, Stefan Ultes, Osman Ramadan, and Milica Ga{\v{s}}i{\'c}. 2018.
+\newblock Multiwoz--a large-scale multi-domain wizard-of-oz dataset for task-oriented dialogue modelling.
+\newblock \emph{arXiv preprint arXiv:1810.00278}.
+
+\bibitem[{Ghosal et~al.(2021)Ghosal, Majumder, Mihalcea, and Poria}]{ghosal2021exploring}
+Deepanway Ghosal, Navonil Majumder, Rada Mihalcea, and Soujanya Poria. 2021.
+\newblock Exploring the role of context in utterance-level emotion, act and intent classification in conversations: An empirical study.
+\newblock In \emph{Findings of the Association for Computational Linguistics: ACL-IJCNLP 2021}, pages 1435--1449.
+
+\bibitem[{Halder et~al.(2024)Halder, Lim, Chan, and Zhang}]{halder2024survey}
+Sajal Halder, Kwan~Hui Lim, Jeffrey Chan, and Xiuzhen Zhang. 2024.
+\newblock A survey on personalized itinerary recommendation: From optimisation to deep learning.
+\newblock \emph{Applied Soft Computing}, 152:111200.
+
+\bibitem[{Lee and Lee(2022)}]{lee2022compm}
+Joosung Lee and Wooin Lee. 2022.
+\newblock Compm: Context modeling with speaker’s pre-trained memory tracking for emotion recognition in conversation.
+\newblock In \emph{Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies}, pages 5669--5679.
+
+\bibitem[{Liu et~al.(2021)Liu, Shen, Zhang, Dolan, Carin, and Chen}]{liu2021makes}
+Jiachang Liu, Dinghan Shen, Yizhe Zhang, Bill Dolan, Lawrence Carin, and Weizhu Chen. 2021.
+\newblock \href {https://arxiv.org/abs/2101.06804} {What makes good in-context examples for gpt-$3$?}
+\newblock \emph{Preprint}, arXiv:2101.06804.
+
+\bibitem[{Liu et~al.(2022)Liu, Ng, Gui, Singhal, Blessing, Wood, and Lim}]{liu2022title2vec}
+Junhua Liu, Yung~Chuen Ng, Zitong Gui, Trisha Singhal, Lucienne~TM Blessing, Kristin~L Wood, and Kwan~Hui Lim. 2022.
+\newblock Title2vec: A contextual job title embedding for occupational named entity recognition and other applications.
+\newblock \emph{Journal of Big Data}, 9(1):99.
+
+\bibitem[{Mo et~al.(2023)Mo, Nie, Huang, Mao, Zhu, Li, and Liu}]{Mo2023LearningTR}
+Fengran Mo, Jianyun Nie, Kaiyu Huang, Kelong Mao, Yutao Zhu, Peng Li, and Yang Liu. 2023.
+\newblock \href {https://api.semanticscholar.org/CorpusID:259076134} {Learning to relate to previous turns in conversational search}.
+\newblock \emph{Proceedings of the 29th ACM SIGKDD Conference on Knowledge Discovery and Data Mining}.
+
+\bibitem[{Qin et~al.(2023)Qin, Wu, Zhang, Li, Luan, Wang, Wang, and Cui}]{qin2023bert}
+Xiangyu Qin, Zhiyu Wu, Tingting Zhang, Yanran Li, Jian Luan, Bin Wang, Li~Wang, and Jinshi Cui. 2023.
+\newblock Bert-erc: Fine-tuning bert is enough for emotion recognition in conversation.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial Intelligence}, volume~37, pages 13492--13500.
+
+\bibitem[{Qu et~al.(2019)Qu, Yang, Croft, Zhang, Trippas, and Qiu}]{Qu_2019}
+Chen Qu, Liu Yang, W.~Bruce Croft, Yongfeng Zhang, Johanne~R. Trippas, and Minghui Qiu. 2019.
+\newblock \href {https://doi.org/10.1145/3295750.3298924} {User intent prediction in information-seeking conversations}.
+\newblock In \emph{Proceedings of the 2019 Conference on Human Information Interaction and Retrieval}, CHIIR ’19. ACM.
+
+\bibitem[{Reimers and Gurevych(2019)}]{reimers-2019-sentence-bert}
+Nils Reimers and Iryna Gurevych. 2019.
+\newblock \href {https://arxiv.org/abs/1908.10084} {Sentence-bert: Sentence embeddings using siamese bert-networks}.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing}. Association for Computational Linguistics.
+
+\bibitem[{Ren and Xue(2020)}]{9082602}
+Fuji Ren and Siyuan Xue. 2020.
+\newblock \href {https://doi.org/10.1109/ACCESS.2020.2991484} {Intention detection based on siamese neural network with triplet loss}.
+\newblock \emph{IEEE Access}, 8:82242--82254.
+
+\bibitem[{Rojas et~al.(2020)Rojas, Bustamante, Cabezudo, and Oncevay}]{Rojas2020EfficientSF}
+Kervy~Rivas Rojas, Gina Bustamante, Marco Antonio~Sobrevilla Cabezudo, and Arturo Oncevay. 2020.
+\newblock \href {https://api.semanticscholar.org/CorpusID:218517070} {Efficient strategies for hierarchical text classification: External knowledge and auxiliary tasks}.
+\newblock \emph{ArXiv}, abs/2005.02473.
+
+\bibitem[{Rubin et~al.(2021)Rubin, Herzig, and Berant}]{Rubin2021LearningTR}
+Ohad Rubin, Jonathan Herzig, and Jonathan Berant. 2021.
+\newblock \href {https://api.semanticscholar.org/CorpusID:245218561} {Learning to retrieve prompts for in-context learning}.
+\newblock \emph{ArXiv}, abs/2112.08633.
+
+\bibitem[{Shen et~al.(2021)Shen, Wu, Yang, and Quan}]{shen2021directed}
+Weizhou Shen, Siyue Wu, Yunyi Yang, and Xiaojun Quan. 2021.
+\newblock Directed acyclic graph network for conversational emotion recognition.
+\newblock In \emph{Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers)}, pages 1551--1560.
+
+\bibitem[{Shin et~al.(2021)Shin, Lin, Thomson, Chen, Roy, Platanios, Pauls, Klein, Eisner, and Durme}]{Shin2021ConstrainedLM}
+Richard Shin, C.~H. Lin, Sam Thomson, Charles~C. Chen, Subhro Roy, Emmanouil~Antonios Platanios, Adam Pauls, Dan Klein, Jas' Eisner, and Benjamin~Van Durme. 2021.
+\newblock \href {https://api.semanticscholar.org/CorpusID:233297024} {Constrained language models yield few-shot semantic parsers}.
+\newblock \emph{ArXiv}, abs/2104.08768.
+
+\bibitem[{Weld et~al.(2021)Weld, Huang, Long, Poon, and Han}]{weld2021survey}
+H.~Weld, X.~Huang, S.~Long, J.~Poon, and S.~C. Han. 2021.
+\newblock \href {https://arxiv.org/abs/2101.08091} {A survey of joint intent detection and slot-filling models in natural language understanding}.
+\newblock \emph{Preprint}, arXiv:2101.08091.
+
+\bibitem[{Wu et~al.(2021{\natexlab{a}})Wu, Su, and Juang}]{wu2021contextaware}
+Ting-Wei Wu, Ruolin Su, and Biing-Hwang Juang. 2021{\natexlab{a}}.
+\newblock \href {https://arxiv.org/abs/2109.01267} {A context-aware hierarchical bert fusion network for multi-turn dialog act detection}.
+\newblock \emph{Preprint}, arXiv:2109.01267.
+
+\bibitem[{Wu et~al.(2021{\natexlab{b}})Wu, Lu, Hajishirzi, and Ostendorf}]{Wu2021DIALKIKI}
+Zeqiu Wu, Bo-Ru Lu, Hannaneh Hajishirzi, and Mari Ostendorf. 2021{\natexlab{b}}.
+\newblock \href {https://api.semanticscholar.org/CorpusID:237485380} {Dialki: Knowledge identification in conversational systems through dialogue-document contextualization}.
+\newblock In \emph{Conference on Empirical Methods in Natural Language Processing}.
+
+\bibitem[{Xu and Sarikaya(2014)}]{6853573}
+Puyang Xu and Ruhi Sarikaya. 2014.
+\newblock \href {https://doi.org/10.1109/ICASSP.2014.6853573} {Contextual domain classification in spoken language understanding systems using recurrent neural network}.
+\newblock In \emph{2014 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)}, pages 136--140.
+
+\bibitem[{Yu et~al.(2021)Yu, He, Zhang, Du, Pasupat, and Li}]{Yu2021FewshotIC}
+Dian Yu, Luheng He, Yuan Zhang, Xinya Du, Panupong Pasupat, and Qi~Li. 2021.
+\newblock \href {https://api.semanticscholar.org/CorpusID:233219405} {Few-shot intent classification and slot filling with retrieved examples}.
+\newblock In \emph{North American Chapter of the Association for Computational Linguistics}.
+
+\bibitem[{Yuan et~al.(2019)Yuan, jie Zhou, Li, Lv, Zhu, Han, and Hu}]{Yuan2019MultihopSN}
+Chunyuan Yuan, Wen jie Zhou, Mingming Li, Shangwen Lv, Fuqing Zhu, Jizhong Han, and Songlin Hu. 2019.
+\newblock \href {https://api.semanticscholar.org/CorpusID:202776649} {Multi-hop selector network for multi-turn response selection in retrieval-based chatbots}.
+\newblock In \emph{Conference on Empirical Methods in Natural Language Processing}.
+
+\bibitem[{Zhang et~al.(2020)Zhang, Ye, Zhang, Qiu, Fu, Li, Yang, and Sun}]{zhang2020multi}
+Jinghan Zhang, Yuxiao Ye, Yue Zhang, Likun Qiu, Bin Fu, Yang Li, Zhenglu Yang, and Jian Sun. 2020.
+\newblock Multi-point semantic representation for intent classification.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial Intelligence}, volume~34, pages 9531--9538.
+
+\bibitem[{Zhu et~al.(2023)Zhu, Zhang, Huang, Wu, and Xu}]{Zhu2023HiTINHT}
+He~Zhu, Chong Zhang, Junjie Huang, Junran Wu, and Ke~Xu. 2023.
+\newblock \href {https://api.semanticscholar.org/CorpusID:258865236} {Hitin: Hierarchy-aware tree isomorphism network for hierarchical text classification}.
+\newblock In \emph{Annual Meeting of the Association for Computational Linguistics}.
+
+\end{thebibliography}

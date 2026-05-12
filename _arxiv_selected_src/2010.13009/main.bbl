@@ -1,0 +1,412 @@
+\begin{thebibliography}{57}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Asai et~al.(2020)Asai, Hashimoto, Hajishirzi, Socher, and
+  Xiong}]{graph-retriever}
+Akari Asai, Kazuma Hashimoto, Hannaneh Hajishirzi, Richard Socher, and Caiming
+  Xiong. 2020.
+\newblock {Learning to Retrieve Reasoning Paths over Wikipedia Graph for
+  Question Answering}.
+\newblock In \emph{8th International Conference on Learning Representations
+  (ICLR)}.
+
+\bibitem[{Bowman and Zhu(2019)}]{deep-nli}
+Samuel Bowman and Xiaodan Zhu. 2019.
+\newblock {Deep Learning for Natural Language Inference}.
+\newblock In \emph{Proceedings of the 2019 Conference of the North {A}merican
+  Chapter of the Association for Computational Linguistics: Tutorials}, pages
+  6--8.
+
+\bibitem[{Bowman et~al.(2015)Bowman, Angeli, Potts, and Manning}]{snli}
+Samuel~R. Bowman, Gabor Angeli, Christopher Potts, and Christopher~D. Manning.
+  2015.
+\newblock {A large annotated corpus for learning natural language inference}.
+\newblock In \emph{Proceedings of the 2015 Conference on Empirical Methods in
+  Natural Language Processing}, pages 632--642.
+
+\bibitem[{Casanueva et~al.(2020)Casanueva, Temčinas, Gerz, Henderson, and
+  Vulić}]{efficient_intent}
+Iñigo Casanueva, Tadas Temčinas, Daniela Gerz, Matthew Henderson, and Ivan
+  Vulić. 2020.
+\newblock {Efficient Intent Detection with Dual Sentence Encoders}.
+\newblock \emph{arXiv preprint arXiv:2003.04807}.
+
+\bibitem[{Chambers and Jurafsky(2010)}]{selectional-preference}
+Nathanael Chambers and Daniel Jurafsky. 2010.
+\newblock {Improving the Use of Pseudo-Words for Evaluating Selectional
+  Preferences}.
+\newblock In \emph{Proceedings of the 48th Annual Meeting of the Association
+  for Computational Linguistics}, pages 445--453.
+
+\bibitem[{Chatterjee et~al.(2019)Chatterjee, Federmann, Negri, and
+  Turchi}]{ape-2019}
+Rajen Chatterjee, Christian Federmann, Matteo Negri, and Marco Turchi. 2019.
+\newblock {Findings of the {WMT} 2019 Shared Task on Automatic Post-Editing}.
+\newblock In \emph{Proceedings of the Fourth Conference on Machine Translation
+  (Volume 3: Shared Task Papers, Day 2)}, pages 11--28.
+
+\bibitem[{Chen et~al.(2017)Chen, Fisch, Weston, and Bordes}]{drqa}
+Danqi Chen, Adam Fisch, Jason Weston, and Antoine Bordes. 2017.
+\newblock {Reading {W}ikipedia to Answer Open-Domain Questions}.
+\newblock In \emph{Proceedings of the 55th Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pages 1870--1879.
+
+\bibitem[{Conneau et~al.(2018)Conneau, Rinott, Lample, Williams, Bowman,
+  Schwenk, and Stoyanov}]{xnli}
+Alexis Conneau, Ruty Rinott, Guillaume Lample, Adina Williams, Samuel Bowman,
+  Holger Schwenk, and Veselin Stoyanov. 2018.
+\newblock {{XNLI}: Evaluating Cross-lingual Sentence Representations}.
+\newblock In \emph{Proceedings of the 2018 Conference on Empirical Methods in
+  Natural Language Processing}, pages 2475--2485.
+
+\bibitem[{Cunningham and Delany(2007)}]{knn-classifier}
+Pádraig Cunningham and Sarah~Jane Delany. 2007.
+\newblock {k-Nearest Neighbour Classifiers}.
+\newblock Technical Report UCD-CSI-2007-04, School of Computer Science \&
+  Informatics, University College Dublin.
+
+\bibitem[{Deng et~al.(2019)Deng, Zhang, Sun, Chen, and Chen}]{deng2019low}
+Shumin Deng, Ningyu Zhang, Zhanlin Sun, Jiaoyan Chen, and Huajun Chen. 2019.
+\newblock When low resource nlp meets unsupervised language model:
+  Meta-pretraining then meta-learning for few-shot text classification.
+\newblock \emph{arXiv}, pages arXiv--1908.
+
+\bibitem[{Devlin et~al.(2019)Devlin, Chang, Lee, and Toutanova}]{bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2019.
+\newblock {{BERT}: Pre-training of Deep Bidirectional Transformers for Language
+  Understanding}.
+\newblock In \emph{Proceedings of the 2019 Conference of the North {A}merican
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies, Volume 1 (Long and Short Papers)}, pages 4171--4186.
+
+\bibitem[{DeVries and Taylor(2018)}]{learning_ood}
+Terrance DeVries and Graham~W. Taylor. 2018.
+\newblock {Learning Confidence for Out-of-Distribution Detection in Neural
+  Networks}.
+\newblock \emph{arXiv preprint arXiv:1802.04865}.
+
+\bibitem[{Eriguchi et~al.(2018)Eriguchi, Johnson, Firat, Kazawa, and
+  Macherey}]{eriguchi-crosslingual}
+Akiko Eriguchi, Melvin Johnson, Orhan Firat, Hideto Kazawa, and Wolfgang
+  Macherey. 2018.
+\newblock {Zero-Shot Cross-lingual Classification Using Multilingual Neural
+  Machine Translation}.
+\newblock \emph{arXiv preprint arXiv:1809.04686}.
+
+\bibitem[{Fei-Fei et~al.(2006)Fei-Fei, Fergus, and Perona}]{fei2006one}
+Li~Fei-Fei, Rob Fergus, and Pietro Perona. 2006.
+\newblock One-shot learning of object categories.
+\newblock \emph{IEEE transactions on pattern analysis and machine
+  intelligence}, 28(4):594--611.
+
+\bibitem[{Finn et~al.(2017)Finn, Abbeel, and Levine}]{finn2017model}
+Chelsea Finn, Pieter Abbeel, and Sergey Levine. 2017.
+\newblock Model-agnostic meta-learning for fast adaptation of deep networks.
+\newblock In \emph{Proceedings of the 34th International Conference on Machine
+  Learning-Volume 70}, pages 1126--1135. JMLR. org.
+
+\bibitem[{Ganitkevitch et~al.(2013)Ganitkevitch, Van~Durme, and
+  Callison-Burch}]{ppdb}
+Juri Ganitkevitch, Benjamin Van~Durme, and Chris Callison-Burch. 2013.
+\newblock {{PPDB}: The Paraphrase Database}.
+\newblock In \emph{Proceedings of the 2013 Conference of the North {A}merican
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies}, pages 758--764.
+
+\bibitem[{Geng et~al.(2019)Geng, Li, Li, Zhu, Jian, and
+  Sun}]{geng2019induction}
+Ruiying Geng, Binhua Li, Yongbin Li, Xiaodan Zhu, Ping Jian, and Jian Sun.
+  2019.
+\newblock Induction networks for few-shot text classification.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 3895--3904.
+
+\bibitem[{Hashimoto et~al.(2017)Hashimoto, Xiong, Tsuruoka, and Socher}]{jmt}
+Kazuma Hashimoto, Caiming Xiong, Yoshimasa Tsuruoka, and Richard Socher. 2017.
+\newblock {A Joint Many-Task Model: Growing a Neural Network for Multiple {NLP}
+  Tasks}.
+\newblock In \emph{Proceedings of the 2017 Conference on Empirical Methods in
+  Natural Language Processing}, pages 1923--1933.
+
+\bibitem[{Henderson et~al.(2019)Henderson, Casanueva, Mrkšić, Su, Wen, and
+  Vulić}]{convert}
+Matthew Henderson, Iñigo Casanueva, Nikola Mrkšić, Pei-Hao Su, Tsung-Hsien
+  Wen, and Ivan Vulić. 2019.
+\newblock {ConveRT: Efficient and Accurate Conversational Representations from
+  Transformers}.
+\newblock \emph{arXiv preprint arXiv:1911.03688}.
+
+\bibitem[{Hendrycks and Gimpel(2017)}]{softmax_conf}
+Dan Hendrycks and Kevin Gimpel. 2017.
+\newblock {A Baseline for Detecting Misclassified and Out-of-Distribution
+  Examples in Neural Networks}.
+\newblock In \emph{5th International Conference on Learning Representations
+  (ICLR)}.
+
+\bibitem[{Hendrycks et~al.(2020)Hendrycks, Liu, Wallace, Dziedzic, Krishnan,
+  and Song}]{acl-ood}
+Dan Hendrycks, Xiaoyuan Liu, Eric Wallace, Adam Dziedzic, Rishabh Krishnan, and
+  Dawn Song. 2020.
+\newblock {Pretrained Transformers Improve Out-of-Distribution Robustness}.
+\newblock \emph{arXiv preprint arXiv:2004.06100}.
+
+\bibitem[{Jiang et~al.(2019)Jiang, Joshi, Chen, and Bansal}]{interpret-qa-1}
+Yichen Jiang, Nitish Joshi, Yen-Chun Chen, and Mohit Bansal. 2019.
+\newblock {Explore, Propose, and Assemble: An Interpretable Model for Multi-Hop
+  Reading Comprehension}.
+\newblock In \emph{Proceedings of the 57th Annual Meeting of the Association
+  for Computational Linguistics}, pages 2714--2725.
+
+\bibitem[{Johnson et~al.(2017)Johnson, Douze, and J{\'e}gou}]{faiss}
+Jeff Johnson, Matthijs Douze, and Herv{\'e} J{\'e}gou. 2017.
+\newblock {Billion-scale similarity search with GPUs}.
+\newblock \emph{arXiv preprint arXiv:1702.08734}.
+
+\bibitem[{Larson et~al.(2019)Larson, Mahendran, Peper, Clarke, Lee, Hill,
+  Kummerfeld, Leach, Laurenzano, Tang, and Mars}]{oos-intent}
+Stefan Larson, Anish Mahendran, Joseph~J. Peper, Christopher Clarke, Andrew
+  Lee, Parker Hill, Jonathan~K. Kummerfeld, Kevin Leach, Michael~A. Laurenzano,
+  Lingjia Tang, and Jason Mars. 2019.
+\newblock {An Evaluation Dataset for Intent Classification and Out-of-Scope
+  Prediction}.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 1311--1316.
+
+\bibitem[{Lee et~al.(2019)Lee, Chang, and Toutanova}]{latent-retrieval}
+Kenton Lee, Ming-Wei Chang, and Kristina Toutanova. 2019.
+\newblock {Latent Retrieval for Weakly Supervised Open Domain Question
+  Answering}.
+\newblock In \emph{Proceedings of the 57th Annual Meeting of the Association
+  for Computational Linguistics}, pages 6086--6096.
+
+\bibitem[{Levesque et~al.(2011)Levesque, Davis, and Morgenstern}]{wnli}
+Hector~J Levesque, Ernest Davis, and Leora Morgenstern. 2011.
+\newblock {The Winograd schema challenge}.
+\newblock \emph{AAAI Spring Symposium: Logical Formalizations of Commonsense
+  Reasoning}, 46:47.
+
+\bibitem[{Liu et~al.(2019)Liu, Ott, Goyal, Du, Joshi, Chen, Levy, Lewis,
+  Zettlemoyer, and Stoyanov}]{roberta}
+Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer
+  Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. 2019.
+\newblock {RoBERTa: A Robustly Optimized BERT Pretraining Approach}.
+\newblock \emph{arXiv preprint arXiv:1907.11692}.
+
+\bibitem[{Loshchilov and Hutter(2017)}]{adamw}
+Ilya Loshchilov and Frank Hutter. 2017.
+\newblock {Fixing Weight Decay Regularization in Adam}.
+\newblock \emph{arXiv preprint arXiv:1711.05101}.
+
+\bibitem[{Luo et~al.(2018)Luo, Feng, Wang, Huang, Yan, and Zhao}]{marrying-reg}
+Bingfeng Luo, Yansong Feng, Zheng Wang, Songfang Huang, Rui Yan, and Dongyan
+  Zhao. 2018.
+\newblock {Marrying Up Regular Expressions with Neural Networks: A Case Study
+  for Spoken Language Understanding}.
+\newblock In \emph{Proceedings of the 56th Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pages 2083--2093.
+
+\bibitem[{Marelli et~al.(2014)Marelli, Bentivogli, Baroni, Bernardi, Menini,
+  and Zamparelli}]{semeval}
+Marco Marelli, Luisa Bentivogli, Marco Baroni, Raffaella Bernardi, Stefano
+  Menini, and Roberto Zamparelli. 2014.
+\newblock {{S}em{E}val-2014 Task 1: Evaluation of Compositional Distributional
+  Semantic Models on Full Sentences through Semantic Relatedness and Textual
+  Entailment}.
+\newblock In \emph{Proceedings of the 8th International Workshop on Semantic
+  Evaluation ({S}em{E}val 2014)}, pages 1--8.
+
+\bibitem[{M\"{u}ller et~al.(2019)M\"{u}ller, Kornblith, and
+  Hinton}]{label_smoothing}
+Rafael M\"{u}ller, Simon Kornblith, and Geoffrey~E Hinton. 2019.
+\newblock {When does label smoothing help?}
+\newblock In \emph{Advances in Neural Information Processing Systems 32}, pages
+  4694--4703.
+
+\bibitem[{Negri et~al.(2018)Negri, Turchi, Chatterjee, and Bertoldi}]{escape}
+Matteo Negri, Marco Turchi, Rajen Chatterjee, and Nicola Bertoldi. 2018.
+\newblock {{ESCAPE}: a Large-scale Synthetic Corpus for Automatic
+  Post-Editing}.
+\newblock In \emph{Proceedings of the Eleventh International Conference on
+  Language Resources and Evaluation ({LREC} 2018)}.
+
+\bibitem[{Nie et~al.(2019)Nie, Wang, and Bansal}]{sem-bert}
+Yixin Nie, Songhe Wang, and Mohit Bansal. 2019.
+\newblock {Revealing the Importance of Semantic Retrieval for Machine Reading
+  at Scale}.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 2553--2566.
+
+\bibitem[{Pascanu et~al.(2013)Pascanu, Mikolov, and Bengio}]{clip}
+Razvan Pascanu, Tomas Mikolov, and Yoshua Bengio. 2013.
+\newblock {On the difficulty of training recurrent neural networks}.
+\newblock In \emph{Proceedings of the 30th International Conference on Machine
+  Learning}, pages 1310--1318.
+
+\bibitem[{Rastogi et~al.(2019)Rastogi, Zang, Sunkara, Gupta, and
+  Khaitan}]{google-schema-guided}
+Abhinav Rastogi, Xiaoxue Zang, Srinivas Sunkara, Raghav Gupta, and Pranav
+  Khaitan. 2019.
+\newblock {Towards Scalable Multi-domain Conversational Agents: The
+  Schema-Guided Dialogue Dataset}.
+\newblock \emph{arXiv preprint arXiv:1909.05855}.
+
+\bibitem[{Reimers and Gurevych(2019)}]{sbert}
+Nils Reimers and Iryna Gurevych. 2019.
+\newblock {Sentence-{BERT}: Sentence Embeddings using {S}iamese
+  {BERT}-Networks}.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 3982--3992.
+
+\bibitem[{Sanh et~al.(2019)Sanh, Debut, Chaumond, and Wolf}]{distil-bert}
+Victor Sanh, Lysandre Debut, Julien Chaumond, and Thomas Wolf. 2019.
+\newblock {DistilBERT, a distilled version of BERT: smaller, faster, cheaper
+  and lighter}.
+\newblock \emph{arXiv preprint arXiv:1910.01108}.
+
+\bibitem[{Seo et~al.(2019)Seo, Lee, Kwiatkowski, Parikh, Farhadi, and
+  Hajishirzi}]{phrase-embedding-index}
+Minjoon Seo, Jinhyuk Lee, Tom Kwiatkowski, Ankur Parikh, Ali Farhadi, and
+  Hannaneh Hajishirzi. 2019.
+\newblock {Real-Time Open-Domain Question Answering with Dense-Sparse Phrase
+  Index}.
+\newblock In \emph{Proceedings of the 57th Annual Meeting of the Association
+  for Computational Linguistics}, pages 4430--4441.
+
+\bibitem[{Shleifer(2019)}]{backtrans-da}
+Sam Shleifer. 2019.
+\newblock {Low Resource Text Classification with ULMFit and Backtranslation}.
+\newblock \emph{arXiv preprint arXiv:1903.09244}.
+
+\bibitem[{Simard et~al.(1993)Simard, LeCun, and Denker}]{knn-nips}
+Patrice Simard, Yann LeCun, and John~S. Denker. 1993.
+\newblock {Efficient Pattern Recognition Using a New Transformation Distance}.
+\newblock In \emph{Advances in Neural Information Processing Systems 5}, pages
+  50--58.
+
+\bibitem[{Snell et~al.(2017)Snell, Swersky, and Zemel}]{proto-net}
+Jake Snell, Kevin Swersky, and Richard Zemel. 2017.
+\newblock {Prototypical Networks for Few-shot Learning}.
+\newblock In \emph{Advances in Neural Information Processing Systems 30}, pages
+  4077--4087.
+
+\bibitem[{Sun et~al.(2019)Sun, Sun, Zhou, and Lv}]{hierarchical-proto-net}
+Shengli Sun, Qingfeng Sun, Kevin Zhou, and Tengchao Lv. 2019.
+\newblock {Hierarchical Attention Prototypical Networks for Few-Shot Text
+  Classification}.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 476--485.
+
+\bibitem[{Sung et~al.(2018)Sung, Yang, Zhang, Xiang, Torr, and
+  Hospedales}]{relation_net}
+Flood Sung, Yongxin Yang, Li~Zhang, Tao Xiang, Philip~H.S. Torr, and Timothy~M.
+  Hospedales. 2018.
+\newblock {Learning to Compare: Relation Network for Few-Shot Learning}.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 1199--1208.
+
+\bibitem[{Sydorova et~al.(2019)Sydorova, Poerner, and Roth}]{interpret-qa-2}
+Alona Sydorova, Nina Poerner, and Benjamin Roth. 2019.
+\newblock {Interpretable Question Answering on Knowledge Bases and Text}.
+\newblock In \emph{Proceedings of the 57th Annual Meeting of the Association
+  for Computational Linguistics}, pages 4943--4951.
+
+\bibitem[{Szegedy et~al.(2016)Szegedy, Vanhoucke, Ioffe, and
+  Shlens}]{label_smoothing_orig}
+Christian Szegedy, Vincent Vanhoucke, Sergey Ioffe, and Jon Shlens. 2016.
+\newblock {Rethinking the Inception Architecture for Computer Vision}.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}.
+
+\bibitem[{Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones,
+  Gomez, Kaiser, and Polosukhin}]{transformer}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N Gomez, \L~ukasz Kaiser, and Illia Polosukhin. 2017.
+\newblock {Attention is All you Need}.
+\newblock In \emph{Advances in Neural Information Processing Systems 30}, pages
+  5998--6008.
+
+\bibitem[{Vinyals et~al.(2016{\natexlab{a}})Vinyals, Blundell, Lillicrap,
+  kavukcuoglu, and Wierstra}]{matching-net}
+Oriol Vinyals, Charles Blundell, Timothy Lillicrap, koray kavukcuoglu, and Daan
+  Wierstra. 2016{\natexlab{a}}.
+\newblock {Matching Networks for One Shot Learning}.
+\newblock In \emph{Advances in Neural Information Processing Systems 29}, pages
+  3630--3638.
+
+\bibitem[{Vinyals et~al.(2016{\natexlab{b}})Vinyals, Blundell, Lillicrap,
+  Wierstra et~al.}]{vinyals2016matching}
+Oriol Vinyals, Charles Blundell, Timothy Lillicrap, Daan Wierstra, et~al.
+  2016{\natexlab{b}}.
+\newblock Matching networks for one shot learning.
+\newblock In \emph{Advances in neural information processing systems}, pages
+  3630--3638.
+
+\bibitem[{Wang et~al.(2018)Wang, Singh, Michael, Hill, Levy, and Bowman}]{glue}
+Alex Wang, Amanpreet Singh, Julian Michael, Felix Hill, Omer Levy, and Samuel
+  Bowman. 2018.
+\newblock {{GLUE}: A Multi-Task Benchmark and Analysis Platform for Natural
+  Language Understanding}.
+\newblock In \emph{Proceedings of the 2018 {EMNLP} Workshop {B}lackbox{NLP}:
+  Analyzing and Interpreting Neural Networks for {NLP}}, pages 353--355.
+
+\bibitem[{Watanabe et~al.(2017)Watanabe, Dhingra, and
+  Salakhutdinov}]{watanabe-query}
+Yusuke Watanabe, Bhuwan Dhingra, and Ruslan Salakhutdinov. 2017.
+\newblock {Question Answering from Unstructured Text by Retrieval and
+  Comprehension}.
+\newblock \emph{arXiv preprint arXiv:1703.08885}.
+
+\bibitem[{Wei and Zou(2019)}]{eda}
+Jason Wei and Kai Zou. 2019.
+\newblock {{EDA}: Easy Data Augmentation Techniques for Boosting Performance on
+  Text Classification Tasks}.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 6382--6388.
+
+\bibitem[{Wieting and Gimpel(2018)}]{paranmt}
+John Wieting and Kevin Gimpel. 2018.
+\newblock {{P}ara{NMT}-50{M}: Pushing the Limits of Paraphrastic Sentence
+  Embeddings with Millions of Machine Translations}.
+\newblock In \emph{Proceedings of the 56th Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pages 451--462.
+
+\bibitem[{Williams et~al.(2018)Williams, Nangia, and Bowman}]{mnli}
+Adina Williams, Nikita Nangia, and Samuel Bowman. 2018.
+\newblock {A Broad-Coverage Challenge Corpus for Sentence Understanding through
+  Inference}.
+\newblock In \emph{Proceedings of the 2018 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies, Volume 1 (Long Papers)}, pages 1112--1122.
+
+\bibitem[{Wu et~al.(2020)Wu, Hoi, Socher, and Xiong}]{tod-bert}
+Chien-Sheng Wu, Steven Hoi, Richard Socher, and Caiming Xiong. 2020.
+\newblock {ToD-BERT: Pre-trained Natural Language Understanding for
+  Task-Oriented Dialogues}.
+\newblock \emph{arXiv preprint arXiv:2004.06871}.
+
+\bibitem[{Xia et~al.(2020)Xia, Zhang, Nguyen, Zhang, and Yu}]{xia2020cg}
+Congying Xia, Chenwei Zhang, Hoang Nguyen, Jiawei Zhang, and Philip Yu. 2020.
+\newblock Cg-bert: Conditional text generation with bert for generalized
+  few-shot intent detection.
+\newblock \emph{arXiv preprint arXiv:2004.01881}.
+
+\bibitem[{Xu et~al.(2019)Xu, Liu, Shu, and Yu}]{xu2019open}
+Hu~Xu, Bing Liu, Lei Shu, and P~Yu. 2019.
+\newblock Open-world learning and application to product classification.
+\newblock In \emph{The World Wide Web Conference}, pages 3413--3419.
+
+\bibitem[{Yu et~al.(2018)Yu, Dohan, Luong, Zhao, Chen, Norouzi, and Le}]{qanet}
+Adams~Wei Yu, David Dohan, Minh-Thang Luong, Rui Zhao, Kai Chen, Mohammad
+  Norouzi, and Quoc~V. Le. 2018.
+\newblock {QANet: Combining Local Convolution with Global Self-Attention for
+  Reading Comprehension}.
+\newblock In \emph{6th International Conference on Learning Representations
+  (ICLR)}.
+
+\end{thebibliography}

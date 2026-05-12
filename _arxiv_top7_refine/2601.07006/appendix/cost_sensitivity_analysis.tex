@@ -1,0 +1,58 @@
+\subsection{Cost-Ratio Sensitivity}
+\label{app:cost_ratio_sensitivity}
+
+We recompute the relative expected cost at the fixed operating point $\tau^\star$ under cost-ratio variation
+$r=c_{\text{rev}}/c_{\text{mis}}\in[0.4,0.9]$ using the confusion-derived counts $(FP,TN,FN)$ and the cost
+definition in \S3.3: $C/c_{\text{mis}} = FP + (r-1)\cdot TN + r\cdot FN$.
+Table~\ref{tab:cost_ratio_sensitivity} reports values at representative ratios $\{0.4,0.64,0.9\}$ spanning the swept range.
+
+\begin{table*}[t]
+\centering
+\caption{Cost-ratio sensitivity analysis. Relative expected cost $C(\tau^\star)/c_{\text{mis}}$ recomputed for cost ratios $r = c_{\text{rev}}/c_{\text{mis}} \in [0.4, 0.9]$, reported at representative values $\{0.4, 0.64, 0.9\}$ (range endpoints and baseline).}
+\label{tab:cost_ratio_sensitivity}
+
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.05}
+
+\begin{minipage}[t]{0.485\textwidth}
+\centering
+\subcaption{OpenAI Moderation Dataset}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}Xccc@{}}
+\toprule
+LLM & $r=0.4$ & $r=0.64$ & $r=0.9$ \\
+\midrule
+gpt-4o-mini            &  78 & 38 & 178 \\
+gpt-4o                 & 106 & 51 & 190 \\
+gpt-4.1-mini           & 163 & 45 & 244 \\
+gemini-2.5-flash-lite  & 187 & 77 & 285 \\
+gemini-2.0-flash-lite  &  97 & 41 & 194 \\
+gemini-2.0-flash-001   & 201 & 69 & 289 \\
+QWEN3-14B              & 121 & 56 & 212 \\
+QWEN3-32B              & NA  & NA & NA  \\
+LLAMA32-11B            & NA  & NA & NA  \\
+\bottomrule
+\end{tabularx}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.485\textwidth}
+\centering
+\subcaption{Multimodal Moderation Dataset}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}Xccc@{}}
+\toprule
+LLM & $r=0.4$ & $r=0.64$ & $r=0.9$ \\
+\midrule
+gpt-4o-mini            & 72 & 22 &  96 \\
+gpt-4o                 & 18 & 29 &  63 \\
+gpt-4.1-mini           & 20 & 30 &  65 \\
+gemini-2.5-flash-lite  &  0 & 40 &  54 \\
+gemini-2.0-flash-lite  & 54 & 45 & 100 \\
+gemini-2.0-flash-001   &  0 & 34 &  44 \\
+QWEN3-14B              & 53 & 36 &  93 \\
+QWEN3-32B              & 31 & 47 &  85 \\
+LLAMA32-11B            & 71 & 39 & 108 \\
+\bottomrule
+\end{tabularx}
+\end{minipage}
+
+\end{table*}

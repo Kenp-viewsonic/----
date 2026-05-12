@@ -1,0 +1,85 @@
+% !TEX root = main.tex
+\subsection{Proof of the Lower Bound (Theorem~\ref{thm:lower-bound})}\label{app:lower-bound}
+Consider a setting with one type of jobs ($K = 1$) and one reviewer in any period. The arrival rate is $\lambda = 1 / 2$ and the service rate is $\mu= 1/2$. Since there is only one type, we omit the notational dependence on types. Suppose that the cost for any job $t$ is $C_t = \pm 1$ with equal probability, yielding a loss of $\ell = 0.5$. By \eqref{eq:loss-decompose}, the loss of any policy $\pi$ is equal to 
+\begin{equation}\label{eq:loss-example}
+\expect{\set{L}^{\pi}(T)} = 0.25T - 0.5\expect{\sum_{t=1}^T A(t)} + 0.5\expect{Q(T+1)}.
+\end{equation} 
+Let $S(t)$ be a Bernoulli random variable with mean $0.5$. The queue evolves as $Q(1) = 0$ and $Q(t+1) = (Q(t) + A(t) - S(t))^+$ for any $t > 1$. 
+
+To prove the lower bound, we couple the queue under any policy with an auxiliary queue $\{\tilde{Q}(t)\}_{t \leq T+1}$ where every new job is admitted. That is, $\tilde{Q}(1) = 0$ and $\tilde{Q}(t+1) = (\tilde{Q}(t) + \Lambda(t) - S(t))^+$. The below lemma bounds the difference between the two queue length processes.
+\begin{lemma}\label{lem:coupling}
+For any $t \geq 1$, $0 \leq \tilde{Q}(t) - Q(t) \leq \sum_{\tau=1}^{t - 1} (\Lambda(\tau) - A(\tau)).$
+\end{lemma}
+\begin{proof}
+We prove the result by induction. When $t =1 $, $\tilde{Q}(1) = Q(1) = 0$. As an induction hypothesis, we assume that  the result is true for $t$ and we prove the induction step for $t + 1$. First,
+\begin{align*}
+\tilde{Q}(t+1) - Q(t+1) &= (\tilde{Q}(t) + \Lambda(t) - S(t))^+ - (Q(t) + A(t) - S(t))^+  \\
+&\geq (Q(t) + \Lambda(t) - S(t))^+ - (Q(t)+A(t) - S(t))^+ \geq 0,
+\end{align*}
+where we use the fact that $x^+$ is increasing in $x$, $\Lambda(t) \geq A(t)$, and the induction hypothesis that $\tilde{Q}(t) \geq Q(t)$. In addition,
+\begin{align*}
+\tilde{Q}(t+1) - Q(t+1) &= (\tilde{Q}(t) + \Lambda(t) - S(t))^+ - (Q(t) + A(t) - S(t))^+  \\ 
+&\leq \left(\tilde{Q}(t) + \Lambda(t) - S(t)\right) - \left(Q(t) + A(t) - S(t)\right)  \\
+&\leq \sum_{\tau=1}^{t-1} (\Lambda(\tau) - A(\tau)) + \Lambda(t) - A(t) = \sum_{\tau=1}^t (\Lambda(\tau) - A(\tau)),
+\end{align*}
+where we use (i) the fact that the function $x^+$ is $1-$Lipchitz; (2) the fact that $\tilde{Q}(t) \geq Q(t)$ and $\Lambda(t) \geq A(t)$; (3) the induction hypothesis that $\tilde{Q}(t) - Q(t) \leq \sum_{\tau=1}^{t-1} (\Lambda(\tau) - A(\tau)).$
+\end{proof} We next lower bound the  the expected length of the auxiliary queue by $\Omega(\sqrt{T})$. To do so, let $\Phi(x)$ be the distribution of a standard normal distribution. We use the following version of Berry-Esseen theorem (Theorem 3.4.17 in \cite{durrett2019probability}).
+\begin{fact}\label{fact:berry}
+Let $X_1,X_2,\ldots$ be i.i.d. with zero mean, $\expect{X_i^2} = \sigma^2$ and $\expect{|X_i|^3} = \rho < \infty$. If $F_n(x)$ is the distribution of $(X_1+\cdots+X_n) / (\sigma\sqrt{n})$, then $|F_n(x) - \Phi(x)| \leq 3\rho / (\sigma^3 \sqrt{n}).$
+\end{fact}
+The following result lower bounds the auxiliary queue.
+\begin{lemma}\label{lem:bound-queue}
+For any $t \geq 10000$, $\expect{\tilde{Q}(t + 1)} \geq \sqrt{t}/100.$\end{lemma}
+\begin{proof}
+By induction, we can show $\tilde{Q}(t+1) \geq \sum_{\tau=1}^t (A(\tau) - S(\tau))$. Hence, with $\bar{A} = 2\sum_{\tau=1}^t (A(\tau)-0.5) / \sqrt{t}$ and $\bar{S} = 2\sum_{\tau=1}^t (S(\tau)-0.5)/ \sqrt{t},$ the queue length is lower bounded by $\tilde{Q}(t + 1) \geq \sqrt{t}(\bar{A} - \bar{S}) / 2$. Since $\{A(\tau)\}_{\tau \leq t}$ are i.i.d. Bernoulli random variables with mean $0.5$ for any $\tau$, Fact~\ref{fact:berry} applies, showing that the distribution of $\bar{A}$, $F_A(x)$, satisfies $|F_A(x) - \Phi(x)| \leq 3 / \sqrt{t}$ for any $x$. Similarly, the distribution of $\bar{S}$, $F_S(x)$, satisfies $|F_S(x) - \Phi(x)| \leq 3/\sqrt{t}$ for any $x$. Recall that $\Phi(0) = 0.5$ and $\Phi(-0.25) \geq 0.4.$ Then $\Pr\{\bar{A} \geq 0\} \geq 0.4 - 3/\sqrt{t}$, $\Pr\{\bar{S} \leq -0.25\} \geq 0.4 - 3/\sqrt{t}$, and thus:
+\[
+\expect{\tilde{Q}(t)} \geq \expect{\tilde{Q}(t) \mid \bar{A} \geq 0, \bar{S} \leq -0.25} \Pr\{\bar{A} \geq 0, \bar{S} \leq -0.25\} \geq \sqrt{t}\left(0.4-3/\sqrt{t}\right)^2 / 8 \geq 0.01\sqrt{t}, 
+\]
+where we use the fact that $\tilde{Q}(t) \geq 0$ and $t \geq 10000.$
+\end{proof}
+\begin{proof}[Proof of Theorem~\ref{thm:lower-bound}]
+The loss of any policy $\pi$ satisfies
+\begin{align*}
+\expect{\set{L}^{\pi}(T)} &= 0.25T - 0.5\expect{\sum_{t=1}^T A(t)} + 0.5\expect{Q(T+1)} \tag{By \eqref{eq:loss-example}} \\
+&\hspace{-0.5in}\geq 0.25T - 0.5\expect{\sum_{t=1}^T A(t)} + 0.5\left(\expect{\tilde{Q}(T+1)} - \expect{\sum_{\tau=1}^T (\Lambda(\tau) - A(\tau))}\right) \tag{By Lemma~\ref{lem:coupling}} \\
+&\hspace{-0.5in}= 0.5\expect{\tilde{Q}(T+1)} \geq \sqrt{T} / 200,~\text{for $T \geq 10000$.} \tag{By Lemma~\ref{lem:bound-queue} and $\expect{\Lambda(\tau)} = 0.5$ for any $\tau$}
+\end{align*}
+\end{proof}
+
+\subsection{Bounding idiosyncrasy loss by Lagrangian via drift analysis (Lemma~\ref{lem:connect-idio-lag})}\label{app:lem-connect-idio-lag}
+\begin{proof}[Proof of Lemma~\ref{lem:connect-idio-lag}] The first inequality is because 
+\begin{align*}
+\expect{L(T+1)-L(1)}&=\beta\expect{\sum_{t=1}^{T}\ell_{\kappa(t)}(1-A(t))} + \frac{1}{2}\expect{\sum_{k \in \set{K}} Q_k^2(T+1)} \\
+&\geq \beta\expect{\sum_{t=1}^{T}\ell_{\kappa(t)}(1-A(t))}
+\end{align*}
+since $Q_k(T+1) \geq 0$ and $Q_k(1) = 0$.
+
+For the second inequality, recall that $\Lambda_k(t) = 1$ if and only if job $t$ is of type $k$ and $A_k(t) = 1$ if and only if this job is also admitted for human review. We bound the drift for a period $t$ by using $\ell_{\kappa(t)}(1-A(t)) = \sum_{k \in \set{K}} \ell_k(\Lambda_k(t)-A_k(t))$ and thus
+\begin{align*}
+\expect{L(t+1) - L(t)} &= \beta\expect{\sum_{k \in \set{K}} \ell_k(\Lambda_k(t) - A_k(t))} + \expect{\sum_{k \in \set{K}} \frac{1}{2}(Q_k(t+1)^2 - Q_k(t)^2)} \\
+&\hspace{-1in}= \beta\sum_{k \in \set{K}} \ell_k \lambda_k(t) + \expect{-\beta\sum_{k \in \set{K}} \ell_k A_k(t) + \sum_{k \in \set{K}} \frac{1}{2}((Q_k(t) + A_k(t) - S_k(t))^2 - Q^2_k(t))} \\
+&\hspace{-1in}= \beta\sum_{k \in \set{K}} \ell_k \lambda_k(t) + \expect{-\beta\sum_{k \in \set{K}} \ell_k A_k(t) + \frac{1}{2}\sum_{k \in \set{K}} (A_k(t) - S_k(t))^2 + \sum_{k \in \set{K}} Q_k(t)(A_k(t) - S_k(t))} \\
+&\hspace{-1in}\leq 1 + \beta\sum_{k \in \set{K}} \ell_k \lambda_k(t) - \expect{\sum_{k \in \set{K}} A_k(t)(\beta \ell_k - Q_k(t)) + \sum_{k \in \set{K}} Q_k(t)S_k(t)} \\
+&\hspace{-1in}= 1 + \beta\sum_{k \in \set{K}} \ell_k\lambda_k(t) - \expect{\sum_{k \in \set{K}} A_k(t)(\beta \ell_k - Q_k(t)) + \sum_{k \in \set{K}} Q_k(t)\psi_k(t)\mu_k N(t)} \\
+&\hspace{-1in}= 1 + \expect{f_t(\bolds{A}(t),\bolds{\psi}(t), \bolds{Q}(t))}
+\end{align*}
+where the second equality uses $\expect{\Lambda_k(t)} = \lambda_k(t)$ and the queueing dynamic ($S_k(t) = 1$ if a type-$k$ job is reviewed); the first inequality uses that $A_k(t) = 1$ for at most one type and $S_k(t) = 1$ for at most one type; the second-to-last equality uses that condition on $\psi_k(t) = 1$ (i.e., type $k$ is chosen to review), $S_k(t) = 1$ with probability $\mu_k N(t)$. The result follows by telescoping over periods.
+\end{proof}
+\subsection{Connecting Lagrangian with Primal Objective (Lemma~\ref{lem:bound-lagrang})}\label{app:lem-bound-lagrang}
+\begin{proof}[Proof of Lemma~\ref{lem:bound-lagrang}]
+Expanding over each period, $f(\{\bolds{a}^\star(t)\}_{t \in [T]},\{\bolds{\nu}^\star(t)\}_{t \in [T]},\bolds{u})$ is given by
+\[
+\beta\sum_{t=1}^T\sum_{k \in \set{K}} \ell_k(\lambda_k(t)-a_k^\star(t)) - \sum_{t=1}^T \sum_{k \in \set{K}} u_{t,k}\left(\mu_k\nu_k^\star(t)N(t)-a_k^\star(t) \right).
+\] As $\{\{\bolds{a}^\star(t)\}_{t \in [T]},\{\bolds{\nu}^\star(t)\}_{t \in [T]}\}$ is a feasible solution to \eqref{eq:fluid}, for any period $t$, it holds that $\mu_k\nu_k^\star(t)N(t)-a_k^\star(t) \geq 0$. Therefore, since $u_{t,k} \geq 0$, it follows that \[f(\{\bolds{a}^\star(t)\}_{t\in[T]},\{\bolds{\nu}^\star(t)\}_{t\in[T]},\bolds{u}) \leq \beta\sum_{t=1}^T \sum_{k \in \set{K}} \ell_k(\lambda_k(t)-a_k^\star(t)) = \beta \set{L}^\star(T).\]
+\end{proof}
+
+\subsection{\textsc{BACID} optimizes per-period Lagrangian (Lemma~\ref{lem:bacid-mw})}\label{app:lem-bacid-mw}
+\begin{proof}[Proof of Lemma~\ref{lem:bacid-mw}]
+For a period $t$, the expectation only involves the uncertainty in the arrival and the review so 
+\begin{align*}
+&\expect{f_t(\bolds{A}(t),\bolds{\psi}(t),\bolds{Q}(t)) \mid \bolds{Q}(t) = \bolds{q}} \\
+&\hspace{0.2in}= \beta\sum_{k \in \set{K}}\ell_k\lambda_k(t) - \left(\sum_{k \in \set{K}} \lambda_k(t)\indic{\beta \ell_k \geq q_k}(\beta \ell_k-q_k) + \sum_{k \in \set{K}} \psi_k(t) q_k\mu_k N(t)\right) \\
+&\hspace{0.2in}\leq \beta\sum_{k \in \set{K}}\ell_k\lambda_k(t) - \left(\sum_{k \in \set{K}} a^\star_k(t)(\beta \ell_k-q_k) + N(t)\sum_{k \in \set{K}} \nu^\star_k(t) q_k\mu_k\right)  = f_t(\bolds{a}^\star(t),\bolds{\nu}^\star(t), \bolds{q})
+\end{align*}
+where the equality is because $\bacid$ admits a type-$k$ job only if $\beta \ell_k \geq q_k$ and the inequality is because $0 \leq a_k^{\star}(t) \leq \lambda_k(t)$ and $\sum_{k \in \set{K}} \nu^\star_k \leq 1$ and the definition that $\psi_k(t) = 1$ for the type $k$ with the largest $q_k\mu_k$, i.e., $\sum_{k \in \set{K}} \nu_k^\star(t) q_k \mu_k \leq \sum_{k \in \set{K}} \psi_k(t) q_k \mu_k$. 
+\end{proof}

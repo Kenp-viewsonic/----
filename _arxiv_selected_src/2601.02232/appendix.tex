@@ -1,0 +1,536 @@
+% % This must be in the first 5 lines to tell arXiv to use pdfLaTeX, which is strongly recommended.
+% \pdfoutput=1
+% % In particular, the hyperref package requires pdfLaTeX in order to break URLs across lines.
+
+% % \documentclass[11pt]{article}
+
+% % % Change "review" to "final" to generate the final (sometimes called camera-ready) version.
+% % % Change to "preprint" to generate a non-anonymous version with page numbers.
+% % \usepackage[review]{acl}
+
+% % % Standard package includes
+% % \usepackage{times}
+% % \usepackage{latexsym}
+% % \usepackage{booktabs}
+% % \usepackage{multirow}
+% % \usepackage{graphicx}
+% % \usepackage[table]{xcolor}
+% % \usepackage{amsmath}
+% % \usepackage{amsthm}
+% \newtheorem{proposition}{Proposition}
+
+% % % For proper rendering and hyphenation of words containing Latin characters (including in bib files)
+% % \usepackage[T1]{fontenc}
+% % % For Vietnamese characters
+% % % \usepackage[T5]{fontenc}
+% % % See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+
+% % % This assumes your files are encoded as UTF8
+% % \usepackage[utf8]{inputenc}
+
+% % % This is not strictly necessary, and may be commented out,
+% % % but it will improve the layout of the manuscript,
+% % % and will typically save some space.
+% % \usepackage{microtype}
+
+% % % This is also not strictly necessary, and may be commented out.
+% % % However, it will improve the aesthetics of text in
+% % % the typewriter font.
+% % \usepackage{inconsolata}
+
+% % %Including images in your LaTeX document requires adding
+% % %additional package(s)
+% % \usepackage{graphicx}
+
+% % If the title and author information does not fit in the area allocated, uncomment the following
+% %
+% %\setlength\titlebox{<dim>}
+% %
+% % and set <dim> to something 5cm or larger.
+
+% \title{Appendix: ELLA: Efficient Lifelong Learning for Adapters in Large Language Models}
+
+% Author information can be set in various styles:
+% For several authors from the same institution:
+% \author{Author 1 \and ... \and Author n \\
+%         Address line \\ ... \\ Address line}
+% if the names do not fit well on one line use
+%         Author 1 \\ {\bf Author 2} \\ ... \\ {\bf Author n} \\
+% For authors from different institutions:
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \And  ... \And
+%         Author n \\ Address line \\ ... \\ Address line}
+% To start a separate ``row'' of authors use \AND, as in
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \AND
+%         Author 2 \\ Address line \\ ... \\ Address line \And
+%         Author 3 \\ Address line \\ ... \\ Address line}
+
+% \author{First Author \\
+%   Affiliation / Address line 1 \\
+%   Affiliation / Address line 2 \\
+%   Affiliation / Address line 3 \\
+%   \texttt{email@domain} \\\And
+%   Second Author \\
+%   Affiliation / Address line 1 \\
+%   Affiliation / Address line 2 \\
+%   Affiliation / Address line 3 \\
+%   \texttt{email@domain} \\}
+
+%\author{
+%  \textbf{First Author\textsuperscript{1}},
+%  \textbf{Second Author\textsuperscript{1,2}},
+%  \textbf{Third T. Author\textsuperscript{1}},
+%  \textbf{Fourth Author\textsuperscript{1}},
+%\\
+%  \textbf{Fifth Author\textsuperscript{1,2}},
+%  \textbf{Sixth Author\textsuperscript{1}},
+%  \textbf{Seventh Author\textsuperscript{1}},
+%  \textbf{Eighth Author \textsuperscript{1,2,3,4}},
+%\\
+%  \textbf{Ninth Author\textsuperscript{1}},
+%  \textbf{Tenth Author\textsuperscript{1}},
+%  \textbf{Eleventh E. Author\textsuperscript{1,2,3,4,5}},
+%  \textbf{Twelfth Author\textsuperscript{1}},
+%\\
+%  \textbf{Thirteenth Author\textsuperscript{3}},
+%  \textbf{Fourteenth F. Author\textsuperscript{2,4}},
+%  \textbf{Fifteenth Author\textsuperscript{1}},
+%  \textbf{Sixteenth Author\textsuperscript{1}},
+%\\
+%  \textbf{Seventeenth S. Author\textsuperscript{4,5}},
+%  \textbf{Eighteenth Author\textsuperscript{3,4}},
+%  \textbf{Nineteenth N. Author\textsuperscript{2,5}},
+%  \textbf{Twentieth Author\textsuperscript{1}}
+%\\
+%\\
+%  \textsuperscript{1}Affiliation 1,
+%  \textsuperscript{2}Affiliation 2,
+%  \textsuperscript{3}Affiliation 3,
+%  \textsuperscript{4}Affiliation 4,
+%  \textsuperscript{5}Affiliation 5
+%\\
+%  \small{
+%    \textbf{Correspondence:} \href{mailto:email@domain}{email@domain}
+%  }
+%}
+
+
+% \maketitle
+
+% \section{Formalizing ELLA}
+% \begin{proposition}
+% Let $\{\Delta W_i\}_{i=1}^{t-1} \subset \mathbb{R}^n$ be LoRA-induced parameter updates for previous tasks, and we define the elementwise accumulated energy vector as
+% % \[
+% % \mathcal{E}_{\mathrm{past}} = \left( \sum_{i=1}^{t-1} (\Delta W_i^{(1)})^2, \ \dots, \ \sum_{i=1}^{t-1} (\Delta W_i^{(n)})^2 \right) \in \mathbb{R}^n.
+% % \]
+% \[
+% \mathcal{E}_{\mathrm{past}}^{(j)} = \sum_{i=1}^{t-1} \left(\Delta W_i^{(j)}\right)^2 \qquad \forall j \in \{1,\ldots, n\}
+% \]
+% For a new task $t$, consider update $\Delta W_t \in \mathbb{R}^n$ and the ELLA regularizer
+% \begin{align}
+%     \mathcal{L}_{\mathrm{ELLA}} &= \sum_{j=1}^n \left( \Delta W_t^{(j)} \cdot \sqrt{\mathcal{E}_{\mathrm{past}}^{(j)}} \right)^2 \\&= \sum_{j=1}^n (\Delta W_t^{(j)})^2 \cdot \mathcal{E}_{\mathrm{past}}^{(j)}
+% \end{align}
+
+% Minimizing $\mathcal{L}_{\mathrm{ELLA}}$ selectively suppresses learning in coordinates $j$ where $\mathcal{E}_{\mathrm{past}}^{(j)}$ is large (i.e., heavily-used, task-specific directions), but imposes little or no penalty in coordinates where $\mathcal{E}_{\mathrm{past}}^{(j)} \approx 0$ which are shared and task non-discriminative underutilized subspaces).
+% \end{proposition}
+
+% \begin{proof}
+% For each coordinate $j \in \{1,\dots,n\}$, the regularization term is
+% \[
+% \mathcal{L}_{\mathrm{ELLA}}^{(j)} = (\Delta W_t^{(j)})^2 \cdot \mathcal{E}_{\mathrm{past}}^{(j)}.
+% \]
+% If $\mathcal{E}_{\mathrm{past}}^{(j)}$ is large, minimizing $\mathcal{L}_{\mathrm{ELLA}}$ forces $\Delta W_t^{(j)} \to 0$, so the optimizer avoids altering the model in this direction—preserving stability and past knowledge.
+
+% Conversely, if $\mathcal{E}_{\mathrm{past}}^{(j)} \approx 0$, then $\mathcal{L}_{\mathrm{ELLA}}^{(j)} \approx 0$ regardless of $\Delta W_t^{(j)}$. Thus, the optimizer is free to make updates in these coordinates, supporting plasticity and knowledge reuse in subspaces underutilized by previous tasks.
+
+% Unlike strict orthogonality, which enforces $\langle \Delta W_t, \Delta W_i \rangle = 0$ for all $i$ and blocks any overlap, ELLA only inhibits reuse in those directions with high past-task energy, and allows arbitrary overlap in other directions. This selective suppression achieves a flexible trade-off between stability and plasticity, enabling subspace sharing and forward transfer without catastrophic forgetting.
+% \end{proof}
+% \section{Formalizing ELLA Regularization}
+% \begin{proposition}
+% Let $\{\Delta W_i\}_{i=1}^{t-1} \subset \mathbb{R}^n$ denote LoRA-induced parameter updates for previous tasks, and define
+% \[
+% \mathcal{E}_{\mathrm{past}}^{(j)} = \sum_{i=1}^{t-1} (\Delta W_i^{(j)})^2, \qquad j = 1, \ldots, n.
+% \]
+% Given $\Delta W_t \in \mathbb{R}^n$, define
+% \[
+% \mathcal{L}_{\mathrm{ELLA}} = \sum_{j=1}^n (\Delta W_t^{(j)})^2 \, \mathcal{E}_{\mathrm{past}}^{(j)}.
+% \]
+% Then, for fixed $\mathcal{E}_{\mathrm{past}}$, the minimizer $\Delta W_t^*$ of $\mathcal{L}_{\mathrm{ELLA}}$ under $\ell_2$-regularized or unconstrained task loss satisfies:
+% \[
+% \Delta W_t^{*(j)} =
+% \begin{cases}
+% 0, & \text{if } \mathcal{E}_{\mathrm{past}}^{(j)} \to \infty, \\
+% \text{unconstrained}, & \text{if } \mathcal{E}_{\mathrm{past}}^{(j)} = 0.
+% \end{cases}
+% \]
+% Thus, $\mathrm{supp}(\Delta W_t^*) \subseteq \{j : \mathcal{E}_{\mathrm{past}}^{(j)} = 0\}$ in the limiting case, i.e., unconstrained updates are supported only on coordinates unused by any past task. Minimizing $\mathcal{L}_{\mathrm{ELLA}}$ thus \textit{selectively suppresses learning in coordinates $j$ where $\mathcal{E}_{\mathrm{past}}^{(j)}$ is large} (heavily-used, task-specific directions), but imposes little or no penalty in coordinates where $\mathcal{E}_{\mathrm{past}}^{(j)} \approx 0$ (shared, task-nondiscriminative, or underutilized subspaces).
+
+% \end{proposition}
+
+% \begin{proof}
+% Consider the total loss
+% \[
+% \mathcal{L}(\Delta W_t) = \mathcal{L}_{\mathrm{task}}(\Delta W_t) + \lambda \mathcal{L}_{\mathrm{ELLA}},
+% \]
+% with $\lambda > 0$. For each $j \in \{1, \ldots, n\}$,
+% \[
+% \frac{\partial \mathcal{L}}{\partial \Delta W_t^{(j)}} = \frac{\partial \mathcal{L}_{\mathrm{task}}}{\partial \Delta W_t^{(j)}} + 2\lambda \Delta W_t^{(j)} \mathcal{E}_{\mathrm{past}}^{(j)}.
+% \]
+% At a minimizer,
+% \[
+% \frac{\partial \mathcal{L}_{\mathrm{task}}}{\partial \Delta W_t^{(j)}} + 2\lambda \Delta W_t^{(j)} \mathcal{E}_{\mathrm{past}}^{(j)} = 0.
+% \]
+% If $\mathcal{E}_{\mathrm{past}}^{(j)} \gg 0$ and $\lambda$ is large,
+% \[
+% \Delta W_t^{(j)} \approx 0.
+% \]
+% If $\mathcal{E}_{\mathrm{past}}^{(j)} = 0$, then
+% \[
+% \frac{\partial \mathcal{L}}{\partial \Delta W_t^{(j)}} = \frac{\partial \mathcal{L}_{\mathrm{task}}}{\partial \Delta W_t^{(j)}}
+% \]
+% so $\Delta W_t^{(j)}$ is unconstrained by the regularizer.
+
+% Therefore,
+% \[
+% \Delta W_t^{*(j)} =
+% \begin{cases}
+% 0, & \text{if } \mathcal{E}_{\mathrm{past}}^{(j)} > 0 \text{, } \lambda >>0 \\
+% \text{unconstrained}, & \text{if } \mathcal{E}_{\mathrm{past}}^{(j)} = 0
+% \end{cases}
+% \]
+% as desired.
+% \end{proof}
+\appendix
+\section*{Appendix}
+
+This appendix provides supplementary material to support the findings presented in the main paper. We begin in Section~\ref{app:proof} with a detailed theoretical analysis of the ELLA regularizer, offering a formal proof of its properties, including its formulation as an anisotropic shrinkage operator and its ability to bound interference provably. In Section~\ref{app_expsettings}, we provide a comprehensive overview of our experimental settings. This includes detailed descriptions of the datasets, baselines, task sequences, instruction prompts, and specific hyperparameter configurations used in our evaluations. Finally, Section~\ref{license} lists and discusses the artifact licenses.
+\section{Theoretical Analysis of the
+ELLA Regularizer}
+\label{app:proof}
+Our theoretical analysis shows that the ELLA regularizer has two key properties: (i) its optimal update is an anisotropic shrinkage operator that selectively preserves plasticity, and (ii) it establishes a provable bound on the interference with past tasks, guaranteeing stability.
+
+\subsection*{A.1 Setup and Preliminaries}
+Our analysis is set in the context of continual learning, where a model adapts to a sequence of tasks.
+For each new task $t$, the model is adapted by learning a low-rank update matrix, $\Delta W_t$, using the LoRA method. This update is defined as the product of two smaller matrices:
+\begin{equation}
+\Delta W_t = A_t B_t
+\end{equation}
+where $A_t\in\mathbb{R}^{d \times r} \text{ and }B_t \in \mathbb{R}^{r \times k} \text{ with rank } r \ll \min\{d,k\}$. This matrix represents the specific knowledge acquired for task $t$. We define the aggregated matrix of past updates as:
+\begin{equation}
+\mathcal{W}_{past} = \sum_{i=1}^{t-1} \Delta W_i
+\end{equation}
+
+The practical regularization term used in our work is $\|\mathcal{W}_{past} \odot \Delta W_t\|_F^2$. For analytical tractability, we replace this term with a closely related objective. We introduce an energy matrix $E \in \mathbb{R}^{d \times k}$ derived from past updates, be defined as $E_{ij} = |(\mathcal{W}_{past})_{ij}| + \varepsilon$ for a small constant $\varepsilon > 0$ that ensures all entries are positive and $E^{-1}$ is well-defined. This preserves the core principle of suppressing alignment with high-energy coordinates.
+
+For the current task $t$, there is an ideal, unconstrained update that would best minimize the task loss, $\mathcal{L}_t$. This is the standard gradient step, which we denote as $G$.
+\[
+G \triangleq \nabla \mathcal{L}_t(W_{t-1})
+\]
+We think of $G$ as the update we would make if we did not have to worry about forgetting past knowledge.
+
+The goal of ELLA is to find an optimal update $\Delta W_t$ that is close to the target gradient $G$ (learning the new task) but is penalized for changing parameters that were important for past tasks (not forgetting). This is formulated as the following regularized optimization problem:
+\begin{equation}
+\label{eq:ella-prob}
+\min_{\Delta W}\;\; \underbrace{\frac{1}{2}\|\Delta W_t - G\|_F^2}_{\text{Plasticity Term}} \;+\; \underbrace{\frac{\lambda}{2}\,\|E\odot \Delta W_t\|_F^2}_{\text{Stability Term}}
+\end{equation}
+where $\lambda > 0$ is the regularization strength and $\odot$ denotes the element-wise Hadamard product. The \textit{plasticity term} encourages $\Delta W$ to be similar to $G$, while the \textit{stability term} penalizes changes to coordinates with high energy (large values in $E$).
+
+
+% We consider a local quadratic approximation of the task loss $\mathcal{L}_t$ around the parameters from the previous step, $W_{t-1}$. The unconstrained optimal update (i.e., the gradient step) is given by:
+% \begin{equation}
+%     G = \arg\min_{Z} \frac{1}{2}\|Z\|_F^2 - \langle Z, \nabla \mathcal{L}_t(W_{t-1})\rangle
+% \end{equation} The ELLA objective is to find the optimal update $\Delta W$ that solves the following regularized problem:
+% \begin{equation}
+% \label{eq:ella-prob}
+% \min_{\Delta W}\;\; \tfrac12\|\Delta W - G\|_F^2 \;+\; \tfrac{\lambda}{2}\,\|E\odot \Delta W\|_F^2
+% \end{equation}
+% where $\lambda > 0$ is the regularization strength. The first term promotes plasticity (staying close to the gradient step), while the second term enforces stability by penalizing overlap with high-energy coordinates of $\mathcal{W}_{past}$.
+
+\textbf{Proposition 1}
+The solution $\Delta W_t^\star$ to the ELLA objective in Eq. \eqref{eq:ella-prob} has the following properties:
+\begin{enumerate}
+    \item[\textit{(i)}] It is an anisotropic shrinkage operator applied to the unconstrained step $G$, with the closed-form solution:
+    \[
+    (\Delta W_t^\star)_{ij} = \frac{G_{ij}}{\,1+\lambda E_{ij}^2\,}
+    \]
+    \item[\textit{(ii)}] The interference with past updates, measured by the inner product $\langle \Delta W_t^\star, \mathcal{W}_{past} \rangle_F$, is bounded as follows:
+    \[
+    \bigl|\langle \Delta W_t^\star,\mathcal{W}_{past}\rangle_F\bigr|
+    \le
+    \frac{\|G\|_F}{2\sqrt{\lambda}}\;\|E^{-1}\odot \mathcal{W}_{past}\|_F
+    \]
+\end{enumerate}
+
+% \prop:main_result*
+
+\begin{proof}
+\textbf{Proof of part (i):} The objective function in Eq. \eqref{eq:ella-prob} is strongly convex since its second derivative is strictly positive, and separable across the matrix entries $(i,j)$. We can therefore solve for each entry $(\Delta W_t)_{ij}$ independently. Let $z = (\Delta W_t)_{ij}$, $g = G_{ij}$, and $e = E_{ij}$. The per-coordinate objective is:
+\[
+\min_{z\in\mathbb{R}} \;\; \tfrac12(z-g)^2 + \tfrac{\lambda}{2} e^2 z^2
+\]
+Taking the derivative with respect to $z$ and setting it to zero yields the optimal solution $z^\star$:
+\[
+(z^\star-g) + \lambda e^2 z^\star = 0 \quad \Rightarrow \quad (1+\lambda e^2)\,z^\star = g
+\]
+This gives the closed-form solution for each coordinate, proving part (i):
+\begin{equation}
+\label{eq:closed-form}
+(\Delta W_t^\star)_{ij} = \frac{G_{ij}}{\,1+\lambda E_{ij}^2\,}
+\end{equation}
+This operator selectively shrinks the update for each coordinate based on the accumulated energy of past updates $E_{ij}$, with larger energy leading to stronger shrinkage.
+
+
+\textbf{Proof of part (ii):} Next, we first bound the norm of the energy-weighted update. Using the solution from Eq. \eqref{eq:closed-form}:
+\begin{align}
+    \|E\odot \Delta W_t^\star\|_F^2
+&=
+\sum_{ij} \frac{E_{ij}^2\,G_{ij}^2}{(1+\lambda E_{ij}^2)^2} \\
+&\le
+\left(\sup_{x\ge0} \frac{x}{(1+\lambda x)^2}\right)\, \sum_{ij}G_{ij}^2
+\end{align}
+The supremum is attained at $x=1/\lambda$, yielding $\sup_{x\ge0} \frac{x}{(1+\lambda x)^2} = \frac{1}{4\lambda}$. Therefore,
+\begin{equation}
+    \|E\odot \Delta W_t^\star\|_F^2\le\frac{1}{4\lambda}\,\|G\|_F^2
+\label{eq:penalty-bound}
+\end{equation}
+This shows that the effective penalty is never worse than a $\tfrac{1}{4\lambda}$ fraction of the gradient energy, ensuring the shrinkage remains controlled.
+
+Now, we try to bound the interference term $\langle \Delta W_t^\star,\mathcal{W}_{past}\rangle_F$. By rewriting the inner product and applying the Cauchy-Schwarz inequality:
+\begin{align}
+&\bigl|\langle \Delta W_t^\star,\mathcal{W}_{past}\rangle_F\bigr| \\
+&=
+\bigl|\langle E\odot \Delta W_t^\star,\, E^{-1}\odot \mathcal{W}_{past}\rangle_F\bigr|\\
+&\le
+\|E\odot \Delta W_t^\star\|_F\ \|E^{-1}\odot \mathcal{W}_{past}\|_F
+\label{eq:cauchy}
+\end{align}
+Substituting the bound from Eq. \eqref{eq:penalty-bound} into Eq. \eqref{eq:cauchy} yields the final interference bound:
+\[
+\bigl|\langle \Delta W_t^\star,\mathcal{W}_{past}\rangle_F\bigr|
+\le
+\frac{\|G\|_F}{2\sqrt{\lambda}}\;\|E^{-1}\odot \mathcal{W}_{past}\|_F
+\]
+This completes the proof of part (ii). The term $\|E^{-1}\odot \mathcal{W}_{past}\|_F$ ensures that coordinates with high energy (large $E_{ij}$) contribute minimally to the bound, formally proving that ELLA enforces stability by suppressing interference in high-energy coordinates, while preserving plasticity where capacity remains.
+% The proof formally establishes how ELLA balances learning and memory. The term $\|E^{-1}\odot \mathcal{W}_{\text{past}}\|_F$ in the interference bound is key: it ensures that coordinates with high accumulated energy (large $E_{ij}$) are down-weighted (due to $E^{-1}$) and contribute minimally to the bound. This formally proves that ELLA achieves stability by suppressing updates in "saturated" directions that were important for past tasks, while preserving the plasticity required to learn from new tasks in low-energy coordinates where capacity remains.
+
+\end{proof}
+
+\section{Experimental Settings}
+\label{app_expsettings}
+\subsection{Datasets}
+
+\hspace{10pt}\textbf{Train Tasks.} Tables~\ref{tab:longseq_datasets} and ~\ref{tab:trace_datasets} provide detailed information on the datasets utilized in our continual
+learning (CL) experiments. Table~\ref{tab:longseq_datasets} presents the $15$
+datasets included in the Long Sequence Benchmark~\cite{razdaibiedina2023progressive}, while Table~\ref{tab:trace_datasets} outlines
+the $8$ datasets from TRACE~\cite{wang2023trace}. Both tables include the corresponding evaluation
+metrics for each dataset.
+
+\textbf{Unseen tasks.} We select the following datasets to test generalization performance post continual adaptation: (1) Multitask Language Understanding (MMLU)~\cite{hendrycks2020measuring}, which includes multiple-choice questions across $57$ subjects. (2) GSM8K~\cite{cobbe2021training}, which is a high-quality linguistically diverse multi-step elementary math reasoning dataset. (3) BIG-Bench Hard (BBH)~\cite{suzgun2022challenging},
+which includes $27$ challenging tasks spanning arithmetic, symbolic reasoning, and more, derived from
+BIG-Bench (BB)~\cite{srivastava2022beyond}. Most of the data consists of multiple-choice questions. (4) AGIEval~\cite{zhong2023agieval}, which includes a wide range of high-quality official entrance exams, qualifying exams, and advanced competitions tailored to human participants. (5) PIQA~\cite{bisk2020piqa} which is a dataset for commonsense reasoning, and was created to investigate the physical knowledge of existing models in NLP.
+
+\begin{table*}[!h]
+\centering
+\begin{tabular}{lllll}
+\toprule
+\textbf{Dataset Name} & \textbf{Category} & \textbf{Task} & \textbf{Domain} & \textbf{Metric} \\
+\midrule
+Yelp       & CL Benchmark & Sentiment Analysis               & Yelp Reviews            & Accuracy \\
+Amazon     & CL Benchmark & Sentiment Analysis               & Amazon Reviews          & Accuracy \\
+DBPedia    & CL Benchmark & Topic Classification             & Wikipedia               & Accuracy \\
+Yahoo      & CL Benchmark & Topic Classification             & Yahoo Q\&A              & Accuracy \\
+AG News    & CL Benchmark & Topic Classification             & News                    & Accuracy \\
+MNLI       & GLUE         & Natural Language Inference       & Various                 & Accuracy \\
+QQP        & GLUE         & Paragraph Detection              & Quora                   & Accuracy \\
+RTE        & GLUE         & Natural Language Inference       & News, Wikipedia         & Accuracy \\
+SST-2      & GLUE         & Sentiment Analysis               & Movie Reviews           & Accuracy \\
+WiC        & SuperGLUE    & Word Sense Disambiguation        & Lexical Databases       & Accuracy \\
+CB         & SuperGLUE    & Natural Language Inference       & Various                 & Accuracy \\
+COPA       & SuperGLUE    & Question and Answering           & Blogs, Encyclopedia     & Accuracy \\
+BoolQA     & SuperGLUE    & Boolean Question and Answering   & Wikipedia               & Accuracy \\
+MultiRC    & SuperGLUE    & Question and Answering           & Various                 & Accuracy \\
+IMDB       & SuperGLUE    & Sentiment Analysis               & Movie Reviews           & Accuracy \\
+\bottomrule
+\end{tabular}
+\caption{
+The details of 15 classification datasets in the Long Sequence Benchmark~\cite{razdaibiedina2023progressive}. The first five tasks correspond to the standard CL benchmark~\cite{zhang2015character}.
+}
+\label{tab:longseq_datasets}
+\end{table*}
+
+
+\begin{table*}[!h]
+\centering
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Dataset}      & \textbf{Source}   & \textbf{Avg len} & \textbf{Metric}         & \textbf{Language} & \textbf{\#Data} \\
+\midrule
+\multicolumn{6}{l}{\cellcolor{gray!15}\textit{Domain-specific}} \\
+ScienceQA   & Science    & 210   & Accuracy    & English & 5,000 \\
+FOMC        & Finance    & 51    & Accuracy    & English & 5,000 \\
+MeetingBank & Meeting    & 2853  & ROUGE-L     & English & 5,000 \\
+\multicolumn{6}{l}{\cellcolor{gray!15}\textit{Multi-lingual}} \\
+C-STANCE    & Social media & 127 & Accuracy    & Chinese & 5,000 \\
+20Minuten   & News         & 382 & SARI        & German  & 5,000 \\
+\multicolumn{6}{l}{\cellcolor{gray!15}\textit{Code Completion}} \\
+Py150       & Github    & 422   & Edim Similarity & Python  & 5,000 \\
+\multicolumn{6}{l}{\cellcolor{gray!15}\textit{Mathematical Reasoning}} \\
+NumGLUE-cm  & Math      & 32    & Accuracy    & English & 5,000 \\
+NumGLUE-ds  & Math      & 21    & Accuracy    & English & 5,000 \\
+\bottomrule
+\end{tabular}
+\caption{
+The overview of dataset statistics in TRACE~\cite{wang2023trace}. The `Source' indicates the origin of the context. `Avg len' denotes the average length, measured in word count for English, German, and code datasets, and in character count for Chinese datasets. `SARI' is a score that is specific to evaluating simplification tasks.
+}
+\label{tab:trace_datasets}
+\end{table*}
+
+\begin{table*}[h]
+\centering
+\begin{tabular}{lcp{10cm}}
+\toprule
+\textbf{Benchmark} & \textbf{Order} & \textbf{Task Sequence} \\
+\midrule
+\multirow{3}{*}{Standard CL Benchmark} 
+  & 1 & dbpedia $\rightarrow$ amazon $\rightarrow$ yahoo $\rightarrow$ ag \\
+  & 2 & dbpedia $\rightarrow$ amazon $\rightarrow$ ag $\rightarrow$ yahoo \\
+  & 3 & yahoo $\rightarrow$ amazon $\rightarrow$ ag $\rightarrow$ dbpedia \\
+\midrule
+\multirow{3}{*}{Long Sequence Benchmark} 
+  & 4 & mnli $\rightarrow$ cb $\rightarrow$ wic $\rightarrow$ copa $\rightarrow$ qqp $\rightarrow$ boolqa $\rightarrow$ rte $\rightarrow$ imdb $\rightarrow$ yelp $\rightarrow$ amazon $\rightarrow$ sst-2 $\rightarrow$ dbpedia $\rightarrow$ ag $\rightarrow$ multirc $\rightarrow$ yahoo \\
+  & 5  & multirc $\rightarrow$ boolqa $\rightarrow$ wic $\rightarrow$ mnli $\rightarrow$ cb $\rightarrow$ copa $\rightarrow$ qqp $\rightarrow$ rte $\rightarrow$ imdb $\rightarrow$ sst-2 $\rightarrow$ dbpedia $\rightarrow$ ag $\rightarrow$ yelp $\rightarrow$ amazon $\rightarrow$ yahoo \\
+  & 6 & yelp $\rightarrow$ amazon $\rightarrow$ mnli $\rightarrow$ cb $\rightarrow$ copa $\rightarrow$ qqp $\rightarrow$ rte $\rightarrow$ imdb $\rightarrow$ sst-2 $\rightarrow$ dbpedia $\rightarrow$ ag $\rightarrow$ yahoo $\rightarrow$ multirc $\rightarrow$ boolqa $\rightarrow$ wic \\
+\midrule
+\multirow{1}{*}{TRACE}
+  & 7 & c-stance $\rightarrow$ fomc $\rightarrow$ meetingbank $\rightarrow$ py150 $\rightarrow$ scienceqa $\rightarrow$ numglue-cm $\rightarrow$ numglue-ds $\rightarrow$ 20minuten \\
+\bottomrule
+\end{tabular}
+\caption{
+Seven distinct orders of task sequences were employed for the experiments in continual learning. Orders 1-3 align with the Standard CL Benchmarks, as adopted in previous studies~\cite{liao2025data}. Orders 4-6 pertain to the Long Sequence Benchmarks, which encompass a total of 15 tasks~\cite{razdaibiedina2023progressive}. Order 7 refers to the TRACE benchmark, specifically designed for LLMs, and comprises eight datasets~\cite{wang2023trace}.
+}
+\label{tab:task_orders}
+\end{table*}
+\subsection{Task Sequence Orders}
+\label{task:sequence:order}
+We report all task orders used for our CL experiments
+in Table~\ref{tab:task_orders}.
+
+\subsection{Baselines}
+\label{app:baselines}
+We compare our method against a comprehensive set of recent CL baselines, detailed as follows:
+(1)~\textbf{SeqFT} sequentially fine-tunes all model parameters without CL mechanisms like regularization or replay (RorR). 
+(2)~\textbf{SeqLoRA} applies fixed-size LoRA tuning per task with/without replay.  
+(3)~\textbf{IncLoRA} allows incremental learning of new LoRA
+parameters for each task without constraints.  
+(4)~\textbf{SeqSVD} uses fixed-rank SVD adapters trained sequentially without RorR.   
+(5)~\textbf{EWC}~\cite{kirkpatrick2017overcoming} finetunes LoRA with
+a regularization loss to prevent interference with past tasks.  
+(6)~\textbf{LwF}~\cite{li2017learning} distills the model of
+the last task using the current task data.  
+(7)~\textbf{L2P}~\cite{wang2022learning} instantiates a prompt pool for adaptive prompt selection and prompt tuning for individual samples.  
+(8)~\textbf{LFPT5}~\cite{qin2021lfpt5} learns soft prompts and generates pseudo-data for replay.  
+(9)~\textbf{L-CL} trains SVD adapters incrementally with SVD regularization.  
+(10)~\textbf{B-CL} applies SVD regularization with gradient projection.  
+(11)~\textbf{O-LoRA}~\cite{wang2023orthogonal} enforces orthogonality between LoRA updates across tasks. 
+(12) ~\textbf{MIGU}~\cite{du2024unlocking} updates parameters based on gradient magnitude.
+(13)~\textbf{LB-CL}~\cite{qiao2024learn} initializes low-rank matrix parameters in
+new tasks from specific past parameters besides enforcing orthogonality.  
+(14)~\textbf{DATA}~\cite{liao2025data} decomposes attention into high and low rank subspaces, and leverages orthogonality with optional replay.  
+(15)~\textbf{Recurrent KIF}~\cite{feng2025recurrent} uses an expensive recurrent mechanism to modulate task-specific adapter reuse using replay.
+\begin{table*}[htbp]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Task} & \textbf{Prompts} \\
+\midrule
+NLI & What is the logical relationship between the "sentence 1" and the "sentence 2"? \\
+    & Choose one from the option. \\
+QQP & Whether the "first sentence" and the "second sentence" have the same meaning? \\
+    & Choose one from the option. \\
+SC  & What is the sentiment of the following paragraph? Choose one from the option. \\
+TC  & What is the topic of the following paragraph? Choose one from the option. \\
+BoolQA & According to the following passage, is the question true or false? \\
+       & Choose one from the option. \\
+MultiRC & According to the following passage and question, is the candidate answer true \\
+        & or false? Choose one from the option. \\
+WiC & Given a word and two sentences, whether the word is used with the same sense \\
+    & in both sentence? Choose one from the option. \\
+FOMC & What is the monetary policy stance for the following text? \\
+& Choose one from the option. \\
+20Minuten & Provide a simplified version of the following paragraph in German.\\
+ScienceQA & Choose an answer for the following question and give your reasons. \\
+NumGLUE-cm & Solve the following math problem. \\
+NumGLUE-ds & Solve the following math problem. \\
+Py150 & Continue writing the code.\\
+MeetingBank & Write a summary of the following meeting transcripts.\\
+C-STANCE & Determine the attitude of the following text towards the specified object. \\ 
+&Choose one from the option. \\
+
+\bottomrule
+\end{tabular}
+\caption{Instructions for different tasks.}
+\label{tab:task_prompts}
+\end{table*}
+\subsection{Instruction Tuning.} Instruction-following is a fundamental capability for LLMs to serve as an effective interface between humans and AI systems~\cite{wei2021finetuned,ouyang2022training}. We adopt instruction tuning as our training paradigm for two key reasons: (1) it enables the incorporation of human prior knowledge via explicit instructions, thereby facilitating more efficient learning; and (2) it enhances generalization by guiding the model to learn underlying principles that apply across tasks.
+
+All tasks are formatted using a unified schema consisting as follows: (1) \textit{Task Instruction} -- a clear description of how to map an input (e.g., a sentence or document) to an output; (2) \textit{Options} -- the constrained set of valid output labels for the task; (3) \textit{Text} -- the input instance provided to the model; and (4) \textit{Answer} -- the correct target output. This combined sequence is fed into the pretrained model to guide prediction for all experiments.
+\subsection{Task Instructions}
+Table~\ref{tab:task_prompts} shows the prompts used for different tasks. NLI
+denotes natural language inference, and includes tasks
+MNLI, RTE and CB. SC denotes sentiment
+analysis, including Amazon, Yelp, SST-2 and
+IMDB. TC denotes topic classification and contains the tasks
+AG News, Dbpedia and Yahoo.
+
+\subsection{Implementation Details} 
+\label{app:implementation_details}
+Our implementation for ELLA uses PyTorch v2.0.1~\cite{paszke2019pytorch} and Deepspeed v0.10.0~\cite{rasley2020deepspeed}.
+Our experiments were conducted on machines equipped with $4$ A$40$ GPUs/ $8$ V$100$ GPUs for ELLA and all baselines, except DATA/DATA+Replay, which required $2$ H$100$ GPUs. For all orders of task
+streams for the Standard-CL Benchmark and the Long Sequence Benchmark, we trained the models with one epoch using the AdamW optimizer~\cite{loshchilov2017decoupled} and WarmupLR scheduler~\cite{deepspeed_schedulers} with a total batch size of $32$. We used a constant learning rate of $1e-3$ for T$5$ and $1e-4$ for LLaMA, a dropout rate of
+$0.1$, and a weight decay rate of $0$. For TRACE Order $7$ (C-STANCE, FOMC,
+MeetingBank, Py150, ScienceQA, NumGLUE-cm,
+NumGLUE-ds, 20Minuten), we trained with $5000$
+samples $5$, $3$, $7$, $5$, $3$, $5$, $5$, $7$ epochs respectively. The coefficient $\lambda$ for different task orders has been reported in Table~\ref{tab:lambda_settings}. $\lambda$ was selected based on performance on a small, held-out validation set. To establish an effective search range, we followed the common heuristic of choosing values that scale the regularization term, $\mathcal{L}_{\text{ELLA}}$ (promoting stability), to a similar order of magnitude as the current task accuracy loss (promoting plasticity) for balanced learning. We observed that performance was robust across this range and that a single $\lambda$ often generalized well across multiple subsequent tasks. The LoRA
+rank was set to $8$ for all experiments, and the proportion of past task data mixed in for replay methods was set to $2\%$ of the original training set. 
+
+% For Order $1$, Order $2$ and Order $3$, we set $\lambda= 30000$ for T$5$ and $\lambda= 3000000$ for LLaMA for all tasks. For every task in Order
+% $4$ (MNLI, CB, WiC, COPA, QQP, BoolQA, RTE, IMDB, Yelp, Amazon, SST-2, DBpedia, Agnews, MultiRC, Yahoo), we set $\lambda = 0, 5e5, 5e5, 5e5, 5e5, 5e5, 5e5, 5e5, 5e5,$ $5e5, 5e5, 5e5, 5e5, 5e5, 5e7$ for T$5$ and $\lambda = 5e8$ for all tasks except the first task where $\lambda =0$ for LLaMA respectively. For Order $5$, (MultiRC, BoolQA,
+% WiC, MNLI, CB, COPA, QQP, RTE, IMDB, SST-2,
+% DBpedia, Agnews, Yelp, Amazon, Yahoo), we set
+% $\lambda = 0, 5e6, 5e6, 5e6, 5e6, 5e6, 5e6, 5e6, 5e6, 5e6,$ $5e6, 5e6, 5e7, 5e7, 5e7$ for T$5$ and $\lambda = 0, 5e6, 5e6, 5e6, 5e6, 5e6, 5e6, 5e6, 5e6, 5e6, 5e6,$ $ 5e6, 5e7, 5e7, 5e7$ for LLaMA respectively. For Order $6$ (Yelp, Amazon, MNLI,
+% CB, COPA, QQP, RTE, IMDB, SST-2, DBpedia,
+% Agnews, Yahoo, MultiRC, BoolQA, WiC), we set
+% $\lambda = 5e5$ for all tasks except the first task where $\lambda =0$ for T$5$ and $\lambda = 5e8$ for all tasks except the first task where $\lambda =0$ for LLaMA respectively. For TRACE Order $7$ (C-STANCE, FOMC, MeetingBank, Py150, ScienceQA, NumGLUE-cm, NumGLUE-ds, 20Minuten) , we set $\lambda = 5e5$ for all tasks except the first task for T$5$ and $\lambda = 0, 5e7, 5e7, 5e7, 5e9, 5e9, 5e9, 5e9$ for LLaMA, respectively. 
+
+\begin{table*}[ht]
+\centering
+\resizebox{0.9\textwidth}{!}{%
+\begin{tabular}{cll}
+\toprule
+\textbf{Order} & \textbf{T$5$ $\lambda$} & \textbf{LLaMA $\lambda$} \\
+\midrule
+1--3 & $0, 3\times10^{4},\,\ldots,\, 3\times10^{4}$ & $0, 3\times10^{6},\,\ldots,\,3\times10^{6}$ \\
+\midrule
+4 & $0,\,5{\times}10^{5},\,\ldots,\,5{\times}10^{5},\,5{\times}10^{7}$ 
+  & $0,\,5{\times}10^{8},\,\ldots,\,5{\times}10^{8}$ \\
+\midrule
+5 & $0,\,5{\times}10^{6},\,\ldots,\,5{\times}10^{6},\,5{\times}10^{7},\,5{\times}10^{7},\,5{\times}10^{7}$ 
+  & $0,\,5{\times}10^{6},\,\ldots,\,5{\times}10^{6},\,5{\times}10^{7},\,5{\times}10^{7},\,5{\times}10^{7}$ \\
+\midrule
+6 & $0,\,5{\times}10^{5},\,\ldots,\,5{\times}10^{5}$ 
+  & $0,\,5{\times}10^{8},\,\ldots,\,5{\times}10^{8}$ \\
+\midrule
+7 & $0,\,5{\times}10^{5},\,\ldots,\,5{\times}10^{5}$ 
+  & $0,\,5{\times}10^{7},\,5{\times}10^{7},\,5{\times}10^{7},\,5{\times}10^{9},\,5{\times}10^{9},\,5{\times}10^{9},\,5{\times}10^{9}$ \\
+\bottomrule
+\end{tabular}}
+\caption{Coefficient $\lambda$ settings for different task orders in T$5$ and LLaMA.}
+\label{tab:lambda_settings}
+\end{table*}
+
+\section{Artifact Licenses}
+\label{license}
+According to their license, all the LLMs used in this paper fall under acceptable use cases. The licenses are listed for perusal: T$5$-Base (\url{https://huggingface.co/google-t5/t5-base}), T$5$-Large (\url{https://huggingface.co/google-t5/t5-large}), T$5$-XL (\url{https://huggingface.co/google/t5-v1_1-xl}), LLaMA-3.1-8b (\url{https://huggingface.co/meta-llama/Llama-3.1-8B/blob/main/LICENSE}).
+
+% \end{document}

@@ -1,0 +1,59 @@
+\begin{table}[]
+\centering
+\scalebox{0.66}{
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Task          & 2014                 & 2016                 & 2018                 & 2020                 \\ \midrule
+\multicolumn{5}{c}{Hashtag Prediction}                                                      \\ \midrule
+RoBERTa-base  & 56.65$_{\pm 0.6}$            & 45.50$_{\pm 2.1}$            & 48.08$_{\pm 1.0}$            & 56.42$_{\pm 0.2}$            \\
+Sequential PT        & 59.00$_{\pm 0.1}$            & 54.28$_{\pm 0.3}$            & 56.79$_{\pm 0.5}$            & 59.85$_{\pm 0.4}$            \\
+ER            & 59.00$_{\pm 0.1}$            & 54.90$_{\pm 0.2}$            & 56.93$_{\pm 0.1}$            & 59.56$_{\pm 1.7}$            \\
+Adapter       &     58.76$_{\pm 0.7}$         &         52.55$_{\pm 1.5}$             &           54.34$_{\pm1.7}$           &          59.01$_{\pm 1.0 }$            \\
+Logit-KD      &   60.93$_{\pm 0.5}$        &        55.96$_{\pm 0.2}$              &            58.21$_{\pm 0.5}$          &        60.52$_{\pm 0.2}$              \\
+Rep-KD        &      60.47$_{\pm 0.1}$           &      51.77$_{\pm 2.6}$                &              55.79$_{\pm 1.4}$        &          59.80$_{\pm 0.2}$ \\
+Contrast-KD   &       60.72$_{\pm 0.6}$         &      55.85$_{\pm 0.0}$              &         57.94$_{\pm 0.4}$         &     59.54$_{\pm 0.3}$                 \\
+SEED-KD & 58.82$_{\pm 0.4}$ & 54.55$_{\pm 0.5}$ & 56.87$_{\pm 0.2}$ & 59.71$_{\pm 0.2}$ \\
+SEED-Logit-KD &        61.28$_{\pm 0.2}$           &            55.59$_{\pm 0.5}$          &                57.75$_{\pm 0.4}$      &          60.74$_{\pm 0.6}$            \\
+Task-Specific (2014) & 61.62$_{\pm 0.3}$            & 55.38$_{\pm 0.6}$            & 56.16$_{\pm 0.6}$            & 59.59$_{\pm 0.3}$            \\
+Task-Specific (Latest) & 59.91$_{\pm 0.3}$            & 55.47$_{\pm 1.0}$            & 56.61$_{\pm 0.4}$            & 59.87$_{\pm 0.6}$            \\
+MTL           & 60.51$_{\pm 0.3}$            & 55.16$_{\pm 1.6}$            & 57.89$_{\pm 0.4}$            & 59.95$_{\pm 0.3}$            \\ \midrule
+               \multicolumn{5}{c}{Emoji Prediction}                                                      \\ \midrule
+RoBERTa-base  & 28.73$_{\pm 0.2}$            & 26.86$_{\pm 0.2}$            & 25.71$_{\pm 0.1}$            & 24.42$_{\pm 0.2}$            \\
+Sequential PT       & 32.69$_{\pm 0.2}$            & 30.55$_{\pm 0.3}$            & 29.30$_{\pm 0.1}$            & 27.69$_{\pm 0.1}$            \\
+ER            & 32.88$_{\pm 0.2}$            & 30.52$_{\pm 0.2}$            & 29.50$_{\pm 0.1}$            & 27.75$_{\pm 0.1}$            \\
+Adapter       &      32.15$_{\pm 0.2}$         &        29.85$_{\pm 0.0}$         &            28.72$_{\pm 0.0}$          &     26.80$_{\pm 0.3}$             \\
+Logit-KD      & 33.08$_{\pm 0.3}$            & 30.88$_{\pm 0.1}$            & 29.77$_{\pm 0.1}$            & 27.80$_{\pm 0.1}$            \\
+Rep-KD        &      32.71$_{\pm 0.2}$         &        30.51$_{\pm 0.2}$              &        29.45$_{\pm 0.1}$          &        27.27$_{\pm 0.2}$          \\
+Contrast-KD   & 32.90$_{\pm 0.1}$            & 31.01$_{\pm 0.1}$            & 29.48$_{\pm 0.2}$            & 27.72$_{\pm 0.3}$            \\
+SEED-KD & 32.91$_{\pm 0.1}$ & 30.84$_{\pm 0.3}$ & 30.12$_{\pm 0.1}$ & 27.66$_{\pm 0.1}$ \\
+SEED-Logit-KD &      33.28$_{\pm 0.1}$          &      31.17$_{\pm 0.1}$                &           29.98$_{\pm 0.1}$       &       27.84$_{\pm 0.2}$               \\
+Task-Specific (2014) & 33.37$_{\pm 0.2}$            & 30.54$_{\pm 0.3}$            & 28.94$_{\pm 0.0}$            & 26.98$_{\pm 0.2}$            \\
+Task-Specific (Latest) & 32.31$_{\pm 0.0}$            & 29.83$_{\pm 0.5}$            & 29.06$_{\pm 0.2}$            & 27.19$_{\pm 0.1}$            \\
+MTL           &  32.78$_{\pm 0.1}$  & 30.54$_{\pm 0.0}$ & 29.52$_{\pm 0.2}$ &  27.47$_{\pm 0.0}$ \\  \bottomrule
+\end{tabular}
+}
+\caption{\small Full performance on Twitter Hashtag prediction and Emoji prediction, fine-tuned from the pre-trained model in the final time step.}
+\label{tab:twitter_full}
+\end{table}
+
+
+
+% \begin{table}[]
+% \centering
+% \scalebox{0.72}{
+% \begin{tabular}{@{}lcccc@{}}
+% \toprule
+%           \textbf{Tweet year}  & \textbf{2014}      & \textbf{2016}      & \textbf{2018}      & \textbf{2020}      \\ \midrule
+% Roberta-base & 56.65$_{\pm 0.6}$ & 45.50$_{\pm 2.1}$ & 48.08$_{\pm 1.0}$ & 56.42$_{\pm 0.2}$ \\
+% Naive CL     & 59.00$_{\pm 0.1}$ & 54.28$_{\pm 0.3}$ & 56.79$_{\pm 0.5}$ & \textbf{59.85}$_{\pm 0.4}$ \\
+% ER           & 59.00$_{\pm 0.1}$ & 54.90$_{\pm 0.2}$ & 56.93$_{\pm 0.1}$ & 59.56$_{\pm 1.7}$ \\
+% %Logit-KD &   58.53$_{\pm 0.3}$     &    54.14$_{\pm 0.2}$   &  55.24$_{\pm 0.6}$         &    57.80$_{\pm 0.8}$     \\ 
+% Logit-KD$_{\text{first}}$ &   \textbf{59.31}$_{\pm 2.4}$     &    \textbf{55.12}$_{\pm 0.5}$   &  \textbf{56.99}$_{\pm 0.2}$         &    59.77$_{\pm 0.5}$     
+% \\ 
+% \midrule
+% Task-Specific LM      &   59.91$_{\pm 0.3}$    & 55.47$_{\pm 1.0}$ & 56.61$_{\pm 0.4}$ & 59.87$_{\pm 0.6}$ \\ \bottomrule
+% \end{tabular}
+% }
+
+
+% \end{table}

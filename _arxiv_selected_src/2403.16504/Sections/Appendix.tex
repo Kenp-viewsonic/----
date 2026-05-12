@@ -1,0 +1,274 @@
+% \begin{appendices}
+\lstnewenvironment{prompt}[1][]{%
+  \lstset{
+    basicstyle=\ttfamily,
+    frame=tb,
+    escapeinside=||,
+    breaklines=true,
+    #1
+  }%
+}{}
+
+\section{The details of single-turn model ($\mathcal{M}_c$)}
+\label{appendix:a}
+% To address the challenge above, we will not include all of the intents in $\mathcal{I}$ in the prompt of ICL. The intents to be included are narrowed down to a few candidate intents $\mathcal{I}_{candidates}$, by using the single-turn classification model $\mathcal{M}_c$. First, a list of queries combinations $\mathcal{Q}_{combinations}$ is created from the last query $q_n$ and its concatenation with each of the history queries in $\mathcal{C}_{\mathcal{Q}}$, such that $\mathcal{Q}_{combinations}$ = $q_n$, $q_1 \circ q_n$, ..., $q_{n-1} \circ q_n$. Here, the $\circ$ is just a simple text concatenation with a comma between two $q_i$s, where $1 \leq i \leq n$. The fine-tuned $\mathcal{M}_c$ is then used to perform inference on each of the concatenated queries to get a set of candidate intents $\mathcal{I}_{candidates} = \{I_{q_n}, I_{q_1 \circ q_n}, ..., I_{q_{n-1} \circ q_n}\}$. Note that $\mathcal{I}_{candidates}$ is a set, so duplicated intents will be removed, and the maximum size of $\mathcal{I}_{candidates}$, $M$, is equal to the number queries $n$ in a session. 
+
+% A hierarchical text classification model based on HITIN \cite{zhu2023hitin} is trained on the annotated single-turn dataset $\mathcal{D}$. By incorporating the intent structure, it gives high-quality classification results. Beam search decoding is performed on the model's 3-layer hierarchical intent results to derive the top 1 intent.
+
+
+% A text classification model is trained on the annotated single-turn dataset $\mathcal{D}$. Given a query $q$, we adopt the [CLS] embedding from XLM-RoBERTa-base (XLMR) model as the text representation $H$:
+% \begin{displaymath} H = \Phi_{XLMR}(q)^{[CLS]} \in \mathbb{R}^{d}, \end{displaymath}
+% where $d$ is the hidden dimension. $H$ is then fed into a linear layer along with a softmax function to obtain intent probability:
+% \begin{displaymath} P = softmax(H \cdot W_c + b_c) \end{displaymath}
+% where $W_c \in \mathbb{R}^{d \times |\mathcal{I}|}$ and $b_c \in \mathbb{R}^{|\mathcal{I}|}$ are the weights and bias of linear layer while $|\mathcal{I}|$ is the volume of intent set. 
+
+A text classification model is trained on the annotated single-turn dataset $\mathcal{D}$. The model is an ensemble of a simple label-attention model and a state-of-the-art global HTC approach. The label-attention model exploits local information per layer of the taxonomy by having separate classifier head for each intent taxonomy layer, whereas the global approach addresses the task with a single model for all the classes and levels. In our implementation, both approaches are trained as a single network and back propagation is performed on the ensembled output.
+
+The approaches share the same encoder and sentence representation. Given a query $q$, we adopt the [CLS] token embedding from XLM-RoBERTa-base model with weight $\Phi_{XLMR}$ as the text representation $H$. Formally, 
+$$ H = \Phi_{XLMR}(q)^{[CLS]} \in \mathbb{R}^{d} $$ where $d$ is the hidden dimension. 
+$\Phi_{XLMR}$ had been further pretrained with our in-domain corpus to give meaningful representation to [CLS] token. 
+
+% TODO: need to add intent sentence attention mechanism here?
+In the label-attention model, we have one classifier head for each intent layer. Each of the classifier heads has one hidden linear layer to obtain the layer intermediate output $L_l$, which encodes the layer information. This layer information will be utilised in the input of of the next layer classifier head. 
+% \[
+%     L_l = 
+% \begin{cases}
+%     \begin{aligned}[c] &H \cdot W^1_l \\ &+ b^1_l, W^1_l \in \mathbb{R}^{d \times d},\end{aligned} & \text{if } l = 1\\
+%     \begin{aligned}[c] &(H \oplus L_{l-1}) \cdot W^1_l \\ &+ b^1_l, W^1_l \in \mathbb{R}^{2d \times d},\end{aligned} & \text{if } l > 1
+% \end{cases}
+% \]
+% \[
+%     L_l = 
+% \begin{cases}
+%     H \cdot W^1_l + b^1_l, W^1_l \in \mathbb{R}^{d \times d},& \text{if } l = 1\\
+%     (H \oplus L_{l-1}) \cdot W^1_l + b^1_l, W^1_l \in \mathbb{R}^{2d \times d}, & \text{if } l > 1
+% \end{cases}
+% \]
+
+\[
+    L_l = 
+    \begin{cases}
+        HW^1_l + b^1_l, & \text{if } l = 1, \\
+        (H \oplus L_{l-1})W^1_l + b^1_l, & \text{if } l > 1,
+    \end{cases}
+\]
+where \( W^1_l \in \mathbb{R}^{d \times d} \text{ for } l = 1 \text{ and } W^1_l \in \mathbb{R}^{2d \times d} \text{ for } l > 1 \). $b^1_l \in \mathbb{R}^d$, $l$ is the layer number, $\oplus$ denotes tensor concatenation. Finally, we obtain the local logits $H_{local}^l$ for each layer classes by using another linear layer
+$$ H_{local}^l = L_l \cdot W^2_l + b^2_l, W^2_l \in \mathbb{R}^{d \times |\mathcal{I}_l|}, b^2_l \in \mathbb{R}^{|\mathcal{I}_l|} $$
+where $|\mathcal{I}_l|$ is the number of classes in the layer. 
+
+% TODO: Need to detail the algorithm here?
+However, the label-attention model used is not aware of the overall hierarchical structure. Therefore, we ensemble it with another method. We refer to HiTIN \cite{Zhu2023HiTINHT} for the implementation of state-of-the-art HTC global approach. In this method, a tree network is constructed based on the simplified original taxonomy structure, and the messages are propagated bottom-up in an isomorphism manner, which complements the label-attention model used. The embedding for leaf nodes are obtained by broadcasting the text representation $H$. After the tree isomorphism network propagation, all embedding from all layers are aggregated to form single embedding, and a classification layer is used to obtain the logits $H_{global}$ of all tree nodes. The logits are then split by the number of classes in each layer to obtain $H_{global}^l$.
+
+The final class probabilities for each layer $P_l$ is then obtained by
+$$ P_l = softmax(H_{local}^l + H_{global}^l) $$
+
+% TODO: Include single-turn performances in appendix
+% We included the improvements of HTC approaches in the appendix. 
+% HiTIN alone has better performance than the local approach, ensembling the two methods further improves the performance. The ensembled models form a strong baseline compared to the flat approach used in LARA pipeline, which is not aware of the taxonomic hierarchy during the in-context learning process. Hence, showing the effectiveness of LARA even being compared to a non-basic method.
+
+
+\section{Implementation Details}
+\label{appendix:b}
+
+% - models and hyperparameters
+% - context nlu and tradition model
+%    - backbone
+% - sft and icl models
+%    - learning rate, and size
+
+% In the LLM SFT approach, FastChat framework is used to LoRA-finetune 7B models on $q\_proj$, $v\_proj$, $o\_proj$, and $k\_proj$ modules with a learning rate of 2e-5 over 10 epochs. The 7B models used are Llama-2-7B and SeaLLM-7B-chat on Hugging Face. However, before finetuning on multi-turn intent recognition task, the Llama-2-7B base model is further LoRA-finetuned with the same setting above on a mix of ShareGPT dataset and in-domain live agent and customer chat transcript, and the weights are merged. Loss is calculated on all the model output including those after history queries. During inference, when the generated label has no exact match with any $r$ in $\mathcal{I}$, gestalt pattern matching is used to find the closest one.
+
+% In LARA, both 7B and 13B instruction-tuned LLMs are tested, i.e. vicuna-7b-v1.5, vicuna-7b-v1.5, and SeaLLM-7B-v2
+
+The traditional single-turn model, the retriever, and the concatenation decision model used are using backbone initialized with $\Phi_{XLMR}$, a multi-lingual domain specific XLM-RoBERTa-base model continued to be pre-trained with contrastive learning. We use AdamW to finetune the backbone and all other modules with a learning rate of 5e-6 and 1e-3, respectively. In LARA, the LLM used is vicuna-13b-v1.5 on Hugging Face with 13B parameters. All test are run on a single Nvidia V100 GPU card with a 32GB of GPU memory. The number of demonstrations $K$ retrieved for each intent is set at 10 in this experiment. We also experimented with numbers below 10, the lower the number, the lower the performance. 10 is the highest number we can fit due to GPU memory constraint. Due to this constraint as well, the total number of tokens the in-context learning demonstrations can make up to are limited to 2300 tokens. If exceeded, the number of demonstrations in each candidate intent are pruned equally starting with the ones with the lowest cosine similarity scores to $q_{all}$. During inference time, if the generated intent does not match any of the provided options, the intent of $\mathcal{M}_c$ on $q_n$ will be considered as the final result. 
+
+\subsection{Dataset Details}
+% Table \ref{table:data_train_test} 
+Table \ref{table:data_train_test} shows the number of samples in each dataset.  We have the single-turn training data available in abundance over the course of business operations after years. These single-turn samples will serve as the demonstration pool for in-context learning. To evaluate the effectiveness of our methods, we also have the CS teams to manually annotate some real multi-turn online sessions to serve as the test set. Each session queries $\mathcal{Q}$ will only have the last query $q_n$ labelled. 
+\begin{table}[t]
+\centering
+\scalebox{0.9}{
+\begin{tabular}{||c c c c c||} 
+ \hline
+ Market & Lang. & Intents & Train(ST) & Test(MT) \\ [0.5ex] 
+ \hline\hline
+ BR & pt & 316 & 66k & 372 \\ 
+ ID & id & 481 & 161k & 1145 \\
+ MY & en,ms & 473 & 74k & 1417 \\
+ PH & en,fil & 237 & 33k & 189 \\
+ SG & en & 360 & 76k & 737 \\
+ TH & th & 359 & 60k & 502 \\
+ TW & zh-tw & 373 & 31k & 353 \\
+ VN & vi & 389 & 178k & 525 \\ [1ex]
+ \hline
+\end{tabular}}
+\caption{The major languages, number of intents, and the number of samples in each market for Single Turn (ST) and Multi-Turn (MT). }
+\label{table:data_train_test}
+% \vspace{-0.5cm}
+\end{table}
+
+
+
+
+
+
+% \begin{prompt}[title={Vicuna prompt for chat log data cleaning}]
+% A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions.
+% USER: You will be shown the user enquiries in a chatbot session, follow the instructions precisely
+% [Instructions]
+% 1. Determine the option which can represent the last enquiry in the session
+% 2. Provide ONLY ONE selection for the final intention
+% 3. Consider only the last enquiry if it can lead to the best answer. Else, consider context from previous enquiries (ignore previous chichat / live agent requests / unclear enquiries)
+% 4. Start with an explanation
+
+% ``` Example 1
+% [Session]
+% enquiry 1: shopee food
+% enquiry 2: can i cancel my order?
+
+% [Options]
+% A. logistics--order cancellation--request to cancel order (can I cancel my order?)
+% B. shopeefood--order cancellation--request to cancel order (can I cancel my shopeefood order?)
+
+% [Answer]
+% EXPLANATION: The last enquiry is clear about cancelling an order, but we don't know what type of order it is. Since the first enquiry mentions "Shopee Food", which is a food delivery service. Therefore, it is likely that the user is referring to a Shopee Food order.  
+% BEST OPTION: B. shopeefood--order cancellation--request to cancel order (can I cancel my shopeefood order?)
+
+% ``` Example 2
+% [Session]
+% enquiry 1: how do i request for redelivery?
+% enquiry 2: i went to collection point yesterday but the shop was closed. 
+
+% [Options]
+% A. logistics--general enquiries--collection store is closed (What if the collection store is closed?)
+% B. logistics--to receive--re-attempt delivery (How do I request for redelivery?)
+
+% [Answer]
+% EXPLANATION: In the final enquiry, it is clear enough that the user was saying that the collection point was closed when he visited it. Although the user first asked about redelivery, it is not related to the last enquiry.  
+% BEST OPTION: A. logistics--general enquiries--collection store is closed (What if the collection store is closed?)
+
+% ``` Your turn
+% [Session]
+% {}
+
+% [Options]
+% {}
+
+% ASSISTANT:
+% \end{prompt}
+
+
+% \begin{prompt}[title={Prompt for SFT approach},mathescape=true]
+% A chat between a curious user and an artificial intelligence assistant.\nThe assistant gives helpful, detailed, and polite answers to the user's questions.\n USER: $q_1$ ASSISTANT: The intent title is $r_1$.</s>USER: $q_2$ ASSISTANT: The intent title is $r_1$.</s>USER: $q_n$. ASSISTANT:
+% \end{prompt}
+
+\section{Prompt Demonstration}
+\label{appendix:c}
+
+\subsection{Prompt for ICL ($\mathcal{P}$)}
+To fit the width of this paper, we use SQ to represent Similar Question.
+\begin{prompt}[title={Prompt for ICL ($\mathcal{P}$)},mathescape=true]
+# Task Description
+A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions. USER: Determine the intent for the targetted message from the examples, you must use the context in the history messages to arrive at the best answer. 
+# Examples
+[Content] SQ_1 [Intent] Intent_name_1
+[Content] SQ_2 [Intent] Intent_name_2
+[Content] SQ_3 [Intent] Intent_name_3
+
+# Note
+DO NOT create new intent on your own, you must strictly use the intents in the examples.
+DO NOT provide any explanation.
+Output ONLY ONE intent for the targgetted message.
+Consider the context from previous messages if the targetted message is unclear.
+
+# Context
+message 1: User's query
+message 2: User's query with Entity
+[Content] Last user's query
+
+# Output
+ASSISTANT: [Intent] <$Model$ $generated$ $Intent\_name$>
+\end{prompt}
+
+\subsection{Prompt for ICL ($\mathcal{P}_{symbolic}$)}
+In $\mathcal{P}_{symbolic}$ the original label name $l$ of each intent in $\mathcal{E}_{symbolic}$ are replaced with single-token symbols, e.g. `A', `B', ..., which bear no meaning to the intents they represented. Explanation will be made in the instruction prompt $\mathcal{T}_{symbolic}$ to link the symbols back to their original intent label $y_j$, and the model is instructed to generated the symbols instead of full label names. 
+
+\begin{prompt}[title={Prompt for ICL ($\mathcal{P}_{symbolic}$)},mathescape=true]
+# Task Description
+Content is Same as $\mathcal{P}$
+
+# Examples
+[Content] SQ_1 [Intent] A
+[Content] SQ_1 [Intent] B
+<$omitted$>
+[Content] SQ_1 [Intent] B
+
+# Intent options
+A is Intent_name_1
+B is Intent_name_2
+
+# Note
+Content is Same as $\mathcal{P}$
+
+# Context
+Format is same as $\mathcal{P}$
+
+# Output
+ASSISTANT: [Intent]
+\end{prompt}
+
+\subsection{$\mathcal{P}_{prepend}$}
+In $\mathcal{P}_{prepend}$, representative symbols for each intent will be prepend to the original label name $l$, such that they are separated by an extra character as boundary, e.g. label ``logistics$>$how long will it take to receive order?" will be represented as ``A$>$logistics$>$how long will it take to receive order?". Note that the instruction prompt $\mathcal{T}$ remains the same, the trick is to limit the model generation token count to 1 on API level. 
+
+\begin{prompt}[title={Prompt for ICL ($\mathcal{P}_{prepend}$)},mathescape=true]
+# Task Description
+Content is Same as $\mathcal{P}$
+
+# Examples
+[Content] SQ_1 [Intent] A>Intent_name_1
+[Content] SQ_2 [Intent] B>Intent_name_2
+<$omitted$>
+[Content] SQ_3 [Intent] B>Intent_name_2
+
+# Note
+Content is Same as $\mathcal{P}$
+
+# Context
+Format is same as $\mathcal{P}$
+
+# Output
+ASSISTANT: [Intent] B
+\end{prompt}
+
+
+\subsection{$\mathcal{P}_{formatted}$}
+\begin{prompt}[title={Prompt for ICL ($\mathcal{P}_{formatted}$)},mathescape=true]
+# Task Description
+Content is Same as $\mathcal{P}$
+
+# Examples
+Format is same as $\mathcal{P}_{prepend}$
+
+# Note
+Content is Same as $\mathcal{P}_{prepend}$
+
+# Context
+[History msg 1] Query
+[History msg 2] Query with Entity
+[Content] that is the order id 
+
+# Output
+ASSISTANT: [Intent]
+\end{prompt}
+
+
+\section{More Light-weight Deployment Method}
+\label{apendix:d}
+
+The multi-component architecture can be complicated to implement for real-time systems. Alternatively, this method can be used offline as a multi-turn data pseudo-labeling tool to train a classification model. The training method will be the same as the $\mathcal{M}_c$ classifier in the paper, just with pseudo-labeled multi-turn data added to the original data with only single-turn samples. We also did experiment to ensure the quality of the model trained pseudo-labelled data.
+
+The prompt used for the experiment is $\mathcal{P}_{formatted}$. Since this is not a real-time task, and we don’t need to care about the pipeline response time, we also did self-consistency checking on the LLM outputs to ensure the quality of pseudo-labels. For this checking, the in-context learning part is run three times per sample, with the in-context examples sorted in three fashions according to their scores: ascending, descending, and random. 70k of online chat logs are sampled for pseudo-labelling, and only those having consistent labels after 3 runs will be kept for training. Around 12\% of the data will yield inconsistent results and be discarded. We validated that doing self-consistency this way can improve the average accuracy by \textbf{4.48\%} (from 64.64\% to 69.12\%), and thus the quality of the pseudo-label.
+
+Moreover, the classifier trained with the high-quality multi-turn data generated by our pipeline can achieve better overall performance than the best original proposed method by \textbf{1.89\%} (64.64\% vs 66.53\%). This is all while cutting the deployment cost to just one classical classification model, but with the trade off of offline training time.
+
+% \end{appendices}

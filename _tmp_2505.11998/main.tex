@@ -1,0 +1,1339 @@
+
+\documentclass[10pt]{article} % For LaTeX2e
+% \usepackage{tmlr}
+% If accepted, instead use the following line for the camera-ready submission:
+% \usepackage[accepted]{tmlr}
+% To de-anonymize and remove mentions to TMLR (for example for posting to preprint servers), instead use the following:
+\usepackage[preprint]{tmlr}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+
+% extra packages
+\usepackage[noend]{algpseudocode}
+\usepackage{algorithm}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsmath,amsfonts}       % blackboard math symbols
+\usepackage{natbib} % for \citet and \cite
+% \bibliographystyle{plainnat} % ✅ Choose citation style (plainnat is standard)
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+\usepackage{amssymb}
+\usepackage{graphicx}
+% \usepackage{subfig}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\usepackage{wrapfig,lipsum}
+% \addbibresource{references.bib} %Import the bibliography file
+\usepackage{multirow}
+\usepackage{subfig}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+% \theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+% \theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\makeatletter
+\newcommand{\printfnsymbol}[1]{%
+  \textsuperscript{\@fnsymbol{#1}}%
+}
+
+
+\title{Parameter Efficient Continual Learning with Dynamic Low-Rank Adaptation}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the tmlr package is used without the [accepted] or [preprint] options.
+% Non-anonymous submissions will be rejected without review.
+
+% \author{
+% Prashant Bhat\textsuperscript{1}, 
+% Shakib Yazdani\textsuperscript{\rm,3}, 
+% Elahe Arani\textsuperscript{\rm,1,2}, 
+% Bahram Zonooz\textsuperscript{\rm,1} \\
+% \textsuperscript{\rm 1}Eindhoven University of Technology (TU/e)~~ 
+% \textsuperscript{\rm 2}Wayve ~~
+% \textsuperscript{\rm 3}Saarland University \\
+% \texttt{\{p.s.bhat, e.arani, b.zonooz\}@tue.nl, shakib.yazdani@uni-saarland.de}
+% }
+
+\author{\name Prashant Shivaram Bhat \email p.s.bhat@tue.nl \\
+      \addr Eindhoven University of Technology (TU/e)
+      \AND
+      \name Shakib Yazdani \email shakib.yazdani@uni-saarland.de \\
+      \addr Saarland University
+      \AND
+      \name Elahe Arani \email e.arani@tue.nl\\
+      \addr Eindhoven University of Technology (TU/e) \\
+      Wayve 
+      \AND
+     \name Bahram Zonooz \email b.zonooz@tue.nl\\
+      \addr Eindhoven University of Technology (TU/e) 
+      }
+
+% The \author macro works with any number of authors. Use \AND 
+% to separate the names and addresses of multiple authors.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\def\month{01}  % Insert correct month for camera-ready version
+\def\year{2026} % Insert correct year for camera-ready version
+\def\openreview{\url{https://openreview.net/forum?id=ZqQATq0Geg}} % Insert correct link to OpenReview for camera-ready version
+
+
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+  Catastrophic forgetting has remained a critical challenge for deep neural networks in Continual Learning (CL) as it undermines consolidated knowledge when learning new tasks. Parameter efficient fine-tuning CL techniques are gaining traction for their effectiveness in addressing catastrophic  forgetting with lightweight training schedule while avoiding degradation of consolidated knowledge in pre-trained models. However, low-rank adapters (LoRA) in these approaches are highly sensitive to rank selection as it can lead to suboptimal resource allocation and performance. To this end, we introduce PEARL, a rehearsal-free CL framework that entails dynamic rank allocation for LoRA components during CL training. Specifically, PEARL leverages reference task weights\footnotemark[2] and adaptively determines the rank of task-specific LoRA components based on the current task's proximity to reference task weights in parameter space. To demonstrate the versatility of PEARL, we evaluate PEARL across three vision architectures (ResNet, Separable Convolutional Network, and Vision Transformer) and a multitude of CL scenarios, and show that PEARL outperforms all considered baselines by a large margin. 
+% \footnote{Code will be released upon acceptance. }
+\end{abstract}
+
+\section{Introduction}
+
+Learning forms the foundation for intelligent systems to adapt to dynamic environments in response to external changes. Unlike conventional deep neural networks (DNNs) that are designed for static data distribution, Continual Learning (CL) is characterized by learning from sequential, dynamic data distribution \citep{wang2023comprehensive}.  However, CL has remained a significant challenge for DNNs due to the issue of catastrophic forgetting: A phenomenon in which adaptation to new tasks results in significant deterioration of consolidated knowledge \citep{masana2022class, de2021continual, ditzler2015learning, robins1995}. A number of approaches such as rehearsal-based (e.g., \citet{buzzega2020dark}), weight-regularization based (e.g., \citet{kirkpatrick2017overcoming}) and parameter-isolation based (e.g., \citet{rusu2016progressive}) have been proposed in the literature to address the problem of catastrophic forgetting in CL. Although CL is primarily intended to ensure the resource efficiency of model updates \citep{wang2023comprehensive}, the reduction in catastrophic forgetting in these approaches is reliant on increases in computational and memory footprint due to model surrogates and memory buffer. Extrapolating forward this reliance in real world scenarios is both economically and environmentally infeasible. 
+% Therefore, there is an imminent need for efficient, scalable CL approaches that are devoid of model surrogates and experience rehearsal. 
+
+% \begin{figure}[t]
+% \centering
+% \includegraphics[ width=0.5\linewidth]{images/main.pdf}
+% \caption{Depiction of the PEARL framework for a certain layer (either linear, convolutional, or point-wise) within a neural network when training for the third task. For each task, we train task-specific, layer-specific LoRA components alongside fixed reference task weights. During training, PEARL enables dynamic rank allocation for LoRA components based on the current task’s proximity to reference task weights in parameter space. }
+% \label{fig:depiction_PEARL}
+% \end{figure}
+
+% Unlike artificial agents, humans demonstrate a remarkable aptitude for acquiring, retaining, and utilizing knowledge across a wide range of tasks, typically avoiding the issue of catastrophic forgetting. The brain's continuous learning process is shaped by a conscious interplay of various knowledge bases, underpinned by intricate neurophysiological mechanisms \cite{goyal2020inductive}. In cognitive neuroscience, Global Workspace Theory (GWT) \cite{baars2005global, baars2021global, dehaene2021consciousness} proposed an architecture for cognitive information access in brain and suggested that there exists a common representation space of fixed capacity from which information is selected, maintained, and shared with the rest of the brain \cite{juliani2022on}. Furthermore, functionally specialized components create a communication bottleneck between the representation space and the global workspace, thereby retrieving only the relevant information \cite{goyalcoordination}. Conscious information processing of this nature could support the brain in lessening task interference and achieving systematic generalization \cite{bengio2017consciousness}, and in addressing problems that can only be resolved through the collaboration of multiple specialized modules \cite{vanrullen2021deep}. Likewise, enabling efficient specialist modules to interact with shared information in DNNs could strengthen their resolve against catastrophic forgetting in CL. 
+
+
+The increased availability of pre-trained models that demonstrate strong generalization capabilities has led researchers to discover early exploratory methods \citep{douillard2022dytox, jeeveswaran2023birt, gao2024consistent, yang2024generating}, facilitating more efficient integration of new knowledge in CL systems. However, continuous fine-tuning on multiple downstream tasks compromises pre-trained model's generalization capabilities \citep{liu2024parameter}. Recently, Parameter Efficient Fine-Tuning (PEFT) CL techniques \citep{liang2024inflora, zhou2024expandable} are on the rise as they provide lightweight training schedule while avoiding degradation of consolidated knowledge in pre-trained models. However, it is not clear how one can select the size of their rank (in case of LoRA \citep{hu2021lora}) while their performance is very sensitive to rank selection \citep{valipour2022dylora}. 
+Although choosing a higher rank usually results in optimal performance, it significantly increases the number of learnable parameters in longer task sequences when using large pre-trained models.
+% To this end, a number of dynamic rank allocation approaches \cite{zhang2023adaptive, mao2024dora, valipour2022dylora} have been proposed in the literature. 
+ Task arithmetic \citep{ilharcoediting}, which enables model compression using simple arithmetic operations with task vectors (difference between pre-trained and fine-tuned weights) \citep{chitale2023task}, allows for selection of higher rank during training without any overhead during inference. 
+Task arithmetic assumes that fine-tuning a pre-trained model pushes the weights away towards a semantically relevant direction in the weight space, thus enabling model compression using simple arithmetic operations with task vectors \citep{chitale2023task}. 
+However, task arithmetic suffers from number of shortcomings including finding optimal scaling coefficients and suboptimal performance in the absence of a memory buffer \citep{zhou2024metagpt}. 
+
+Typically, when using arbitrary weights, a higher rank usually facilitates learning new tasks but tends to increase forgetting with significant increase in number of parameters, while lower-rank mitigates forgetting with limited adaptation \citep{lu2024adaptive, biderman2024lora}. There often exists a balance between plasticity and stability at a moderately small (but not too small) rank, which may enhance the benefits of CL \citep{lu2024adaptive}. 
+% To this end, a number of dynamic rank allocation approaches \cite{zhang2023adaptive, mao2024dora, valipour2022dylora, lu2024adaptive} have also been proposed in the literature. However, these approaches are not tailored for vision CL as they do not account for task dynamics within CL (Refer \ref{appendix:dynamic_lora_methods}). 
+% As both static rank allocation and task arithmetic suffer from several shortcomings, dynamic rank allocation devoid of experience rehearsal could be quite handy in lessening catastrophic forgetting while ensuring optimal resource allocation. 
+To this end, we introduce \textbf{PEARL} (Parameter-Efficient Adaptive Ranking for lifelong learning with LoRA), a rehearsal-free, parameter-isolation-based PEFT vision CL framework that mitigates catastrophic forgetting through dynamic low-rank adaptation. 
+% (illustrated in Figure \ref{fig:depiction_PEARL}). 
+Specifically,  PEARL leverages the information contained in the reference task weights \footnote{We use \textit{reference task} interchangeably with pre-training when available. Otherwise, it refers to the first task in CL.} and dynamically determines the rank of task-specific, layer-specific LoRA components during training based on the current task’s proximity to reference task weights in parameter space. With our dynamic threshold criterion, a close proximity would result in a lower rank allocation and maximum information re-use while a distant proximity results in a larger rank selection, thereby finding an optimal balance between learning and forgetting. To demonstrate the versatility of PEARL, we perform extensive analyses across various datasets, multiple CL scenarios and different architectures, an overview of which can be found in Appendix \ref{appendix:overview_expts}.
+% (Seq-CIFAR100, Seq-TinyImageNet, ImageNet-R), multiple CL scenarios (Class-Incremental Learning (Class-IL) and Task-Incremental Learning (Task-IL)), and different architectures (ResNet-18, Separable Convolutional Network, and Vision Transformer). 
+Our results demonstrate that PEARL variants consistently outperform the evaluated baselines in all scenarios by a huge margin. Our contributions are as follows:
+
+\begin{itemize}
+    \item We propose PEARL, a generic PEFT vision CL framework that mitigates catastrophic forgetting in CL through dynamic low-rank adaptation. PEARL is rehearsal-free and grows modestly with each task (Table \ref{tab:growth}) by assigning optimal rank for task-specific, layer-specific LoRA components, resulting in maximum information reuse. 
+    \item We propose a simple, dynamic threshold criterion (Eqn. \ref{eqn:threshold_dynamic}) guided by the current task's proximity to the reference task weights in the parameter space. 
+    % \item To demonstrate the versatility of PEARL, we perform extensive analyses with three different vision architectures (ResNet, Separable Convolutional Network, and Vision Transformer) on a multitude of CL scenarios and show that these variants outperform all considered baselines by a significant margin. 
+
+    \item We conduct extensive experiments across 3 different architectures (ResNet, Separable Convolutional Network, and Vision Transformer), 8 distinct settings, 2 CL scenarios, and 2 CL metrics  to clearly demonstrate that PEARL significantly outperforms the considered baselines. To further substantiate our claims, we provide 10+ comprehensive analysis in Appendix \ref{addition_analysis}.
+    
+\end{itemize}
+ 
+
+
+
+
+\section{Related Works}
+
+\textbf{Exemplar and Non-Exemplar Based CL}: Experience Rehearsal (ER), which stores and replays samples from previous tasks, has remained a leading approach to addressing the issue of catastrophic forgetting in CL. Several works build upon ER: DER++ \citep{buzzega2020dark} proposed a consistency regularization technique to enhance stability and generalization. Guided by the GWT, TAMiL \citep{bhat2022task} and AGILE \citep{bhat2024mitigating} incorporate information reuse and task-specific, parameter-efficient adapters that re-project the backbone features onto a global workspace. However, these approaches face additional computational and memory overhead due to model surrogates and experience rehearsal. Since storing samples from previous tasks is not always feasible, non-exemplar-based approaches are gaining traction. Non-Exemplar Class-IL (NECIL) is particularly important in scenarios where data confidentiality is crucial due to privacy or security concerns, and where data storage has a limited lifespan. Early contributions to this domain include LwF \citep{li2017learning} and EWC \citep{kirkpatrick2017overcoming}, both of which employ regularization techniques to reduce catastrophic forgetting. More recent methods, such as PASS \citep{zhu2021prototype} and IL2A \citep{zhu2021class}, have further advanced NECIL by generating prototypes for previous classes without the need to retain the original images. SSRE \citep{zhu2022self} introduced a reparameterization method to balance old and new knowledge, along with additional self-training that utilizes external data as an alternative to exemplars. FeTrIL \citep{petit2023fetril} proposed a framework that combines a fixed feature extractor with a pseudo-feature generator using geometric transformations to achieve a better stability-plasticity balance. FeCAM \citep{goswami2024fecam} addressed the limitations of Euclidean distance when feature distributions are non-stationary and suggested using anisotropic Mahalanobis distance as a substitute for Euclidean distance when employing a frozen feature extractor for prototype classification. Overall, the NECIL benchmark presents a significant challenge as it prohibits the storage of any samples from previous tasks while requiring effective performance in a Class-IL setting. PEARL also aligns with the NECIL benchmark as it operates without any experience rehearsal.
+
+
+% \subsection{Continual learning}
+% \textbf{Continual Learning} \cite{wang2023comprehensive, masana2022class, de2021continual, ditzler2015learning, robins1995} has remained one of biggest challenges for deep neural networks due to the phenomenon called catastrophic forgetting. Due to its simplicity, Experience Rehearsal (ER) has remained a front-runner to address the problem of catastrophic forgetting in CL. 
+
+% \textbf{Exemplar and Non-Exemplar based CL}: Experience Rehearsal (ER), which stores and replays previous task samples has remained a front-runner to address the problem of catastrophic forgetting in CL. 
+% Several works build on top of ER: DER++ \cite{buzzega2020dark} proposed a consistency regularization to improve stability and generalization. Guided by the GWT, TAMiL \cite{bhat2022task} and AGILE \cite{bhat2024mitigating} entail information re-use and task-specific parameter-efficient adapters that re-project the backbone features onto a global workspace. However, these approaches suffer from additional compute and memory overhead due to model surrogates and experience rehearsal. As storing previous task samples is not always a feasible option, non-exemplar based approaches are on the rise: NECIL is particularly advantageous in situations where data confidentiality is paramount due to privacy or security concerns, and where the lifespan of data storage is restricted. Early contributions to this field include Learning without Forgetting (LwF) \cite{li2017learning} and Elastic Weight Consolidation (EWC) \cite{kirkpatrick2017overcoming}, both of which utilize regularization techniques to mitigate the effects of catastrophic forgetting. More recent methods, such as PASS \cite{zhu2021prototype} and IL2A \cite{zhu2021class}, have enhanced NECIL by generating prototypes for previous classes without needing to retain the original images. SSRE \cite{zhu2022self} introduced a reparameterization method for balancing old and new knowledge, and additional self-training that leverages external data as an alternative for exemplars.
+% FeTrIL \cite{petit2023fetril} proposed a framework that integrates a fixed feature extractor with a pseudo-feature generator using geometric transformations to achieve a better stability-plasticity balance. FeCAM \cite{goswami2024fecam} identified the problems with Euclidean distance when feature distributions are non-stationary and proposed anisotropic Mahalanobis distance as a replacement for Euclidean distance when using a frozen feature extractor for prototype classification. Overall,  NECIL benchmark presents a significant challenge as it prohibits the storage of any samples from previous tasks while requiring effective performance in a Class-IL setting. PEARL also falls under NECIL benchmark as it is devoid of any experience rehearsal. 
+
+
+% : a phenomenon in which learning sequential tasks leads to partial or complete loss of consolidated knowledge. In order to overcome catastrophic forgetting, the CL system must, on one hand, entail ability to acquire new knowledge and, on the other, prevent the novel input from interfering with the consolidated knowledge \cite{Parisi2018ContinualLL}. Several approaches such as rehearsal-based, regularization-based  and parameter-isolation based methods have been proposed in the literature to mitigate the impact of catastrophic forgetting in CL. However, Experience rehearsal methods \cite{li2022learning,  tiwari2022gcr, cha2021co2l, buzzega2020dark} utilize memory buffers and model surrogates (e.g. multiple exponential moving averages of model weights) to replay past experiences during training, leaving large memory and computational footprint. Therefore, these approaches are impractical for memory-constrained environments, such as edge devices. Similarly, weight regularization \cite{kirkpatrick2017overcoming, li2017learning, liu2020more, abbasi_sparsity_2022, park2019continual, sun2023decoupling} approaches rely on model surrogates in the form of frozen networks to consolidate past knowledge, but they often struggle in class-incremental learning (Class-IL) settings, where distinguishing between classes learned across different tasks becomes challenging \cite{lesort2019regularization}. Parameter isolation methods \cite{golkar2019continual, gurbuz2022nispa, kang2022forget, wang2022sparcl} allocate distinct parameters for each task to prevent interference between tasks but suffer from capacity saturation in longer task sequences when working within a fixed model capacity or leaving large memory footprint when allowed to grow beyond. Therefore, the reliance on memory buffer and model surrogates in these approaches makes them difficult to scale for real-world applications, where memory constraints are a critical consideration. 
+
+\textbf{Parameter Efficient Fine-Tuning (PEFT)} techniques that have emerged in the space of Large Language Models have been quite pivotal in optimizing model performance with little memory and computational overhead. Seminal works such as Adapter modules \citep{houlsby2019parameter},  Prompt Tuning \citep{brown2020language}, BitFit \citep{zaken2021bitfit}, LoRA \citep{hu2021lora}, and DoRA \citep{liu2024dora} have demonstrated the efficacy of selective fine-tuning all the while preserving model generalization and enhancing model adaptability. Specifically, LoRA introduces two compact, trainable low rank matrices into each layer's weight matrix, allowing model to adapt to new tasks with minimal memory and computational footprint. Within CL, several approaches leverage PEFT techniques to mitigate catastrophic forgetting: Prompt-based methods such as L2P \citep{wang2022learning} and DualPrompt \citep{wang2022dualprompt} introduce task-specific prompts to facilitate learning new tasks while preserving consolidated knowledge. S-Prompt \citep{wang2022s} and CODA-Prompt \citep{smith2023coda}  extend these works by employing structural prompts to map discriminative relationships and through Schmidt orthogonalization respectively. In order to maintain an optimal balance between computational complexity and accuracy, adapter-based methods such as SEMA \citep{SEMA} and DIA \citep{DIA} propose self-expanding, dynamic integration of task-specific adapters. Similarly, EASE \citep{zhou2024expandable} creates task-specific sub-spaces by employing lightweight adapter modules for each new task, thereby maintaining resource efficiency.  
+% TSVD \cite{TSVD} continually truncating the singular value decomposition (SVD) of 
+In contrast to adapter-based methods, InfLoRA \citep{liang2024inflora} inserts a small number of LoRA parameters to re-parameterize the pre-trained weights and shows that fine-tuning these inserted parameters is equivalent to fine-tuning the pre-trained weights within a subspace. C-LoRA \citep{DBLP:journals/corr/abs-2304-06027} incorporates a self-regularization strategy, which penalizes updates to parameters already modified by previous tasks. This mechanism helps preserve prior knowledge and enhances stability across sequential tasks. While these approaches have shown relative success, their implementation is tailored specifically to pre-trained vision transformers and do not consider task dynamics, limiting the potential for information reuse and dynamic resource allocation.
+
+\textbf{Task Arithmetic} \citep{ilharcoediting}, centered around task vectors, offers a new paradigm for steering the behavior of pre-trained / reference network towards multiple downstream tasks using task similarity. Inspired by recent works on weight interpolation \citep{frankle2020linear, ilharco2022patching, ainsworth2022git}, task vectors are defined to be the element-wise difference between pre-trained / reference network weights before and after fine-tuning on a particular task. A task vector specifies a direction in the weight space of a pre-trained model, such that movement in that direction improves performance on a given task \citep{ilharcoediting}. As these task vectors can be modified and combined together in simple arithmetic operations, new tasks can be learnt via addition while interfering tasks can be forgotten via negation. Inspired by these findings, \citet{chitale2023task} proposed an approach to continually train transformer-based vision models using low-rank adaptation and task arithmetic. Although task arithmetic is quite lucrative for its simplicity and intuitiveness, it suffers from several shortcomings such as finding optimal scaling coefficients and sub-optimal performance in the absence of memory buffer to finetune the network after weight aggregation \citep{zhou2024metagpt}. 
+
+To this end, we propose PEARL, a generic PEFT CL framework that leverages task arithmetic to dynamically decide the rank of task-specific, layer-specific LoRA components during training. PEARL is tailored for custom, compact CL, enabling maximum information reuse and modest growth in number of parameters with new tasks in order. 
+
+\section{Method}
+
+Our CL setup consists of $t \in \{ 1, 2,..,K\}$  sequential tasks wherein the CL model $\Phi_\theta$, parameterized by $\theta$, is expected to perform equally well on both current and previous tasks. Each task entails a task-specific independent and identically distributed data distribution $\mathcal{D}_t$ with $\{(x_i, y_i)\}_{i=1}^{N}$ pairs. In rehearsal-free approaches, access to previous task data distributions is limited when learning a new task. This limitation makes CL especially challenging, as it becomes difficult to maintain performance on older tasks without access to their data distributions. Traditional parameter-isolation methods typically employ task-specific, parameter-intensive sub-networks that are learned in isolation, resulting in a substantial memory and computational footprint. Thus, to strike a balance between model size and performance in rehearsal-free approaches, it is essential to re-use information and enhance the learning of new tasks through parameter-efficient sub-networks. To this end, PEARL is designed to leverage the information aggregated during the reference task training through the dynamic allocation of parameter-efficient low-rank adapters. In the subsequent sub-sections, we detail out the different stages of PEARL development.
+
+% Specifically, PEARL is parameterized as $\theta = \cup_{t=1}^k \theta^{(t)} \cup \theta^r  = \cup_{t=1}^k \{f_{\theta^{t}}, g_{\theta^{t}}  \} \cup \{f_{\theta^{r}}, g_{\theta^{r}}\}$, consists of a disjoint set of task-specific parameters and a set of reference task parameters respectively. The feature extractor $f_{\theta^{t}}$ incorporates low-rank adapters and normalization layers, while the classifier $g_{\theta^{t}}$  encompasses all classes pertinent to the respective task. In contrast, the reference task feature extractor $f_{\theta^{r}}$ typically comprises a larger network that integrates convolutional or self-attention layers, pooling layers, and normalization layers, with the classifier $g_{\theta^{r}}$ representing the classes learned during the pre-training phase. In the subsequent sub-sections, we detail out the different stages of PEARL development. 
+
+\subsection{Information aggregation during reference task training}
+Our CL model parameterized as $\theta = \cup_{t=1}^k \theta^{(t)} \cup \theta^r  = \cup_{t=1}^K \{f_{\theta^{t}}, g_{\theta^{t}}  \} \cup \{f_{\theta^{r}}, g_{\theta^{r}}\}$, consists of a disjoint set of task-specific parameters and a set of reference task parameters respectively. The feature extractor $f_{\theta^{t}}$ incorporates low-rank adapters and normalization layers (only in CNNs), while the classifier $g_{\theta^{t}}$  encompasses all classes pertinent to the respective task. In contrast, the reference task feature extractor $f_{\theta^{r}}$ typically comprises of a larger network that integrates convolutional or self-attention layers, pooling layers, and normalization layers, with the classifier $g_{\theta^{r}}$ representing the classes to be learned during the reference task training. To restrict the empirical risk, PEARL minimizes the following objective during reference task training:
+
+
+\begin{equation}
+    \mathcal{L}_{r} = \frac{1}{\left|b\right|} \sum_{\substack{(x, y) \sim b, ~ b \in  \mathcal{D}_{r}}} \mathcal{L}_{ce} (\sigma (g_{\theta^{r}}(f_{\theta^{r}}(x))), y)
+\label{eqn_reference_task}
+\end{equation}
+
+where ${b}$ is a training batch, $\mathcal{L}_{ce}$ is cross-entropy loss, $\mathcal{D}_{r}$ is the data distribution for the reference task, and $\sigma(.)$ is the softmax function. Since pre-trained models demonstrate strong generalization capabilities, we expect to aggregate generic information that can be re-used across tasks later during CL. In scenarios where pre-training on a large corpus of data is not a possibility, the first task in a CL setup can also be used as a reference task. 
+
+\subsection{Information re-use and dynamic resource allocation  during CL}
+
+We leverage the knowledge captured in the reference task training and model additional task-specific information pertaining to respective tasks through dynamically allocated low-rank adapters. Let $\mathcal{W}^{r} \in f_{\theta^{r}}$ be the weight matrix of a certain layer (either linear, convolutional, or point-wise) belonging to the reference task after its training and $\mathcal{W}^{t} \in f_{\theta^{t}}$ be the  corresponding weight matrix belonging to current task after finetuning $\mathcal{W}^{r}$ on $\mathcal{D}_t$. The task vector $\mathcal{W}^{t}_{c}$ is given by the element-wise difference between $\mathcal{W}^{t}$ and $\mathcal{W}^{r}$ i.e., $\mathcal{W}^{t}_{c}= \mathcal{W}^{t} - \mathcal{W}^{r}$. In other words, task vector $\mathcal{W}^{t}_{c}$ can be thought of as a weight matrix signaling the additional information on top of the information contained in the reference task weights. Therefore, PEARL leverages parameter-efficient low-rank adapters to model task vectors to efficiently learn the current task. To this end, we decompose  $\mathcal{W}^{t}_{c}$ (flattened and reshaped to 2D if necessary) using Singular Value Decomposition (SV-Decomposition) as follows: 
+
+
+\begin{algorithm}[tb]
+\caption{PEARL (with pre-training)}
+\label{alg:PEARL_pretraining}
+\begin{algorithmic}[1]
+   \State \textbf{Input}: Pre-trained model $\theta_r = \{f_{\theta^{r}}, g_{\theta^{r}}\}$, $\theta = \theta_r$, Data distributions $\{\mathcal{D}_t\}_{t=1}^K$, Epochs $E_1$, $E_2$
+   % \State Output: $\theta = \cup_{t=1}^K \{f_{\theta^{t}}, g_{\theta^{t}}  \} \cup \theta_r$
+   
+   \For {tasks $t \in \{1, 2,..,K\}$}
+        \State $\theta_t \gets \{\text{deepcopy}(f_{\theta^{r}}), g_{\theta^{t}} \}$
+        \State $f_{\theta^{t}} \gets \{\}$
+        \State Fine-tune $\theta_t$ on $\mathcal{D}_t$ for $E_1$ epochs
+
+       \For {target layers $l \in \{1, 2,..,L\}$}
+           \State Compute $\mathcal{W}^{t}_{cl}= \mathcal{W}^{t}_{l} - \mathcal{W}^{r}_{l}$ 
+           \State Decompose $\mathcal{W}_c^t$ using Eqn. \ref{eqn:svd}
+           \State Find dynamic rank $k_l$ (Eqn. \ref{eqn:threshold_dynamic} \& Eqn.\ref{eqn:k})
+           \State Initialize LoRA components $B_l$ and $A_l$ (Eqn. \ref{eqn:a_b_lora})
+           \State $f_{\theta^{t}} = f_{\theta^{t}} \cup \{B_l, A_l\}$
+        \EndFor 
+    \State Re-initialize task-specific weights $\{f_{\theta^{t}}, g_{\theta^{t}}\}$
+    \State $\theta \gets \theta \cup \{f_{\theta^{t}}, g_{\theta^{t}}\}$
+    \State Fine-tune $\{f_{\theta^{t}}, g_{\theta^{t}}\}$ on $\mathcal{D}_t$ for $E_2$ epochs
+   \EndFor
+\State {{\bfseries return} model $\Phi_{\theta}$ }
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{equation}
+\label{eqn:svd}
+% write reshaped not actual matrix
+\mathcal{W}_c^t =\mathbf {U \Sigma V^{\mathsf{T}}} = \sum_{i=1}^{n} \sigma_i \mathbf{u}_i \mathbf{v}_i^{T}
+\end{equation}
+
+% where $\mathbf{U}$ is an $m \times m$ unitary matrix, $\mathbf{S}$ is an $m \times n$ diagonal matrix, and $\mathbf{V}$ is an $n \times n$ unitary matrix. $\mathbf{V^{\mathsf{T}}}$  is the conjugate transpose of $\mathbf{V}$. 
+
+where the columns of $\mathbf{U}$ and $\mathbf{V}$ consist of the left and right singular
+vectors, respectively, $n$ represents the full rank after SV-Decomposition, and $\mathbf{\Sigma}$ is a diagonal matrix whose diagonal entries are the singular
+values of $\mathcal{W}_c^t$.  For $k \in \{1, 2, . . . , n\}$, let $\mathcal{W}_{kc}^{t} = \sum_{i=1}^{k} \sigma_i \mathbf{u}_i \mathbf{v}_i^{T}$ be the sum truncated after k terms.
+
+\begin{theorem}
+\label{EYM_theorem}
+For any matrix $\mathcal{W}$ of rank at most $k$, $\| \mathcal{W}_{c}^{t} - \mathcal{W}_{kc}^{t} \| \leq \| \mathcal{W}_{c}^{t} - \mathcal{W} \|$
+
+\end{theorem}
+
+where \( \| \cdot \| \) be a unitarily invariant norm. The Eckart-Young-Mirsky Theorem (\ref{EYM_theorem}) implies that the best low k-rank approximation of a matrix can be achieved by selecting top-k singular values and such an approximation maintains the least error in terms of unilaterally invariant norms including the Frobenius and spectral norms. Our novelty lies in finding the best-\textit{k} that eliminates the need for extensive hyperparameter tuning of the desired \textit{k} and provides an optimum trade-off between performance and growth in number of learnable parameters. To select the best-\textit{k}, we propose a dynamic threshold on the cumulative explained variance of singular values as follows: 
+
+% \begin{theorem}[Eckart-Young-Mirsky]\label{EYM_theorem}
+% Let \( \| \cdot \| \) be a unitarily invariant norm on \( A \in \mathbb{R}^{m \times n}\) and \( A = U\Sigma V^T = \sum_{i=1}^{r} \sigma_i u_i v_i^T \) be the singular value decomposition of \(A \), where \( \sigma_i \in \mathbb{R}, \, u_i \in \mathbb{R}^m, \, v_i \in \mathbb{R}^n \),  \( r = \text{rank}(A) \) and \( \sigma_1 > \sigma_2 > \ldots > \sigma_r > 0 \) are the singular values of \( A \) and \( U \in \mathbb{R}^{m \times r}, \, V \in \mathbb{R}^{n \times n} \) are orthogonal matrices. Then, matrix \( A_k = \sum_{i=1}^{k} \sigma_i u_i v_i^T \) satisfies
+
+% \[\;\;\| A - A_k \| \leq \| A - B \|\;\;\] for any \( B \in \mathbb{R}^{m \times n} \) with rank at most \( k \).
+
+% \end{theorem}
+
+
+% \begin{equation}
+% \label{eqn:threshold_dynamic}
+% \mathcal{T} = \frac{\sum \mathcal{W}_{c}^{t^2}}{\sum \mathcal{W}^{t^2} + \sum \mathcal{W}^{r^2}}
+% \end{equation}
+
+\begin{equation}
+\label{eqn:threshold_dynamic}
+\mathcal{T} = \frac{\sum (W_c^t \circ W_c^t)}{\sum (W^t \circ W^t) + \sum (W^r \circ W^r)}
+\end{equation}
+
+
+
+where $\mathcal{T}$ represents a normalized squared error between current task and reference task weights, and $\circ$ represents element-wise multiplication. Through $\mathcal{T}$, we approximate the proximity of the current task with respect to the reference task in the parameter space. $\mathcal{T}$ is not guaranteed to lie in $[0,1]$ and $\mathcal{T}$ can be as large as $2$ in extreme cases. Therefore, whenever $\mathcal{T} > 1$, we simply clip it to 1 in our implementation. Once $\mathcal{T}$ is computed, the dynamic rank for the task-specific, layer-specific LoRA can be found as follows:
+
+\begin{equation}
+\label{eqn:k}
+k = \arg\max_{j} \left( \frac{\sum_{i=1}^{j} \mathbf{\sigma}_i^2}{\sum_{i=1}^{r} \mathbf{\sigma}_i^2} \geq \mathcal{T} \right) + 1
+\end{equation}
+
+% where $\mathcal{T}_\mu$ represents the scalar mean of the $\mathcal{T}$.
+Equation \ref{eqn:threshold_dynamic} and \ref{eqn:k} ensure that the k is bounded and select the rank in proportion to the cumulative explained variance of singular values. The $+1$ term in Equation \ref{eqn:k} is to ensure the chosen rank is at least one singular value, preventing a degenerate zero-rank projection and preserving minimal expressive capacity.  Subsequently, the low-rank matrices can be initialized from the SV-Decomposition of $\mathcal{W}^{t}_{c}$ (flattened and re-shaped to 2D if necessary) as follows:
+
+
+
+
+
+
+
+
+
+
+\begin{equation}
+\label{eqn:a_b_lora}
+B = \mathbf{U} [:, :k] \; \mathbf{\Sigma} [:k] \quad A = \mathbf{\Sigma}[:k]\; \mathbf{V}^{\mathsf{T}}[:k, :]
+\end{equation}
+
+As $A$ and $B$ are initialized from SV-Decomposition matrices, at times, the CL model often struggles to find an optimum in the loss landscape resulting in a sub-optimal performance. Therefore, before any further fine-tuning on the current task, we re-initialize the weights of $A$, $B$ along with task-specific normalization (if any) and classification layers. An ablation study on the same can be found in Section \ref{with_without_reinint}. 
+
+% \begin{proposition}[Boundedness of $\mathcal{T}$]
+% Let $ \mathcal{W}^{r}$ be a non-empty reference task matrix such that $\exists \; i, j$ for  which  $\mathcal{W}^{r}_{ij} \neq 0 $. Then, the dynamic threshold $\mathcal{T}$ is bounded between 0 and 1.  
+% \end{proposition}
+% % \textbf{Proof}: \vspace*{10\baselineskip}
+% \textbf{Proof}: By the properties of real numbers, it follows that  $\mathcal{T} \ge 0$ as element-wise multiplication and consequent sum of a matrix is always non-negative. Since $\mathcal{W}^{t}_{c}= \mathcal{W}^{t} - \mathcal{W}^{r} $, we can re-write Equation \ref{eqn:threshold_dynamic} denominator as $\sum (\mathcal{W}^{t}_{c} \circ \mathcal{W}^{t}_{c})  + 2 \sum (\mathcal{W}^{r} \circ \mathcal{W}^{t}_{c}) + 2 \sum (\mathcal{W}^{r} \circ \mathcal{W}^{r})$ . Since the all the terms in the denominator are also non-negative, it trivially follows that  denominator is greater than or equal to numerator resulting in $\mathcal{T} \le 1$. Therefore, the dynamic threshold $\mathcal{T}$ will be bounded between 0 and 1 when reference tasks weights are not all zeroes. 
+
+
+% \begin{proposition}[Direct Proportionality of $\mathcal{T}$ to Task Proximity]
+% Let $ \mathcal{W}^{r}$ be a non-empty reference task matrix such that $\exists \; i, j$ for  which  $\mathcal{W}^{r}_{ij} \neq 0 $. Then, the dynamic threshold $\mathcal{T}$ scales linearly with the proximity of the current task with respect to reference task in the parameter space.   
+% \end{proposition}
+
+% \textbf{Proof}: \vspace*{10\baselineskip}
+
+% \textbf{Proof}: To illustrate this, we consider three distinct scenarios regarding the weights $\mathcal{W}^{t}$ and $\mathcal{W}^{r}$:
+
+% Scenario (i): (Close proximity) When $\mathcal{W}^{t} = \mathcal{W}^{r}$, we have $ \mathcal{W}^{t}_{c} = \mathcal{W}^{t} - \mathcal{W}^{r} = 0. $ Thus, the numerator becomes zero, leading to $\mathcal{T} = 0$. This indicates a perfect proximity between the current and reference tasks and, therefore, no additional LoRA components will be initialized for capturing the current task. 
+
+% Scenario (ii): (Distant proximity) When $\mathcal{W}^{t} \neq \mathcal{W}^{r}$, \( \mathcal{W}^{t}_{c} \) is  different from zero, resulting in $\mathcal{T} > 0 $, signifying low proximity. As $\mathcal{T} \propto \mathcal{W}^{t}_{c}$, $\mathcal{T}\to 1 $ as $\mathcal{W}^{t}_{c} \to 1 $, resulting in greater resource allocation.  
+
+% \textbf{Scenario (iii)}: Intermediate case:
+% - In this scenario, where $\mathcal{W}^{t}$ and $\mathcal{W}^{r}$ differ but are not completely dissimilar, $T$ takes a value in $(0, 1)$, reflecting moderate proximity.
+
+% These scenarios collectively demonstrate that as the similarity between $\mathcal{W}^{t}$ and $\mathcal{W}^{r}$ increases, $T$ approaches 0, affirming that $T$ is directly proportional to the task proximity in the parameter space.
+
+
+
+
+
+
+
+
+
+
+\subsection{Putting it all together}
+
+% The PEARL framework necessitates the availability of reference task weights for information reuse across CL tasks. When pre-training is available (Algorithm \ref{alg:PEARL_pretraining}), pre-trained weights are treated as reference task weights. Otherwise, we treat first task in CL as the reference task (Algorithm \ref{alg:PEARL_no_pretraining}).  For each task in CL thereafter, a copy of the reference task weights are fine-tuned for certain epochs on the current task data. We then compute the corresponding layer-specific task vector as an element-wise difference between fine-tuned weights and reference task weights. Depending on the backbone architecture, the task vectors are computed for one of convolutional, point-wise convolutional or linear projections for \textit{key} in self-attention as applicable. Through Equation \ref{eqn:svd}, the task vector is decomposed using SV-Decomposition. As task vectors deemed to entail additional information on top of reference task weights, we model task vectors through dynamic LoRA components. Equation \ref{eqn:threshold_dynamic} and \ref{eqn:k} collectively provide a dynamic rank that is specific to current task and current layer under consideration. The process is then repeated for all target layers across the backbone network. Given the rank $k$, matrices $B$ and $A$ are initialized as in Equation \ref{eqn:a_b_lora}. At times, such as initialization leads to local minima resulting in subpar performance. Therefore, we re-initialize LoRA matrices along with task specific normalization (if any) and classification layers before fine-tuning  these further on the current task. Once the fine-tuning is complete, these task-specific parameters are kept frozen thereafter. Please refer Sections \ref{appendix:dataset_settings}, \ref{appendix:class_il_overhead} \& \ref{appendix:training_details} for further details on training and inference in Class-IL and Task-IL settings.  
+
+The PEARL framework requires reference task weights to facilitate information re-use across CL tasks. When pre-training is available (Algorithm \ref{alg:PEARL_pretraining}), the pre-trained weights serve as reference task weights. In the absence of pre-training, the first task in CL is considered the reference task (Algorithm \ref{alg:PEARL_no_pretraining}). For each subsequent CL task, a copy of the reference task weights is fine-tuned for a specified number of epochs ($E_1$) on the current task data using cross-entropy loss. We compute the corresponding layer-specific task vector as the element-wise difference between the fine-tuned weights and the reference task weights. Depending on the backbone architecture, the task vectors are computed for convolutional, point-wise convolutional, or linear projections for the \textit{key} in self-attention, as applicable. The task vector is then decomposed using SV-Decomposition through Equation \ref{eqn:svd}. Since task vectors entail additional information beyond the reference task weights, we model them using dynamic LoRA components. Equations \ref{eqn:threshold_dynamic} and \ref{eqn:k} together define a dynamic rank specific to the current task and layer under consideration. Given the rank $k$, matrices $B$ and $A$ are initialized as described in Equation \ref{eqn:a_b_lora}. At times, this initialization may lead to local minima, resulting in suboptimal performance. Therefore, we re-initialize the LoRA matrices, along with any task-specific normalization and classification layers, before further fine-tuning on the current task using cross-entropy loss for another $E_2$ epochs. This process is repeated for all target layers across the backbone network. After fine-tuning, these task-specific parameters are kept frozen. 
+% The training regime is identical for both Class-IL and Task-IL. 
+
+Our CL model is trained simultaneously on both Class-IL and Task-IL settings, as their training regimes are identical. During
+inference in the Task-IL setting, $\theta_t =  \{f_{\theta^{r}}, f_{\theta^{t}}, g_{\theta^{t}} \}$ is selected based on the given task-id $t$, and its output is inferred for maximum activation. 
+As task-id is not available in Class-IL inference,  each test image passes through every sub-network $\theta_t$, and their respective classifier ($g_{\theta^{t}}$) outputs are
+concatenated and then inferred for maximum activation. For more details on training and inference in Class-IL and Task-IL settings, refer Sections \ref{appendix:dataset_settings}, and \ref{appendix:training_details}.
+
+
+
+\section{ Results}
+
+\textbf{Experimental settings:} We evaluate PEARL across two distinct scenarios of CL: Class-IL and Task-IL, a complete overview of which can be found in Appendix \ref{appendix:overview_expts}. To facilitate this evaluation, we consider a comprehensive array of baseline methods: (i) exemplar-based approaches that involve information reuse and task-specific adapters (e.g., TAMiL, AGILE), (ii) NECIL approaches (e.g., PASS, FeTriL, FeCAM), (iii) parameter-isolation approaches that operate within a fixed capacity (e.g., NISPA) and those that expand beyond it (e.g., PNN, PAE), and (iv) PEFT approaches for CL (e.g., L2P, C-LoRA, InfLoRA, SEMA, ADA). We also provide a justification for the choice of these baseline in Appendix \ref{appendix:justification}. The first three categories utilize randomly initialized ResNet-18 as their backbone, whereas PEFT approaches leverage the ViT-Base-16 model pre-trained on ImageNet-21k. It is important to note that pre-training is often a luxury for smaller, custom models. Consequently, in accordance with the training protocols of the baseline methods, we employ randomly initialized convolutional models, while the ViT model is pre-trained. To demonstrate the versatility of PEARL across different architectures, we  explore three distinct backbones: (i) Convolutional networks such as ResNet-18 (R18) and a ResNet-18-like architecture incorporating Blueprint Separable Convolutions (BSC) \citep{li2022blueprint}, and (ii) the Vision Transformer (ViT) Vit-Base-16 pre-trained on ImageNet-21k. For each subsequent task, we adapt convolutional layer, point-wise convolutional layer and linear layer projecting \textit{key} in self-attention using dynamic low-rank adaptation  in each of these backbones respectively.  More information on backbones and their settings can be found in Appendix \ref{appendix_exp_setup}. 
+
+% \subsection{Evaluation Metrics}
+\textbf{Metrics}: In line with the established benchmarking protocol, we assess the model's performance using \( A_{\tau} \), representing the accuracy following the \( \tau \)-th training stage. Notably, we utilize \( A_T \), the performance metric at the conclusion of the final stage, along with $\bar{A} = \frac{1}{T} \sum_{\tau=1}^{T} A_{\tau},$
+which computes the average accuracy across all incremental stages. Additionally, we also provide forgetting metrics for our models in Table \ref{tab:performance_metrics}.
+
+
+
+
+\begin{table*}[t]
+    \centering
+    \caption{Comparison of Class-IL performance of exemplar-based and NECIL approaches  across different datasets and number of tasks. Baselines use randomly initialized ResNet-18 as a backbone. Exemplar-based approaches use a buffer size of 200. NECIL results are taken from \citet{goswami2024resurrecting}, while for the rest, we report an average of 3 runs. Best results are marked in bold while second best are underlined. }
+    \label{tab:exemplar_non_exeplar}
+    \resizebox{0.9\linewidth}{!}{%
+        \begin{tabular}{l|c|cc|cc|cc|cc}
+        \toprule
+        \multirow{3}{*}{Method} & \multirow{3}{*}{\textbf{Venue}} & \multicolumn{4}{|c|}{Seq-CIFAR100} & \multicolumn{4}{|c}{Seq-TinyImageNet} \\
+        \cmidrule(r){3-10}
+        & & \multicolumn{2}{|c|}{$\mathrm{T}=5$} & \multicolumn{2}{|c|}{$\mathrm{T}=10$} & \multicolumn{2}{|c|}{$\mathrm{T}=5$} & \multicolumn{2}{|c}{$\mathrm{T}=10$} \\
+        \cmidrule(r){3-10}
+        & & $A_T$\% & $\bar{A}$\%  & $A_T$\%& $\bar{A}$\%  & $A_T$\%& $\bar{A}$\%  & $A_T$\%& $\bar{A}$\%  \\
+        \midrule
+        Sequential fine-tuning  & - & 17.94 & 37.54 & 9.43 & 25.07 & 14.41 & 32.83 & 7.92 & 31.55 \\
+        \midrule
+        ER  & - & 21.43 & 41.45 & 14.38 & 35.13 & 14.81 & 33.77 & 8.51 & 23.62 \\
+        DER++ \citep{buzzega2020dark} & NeurIPS 2020 & 28.8 & 47.89  & 25.42 & 43.94 & 17.75  & 35.89 & 10.15 & 27.26 \\
+        TAMiL \citep{bhat2022task} & ICLR 2023  & 41.43 & 58.09 & 32.20 & 49.87 & 26.32 & 43.91 & 20.46 & 40.94 \\
+        AGILE  \citep{bhat2024mitigating} & CoLLAs 2024 & 45.73 &  57.66 & 33.23 & 42.88 & 20.14 & 43.79 & 20.19 & 43.81 \\
+        
+        \midrule
+        LwF \citep{li2017learning}  & ECCV 2016 & 45.35 & 61.94 & 26.14 & 46.14 & 38.81 & 49.70 & 27.42 & 38.77 \\
+        % NCM & 53.53 & 66.35 & 41.31 & 57.85 & 38.69 & 50.45 & 26.56 & $\underline{41.04}$ \\
+        % SDC \cite{yu2020semantic}  & CVPR 2020 & \textbf{54.94} & \underline{64.82} & 41.36 & 58.02 & 40.05 & 50.82 & 27.15 & 40.46 \\
+        IL2A \citep{zhu2021class} & NeurIPS 2021 & - & - & 31.70 & 48.40 & - & - & 25.30 & 42.01 \\
+        PASS \citep{zhu2021prototype} & CVPR 2021 & 49.75 & 63.39 & 37.78 & 52.18 & 36.44 & 48.64 & 26.58 & 38.65 \\
+        SSRE \citep{zhu2022self} & CVPR 2022 & 42.39 & 56.57 & 29.44 & 44.38 & 30.13 & 43.20 & 22.48 & 34.93 \\
+        FeTrIL \citep{petit2023fetril}  & WACV 2023 & 45.11 & 60.42 & 36.69 & 52.11 & 29.91 & 43.99 & 23.88 & 36.35 \\
+        FeCAM \citep{goswami2024fecam} & NeurIPS 2024 & 47.28 & 61.37 & 33.82 & 48.58 & 25.62 & 39.85 & 23.21 & 35.32 \\
+        % ADC \cite{goswami2024resurrecting} & Venue7 & 59.14 & 69.62 & 46.48 & 61.35 & 41.0 & 50.94 & 32.32 & 43.04 \\
+        % EFC \cite{magistri2024elastic} & ICLR 2024 & - & - & 43.62 & 58.58 & - & - & 34.10 & 47.95 \\
+        \midrule
+        PEARL (R18) & - & \underline{51.97} & \underline{63.51} & \underline{41.11} & \underline{56.21} & \underline{40.26}  & \underline{51.27} & \underline{35.22} & \underline{47.95} \\
+        
+        PEARL (BSC) & - & \textbf{54.48} & \textbf{65.10} & \textbf{45.92} &  \textbf{59.22} &  \textbf{41.31} & 	\textbf{52.32} & \textbf{36.45} & \textbf{48.64} \\
+        
+        \bottomrule
+        \end{tabular}
+    }
+\end{table*}
+
+
+
+\subsection{Comparison with convolutional CL approaches }
+% Table \ref{tab:exemplar_non_exeplar} presents a comparison of PEARL against exemplar based and non-exemplar based CL approaches across four different Class-IL settings. We report results for both of our convolutional variants.  As the backbone is randomly initialized without pre-training, PEARL (R18) uses the first CL task as the reference task and assigns LoRA components for later tasks based on their proximity to the first task in the parameter space. As can be seen, PEARL (R18) beats all the considered baselines without relying on experience rehearsal while growing modestly with increasing number of tasks (Refer Table \ref{tab:growth}). Although using a higher buffer size might improve the performance of rehearsal-based approaches, the improvement in their performance will be in commensurate with the increase in computational and memory footprints \cite{TriRE2023}. Secondly, non-exemplar based approaches do not always leverage information from prior tasks, resulting in sub-par performance. On the other hand, PEARL builds upon information contained in the first task for every subsequent tasks resulting in optimal trade-off between performance and model size.  While not having a pre-trained model may be limiting due to limited generalizability of the first task, the information re-use and dynamic resource allocation enables PEARL to efficiently assimilate first and current task information, resulting in superior performance across tasks. 
+% The  PEARL (BSC), another convolutional variant with separable convolutions, is a much smaller network compared to other baselines. Surprisingly, PEARL (BSC) outperforms all baselines including PEARL (R18) in all of the settings. We attribute its success to lessened interference due to separable convolutions and smart allocation of LoRA components for point-wise filters. 
+Table \ref{tab:exemplar_non_exeplar} presents a comparison of PEARL against exemplar-based and NECIL approaches across four different Class-IL settings. We report results for both of our convolutional variants. Since the backbone is randomly initialized without pre-training, PEARL convolutional variants use the first CL task as the reference task and assign LoRA components for subsequent tasks based on their proximity to the first task in the parameter space (Algorithm \ref{alg:PEARL_no_pretraining}). As shown, PEARL (R18) outperforms all considered baselines without relying on experience rehearsal while exhibiting modest model growth with an increasing number of tasks (see Table \ref{tab:growth}). Although a larger buffer size might enhance the performance of rehearsal-based approaches, any improvements would likely be outweighed by the increased computational and memory costs \citep{TriRE2023}. Additionally, NECIL approaches do not always re-use information across tasks, which often leads to subpar performance. In contrast, PEARL capitalizes on the information contained in the first task for every subsequent task, achieving an optimal balance between performance and model size. While the absence of a pre-trained model may limit the generalizability of the first task, the framework's ability to reuse information and dynamically allocate resources allows PEARL to efficiently assimilate information from both the first and current tasks, resulting in superior performance across tasks. 
+
+
+Likewise, PEARL (BSC) outperforms all baseline methods, including PEARL (R18) in all Class-IL settings. PEARL (BSC), a convolutional variant that employs separable convolutions, is significantly smaller in size compared to other baselines due to its parameter-efficient design. In spite of its modest size, the separation of point-wise and depth-wise operation enables efficient integration of information in BSCs with little room for redundant  / interfering information. Coupled with dynamic rank allocation for LoRA components for point-wise filters, PEARL (BSC) enjoys higher performance across all Class-IL scenarios. The trend remains almost similar in Task-IL scenarios (Refer Table \ref{tab:results}) as well with PEARL variants outperforming considered baselines by a huge margin. 
+
+
+\begin{table*}[ht]
+    \centering
+    \caption{Class-IL performance comparison on ImageNet-R across 5, 10, and 20 task sequences. Baseline results with standard deviation are taken from \citet{liang2024inflora} and that of PEARL are averaged over 3 runs with errors indicating standard deviation across these runs. The rest of the results are taken from their respective manuscripts. Best results are highlighted in bold. SeqLoRA is a sequential learning baseline which fine-tunes LoRA components on multiple tasks without any additional support. }
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{@{}l|c|c|c|c|c|c|c@{}}
+        \toprule
+        \textbf{Method} & \textbf{Venue} & \multicolumn{2}{c|}{\textbf{T = 5}} & \multicolumn{2}{c|}{\textbf{T = 10}} & \multicolumn{2}{c}{\textbf{T = 20}} \\
+        \cmidrule(lr){3-8} 
+        & & $A_T$\% & $\bar{A}$\% & $A_T$\% & $\bar{A}$\% & $A_T$\% & $\bar{A}$\% \\
+        \midrule
+        SeqLoRA & - & 70.96 $\pm$ 0.25 & 79.14 $\pm$ 0.32 & 64.32 $\pm$ 0.09 & 74.78 $\pm$ 0.29 & 56.98 $\pm$ 0.29 & 69.29 $\pm$ 0.26 \\
+        \midrule
+        L2P \citep{wang2022learning} & CVPR 2022 & 64.13 $\pm$ 0.78 & 68.66 $\pm$ 0.41 & 62.54 $\pm$ 0.24 & 67.98 $\pm$ 0.27 & 57.92 $\pm$ 0.28 & 64.57 $\pm$ 0.29 \\
+        DualPrompt \citep{DBLP:conf/eccv/0002ZESZLRSPDP22} & ECCV 2022 & 67.88 $\pm$ 0.17 & 71.16 $\pm$ 0.31 & 65.41 $\pm$ 0.52 & 69.39 $\pm$ 0.43 & 61.00 $\pm$ 0.72 & 65.80 $\pm$ 0.67 \\
+        CODA-P \citep{smith2023coda} & CVPR 2023 & 73.09 $\pm$ 0.21 & 76.91 $\pm$ 0.21 & 71.47 $\pm$ 0.35 & 75.82 $\pm$ 0.29 & 67.28 $\pm$ 0.30 & 72.34 $\pm$ 0.17 \\
+        C-LoRA \citep{DBLP:journals/corr/abs-2304-06027} & CoRR 2023 & 75.85 $\pm$ 0.31 & 78.85 $\pm$ 0.34 & 71.89 $\pm$ 0.45 & 75.33 $\pm$ 0.28 & 65.71 $\pm$ 0.60 & 70.63 $\pm$ 0.85 \\
+        LAE \citep{gao2023unified} & ICCV 2023 & 73.84 $\pm$ 0.14 & 77.29 $\pm$ 0.45 & 71.70 $\pm$ 0.39 & 76.71 $\pm$ 0.10 & 66.98 $\pm$ 0.35 & 73.72 $\pm$ 0.05 \\
+        InfLoRA \citep{liang2024inflora} & CVPR 2024 &  77.52 $\pm$ 0.37 & 82.01 $\pm$ 0.12 & 75.65 $\pm$ 0.14 & 80.82 $\pm$ 0.24 & 71.01 $\pm$ 0.45 & 77.28 $\pm$ 0.45 \\
+
+         % SEMA \cite{SEMA} & CVPR 2025 & 79.78 $\pm$ $\:\;$ - $\:\;$ & 84.75 $\pm$ $\:\;$ - $\:\;$   & 78.00 $\pm$ $\:\;$ - $\:\;$  & 83.56 $\pm$ $\:\;$ - $\:\;$   & 74.53  $\pm$ $\:\;$ - $\:\;$  & 81.75 $\pm$ $\:\;$ - $\:\;$  \\
+         % DIA \cite{DIA} & Arxiv 2025 &   $\:\:\:$ - $\:\:\:$ &     $\:\:\:$ - $\:\:\:$  & 79.03 $\pm$ $\:\;$ - $\:\;$  &  85.61 $\pm$ $\:\;$ - $\:\;$   &  76.32 $\pm$ $\:\;$ - $\:\;$  &   83.51 $\pm$ $\:\;$ - $\:\;$  \\
+
+         %  TSVD \cite{DIA} & ICLR 2025 & 73.58 $\pm$ $\:\;$ - $\:\;$  & $\:\:\:$ - $\:\:\:$  &  74.55 $\pm$ $\:\;$ - $\:\;$  &  $\:\:\:$ - $\:\:\:$  &  79.13 $\pm$ $\:\;$ - $\:\;$  &   $\:\:\:$ - $\:\:\:$  \\
+
+         % LEAPGen \cite{DIA} & ICLR 2025 &   82.79 $\pm$ 0.32   &  85.06 $\pm$ 0.29   & 84.09 $\pm$ 0.93   &  85.54 $\pm$ 0.65  &  87.03 $\pm$ 0.12   &   87.81 $\pm$ 0.48  \\
+        \midrule
+
+        EASE \citep{zhou2024expandable} & CVPR 2024 & 70.80     & $\:\:\:$ - $\:\:\:$  & 73.37  &  $\:\:\:$ - $\:\:\:$  &  78.80    &   $\:\:\:$ - $\:\:\:$  \\
+        
+        SEMA \citep{SEMA} & CVPR 2025 & 79.78 & 84.75   & 78.00    & 83.56     & 74.53    & 81.75   \\
+     
+         DIA \citep{DIA} & CVPR 2025 &   $\:\:\:$ - $\:\:\:$ &     $\:\:\:$ - $\:\:\:$  & 79.03    &  85.61   &  76.32    &   83.51  \\
+
+          TSVD \citep{TSVD} & ICLR 2025 & 73.58    & $\:\:\:$ - $\:\:\:$  &  74.55  &  $\:\:\:$ - $\:\:\:$  &  79.13    &   $\:\:\:$ - $\:\:\:$  \\
+        
+        \midrule 
+        PEARL (ViT) & - & \textbf{91.97 $\pm$ 0.37} & \textbf{93.78 $\pm$ 0.36} & \textbf{88.76 $\pm$ 0.69} & \textbf{91.67 $\pm$ 0.69} & \textbf{81.32 $\pm$ 0.79} & \textbf{86.75 $\pm$ 0.39} \\
+        
+        \bottomrule
+    \end{tabular}%
+    }
+    \label{tab:imagenet_r_results}
+\end{table*}
+
+
+
+
+
+\subsection{Comparison with PEFT CL approaches}
+As PEARL entails dynamic allocation of LoRA components, we compare PEARL with state-of-the-art PEFT CL methods across 5, 10, and 20 tasks in ImageNet-R \citep{hendrycks2021many}, in Table \ref{tab:imagenet_r_results}. The experiment is conducted using the ViT-B/16 backbone \citep{dosovitskiy2020image} pre-trained on ImageNet-21k. As can be seen, PEARL (ViT) shows a significant improvement in both incremental and final accuracy, with absolute gains ranging from \textbf{9}\% to \textbf{14}\%. The performance improvement is more pronounced in 5 task sequence and slightly decreases thereafter as we move towards 10 and then to 20 task sequences. Among considered baselines, InfoLoRA is the closest work in terms of design and performance, but falls short of PEARL (ViT)'s performance by a huge margin across all scenarios. InfLoRA injects a small number of parameters to re-parameterize the pre-trained weights and shows that finetuning these injected parameters is equivalent to finetuning the pre-trained weights within a subspace. Since the reduction matrix $B$ infLoRA is handcrafted rather than being learnt from the training data,  InfLoRA suffers a performance degradation compared to PEARL (ViT). Additional comparisons between our method and adapter-based as well as prompt-based approaches can be found in Table \ref{tab:method_comparison_vit_imagenetr} and Table \ref{tab:imagenet_r_ffm_cfm_reordered}.
+
+
+
+
+
+
+
+
+
+% \begin{table}[ht]
+%     \centering
+%     \caption{ Comparative performance analysis of PEFT-CL using ViT-Base16 pre-trained on ImageNet-21K. Best results are highlighted in bold. }
+%     \resizebox{\linewidth}{!}{%
+%     \begin{tabular}{@{}l|c|c|c|c|ccc@{}}
+%         \toprule
+%         \textbf{Method} & \textbf{Venue} & \multicolumn{2}{c}{\textbf{Seq-CIFAR100 (10T)}} & \multicolumn{2}{c}{\textbf{Seq-ImageNet-R (5T)}} \\
+%         \cmidrule(lr){3-4} \cmidrule(lr){5-6}
+%         & & $\bar{A}$ (\%) & $A_T$ (\%) & $\bar{A}$ (\%) & $A_T$ (\%) \\
+%         \midrule
+%         L2P \cite{wang2022learning} & CVPR 2022 & 89.30 $\pm$ 0.34 & 84.16 $\pm$ 0.72 & 72.38 $\pm$ 0.89 & 65.57 $\pm$ 0.67 \\
+%         DualPrompt \cite{wang2022dualprompt} & ECCV 2022 & 90.68 $\pm$ 0.21 & 85.76 $\pm$ 0.45 & 72.45 $\pm$ 0.94 & 66.31 $\pm$ 0.55 \\
+%         L2P-PGP \cite{qiao2023prompt} & ICLR 2023 & 89.61 $\pm$ 0.64 & 84.23 $\pm$ 0.87 & 74.91 $\pm$ 1.50 & 69.12 $\pm$ 0.68 \\
+%         CODA-Prompt \cite{smith2023coda} & CVPR 2023 & 91.36 $\pm$ 0.18 & 86.70 $\pm$ 0.65 & 77.86 $\pm$ 0.66 & 71.50 $\pm$ 0.53 \\
+%         EvoPrompt \cite{kurniawan2024evolving} & AAAI 2024 & 92.06 $\pm$ 0.37 & 87.78 $\pm$ 0.63 & 75.63 $\pm$ 0.61 & 70.43 $\pm$ 0.49 \\
+%         OVOR \cite{huangovor} & ICLR 2024 & 91.11 $\pm$ 0.16 & 84.23 $\pm$ 0.87 & 74.91 $\pm$ 1.50 & 69.12 $\pm$ 0.68 \\
+
+%         CPrompt \cite{gao2024consistent} & CVPR 2024 & 91.58 $\pm$ 0.52 & 87.17 $\pm$ 0.36 & 79.12 $\pm$ 0.66 & 73.88 $\pm$ 0.54 \\
+%         EASE  \cite{zhou2024expandable} & CVPR 2024 & 92.58 $\pm$ 0.48 & 88.11 $\pm$ 0.67 & 81.30 $\pm$ 0.76 & 75.53 $\pm$ 0.53 \\
+%         InfLoRA \cite{liang2024inflora} & CVPR 2024 & 91.96 $\pm$ 0.24 & 86.93 $\pm$ 0.90 & 81.63 $\pm$ 0.82 & 75.53 $\pm$ 0.53 \\
+%         \midrule
+%         PEARL (ViT)  & - &   &   & 91.48 $\pm$ 0.37 &  88.82 $\pm$ 0.54 \\
+%         \bottomrule
+%     \end{tabular}
+%     }
+% \end{table}
+
+
+
+As LoRA components can be plugged in place of any learnable layer, it is imperative to understand the impact of such a low-rank adaptation for different kinds of target layers in ViT. To this end, Table \ref{tab:ablation_vit} provides an overview of Class-IL performance on ImageNet-R (10T) for different target modules in PEARL (ViT).  Our ablation study suggests that adapting linear layers projecting \textit{key} in self-attention yields the best performance across tasks. Adapting \textit{query} modules stands at second when considered individually and third overall. Adapting \textit{values}, either in isolation or in combination with other target modules, yields subpar performance. Although a combination of \textit{query} and \textit{key} is on par with the best results, it entails higher memory footprint when training on longer task sequences. Therefore, throughout our PEARL (ViT) experiments, we apply task-specific LoRA components only to \textit{key} modules. 
+
+
+\begin{table}[ht]
+    \centering
+    \caption{Class-IL performance comparison of low rank adaptation of different target modules in ViT on ImageNet-R (10T). The best results are highlighted in bold while the second best are underlined.}
+    \label{tab:ablation_vit}
+    \resizebox{0.52\linewidth}{!}{%
+    \begin{tabular}{@{}l|c|c@{}}
+        \toprule
+        Target LoRA Modules & $A_T$ (\%) & $\bar{A}$ (\%) \\
+        \midrule
+        Query          & 87.43 $\pm$ 0.41 &  90.85 $\pm$ 0.17 \\
+         Key            & \textbf{88.76 $\pm$ 0.69} & \underline{91.67 $\pm$ 0.69} \\
+         Value          & 11.32 $\pm$ 2.21  & 20.50 $\pm$ 3.15  \\
+        Query \& Value   & 23.96 $\pm$ 0.80 & 38.09 $\pm$ 2.74  \\
+        Key \& Value     & 32.38 $\pm$ 0.51  & 47.13 $\pm$ 4.17  \\
+        Query \& Key     & \underline{88.74 $\pm$ 0.50}  & \textbf{91.71 $\pm$ 0.42}  \\
+        \bottomrule
+    
+    \end{tabular}
+    }
+\end{table}
+
+
+\subsection{Comparison with fixed rank as a baseline}
+
+The PEFT CL approaches offer lightweight training schedules while effectively retaining the consolidated knowledge of pre-trained models. However, LoRA components in these methods are particularly sensitive to rank selection, which can lead to suboptimal resource allocation and diminished performance \citep{valipour2022dylora}. Table \ref{tab:r18_fixed_rank} summarizes the average model size and performance metrics across various ranks for LoRA components. As the rank increases, performance improves at the expense of increased model size; however, beyond a certain rank, the performance gains do not really justify the additional increase in model size. Consequently, tuning the rank is essential to strike the right balance in this trade-off where model growth remains modest with optimum performance. To this end, PEARL employs a task-specific, layer-specific dynamic rank allocation  enabling an optimal trade-off between model size and performance across different datasets and architectures. 
+
+\begin{table*}[htbp]
+\caption{Class-IL performance comparison of PEARL with static rank allocation for LoRA components. Bold and underline highlight the nearest upper and lower values compared to PEARL.  \#Params indicate no.of parameters in millions. As can be seen, PEARL achieves a best trade-off between model size and performance without extensive tuning of rank. }
+\centering
+\label{tab:r18_fixed_rank}
+\resizebox{1\linewidth}{!}{%
+\begin{tabular}{c|ccc|ccc|ccc}
+\toprule
+\multirow{3}{*}{\textbf{Rank}} & \multicolumn{3}{c|}{\textbf{R18}} & \multicolumn{3}{c|}{\textbf{BSC}} & \multicolumn{3}{c}{\textbf{ViT}} \\
+\cmidrule(lr){2-10}
+& \multicolumn{3}{c|}{Seq-CIFAR100 (5T)} & \multicolumn{3}{c|}{Seq-TinyImageNet (10T)} & \multicolumn{3}{c}{ImageNet-R (10T)} \\
+\cmidrule(lr){2-10}
+&  \#Params (M) & $A_T$ (\%) & $\bar{A}$ (\%)  &  \#Params (M) &  $A_T$ (\%) & $\bar{A}$ (\%)  &  \#Params (M) & $A_T$ (\%) & $\bar{A}$ (\%)  \\
+\midrule
+2 & 11.44& 45.56 $\pm$ 0.53 & 58.61 $\pm$ 0.78  & 1.86 & 32.54 $\pm$ 0.59 & 45.33 $\pm$ 0.94  & 91.17 & 84.80 $\pm$ 0.39 & 89.09 $\pm$ 0.12 \\
+4 & 11.63 & 49.46 $\pm$ 0.43 & 61.45 $\pm$ 0.62 & 1.98 & 33.50 $\pm$ 0.64 & 46.3 $\pm$ 0.72  & 91.54 & 86.18 $\pm$ 0.64 & 90.05 $\pm$ 0.41 \\
+8 & \underline{12.01} & \underline{51.30 $\pm$ 1.22} & 62.58 $\pm$ 1.04 & \underline{2.23} & \underline{35.10 $\pm$ 0.70} & \underline{47.79 $\pm$ 0.66 } & \underline{92.28} & 87.52 $\pm$ 0.53 & 90.94 $\pm$ 0.15 \\
+16  & \textbf{12.74} &  \textbf{52.18 $\pm$  0.36} & \underline{63.34 $\pm$  0.62}  & \textbf{2.73} & \textbf{36.50 $\pm$ 0.15 }& \textbf{49.05 $\pm$ 0.37}  & \textbf{93.75} & \underline{88.27 $\pm$ 0.50} & \underline{91.45 $\pm$ 0.09} \\
+32  & 14.21 & 52.96 $\pm$ 0.64 & \textbf{63.75 $\pm$ 0.91}  & 3.72 & 37.26 $\pm$ 0.29 & 49.74 $\pm$ 0.66  & 96.71 & \textbf{89.17 $\pm$ 0.61} & \textbf{92.04 $\pm$ 0.21} \\
+\midrule
+Dynamic (Ours) & 12.56 & 51.97 $\pm$ 0.93 & 63.51 $\pm$ 0.75 & 2.30 & 36.45 $\pm$ 0.54 & 48.64 $\pm$ 0.43 & 93.27 & 88.76 $\pm$ 0.69 & 91.67 $\pm$ 0.69 \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+\subsection{Comparison with convolutional parameter isolation approaches} 
+
+Figure \ref{fig:nispa} illustrates a Task-IL comparison between convolutional PEARL variants and various parameter isolation techniques (PNNs, CPG, PAE) as well as dynamic sparse methods (CLIP, NISPA, PackNet) on the Seq-CIFAR100 (20T) dataset. The final Task-IL accuracies after completing the training on all tasks are presented. Parameter isolation methods tend to exceed the model's capacity, whereas dynamic sparse architectures develop task-specific masks while maintaining a fixed model size. PEARL effectively balances these approaches by employing dynamic resource allocation; it expands beyond the model's capacity, albeit more conservatively than other parameter isolation techniques. The results indicate that both convolutional variants of PEARL deliver superior performance across tasks. We attribute this success to effective information reuse and the appropriate allocation of new resources through dynamic resource allocation.
+
+
+\begin{figure*}[h]
+\centering
+\includegraphics[ width=0.99\linewidth]{images/pearl_nispa.pdf}
+\caption{Task-IL performance comparison with parameter isolation approaches on Seq-CIFAR100 (20T). We report the final Task-IL accuracies of each task after training on all tasks. Methods compared are NISPA \citep{gurbuz2022nispa}, PNN \citep{rusu2016progressive}, PAE \citep{hung2019increasingly}, CPG \citep{hung2019compacting}, PackNet \citep{mallya2018packnet}, and CLNP \citep{golkar2019continual}}
+\label{fig:nispa}
+\end{figure*}
+
+
+\subsection{With and without re-initialization}\label{with_without_reinint} 
+The PEARL framework entails creation of task-specific, layer-specific LoRA components whose weights are initialized from SV-decomposition of task vectors. As task vectors represent the additional information on top of information contained in the reference task, one would expect LoRA components to benefit from such an initialization. Table \ref{tab:r18_without_reinit} compares the effects of weight re-initialization of LoRA components, BN layers (if any), and classification layers following SV-decomposition in PEARL. In the \textit{Without re-init} scenario, the weights of the LoRA components are initialized directly from the SV-decomposition of task vectors and are then fine-tuned for the current task. Conversely, in PEARL, the weights of the LoRA components, as well as the batch normalization (BN) and classification layers, are re-initialized after the creation of the LoRA components.The results indicate that weight re-initialization leads to marginally better performance for ResNet-18 on Seq-CIFAR100 (5T), statistically significant performance improvements for ViT on ImageNet-R (10T), and a remarkable two-fold increase in performance for BSC on Seq-TinyImageNet (10T). Overall, the evidence suggests that weight re-initialization positively influences PEARL across various CL architectures and settings. We speculate that fresh start due to weight re-initialization helps in avoiding local minima and thus better generalization across tasks. 
+
+% Table \ref{tab:r18_without_reinit} provides a comparison to illustrate the prominence of weight re-initialization after SV-Decomposition in PEARL. In  \textit{Without re-init}, LoRA components' weights are initialized from SV-decomposition of task vectors and are finetuned further on the current task. In contrast, weights of LoRA components along with BN and classification layers are re-initialized after the creation of LoRA components in PEARL. As can be seen, weight re-initialization leads to marginally better performance in R18 in Seq-CIFAr100 (5T), statistically significant performance improvement in ViT in ImageNet-R (10T), and \textbf{twice as good performance} in BSC in Seq-TinyImageNet (10T). Overall, weight re-initialization has a positive impact on PEARL across CL architectures and settings.  
+
+
+\begin{table}[htbp]
+\caption{Class-IL performance comparison of PEARL with and without weight re-initialization after creation of LoRA components.}
+\centering
+\label{tab:r18_without_reinit}
+\resizebox{0.75\linewidth}{!}{%
+\begin{tabular}{l|c|c|c|c}
+\toprule
+Dataset & Variant & Metric & Without re-init & With re-init (Ours) \\
+\midrule
+\multirow{2}{*}{Seq-CIFAR100 (5T)} & \multirow{2}{*}{R18} & $A_T$ (\%) & 51.34 $\pm$ 0.71 & \textbf{51.97 $\pm$ 0.93} \\
+
+&& $\bar{A}$ (\%) & 62.37 $\pm$ 1.20 & \textbf{63.51 $\pm$ 0.75} \\
+
+\midrule
+\multirow{2}{*}{Seq-TinyImageNet (10T)} & \multirow{2}{*}{BSC} & $A_T$ (\%) & 18.71 $\pm$ 0.79 & \textbf{36.45 $\pm$ 0.54} \\
+
+&& $\bar{A}$ (\%) & 29.25 $\pm$ 0.77 & \textbf{48.64 $\pm$ 0.43}  \\
+
+\midrule
+\multirow{2}{*}{ImageNet-R (10T)} & \multirow{2}{*}{ViT} & $A_T$ (\%) & 78.71 $\pm$ 0.38 &  \textbf{83.51 $\pm$ 0.47} \\
+
+&& $\bar{A}$ (\%) & 84.79 $\pm$ 0.63 & \textbf{88.30 $\pm$ 0.48} \\
+
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[ width=0.9\linewidth]{images/pearl_vis_layerwise_analysis.pdf}
+\caption{Visualization of final task dynamic resource allocation in Seq-CIFAR100 (5T). (left) Dynamic threshold of different convolutional layers based on the similarity of current task with respect to reference task for deciding the rank. (middle) Selected rank based on dynamic threshold. (right) Actual rank of re-shaped 2-dimensional weight matrix. As can be seen both dynamic threshold and selected rank show more emphasis for later layers, in line with the actual rank. }
+\label{fig:dynamic_threshold}
+\end{figure}
+
+
+
+
+
+\subsection{Dynamic rank allocation across layers} 
+ PEARL leverages reference task weights and adaptively determines the rank of task-specific, layer-specific LoRA components based on the proximity of the current task to the reference task weights in the parameter space. Figure \ref{fig:dynamic_threshold} illustrates the dynamic rank allocation across layers for convolutional variants for the final task in Seq-CIFAR100 (5T) and that of ViT for the final task in Imagenet-R (10T) can be found in Figure \ref{fig:dynamic_threshold_vit}. From left to right, Figure \ref{fig:dynamic_threshold} presents a detailed overview of the layer-wise dynamic thresholds established based on task proximity, along with the corresponding selected rank and actual rank for our convolutional variants. Consistent with the actual rank, our framework allocates lower ranks to earlier layers and higher ranks to later layers. The dynamic rank allocation is also consistent with established conventions in CNN literature, which suggest that earlier layers capture more generic features, while later layers focus on task-specific information. As a result, earlier layers require less task-specific adaptation, leading to lower rank allocations. Conversely, as we approach the later layers, more resources are necessary to adapt the reference task information to the current task, thereby justifying the higher rank allocation in these layers.
+
+
+
+
+
+\subsection{Effect of pre-training on PEARL}
+To demonstrate the versatility of the PEARL framework, we assessed its performance on two architectures:
+Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs). Given that ResNet-18 is a widely used model in convolutional CL literature, we employed a randomly initialized ResNet-18 to ensure a fair comparison with baseline models. However, the performance of PEARL (R18) is often limited by the generalization ability of the features captured in the first task. Table \ref{tab:pre-training} provides a comparison of PEARL (R18) with (Algorithm \ref{alg:PEARL_pretraining}) and without (Algorithm \ref{alg:PEARL_no_pretraining}) pre-training.  Thanks to the versatility of PEARL, the framework can work with or without pre-training. As can be seen, pre-training on Imagenet-1K results in superior performance across tasks and across datasets. Wherever possible, we recommend using a pre-trained backbone while employing PEARL for better generalization across tasks. 
+
+
+
+\begin{table}[h]
+    \centering
+
+    \caption{Class-IL performance comparison of PEARL (R18) with and without pre-training. In the former case, PEARL (R18) is pre-trained on Imagenet-1K. Each result is an average of 3 runs with standard deviation alongside. The best results are highlighted in bold. }
+    \begin{tabular}{l|c|c|c|c}
+        \toprule
+        \textbf{Method} & \multicolumn{2}{|c|}{Seq-CIFAR100 (5T)} & \multicolumn{2}{|c}{Seq-TinyImageNet (10T)}  \\
+        \cmidrule(r){2-5}
+         & $A_T$\% & $\bar{A}$\% &  $A_T$\% & $\bar{A}$\% \\
+        \midrule
+        Without pre-training &  51.97	$\pm$ 0.93   &  63.51 $\pm$ 0.62 & 35.22 $\pm$ 0.27  & 47.95 $\pm$ 0.34 \\
+        With pre-training & \textbf{55.34} $\pm$ 0.25  & \textbf{65.97} $\pm$ 0.44 & \textbf{46.15} $\pm$ 0.54   & \textbf{58.50} $\pm$ 0.71 \\
+
+        \bottomrule
+    \end{tabular}
+    \label{tab:pre-training}
+
+\end{table}
+
+
+
+
+\subsection{Effect of random class ordering}
+
+The Table \ref{tab:class_order} displays the Class-IL performance on ImageNet-R (10T) under five different class orders, which differ from those presented in Table \ref{tab:imagenet_r_results}. In this setting, we randomize class assignments across tasks by setting different random seeds, allowing us to assess the impact of class ordering on PEARL. Although the final Class-IL accuracy ($A_T$\%) is slightly lower than the previously reported result of $88.76 \pm 0.69$, the results remain consistent and robust across these new class orders, highlighting the method's stability. Furthermore, both incremental and final accuracies show stability across varying class orderings, reinforcing the reliability of the approach. Even across all different class orderings, PEARL (ViT) consistently outperforms the considered baselines in Table \ref{tab:imagenet_r_results} by a huge margin. In conclusion, the findings indicate that PEARL maintains robust performance and generalizability across varying class orders, affirming its reliability as an effective framework for CL, even in randomized conditions.
+
+
+\begin{table}[h]
+    \centering
+
+    \caption{Class-IL performance comparison on ImageNet-R (10T) across different class orders.  Each class order indicates a random mix of classes across tasks. As can be seen, random class ordering has minimal impact on the functioning of PEARL (ViT).  }
+    \begin{tabular}{c|c|c|c}
+        \toprule
+        \textbf{Class Order} & \# Params (Millions) & $A_T$\% & $\bar{A}$\% \\
+        \midrule
+        1 & 92.78  & 86.63 & 91.24 \\
+        2 & 93.46 & 86.76 & 92.24 \\
+        3 & 93.41 & 86.50 & 91.54 \\
+        4 & 93.26  & 86.73 & 91.69 \\
+        5 & 92.83 & 86.86 & 91.77 \\
+        \midrule
+        \textbf{Average} &  \textbf{93.14} & \textbf{86.70} & \textbf{91.70} \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:class_order}
+
+\end{table}
+
+\subsection{Growth in model size}
+% Table \ref{tab:growth} provides a comparison of parameter growth between PEARL and complete parameter isolation method. This comparison is relevant since PEARL is derived from complete parameter isolation. However, its efficient information reuse and dynamic resource allocation distinguish PEARL in terms of model growth. The findings reveal that PEARL requires significantly fewer parameters compared to the complete parameter isolation method. Furthermore, PEARL demonstrates scalability even when faced with longer task sequences.
+
+Table \ref{tab:growth} presents a comparison of parameter growth between PEARL and the complete parameter isolation method. As mentioned earlier, complete parameter isolation involves 100\% resource allocation, meaning each task utilizes a separate backbone network. We regard the complete parameter isolation method as an upper bound in terms of both performance and model growth. This comparison is especially relevant because PEARL is derived from complete parameter isolation principles. However, it distinguishes itself through efficient information reuse and dynamic resource allocation, allowing for effective management of model growth. The results show that PEARL requires significantly fewer parameters than the complete parameter isolation method, highlighting its efficiency. Moreover, PEARL demonstrates scalability, maintaining strong performance even in the context of longer task sequences. This positions it as a more resource-efficient solution for continual learning tasks compared to traditional parameter isolation approaches.
+
+
+
+\begin{table}[h]
+    \centering
+    \caption{Comparison of parameter growth (in Millions) in PEARL with respect to complete parameter isolation in different number of tasks. }
+    \label{tab:growth}
+    \resizebox{0.85\linewidth}{!}{%
+    \begin{tabular}{c|c|c|c|c|c}
+        \toprule
+        Dataset & Backbone & Method & 5 Tasks & 10 Tasks & 20 Tasks \\
+        \midrule
+        \multirow{4}{*}{Seq-CIFAR100} & \multirow{2}{*}{R18} & Complete Param. Isolation & 55.89 & 111.73 & 223.42 \\
+        % & TAMiL & 23.10 & 23.76 & 25.08 \\
+        % & AGILE & 23.07 & 23.08 & 23.09 \\
+        & & PEARL & \textbf{12.56}  & \textbf{13.27} & \textbf{13.55} \\
+        \cmidrule(r){2-6}
+        & \multirow{2}{*}{BSC} & Complete Param. Isolation & 6.32 & 12.60 & 25.14 \\
+        & & PEARL &  \textbf{1.63} & \textbf{1.89} &\textbf{ 2.30} \\
+        \midrule        
+        \multirow{2}{*}{ImageNet-R} & \multirow{2}{*}{ViT} & Complete Param. Isolation & 452.86 & 905.72 & 1,811.44 \\
+        & & PEARL &  \textbf{92.46} & \textbf{93.27} & \textbf{95.35} \\
+        \bottomrule
+    \end{tabular}
+}
+\end{table}
+
+
+
+
+\section{Conclusion}
+We proposed PEARL, a rehearsal-free, parameter-isolation-based PEFT CL framework that mitigates catastrophic forgetting through dynamic resource allocation. Specifically, PEARL leverages reference task weights and adaptively determines the rank of task-specific, layer-specific LoRA components based on the current task’s proximity to reference task weights in parameter space. With our dynamic threshold criterion, a close proximity would result in a lower rank allocation and maximum information re-use while a distant proximity results in a larger rank selection. To demonstrate the versatility of PEARL, we performed extensive evaluation with three different architectures on a multitude of CL scenarios and showed that these variants outperform all considered baselines by a significant margin. Extending our work to more realistic settings such as general CL scenarios where task boundaries are not known at training time, and exploring alternatives for efficient estimation of task vectors without the need to fine-tune the entire pre-trained model are some of the useful research directions for this work.
+
+\bibliography{main}
+\bibliographystyle{tmlr}
+
+\appendix
+
+
+\section{Limitations and Future work}
+% We proposed PEARL, a versatile  parameter efficient CL framework with dynamic low-rank adaptation. PEARL is generic and can be effectively applied to both convolutional neural networks and Vision Transformers. 
+We provided extensive analysis to exhibit the effectiveness of PEARL across multitude of datasets, settings and scenarios in CL. However, PEARL has several limitations: Firstly, as a parameter isolation approach, PEARL scales with the increasing number of tasks. Although this growth is limited, it still results in additional parameters for each new task, leading to a larger model. Moreover, with every new task, each image has to pass through every sub-network for Class-IL inference, resulting slower inference.  Secondly, PEARL assumes knowledge of task boundaries, which are not always available in real-world scenarios. This assumption is common among parameter isolation approaches, as new parameters are typically introduced at the onset of each task.
+Thirdly, PEARL requires fine-tuning a full pre-trained model on the current task for several epochs. As model sizes grow, this may become impractical on resource-constrained devices. Finally, task vector initialization in PEARL assumes a precise measure of task proximity, but in practice, there can be multiple proximity criteria can be explored and validated. 
+In our future work, we aim to explore alternatives for defining task boundaries and efficient estimation of task vectors without the need to fine-tune the entire pre-trained model.
+
+
+
+
+
+
+
+
+
+
+\section{Additional Information}
+
+\subsection{Overview of experiments}\label{appendix:overview_expts}
+
+We provide a comprehensive overview of the experiments conducted to evaluate the performance of PEARL across various CL benchmarks. To demonstrate the versatility of the PEARL framework, we assess its performance on two architectures: Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs). Given that ResNet-18 is a widely used model in convolutional CL literature, we employ a randomly initialized ResNet-18 to ensure a fair comparison with baseline models. Furthermore, we extend our experiments to include a ResNet-18-like architecture with blueprint separable convolutions (BSCs). The decision to include a BSC-based network is driven by two key considerations: (i) As CL evolves, there is a growing demand for efficient models that maintain a modest parameter size. BSCs significantly reduce the parameter footprint compared to traditional convolutions, resulting in more compact models; and (ii) By separating the traditional convolution operation into point-wise and depth-wise operations, BSCs allow us to illustrate the generalizability of our approach beyond conventional model architectures. Consistent with baseline methods, these convolutional models are not pre-trained and are initialized randomly. Since pre-training can be a luxury for small custom models, these experiments highlight that pre-training is not necessary for the effective application of PEARL. In these settings, we treat the first task as a reference task and proceed with parameter-efficient fine-tuning starting from the second task. We evaluate PEARL against three types of baselines: exemplar-based methods, NECIL approaches, and parameter isolation techniques. We present results on standard CL benchmarks, including Seq-CIFAR100 and Seq-TinyImageNet, in both Class-IL and Task-IL settings.
+
+Similar to PEARL, parameter-efficient fine-tuning (PEFT) approaches in CL leverage techniques to adapt pre-trained ViT models for new tasks. Consequently, we consider PEFT CL approaches as primary baselines for our PEARL (ViT) version. In alignment with these baselines, we utilize the ViT-base-16 model, which has been pre-trained on the ImageNet-21k dataset. The larger size of ViT-base-16 enables us to experiment with a more extensive dataset. Accordingly, we evaluate PEARL (ViT) on the rendered ImageNet dataset (ImageNet-R) in a Class-IL setting across various task sequences. 
+
+
+\begin{table}[h]
+    \centering
+    \caption{Summary of experiments. }
+    \label{tab:experiments_summary}
+    \resizebox{\textwidth}{!}{%
+        \begin{tabular}{l|l|l|c|l|l|l}
+            \toprule
+            Architecture & Model & Reference task & Setting & CL scenario & Baseline & Metric \\
+            \midrule
+            Convolutional & - R18 & \multirow{3}{*}{ - Not pre-trained}  & - Seq-CIFAR100 (5T, 10T, 20T) & - Class-IL & - Exemplars based  \\ 
+            & - BSC &  & - Seq-TinyImageNet (5T, 10T) & - Task-IL  & - NECIL & - $\bar{A}$ (\%)\\ 
+            &  &  &  &  & - Param isolation based & - $A_T$ (\%)\\
+            \cmidrule(lr){0-5}
+            Transformers & - ViT & - Pre-trained & - ImageNet-R (5T, 10T, 20T) & - Class-IL & - PEFT CL \\
+            \bottomrule
+        \end{tabular}%
+    }
+
+\end{table}
+
+
+
+
+
+\subsection{Justification for considered baselines}\label{appendix:justification}
+
+To facilitate extensive evaluation of PEARL, we consider a comprehensive array of baseline methods: (i) exemplar-based approaches that involve information reuse and task-specific adapters (e.g., TAMiL, AGILE); (ii) NECIL approaches (e.g., PASS, FeTriL, FeCAM); (iii) parameter-isolation approaches that operate within a fixed capacity (e.g., NISPA) and those that expand beyond it (e.g., PNN, PAE); and (iv) PEFT approaches for continual learning (e.g., L2P, C-LoRA, InfLoRA).  Firstly, inspired by the GWT, exemplar-based baselines entail a shared network for information reuse and task-specific attention modules that re-project the representation from the common representation space to the global workspace. Likewise, the PEARL framework includes a shared reference task network for information reuse and task-specific, layer-specific low-rank adapters for orienting towards the current task.  Secondly, PEARL is a rehearsal-free framework; it does not store previous task samples either directly or indirectly through generative networks. Therefore, it aligns well with the NECIL benchmark and associated approaches. Thirdly, we note that low-rank adaptation introduces task-specific parameters that are trained on the corresponding task and kept frozen afterwards, akin to parameter-isolation approaches. As PEARL exhibits partial parameter isolation with a shared reference task network and low-rank adapters, we also provide a comparison with parameter isolation approaches. Finally, since PEARL readily utilizes LoRA \citep{hu2021lora}, a prominent PEFT technique, we offer an in-depth comparison with PEFT continual learning approaches. In addition, we also provide a discussion on related dynamic low-rank adaptation techniques beyond continual learning in Section \ref{appendix:dynamic_lora_methods}.
+
+To the best of our knowledge, PEARL is the first dynamic low-rank adaptation framework tailored specifically for generic or custom-built small-scale models in continual learning. With a variety of the aforementioned baselines and analysis, we provide a comprehensive understanding of PEARL across architectures, datasets, and continual learning scenarios.
+
+
+
+
+\subsection{Discussion on PEFT LoRA counterparts} \label{appendix:dynamic_lora_methods}
+\textbf{PEFT CL approaches with static rank allocation}: Among PEFT continual learning approaches, InfLoRA \citep{liang2024inflora} and C-LoRA \citep{DBLP:journals/corr/abs-2304-06027} are prominent techniques that involve low-rank adaptation of pre-trained networks, similar to PEARL. Each of these methods are tailored for CL scenarios and addresses unique challenges. InfLoRA aims to minimize the interference of new tasks on previously learned ones, thereby improving knowledge retention. However, its reliance on a handcrafted reduction matrix $B$, rather than a data-driven learned representation, limits its flexibility. C-LoRA, on the other hand, depends on a pre-trained model as its foundation, making it reliant on the availability of such models for its application. It applies LoRA to both the key and query attention mechanisms, ensuring efficient adaptation for new tasks. Additionally, C-LoRA incorporates a self-regularization strategy, which penalizes updates to parameters already modified by previous tasks. This mechanism helps preserve prior knowledge and enhances stability across sequential tasks. Despite its relative success, caution is warranted when training C-LoRA on large task sequences, as this approach suffers from scalability issues. In line with standard practices in continual learning benchmarks, we provide results for SeqLoRA, a sequential finetuning baseline without any safeguards against catastrophic forgetting. SeqLoRA experiences significant forgetting, underscoring the difficulty of maintaining performance across tasks in continual learning.
+
+The PEARL framework proposed in this paper entails dynamic rank allocation for LoRA components, making it efficient and scalable even with longer task sequences. Secondly, due to efficient dynamic resource allocation, all LoRA parameters are learnable through gradient descent. Unlike InfLoRA, this flexibility allows PEARL to capture the nuances of the corresponding task more effectively without any hindrance. With regard to C-LORA, PEARL does not entail self-regularization to bring forth stability and consequent reduced task interference. We speculate that task dynamics as played out in the parameter space allow PEARL to counteract any task interference, thereby effectively mitigating forgetting across CL tasks. Overall, we find that dynamic resource allocation coupled with the flexibility to learn task nuances based on task proximity has endowed PEARL with superior performance across a multitude of Cl scenarios.
+
+\textbf{PEFT approaches with dynamic rank allocation}: Parameter efficient fine-tuning techniques such as LoRA distribute trainable parameters equally across all layers, which may reduce efficiency when layers vary in their contribution towards task adaptation. To address this, adaptive low-rank adaptation strategies  have emerged that dynamically adjust parameter budgets to improve fine-tuning efficiency, similar to PEARL. AdaLoRA \citep{zhang2023adaptive} adaptively allocates the parameter budget among weight matrices according to their importance score. The importance score is computed by parameterizing the incremental updates in the form of SV-decomposition and the singular values of unimportant updates are pruned.  DyLoRA \citep{valipour-etal-2023-dylora} proposed a dynamic low-rank adaptation in which  LoRA blocks are trained for a range of ranks instead
+of a single rank by sorting the representation learned by the adapter module at different
+ranks during training. More recent methods, such as DoRA \citep{mao-etal-2024-dora} and Dynamic Rank-Selective LoRA \citep{lu2024adaptive}, have emerged, with DoRA decomposing high-rank LoRA layers into structured single-rank components, while Dynamic Rank-Selective LoRA  adaptively assigns ranks to LoRA modules based on their relevance to the current data in CL in vision language models. Although these approaches address a similar challenge as PEARL, these are not tailored for CL in custom, compact models. 
+
+AdaLoRA uses SVD to measure the importance of each matrix component, pruning lower singular values. However, this adaptive adjustment introduces a more complex implementation compared to PEARL, and potential instability if rank adjustments are too frequent. DyLoRA addresses the limitations of static rank selection by training LoRA blocks with a range of ranks, randomly sampling a rank during each training iteration and optimizing the model for that rank. Unlike DyLoRA, PEARL does not require setting a predefined rank range before training, offering greater flexibility during training. 
+DoRA introduces a decomposition strategy that splits high-rank LoRA layers into multiple single-rank components, with dynamic rank allocation and a regularization penalty to ensure stable pruning. However, DoRA does not result in significant reduction in number of parameters compared to high-rank LoRA allocation. Dynamic Rank-Selective LoRA introduces dynamic importance weights, represented by a learnable vector, which assigns importance to each rank during training. These weights, inspired by the diagonal elements in the singular value matrix of SV-Decomposition, are learned directly from the data while promoting sparsity by minimizing the \( \ell_1 \) norm of the importance weights. However, Dynamic Rank-Selective LoRA directly merges parameter updates into the pre-trained weights without explicitly considering correlations between tasks. Overall, the three former approaches are not specifically tailored for CL and  lack results for direct comparisons with PEARL variants. Although Dynamic Rank-Selective LoRA focuses on CL, it is tailored for vision-language models, limiting the possibility of a direct comparison with PEARL. To the best of our knowledge, PEARL is a one of the early approaches tailored specifically for efficient custom, compact CL.  
+
+
+ % AdaLORA is another parameter-efficient fine-tuning method that improves upon LoRA. It builds on the limitations of LoRA of pre-specifying the rank and ignoring the fact that importance of weight matrices varies across layers and modules and this lead to uneven distribution of weights and more trainable parameters to areas not needed. 
+
+
+% - separate sub-nets after training and during inference
+% - inference overhead
+
+
+\subsection{Potential sensitivity of PEARL}
+PEARL is quite sensitive to the stability of task vector and noise contained in the resultant SVD decomposition thereof. In cases where task vectors are poorly conditioned, the dynamic rank estimation can be imprecise resulting in over or under allocation of dynamic rank. Figure \ref{fig:taskwise_res_alloc}(b) provides a depiction of resource allocation dynamics for ImageNet-R (10T) using PEARL (ViT) across three distinct runs. We note that PEARL relies solely on the proximity of a task relative to the reference task weights in parameter space. It is important to clarify that task proximity, as defined in PEARL, does not correspond to semantic similarity between tasks. Different random seeds can alter the training trajectory, thereby changing the proximity of tasks relative to the reference task. As a result, the distribution of parameter allocation can vary significantly across tasks in different runs.
+
+
+\subsection{Relation to Orthogonal-Subspace Methods}
+
+Orthogonal-subspace approaches (e.g., \cite{wang2023orthogonal,chaudhry2020continual}) address catastrophic forgetting in CL by enforcing geometric constraints that keep updates for new tasks orthogonal to subspaces associated with previous tasks, typically using SVD-based decompositions or orthogonalized gradients. These methods effectively reduce interference but require explicit construction, storage, and maintenance of task-specific subspaces, causing computational and memory costs to grow with the number of tasks. Moreover, they operate in the full parameter or gradient space, which can be expensive and less practical for large modern architectures. We compare against this line of work because it shares the core objective of preserving prior knowledge while providing task-specific flexibility, making it a natural conceptual baseline for evaluating PEARL. In contrast to explicit orthogonality constraints, PEARL works entirely within the parameter-efficient LoRA space and introduces dynamic rank allocation based on task similarity, allowing it to adapt capacity without building or maintaining orthogonal subspaces. This results in a more scalable and lightweight mechanism for mitigating interference, while still offering the ability to adapt to diverse tasks in a rehearsal-free continual learning setting.
+
+\section{Additional Analysis} \label{addition_analysis}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Comparison with complete parameter isolation}
+% Under the hood, PEARL essentially is a parameter-isolation CL framework that dynamically allocates resources based on current task's proximity to the reference task in the parameter space. Therefore, theoretical upper bound for PEARL would be a model with 100\% resource allocation for each task. To this end, we provide a comparison with Complete parameter Isolation method which entails a separate backbone for each task. For example in Seq-CIFAR100 (5T), Complete parameter Isolation method would entail a separate ResNet-18 backbone for each task, allowing for maximum resource allocation for each task. 
+At its core, PEARL functions as a parameter-isolation CL framework that dynamically allocates resources based on the current task's proximity to the reference task in the parameter space. The theoretical upper bound for PEARL represents a model with 100\% resource allocation for each task. To illustrate this, we compare PEARL with the\textit{ Complete Parameter Isolation} method, which entails a separate backbone for each task. For instance, in Seq-CIFAR100 (5T), the Complete Parameter Isolation method would necessitate a distinct ResNet-18 backbone for each task, enabling maximum resource allocation and complete parameter isolation.
+Table \ref{tab:param_isolation} provides comparison of PEARL against complete parameter isolation with maximum resource allocation. Across settings and architectures, PEARL stays close to the performance of complete parameter isolation method while being extremely parameter efficient. 
+
+
+
+\begin{table}[th]
+    \caption{Class-IL ($A_T$\%) performance  evaluation of PEARL with respect to a model with complete parameter isolation. We treat such as model as an upper bound for PEARL. Efficiency is computed as a ratio of Class-IL ($A_T$\%) Vs \#Params (M). As can be seen, dynamic rank allocation leaves minimal footprint while staying close to the performance of complete parameter isolation method. }
+    \label{tab:param_isolation}
+    \centering
+        \resizebox{\linewidth}{!}{%
+    \begin{tabular}{c|c|c|c|c|c|c}
+        \toprule
+        Dataset & Backbone & Model  & \#Params & Class-IL ($A_T$\%) & Task-IL ($A_T$\%) & Efficiency \\ 
+        &   & & (M) & & &  \\ 
+        \midrule
+        \multirow{4}{*}{Seq-CIFAR100 (5T)}  & \multirow{2}{*}{R18} & Complete param isolation  & 55.89 & \textbf{53.57} $\pm$ 0.66 & \textbf{80.69} $\pm$ 0.54 & 0.96 \\ 
+         & & PEARL    & \textbf{12.56} & 51.97 $\pm$ 0.93 & 80.04 $\pm$0.54  & \textbf{4.14} \\ 
+        \cmidrule(r){2-7}
+         & \multirow{2}{*}{BSC} & Complete param isolation  & 6.32 & \textbf{59.22} $\pm$ 0.29 & \textbf{83.82} $\pm$ 0.19 & 9.37  \\ 
+         & & PEARL  &\textbf{ 1.63 }& 54.48  $\pm$ 0.35 & 81.55 $\pm$ 0.71  & \textbf{33.42} \\ 
+        \midrule
+        \multirow{4}{*}{Seq-TinyImageNet (10T)} & \multirow{2}{*}{R18} & Complete param isolation & 111.79 & \textbf{38.5} $\pm$ 0.32 &  \textbf{73.54} $\pm$ 0.53 & 0.35 \\ 
+        &  & PEARL  & \textbf{12.32 }& 35.22 $\pm$ 0.27 & 71.49 $\pm$ 0.22 & \textbf{2.86} \\ 
+        \cmidrule(r){2-7}
+         &\multirow{2}{*}{BSC} & Complete param isolation  & 12.65 & \textbf{40.63} $\pm$ 0.48 & \textbf{73.3} $\pm$ 0.27 & 3.21 \\ 
+         & & PEARL  & \textbf{2.3} & 36.45 $\pm$ 0.53 & 70.95 $\pm$ 0.44 & \textbf{15.84} \\ 
+         \midrule
+          \multirow{2}{*}{ImageNet-R (10T)} & \multirow{2}{*}{ViT} & Complete param isolation &  905.72 & 87.58 $\pm$ 0.49 &  \textbf{97.28 $\pm$ 0.19} & 0.09 \\ 
+        &  & PEARL  & \textbf{93.27} & \textbf{88.76 $\pm$ 0.69} & 97.19 $\pm$ 0.18 & \textbf{0.95} \\ 
+        \bottomrule
+    \end{tabular}
+    }
+
+\end{table}
+
+
+\subsection{Forgetting analysis}
+
+We provide additional metrics in our experiments to comprehensively evaluate the performance of PEARL. Table \ref{tab:performance_metrics} includes metrics such as forgetting, stability, and plasticity, which offer valuable insights into the model's behavior. It is noteworthy that most baseline models do not report these metrics, limiting our ability to compare their performance across these dimensions. Forgetting measures the model's ability to retain knowledge from previous tasks by calculating the average decline in accuracy for a task at the conclusion of CL training relative to its initial accuracy; lower forgetting values indicate superior knowledge retention. Stability (S) reflects the average accuracy on previously learned tasks at the end of training, illustrating the model’s performance on earlier tasks. In contrast, plasticity (P) evaluates the model's capability to learn new tasks effectively, determined by the average accuracy during the initial training of those tasks. The trade-off between stability and plasticity is quantified by the formula \( \frac{2 \times S \times P}{P + S} \), which measures how well the method balances these two aspects. Together, these metrics offer a holistic view of PEARL’s performance, emphasizing its strengths and trade-offs in various Class-IL scenarios.  Across both Seq-CIFAR100 (5T) and Seq-TinyImageNet (10T), PEARL (BSC) demonstrates superior performance and a more favorable trade-off between stability and plasticity compared to PEARL (R18). A notable exception is observed in the forgetting metric for Seq-CIFAR100 (5T), where PEARL (BSC) experiences slightly higher forgetting. However, the enhanced stability and plasticity in PEARL (BSC) effectively compensate for this increase in forgetting. On ImageNet-R (10T), the PEARL (ViT) method demonstrates strong performance across key continual learning metrics. It achieves high average accuracy ($A_T$) of 88.76\%, excellent plasticity (91.67\%), and minimal forgetting (3.63\%), indicating a well-balanced trade-off between stability and adaptability.
+
+
+\begin{table}[ht]
+    \centering
+    \caption{ PEARL Class-IL performance metrics across datasets.}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{@{}l|l|c|c|c|c|c@{}}
+        \toprule
+        Dataset      & Method & $A_T$ (\%) $\uparrow$  & Forgetting (\%) $\downarrow$  & Stability (\%) $\uparrow$ & Plasticity (\%) $\uparrow$ & Trade-off $\uparrow$ 
+        \\ \midrule
+        \multirow{2}{*}{Seq-CIFAR100 (5T)} & PEARL (R18) &  51.97  $\pm$ 0.34 &  13.34  $\pm$ 0.39    & 51.19  $\pm$ 0.68 &  62.64 $\pm$ 0.90 &  56.34 $\pm$ 0.77   \\ 
+        & PEARL (BSC) &54.47  $\pm$ 0.27  & 14.47 $\pm$ 0.34  & 53.21 $\pm$ 0.41 & 66.06 $\pm$ 0.54 & 59.01 $\pm$ 0.32   \\ 
+        \midrule
+        \multirow{2}{*}{ Seq-TinyImageNet (10T)} & PEARL (R18) & 35.22	$\pm$ 0.49 &  14.26  $\pm$ 0.56 & 35.41 $\pm$ 0.25 &  48.06 $\pm$ 0.32 & 40.78 $\pm$ 0.14 \\ 
+        & PEARL (BSC) & 36.45 $\pm$ 0.68 & 13.44   $\pm$ 0.65 & 36.56 $\pm$ 0.53  & 48.54 $\pm$ 0.95 & 41.70  $\pm$ 0.59 \\ 
+        \midrule
+        ImageNet-R (10T) & PEARL (ViT) & 88.76 $\pm$ 0.69 & 3.63$ \pm$ 0.17 & 88.18 $\pm$ 0.77 & 91.67 $\pm$ 0.71 & 89.89 $\pm$ 0.74  \\ 
+        \bottomrule
+    \end{tabular}
+    }
+    \label{tab:performance_metrics}
+\end{table}
+
+
+\subsection{Hyperparameter Tuning}\label{appendix:hyperparam_tuning}
+PEARL framework provides a robust way to find the best trade-off between model size and performance in PEFT CL. As such, our framework is devoid of any specific hyper-parameters. In order to provide a better picture of PEARL's performance landscape, Table \ref{tab:tuning} presents Class-IL ($A_T$\%) performance for various learning rates. The best results for each dataset and model combination are highlighted in bold, providing a clear indication of the optimal settings. For Seq-CIFAR100 (5T), the results show that a learning rate of 0.001 yielded the highest performance for both PEARL (R18) and PEARL (BSC). Notably, the performance of PEARL (R18) is better than its BSC counterpart in all other learning rates except 0.001 and 0.01. Therefore, when generalizing to datasets beyond those considered in this paper, we urge the readers to extensively tune learning rate of PEARL (BSC) for optimum performance. In the Seq-TinyImageNet (10T) scenario, the optimal learning rate for PEARL (R18) was found to be 0.0001, achieving an $A_T$ of 35.22\%. For PEARL (BSC), a slightly higher learning rate of 0.001 led to the best performance of 36.45\%. PEARL (BSC)'s performance across different learning rates further confirms the susceptibility of PEARL (BSC) to changing learning rates. For the ImageNet-R (10T) dataset, the results demonstrate that the learning rate of 0.03 provided the best performance for PEARL (ViT), resulting in an $A_T$ of 91.38\%. As PEARL (ViT) is pre-trained on ImageNet-21k, it is more robust to changes in the learning rate. 
+
+
+\begin{table}[h]
+    \caption{Comparison of Class-IL performance ($A_T$ (\%)) for various learning rates. The best results for each dataset and model combination are highlighted in bold. The error terms indicate the standard deviation across 3 random runs.  }
+    \label{tab:tuning}
+    \centering
+        \resizebox{\linewidth}{!}{%
+    \begin{tabular}{c|c|c|c|c|c|c|c}
+        \toprule
+        \multirow{2}{*}{Dataset} & \multirow{2}{*}{Model} & \multicolumn{6}{c}{Class-IL ($A_T$\%) for different learning rates }  \\
+        \cmidrule(r){3-8}
+        & & 0.1 & 0.01 & 0.03 & 0.001 & 0.005 & 0.0001  \\
+        \midrule
+    
+        \multirow{2}{*}{Seq-CIFAR100 (5T)} & PEARL (R18) & 30.95 $\pm$ 6.12& 42.69 $\pm$	1.78 & 41.62 $\pm$	0.76  & \textbf{51.97} $\pm$	0.93  & 47.25 $\pm$	0.28 & 48.89 $\pm$	0.28 \\
+
+        & PEARL (BSC) & 10.44 $\pm$	1.59  & 52.18	$\pm$ 0.46 & 40.63 $\pm$	3.02  & \textbf{54.48} $\pm$	0.36 & 47.60	$\pm$ 0.53 & 45.53	$\pm$ 0.48  \\
+        
+        \midrule
+        
+        \multirow{2}{*}{Seq-TinyImageNet (10T)} & PEARL (R18) & 14.77 $\pm$	1.41 & 27.18	$\pm$ 0.75 & 26.15	$\pm$ 0.98 & 34.63 $\pm$	0.67 & 28.57 $\pm$	0.99 &  \textbf{35.22}	$\pm$ 0.27\\
+
+        & PEARL (BSC) & 3.47 $\pm$	1.08  & 33.93 $\pm$	0.60  & 18.69 $\pm$ 	1.51  & 36.22 $\pm$	0.53 & \textbf{36.45} $\pm$	0.53  & 29.30 $\pm$	0.39 \\
+
+        \midrule
+
+        ImageNet-R (10T) & PEARL (ViT) & 91.23 $\pm$	0.18 & 	91.06 $\pm$ 0.58 & \textbf{91.38	$\pm$ 0.50} & 83.51 $\pm$ 0.47 & 88.76 $\pm$ 0.69 &  83.51 $\pm$ 0.47\\
+        
+        
+        \bottomrule
+    \end{tabular}
+    }
+
+\end{table}
+
+\subsection{Comparison against CL approaches in standard benchmarks.}
+
+%  Table \ref{tab:results} provides a comparison of PEARL convolutional models under both Class-IL and Task-IL scenarios in Seq-CIFAR100 (5T) and Seq-TinyImageNet (10T). Rehearsal-based approaches, including those relying solely on experience rehearsal (e.g., ER, DER++) perform poorly in both Class-IL and Task-IL settings. Other approaches that utilize one or more model surrogates  (e.g., Co$^{2}$L, OCDNet, TAMiL) show higher performance, commensurate with the increase in overall model size. 
+% Parameter isolation methods (e.g., PNNs, PackNet) that require task-identity at inference show a great promise in Task-IL setting. However, these approaches are not suited for Class-IL setting due to the problem of inter-task class separation.  On other hand, both PEARL models outperform all considered baselines across all scenarios. The generalization of superior model performance across different Task-IL settings shows the versatility of PEARL. 
+
+Table \ref{tab:results} presents a comparison of PEARL convolutional models in both Class-IL and Task-IL scenarios for Seq-CIFAR100 (5T) and Seq-TinyImageNet (10T). Rehearsal-based methods, including those that rely exclusively on experience replay (e.g., ER, DER++), exhibit subpar performance in both Class-IL and Task-IL contexts. In contrast, approaches that utilize one or more model surrogates (e.g., Co$^{2}$L, OCDNet, TAMiL) demonstrate improved performance, which aligns with the increase in overall model size.
+Parameter isolation methods (e.g., PNNs, PackNet) that require task-identity at inference show a great promise in Task-IL setting. However, these methods struggle in Class-IL scenarios due to challenges related to inter-task class separation. Conversely, both PEARL models consistently outperform all examined baselines across all scenarios. The robust performance across varied Task-IL settings highlights the versatility and effectiveness of the PEARL framework, underscoring its potential as a leading solution in continual learning tasks.
+
+
+
+
+% \begin{table}[htbp]
+% \caption{Class-IL performance comparison using ViT-Base16, pre-trained on ImageNet-21K, across the DomainNet (15T) dataset.}
+% \centering
+% % \fontsize{8pt}{10pt}\selectfont
+
+% \label{tab:domainnet_results_21k}
+% \resizebox{0.68\linewidth}{!}{%
+% \begin{tabular}{cccccc}
+% \toprule
+% \multirow{2}{*}{\textbf{Method}} & \multirow{2}{*}{\textbf{Publisher}} & \multicolumn{2}{c}{\textbf{DomainNet}} \\
+% \cmidrule(lr){3-4}
+% & & $\bar{A}$ (\%) & $A_T$ (\%) \\
+% \midrule
+% OVOR \cite{huang2024ovor} & ICLR 2024 & 75.80 $\pm$ 0.40 & 68.77 $\pm$ 0.12 \\
+% EASE \cite{zhou2024expandable} & CVPR 2024 & 71.82 $\pm$ 0.49 & 65.42 $\pm$ 0.14 \\
+% InfLoRA \cite{liang2024inflora} & CVPR 2024 & 69.74 $\pm$ 0.31 & 57.35 $\pm$ 0.32 \\
+% NTK-CL \cite{liu2024parameter} & ArXiv & 73.70 $\pm$ 0.47 & 67.44 $\pm$ 0.36 \\
+% PEARL (ViT)  & - & 71.49 $\pm$ 0.09 & 62.17 $\pm$ 0.14 \\
+% \bottomrule
+% \end{tabular}
+% }
+% \end{table}
+
+
+
+\begin{table}[t]
+\caption{A benchmark comparison with CNN-based  prior works on Class-IL ($A_T$\% ) and Task-IL ($A_T$\% ). The best results are highlighted in bold while the second best are underlined. The error terms indicate a standard deviation across 3 random runs. The rehearsal-based baselines employ a buffer size of 200. }
+\label{tab:results}
+\centering
+\resizebox{0.93\linewidth}{!}{%
+\begin{tabular}{l|l|cc|cc}
+    \toprule
+    \multirow{2}{2cm}{\textbf{Method}}  & \multirow{2}{1.5cm}{\textbf{Venue}}  &  \multicolumn{2}{c|}{\textbf{Seq-CIFAR100 (5T)}}& \multicolumn{2}{c}{\textbf{Seq-TinyImageNet (10T)}}\\
+   \cmidrule(r){3-6}
+    & & Class-IL ($A_T$\% ) & Task-IL ($A_T$\% )  & Class-IL ($A_T$\% ) & Task-IL ($A_T$\% ) \\ 
+       
+   \midrule
+% --------------------------------------------------------
+    JOINT   & - & 70.56 $\pm$0.28 & 86.19 $\pm$0.43 & 59.99 $\pm$0.19 & 82.04 $\pm$0.10 \\
+    SGD  & -  & 17.49 $\pm$0.28 & 40.46 $\pm$0.99 & 7.92 $\pm$0.26 & 18.31 $\pm$0.68 \\ \midrule
+% % --------------------------------------------------------
+%     % LwF & 22.46 &  $2 \mathcal{F} \;   ,  \; 1 \mathcal{B}$ & 19.61 $\pm$0.05 & 63.29 $\pm$2.35 & 18.47 $\pm$0.14 & 26.45 $\pm$0.22 & 8.46 $\pm$0.22 & 15.85 $\pm$0.58 \\
+%     oEWC    & - & - & 7.58 $\pm$0.10 & 19.20 $\pm$0.31 \\
+%     SI    & - & - & 6.58 $\pm$0.31 & 36.32 $\pm$0.13 \\
+%     ALASSO   & - & - & 17.02 & 	48.07 \\
+%     UCB   & - & - &  23.43  & 	 49.01  \\  
+%     % BMKP  &  	- & 94.49\scriptsize{$\pm$0.26} & - & - & - & 	70.36 \scriptsize{$\pm$0.32} \\ \midrule
+% % --------------------------------------------------------
+    PNNs \citep{rusu2016progressive} & NeurIPS 2016 & - & 74.01 $\pm$1.11 & - & \textbf{67.84} $\pm$0.29 \\
+    PackNet \citep{mallya2018packnet} & CVPR 2018 & - &  72.39 $\pm$0.37 & - &  60.46 $\pm$1.22 \\
+    % WSN & & $1 \mathcal{F} \;   ,  \; 1 \mathcal{B}$ & - &   44.79 $\pm$1.86 & - &  76.38 $\pm$0.33 & - &  69.06 $\pm$1.22 \\
+    NISPA \citep{gurbuz2022nispa} & NeurIPS 2022  & - &  65.36 $\pm$2.19 & - &  59.56 $\pm$0.32 \\
+    SparCL-EWC \citep{wang2022sparcl} & NeurIPS 2022 & - &  59.53 $\pm$0.25 & - &  59.56 $\pm$0.32 \\ \midrule
+% --------------------------------------------------------
+    ER   & -  & 21.40 $\pm$0.22 & 61.36 $\pm$0.35 & 8.57 $\pm$0.04 & 38.17 $\pm$2.00 \\
+    DER++ \citep{buzzega2020dark}  & NeurIPS 2020  &   29.60 $\pm$1.14 & 62.49 $\pm$1.02 & 10.96 $\pm$1.17 & 40.87 $\pm$1.16 \\
+    ER-ACE \citep{caccia2022new}  & ICLR 2022  & 35.17 $\pm$1.17 & 63.09 $\pm$1.23 &  11.25 $\pm$0.54  & 44.17$\pm$1.02 \\
+    % SparsCL-DER++$_{0.95}$ &   &    & 65.18 \scriptsize{$\pm$1.25} & 92.97 \scriptsize{$\pm$0.37} & - & - & 10.76 \scriptsize{$\pm$0.62} & 40.54 \scriptsize{$\pm$0.98} \\
+    % LiDER  &  11.23  &  $5 \mathcal{F} \;   ,  \; 5 \mathcal{B}$ &  53.75   \scriptsize{$\pm$1.25} &   86.50  \scriptsize{$\pm$0.37} & - & - &   \scriptsize{$\pm$0.62} &  \scriptsize{$\pm$0.98} \\
+    Co$^{2}$L \citep{cha2021co2l} & ICCV 2021   &  31.90 $\pm$0.38 & 55.02 $\pm$0.36 & 13.88 $\pm$0.40 & 42.37 $\pm$0.74 \\
+    % GCR    & 33.69 \scriptsize{$\pm$1.40} & 64.24 \scriptsize{$\pm$0.83} & 13.05 \scriptsize{$\pm$0.91} & 42.11 \scriptsize{$\pm$1.01} \\
+    % CLS-ER    & 43.80 \scriptsize{$\pm$1.89} & 73.49 \scriptsize{$\pm$1.04} &  23.47 \scriptsize{$\pm$0.80} & 49.60 \scriptsize{$\pm$0.72} \\
+    % TARC  & &  $2 \mathcal{F} \;   ,  \; 1 \mathcal{B}$ &  53.23 \scriptsize{$\pm$0.10} & - & 23.48 \scriptsize{$\pm$0.10} & - & 9.57 \scriptsize{$\pm$0.12} & - \\
+    OCDNet \citep{li2022learning} & IJCAI 2022   &  44.29 $\pm$0.49 & 73.53 $\pm$0.24 & 17.60 $\pm$0.97 & 	56.19 $\pm$1.31 \\
+    TAMiL \citep{bhat2022task}& ICLR 2022   & 	41.43 $\pm$0.75  & 71.39 $\pm$0.17 & 20.46 $\pm$0.40 & 55.44 $\pm$0.52  \\
+    % IMEX-Reg & &  $3 \mathcal{F} \;   ,  \; 1 \mathcal{B}$ &  	71.56 \scriptsize{$\pm$0.18} & 94.77 \scriptsize{$\pm$0.81} & 48.54 \scriptsize{$\pm$0.23} & \textbf{75.61} \scriptsize{$\pm$0.73} & 24.15 \scriptsize{$\pm$0.78} & 	62.91 \scriptsize{$\pm$0.54} \\
+    TriRE \citep{vijayan2023trire} & NeurIPS 2023  & 43.91 $\pm$0.18 & 71.66 $\pm$ 0.44 & 20.14 $\pm$0.19 & 55.95 $\pm$0.78 \\  
+    AGILE \citep{bhat2024mitigating} & CoLLAs 2024 & 45.73 $\pm$0.15  & 74.37 $\pm$0.34 & 20.19 $\pm$1.65 & 53.47 $\pm$1.60 \\
+    % DGM &  & -  &  71.94 \scriptsize{$\pm$0 } & 89.91 \scriptsize{$\pm$ 0} & - & - &  28.45 $\pm$0 & 61.32 \scriptsize{$\pm$0} \\
+    %  DRI  &  & -  &  65.16 \scriptsize{$\pm$1.13} & 92.87 \scriptsize{$\pm$0.71} & - & - & 17.58 \scriptsize{$\pm$1.24} & 44.28 \scriptsize{$\pm$1.37} \\
+    % CF-IL  &  & -  &  \textbf{75.34} $\pm$0 & 93.12 $\pm$0 & - & - &  \textbf{33.06} $\pm$0 & \textbf{67.42} \scriptsize{$\pm$0} \\ 
+    \midrule 
+% --------------------------------------------------------
+    PEARL (R18) & -  & \underline{51.97}	$\pm$ 0.93   &  \underline{80.05} $\pm$	0.54  &  \underline{35.22} $\pm$ 0.27 &  \textbf{71.49} $\pm$ 0.23  \\
+
+     PEARL (BSC) & -   & \textbf{54.48} $\pm$	0.36 & \textbf{81.55} $\pm$ 0.72 & \textbf{36.45}   $\pm$ 0.53   & \underline{70.94} $\pm$ 0.44   \\
+
+ \bottomrule
+\end{tabular}
+}
+\end{table}
+
+
+\subsection{Performance in longer task sequences}
+% It is imperative for CL models to perform well in longer task sequences as real-world scenarios requires these models to adapt to numerous tasks in a sequence. To this end, Figure \ref{fig:cifar100_5_10_20} provides an overview of Class-IL ($A_T$\% ) performance of PEARL in longer task sequences, namely 5, 10, and 20 tasks in Seq-CIFAR100. 
+%  Parameter isolation approaches, including PEARL, provide maximum stability by fixing parameters associated with previous tasks. Although there is no capacity saturation, as the number of tasks increases, forgetting becomes more pronounced due to the difficulty of distinguishing between a larger set of classes, leading to a decrease in performance. This is reflected in the steady drop in performance as we progress from 5 to 10 and then to 20 tasks.
+
+It is essential for CL models to excel in longer task sequences, as real-world applications often require them to adapt to a variety of tasks in succession. Figure \ref{fig:cifar100_5_10_20} showcases the Class-IL performance ($A_T$\%) of PEARL over extended task sequences of 5, 10, and 20 tasks in Seq-CIFAR100. Parameter isolation approaches, including PEARL, provide maximum stability by fixing parameters associated with previous tasks. Although there is no capacity saturation, as the number of tasks increases, forgetting becomes more pronounced due to the difficulty of distinguishing between a larger set of classes, leading to a decrease in performance. This is reflected in the steady drop in performance as we progress from 5 to 10 and then to 20 tasks, highlighting the challenges of maintaining knowledge retention in increasingly complex Class-IL task sequences.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[ width=\linewidth]{images/pearl_sequential_performance.pdf}
+\caption{Evaluation of Class-IL ($A_T$\% ) performance under longer task sequences in Seq-CIFAR100. In line with other parameter isolation approaches, there is a steady drop in performance as we move from 5 tasks to 10 tasks and eventually to 20 tasks. }
+\label{fig:cifar100_5_10_20}
+\end{figure*}
+
+
+
+
+
+\subsection{Dynamic rank allocation across layers in ViT}
+
+% PEARL introduces a PEFT CL framework that entails dynamic
+% rank selection for LoRA components during training. Specifically, leverages reference task/pre-training weights and adaptively determines the rank of task-specific LoRA components based on the current task’s proximity to reference task weights in parameter space. Figure \ref{fig:dynamic_threshold} provides an overview of dynamic rank allocation across layers for the final task in Seq-CIFAR100 (5T). From left to right, we provide an overview of layerwise dynamic threshold that was decided based on task's proximity, corresponding selected rank and actual rank in our convolutional variants. In line with the actual rank, PEARL allocates lower rank for earlier layers and higher rank for later layers. Moreover, it is generally agreed upon in CNN literature that earlier layers capture generic information while later layers capture task-specific information. Therefore, earlier layers require less task-specific adaptation, which is reflected in lower rank allocation. As we move towards later layers, more resources are required to re-orient reference task information towards current task, justifying higher rank allocation in later layers. 
+
+PEARL introduces a PEFT CL framework that incorporates dynamic rank selection for LoRA components during training. PEARL leverages reference task weights and adaptively determines the rank of task-specific, layer-specific LoRA components based on the proximity of the current task to the reference task weights in the parameter space. Figure \ref{fig:dynamic_threshold} illustrates the dynamic rank allocation across layers for convolutional variants for the final task in Seq-CIFAR100 (5T). From left to right, Figure \ref{fig:dynamic_threshold} presents a detailed overview of the layer-wise dynamic thresholds established based on task proximity, along with the corresponding selected rank and actual rank for our convolutional variants. 
+% Consistent with the actual rank, our framework allocates lower ranks to earlier layers and higher ranks to later layers. The dynamic rank allocation is also consistent with established conventions in CNN literature, which suggest that earlier layers capture more generic features, while later layers focus on task-specific information. As a result, earlier layers require less task-specific adaptation, leading to lower rank allocations. Conversely, as we approach the later layers, more resources are necessary to adapt the reference task information to the current task, thereby justifying the higher rank allocation in these layers.
+Similarly, Figure \ref{fig:dynamic_threshold_vit} presents 
+ the dynamic rank allocation across layers for the final task in ImageNet-R (5T) for PEARL (ViT). In the ViT model, earlier layers are primarily responsible for extracting low-level image features. These features lay the foundation for subsequent high-level feature extraction and semantic understanding in later layers. As these features relatively less complex and can be re-used across tasks, PEARL puts less emphasis on them through lower rank allocation. On the other hand, intermediate layers handle more abstract and complex features, such as parts of objects and entire objects, necessitating higher rank allocation. Therefore, PEARL puts a major emphasis on intermediate layers with higher rank allocation. The top layers of the ViT model are designed to capture high-level semantic features and global contextual information. By later layers, the model has likely already captured the most significant semantic features relevant to the task, and additional layers contribute marginally smaller improvements to the final output quality. Therefore, PEARL allocates a lower threshold and a corresponding lower rank in later layers. In line with the aforementioned findings in \citet{zeng2024peeling}, PEARL displays a bell-curve shaped dynamic rank allocation across layers thereby optimizing resource allocation and maximizing information reuse. 
+
+
+
+
+\begin{figure*}[h]
+\centering
+\includegraphics[ width=0.95\linewidth]{images/pearl_vis_layerwise_analysis_seed_20.pdf}
+\caption{Depiction of final task dynamic resource allocation in ImageNet-R (5T). (left) Dynamic threshold of different ViT layers based on the similarity of current task with respect to reference task for deciding the rank. (middle) Selected rank based on dynamic threshold. (right) Actual rank of Key weight matrix. As can be seen both dynamic threshold and selected rank show more emphasis for later layers, in line with the actual rank. }
+\label{fig:dynamic_threshold_vit}
+\end{figure*}
+
+
+
+
+
+
+
+
+
+
+        % PEARL (R18) & - & \underline{51.97} & \underline{63.51} & \underline{41.11} & \underline{56.21} & \underline{40.26}  & \underline{51.27} & \underline{35.22} & \underline{47.95} \\
+
+
+
+
+% Figure \ref{fig:taskwise_res_alloc}(b) shows the normalized resource allocation across three runs of PEARL (ViT) on ImageNet-R (10T). 
+% The parameter values exhibit significant variation across tasks and runs, yet certain patterns and similarities emerge. For instance, tasks 1 to 3 display a consistent trend where parameter values decrease initially and then rise again. Similarly, tasks 2 and 8 demonstrate consistent parameter values across different runs. In contrast, tasks 6 to 10 show higher parameter variability compared to tasks 1 to 5.
+
+
+% \begin{figure*}[h]
+% \centering
+% \includegraphics[ width=0.45\linewidth]{images/taskwise_resource_alloc.pdf}
+% \caption{Task-wise (normalized) resource allocation. }
+% \label{fig:taskwise_res_alloc}
+% \end{figure*}
+
+
+
+
+% \subsection{Forgetting analysis with varying ranks}
+
+
+% \begin{table*}[htbp]
+% \caption{Forgetting analysis on PEARL (ViT)  on ImageNet-R (10T). $\uparrow$ indicates higher is better, $\downarrow$ indicates lower is better.}
+% \centering
+% \label{tab:vit_rank_ablation_metrics}
+% \resizebox{\linewidth}{!}{%
+% \begin{tabular}{c|c c cccc c}
+% \toprule
+% \textbf{Rank} & $A_T$ (\%) $\uparrow$ & $\bar{A}$ (\%) $\uparrow$ & Forgetting (\%) $\downarrow$ & Stability (\%) $\uparrow$ & Plasticity (\%) $\uparrow$ & Trade-off $\uparrow$ & Params (M) \\
+% \midrule
+% 2  & 84.80 $\pm$ 0.39 & 89.09 $\pm$ 0.12 & 5.23 $\pm$ 0.31 & 84.21 $\pm$ 0.26 & 89.08 $\pm$ 0.39 & 86.58 $\pm$ 0.29 & 91.17 \\
+% 4  & 86.18 $\pm$ 0.64 & 90.05 $\pm$ 0.41 & 4.68 $\pm$ 0.03 & 85.67 $\pm$ 0.66 & 90.01 $\pm$ 0.60 & 87.78 $\pm$ 0.63 & 91.54 \\
+% 8  & 87.52 $\pm$ 0.53 & 90.94 $\pm$ 0.15 & 4.03 $\pm$ 0.19 & 86.99 $\pm$ 0.43 & 90.77 $\pm$ 0.47 & 88.84 $\pm$ 0.45 & 92.28 \\
+% 16 & 88.27 $\pm$ 0.50 & 91.45 $\pm$ 0.09 & 3.75 $\pm$ 0.30 & 87.67 $\pm$ 0.42 & 91.24 $\pm$ 0.66 & 89.42 $\pm$ 0.53 & 93.75 \\
+% 32 & 89.17 $\pm$ 0.61 & 92.04 $\pm$ 0.21 & 3.40 $\pm$ 0.15 & 88.63 $\pm$ 0.64 & 91.86 $\pm$ 0.67 & 90.22 $\pm$ 0.65 & 96.71 \\
+% \midrule
+% Dynamic (Ours) & 88.76 $\pm$ 0.69 & 91.67 $\pm$ 0.69 & 3.63 $\pm$ 0.17 & 88.18 $\pm$ 0.77 & 91.67 $\pm$ 0.71 & 89.89 $\pm$ 0.74 & 93.27 \\
+% \bottomrule
+% \end{tabular}
+% }
+% \end{table*}
+
+
+
+
+
+\subsection{Additional comparison with adapter-based methods}
+
+Table \ref{tab:imagenet_r_results} provides an extensive comparison of different adapter-based and LoRA-based PEFT CL approaches. In addition, Table \ref{tab:method_comparison_vit_imagenetr}  provides comparison against additional adapter-based methods in the Class-IL setting on ImageNet-R (10T) using a ViT-B/16 backbone pre-trained on ImageNet-21K. As can be seen, PEARL (ViT) produces superior performance across both the metrics and beats the baselines by a large margin. Although LoRA-rank allocation is dynamic in our framework, PEARL (ViT) leaves slightly more number of parameters compared to adapter-based approaches. Although adapter-based methods are parameter efficient, We note that their performance is sub-par and can be even worse in longer task sequences. 
+
+\begin{table*}[htbp]
+\caption{Following \cite{10658306}, we compare additional adapter-based methods in the Class-IL setting on ImageNet-R (10T) using a ViT-B/16 backbone pre-trained on ImageNet-21K.}
+\centering
+\label{tab:method_comparison_vit_imagenetr}
+\resizebox{0.6\linewidth}{!}{%
+\begin{tabular}{c c c c}
+\toprule
+\textbf{Method} & $A_T$ (\%) $\uparrow$ & $\bar{A}$ (\%) $\uparrow$ & Params (M) \\
+\midrule
+Adam-ssf \citep{10.1007/s11263-024-02218-0} & 66.61 $\pm$ 0.09 & 74.36 $\pm$ 1.00 & 0.20 \\
+LAE  \citep{gao2023lae}    & 72.29 $\pm$ 0.14 & 77.99 $\pm$ 0.46 & \textbf{0.19} \\
+ADA  \citep{10.5555/3600270.3601042}    & 73.76 $\pm$ 0.27 & 79.57 $\pm$ 0.84 & 1.19 \\
+SSIAT \citep{10658306} & 79.38 $\pm$ 0.59 & 83.63 $\pm$ 0.43 & 1.19 \\
+\midrule 
+PEARL    & \textbf{88.76 $\pm$ 0.69} & \textbf{91.67 $\pm$ 0.69} & 1.75 \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+\subsection{Additional comparison with prompt-based methods}
+
+Table \ref{tab:imagenet_r_ffm_cfm_reordered} provides an extensive comparison of prompt-based methods in the continual learning (CL) setting on ImageNet-R. Following HiDe-Prompt \citep{wang2023hide}, we evaluate our method using the final forgetting measure (FFM) and cumulative forgetting measure (CFM), defined as follows. Let $A_{i,t}$ denote the accuracy on the $i$-th task after learning the $t$-th task.
+
+After learning all $T$ tasks, the forgetting metrics are defined as:
+
+\begin{align}
+FFM &= \frac{1}{T - 1} \sum_{i=1}^{T-1} \max_{t \in \{1, \ldots, T-1\}} (A_{i,t} - A_{i,T}) \tag{A58} \\
+CFM &= \frac{1}{T - 1}  \frac{1}{T - 1} \sum_{j=2}^{T} \sum_{i=1}^{j-1} \max_{t \in \{1, \ldots, j-1\}} (A_{i,t} - A_{i,j}) \tag{A59}
+\end{align}
+
+As shown in the results, PEARL (ViT) consistently achieves the best overall performance across both FFM and CFM metrics. HiDe-Prompt and EvoPrompt rank second and third overall, respectively, across all metrics and task settings. Notably, our method demonstrates stable and competitive performance across varying task numbers (5, 10, and 20), highlighting its robustness in different continual learning scenarios.
+
+
+\begin{table}[h!]
+    \caption{Following \cite{wang2023hide}, we compare additional prompt-based methods in the Class-IL setting on ImageNet-R using a ViT-B/16 backbone pre-trained on ImageNet-21K. \textbf{Bold} indicates the best result and \underline{underline} indicates the second-best result.}
+    \centering
+    \label{tab:imagenet_r_ffm_cfm_reordered}
+    \resizebox{0.99\linewidth}{!}{%
+    \begin{tabular}{lcccccc}
+        \toprule
+        \multirow{2}{*}{Method} & \multicolumn{2}{c}{5 Task @ 40 classes/task} & \multicolumn{2}{c}{10 Task @ 20 classes/task} & \multicolumn{2}{c}{20 Task @ 10 classes/task} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+        & FFM & CFM & FFM & CFM & FFM & CFM \\
+        \midrule
+        L2P \citep{wang2022learning} & $3.94 \pm 0.16$ & $3.55 \pm 0.20$ & $5.01 \pm 0.40$ & $4.41 \pm 0.43$ & $10.76 \pm 0.45$ & $7.88 \pm 0.17$ \\
+        DualPrompt \citep{DBLP:conf/eccv/0002ZESZLRSPDP22} & $3.32 \pm 0.16$ & $2.78 \pm 0.25$ & $4.61 \pm 0.07$ & $3.70 \pm 0.18$ & $7.30 \pm 0.18$ & $5.16 \pm 0.34$ \\
+        CODA-P \citep{smith2023coda} & $8.89 \pm 0.65$ & $7.65 \pm 0.98$ & $7.94 \pm 0.08$ & $6.72 \pm 0.79$ & $8.23 \pm 0.86$ & $6.95 \pm 0.70$ \\
+        LGCL \citep{pub13491} & $3.04 \pm 0.36$ & $2.50 \pm 0.38$ & $4.75 \pm 0.33$ & $3.38 \pm 0.58$ & $7.35 \pm 0.65$ & $5.05 \pm 0.32$ \\
+        HiDe-Prompt \citep{wang2023hide} & $3.15 \pm 0.46$ & $2.64 \pm 0.16$ & $ \mathbf{2.29 \pm 0.27} $ & $ \underline{2.33 \pm 0.17} $ &  - & $ \mathbf{2.23 \pm 0.38} $ \\
+        PGP \cite{qiao2024prompt} & $3.36 \pm 0.23$ & $2.85 \pm 0.25$ & $4.53 \pm 0.40$ & $3.63 \pm 0.35$ & $7.17 \pm 0.21$ & $5.09 \pm 0.25$ \\
+        EvoPrompt \citep{Kurniawan_Song_Ma_He_Gong_Qi_Wei_2024} & $ \mathbf{1.79 \pm 0.31} $ & $ \underline{1.41 \pm 0.32} $ & $4.22 \pm 0.42$ & $3.59 \pm 0.52$ & $6.72 \pm 0.90$ & $5.67 \pm 0.26$ \\
+        CPrompt \citep{gao2024consistent} & $6.00 \pm 0.00$ & $5.49 \pm 0.00$ & $6.10 \pm 0.75$ & $5.60 \pm 1.35$ & $5.98 \pm 0.24$ & $5.54 \pm 0.48$ \\
+        ConvPrompt \citep{roy_2024_CVPR} & $3.42 \pm 0.05$ & $2.36 \pm 0.16$ & $4.17 \pm 0.04$ & $3.11 \pm 0.17$ & $ \mathbf{4.87 \pm 0.57} $ & $3.57 \pm 0.25$ \\
+        % LEAPGen & $ \mathbf{0.51 \pm 0.04} $ & $ \mathbf{0.18 \pm 0.07} $ & $\mathbf{1.46 \pm 1.25}$ & $\mathbf{2.11 \pm 1.21}$ & $\mathbf{2.17 \pm 0.17}$ & $ \underline{2.54 \pm 0.77} $ \\
+        PEARL & $ \underline{2.28 \pm  0.13} $ & $ \mathbf{0.78 \pm 0.07} $  & $ \underline{3.63 \pm 0.17} $ & $ \mathbf{1.57 \pm 0.11} $ & $ \underline{5.93 \pm 0.25} $ & $ \underline{2.49 \pm 0.07} $ \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{table}
+
+
+\subsection{Inference time comparison in Class-IL}
+
+Table \ref{tab:imagenet-r-inference} presents an overview of per-image inference times on ImageNet-R (20T) for various baselines and PEARL (ViT). It is evident that adapter-based methods exhibit slower growth compared to LoRA-based methods, resulting in lower computational effort during inference. However, as shown in Table \ref{tab:imagenet_r_results} and \ref{tab:method_comparison_vit_imagenetr}, adapter-based approaches experience a higher degree of forgetting, leading to reduced performance across tasks. In contrast, LoRA-based methods, including PEARL (ViT), involve a slightly larger number of parameters and necessitate forward passes through each sub-network during inference. While PEARL (ViT) achieves superior performance across tasks, the additional overhead during inference remains a limitation of LoRA-based approaches, including our own.
+
+
+\begin{table*}[h]
+\caption{Per-image inference time on ImageNet-R (20T) for each method.}
+\centering
+\begin{tabular}{lc}
+\toprule
+Method & Inference Time (ms) \\
+\midrule
+L2P  \cite{wang2022learning}      & 9.53 \\
+DualPrompt \cite{wang2022dualprompt} & 9.51 \\
+CODA-P \cite{smith2023coda}     & 9.47 \\
+Adam-ssf    \cite{10.1007/s11263-024-02218-0}   & 10.03 \\
+SEMA  \cite{SEMA}     & \textbf{7.39} \\
+\midrule
+PEARL (ViT)      & 14.67 \\
+\bottomrule
+\end{tabular}
+\label{tab:imagenet-r-inference}
+\end{table*}
+
+
+
+
+\subsection{Task-wise resource allocation}
+As PEARL incorporates dynamic rank allocation based on task proximity in parameter space, we expect to see a non-uniform distribution of resources across different tasks in CL. Figure \ref{fig:taskwise_res_alloc}(a) presents an overview of distribution of normalized resource allocation across tasks for all PEARL variants. As can be seen, resource allocation is quite dynamic with highest variance seen in PEARL (ViT) in ImageNet-R (10T). Guided by the task proximity in the parameter space, PEARL dynamically allocates resources thereby ensuring optimum trade-off between performance and model growth.  In addition, we also provide a comparison of normalized resource allocation across three runs of PEARL (ViT) on ImageNet-R (10T) in Figure \ref{fig:taskwise_res_alloc}(b). We duly note that PEARL relies solely on the proximity of a particular task with respect to the reference task weights in the parameter space. We also clarify that task proximity as defined in PEARL does not correlate with the semantic similarity of tasks. With different random seeds, the training trajectory and thus the proximity of tasks with respect to the reference task changes. Therefore, the distribution of parameter allocation exhibits significant variation across tasks in different runs. 
+
+\begin{figure*}[h]
+    \centering
+    \subfloat[\centering]{{\includegraphics[width=0.40\linewidth]{images/taskwise_resource_alloc} }}%
+    \qquad
+    \subfloat[\centering]{{\includegraphics[width=0.40\linewidth]{images/taskwise_resource_alloc_vit.pdf} }}%
+    \caption{Task-wise resource allocation in parameter space (normalized number of parameters) for PEARL variants. (a) Visualizes resource allocation across Seq-CIFAR100 (10T), Seq-TinyImageNet (10T), and ImageNet-R (10T). (b) Shows resource allocation dynamics for ImageNet-R (10T) using ViT across three runs.}
+    \label{fig:taskwise_res_alloc}%
+\end{figure*}
+
+
+
+\section{Experimental setup} \label{appendix_exp_setup}
+
+\subsection{Backbones}
+ To demonstrate the versatility of PEARL across different architectures, we also explore three distinct backbones: (i) Convolutional networks such as ResNet-18 and a ResNet-18-like architecture incorporating Blueprint Separable Convolutions (BSC) \citep{li2022blueprint}, and (ii) the Vision Transformer (ViT) Base 16 pre-trained on ImageNet-21k. 
+ 
+ With regard to the PEARL (R18), the backbone is same as the one used in Mammoth CL benchmark \citep{buzzega2020dark}. In line with previous works, the backbone is randomly initialized and trained for CL tasks. However, we introduce PyTorch ModuleLists all throughout to make it easier to add / remove convolutional and BatchNorm layers at will. The ResNet-18 backbone consists of 4 layers with 2 blocks each. Each block in turn consists of two 3x3 convolutional layers with a BatchNorm and ReLU activation in between and after. ResNet-18 also entails shortcut connections in the form of a  3x3 convolutional layer followed by a BatchNorm layer and ReLU activation. Within PEARL (R18), we reserve separate classification and BatchNorm layers for each task.  As the backbone is not pre-trained, we treat the first task as  the reference task and conduct dynamic allocation from the second task onward. LoRA components are allocated for every convolutional layer. Their rank is dynamically decided after SVD decomposition of respective task vectors. Even after dynamic allocation and further training, LoRA components, BatchNorm layers and a corresponding classification layer are kept separate for each task.
+
+ \citet{li2022blueprint} introduced blueprint separable convolutions (BSC) to  optimize and reduce redundancy in convolutional operations. Essentially, BSC entails a 1x1 operation (point-wise filter) followed by  a depth-wise convolution layer. This separability reduces the memory and computational footprint resulting far more efficient model. Such a model is well suited for parameter isolation CL approach as it reduces overall model size when dealing with longer task sequences. PEARL (BSC) backbone consists of  3 layers with 2 blocks each. Within each block, the organization of layers is same as that of ResNet-18 except that traditional convolutional layers are replaced by BSC layers. As the BSC backbone is a custom, small network, pre-trained model is not readily available. Therefore, we treat the first task as  the reference task and conduct dynamic allocation from the second task onward. LoRA components are allocated for every point-wise filters as they have the majority of the footprint in terms of number of parameters. Since depth-wise filters have relatively lower footprint, we allocate LoRA components and select the rank of the task vector after decomposition.  Same as in ResNet-18, even after dynamic allocation and further training, LoRA components, BatchNorm layers and a corresponding classification layer are kept separate for each task.
+
+For PEARL (ViT), we use a ViT-B/16 backbone pre-trained on the ImageNet-21K dataset. To support our approach, PyTorch ModuleList structures are employed to facilitate the integration of task-specific LoRA components. LoRA weights are inserted in all layers of the ViT backbone, and as shown previously in Table~\ref{tab:ablation_vit}, adding LoRA weights to the Key matrix yields better results. The rank of these LoRA components is dynamically determined by performing SVD decomposition on the corresponding task vectors. During inference, parameter-efficient task-specific LoRA weights that are used to predict image labels in both Task-IL and Class-IL scenarios.
+
+
+\subsection{Datasets and settings}\label{appendix:dataset_settings}
+We evaluate PEARL across two distinct scenarios of CL: Class-IL and Task-IL. In both these settings,  the model encounters a new set of classes in each task and must learn to distinguish all classes encountered thus far after each task. In practice, we split  CIFAR-100 \citep{krizhevsky2009learning}, TinyImageNet \citep{le2015tiny}, and ImageNet-R \citep{hendrycks2021many} into different tasks depending on the number of tasks as in Table \ref{tab:dataset_settings}.
+
+% \textbf{Seq-CIFAR100 (5T)}: CIFAR-100 data (32x32) organized into 5 tasks with 20 classes per task.
+
+% \textbf{Seq-CIFAR100 (10T)}: CIFAR-100 data (32x32) organized into  10 tasks with 10 classes per task.
+
+% \textbf{Seq-TinyImageNet (5T)}: TinyImageNet data (64x64) organized into  5 tasks with 40 classes per task.
+
+% \textbf{Seq-TinyImageNet (10T)}: TinyImageNet data (64x64) organized into  10 tasks with 20 classes per task.
+
+% % \shakib{
+
+% \shakib{\textbf{ImageNet-R (5T):} ImageNet-R data (224x224) organized into 5 tasks with 40 classes per task.}
+
+% \shakib{\textbf{ImageNet-R (10T):} ImageNet-R data (224x224) organized into 10 tasks with 20 classes per task.}
+
+% \shakib{\textbf{ImageNet-R (20T):} ImageNet-R data (224x224) organized into 20 tasks with 10 classes per task.}
+
+% \shakib{\textbf{DomainNet (15T):} DomainNet data (224x224) organized into 15 tasks with 23 classes per task.}
+
+
+
+\begin{table}[h!]
+\caption{Dataset organization across different tasks and settings.}
+\centering
+\resizebox{0.65\linewidth}{!}{%
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Dataset      & Setting & Image size & Tasks & Classes per task \\ \midrule
+\multirow{2}{*}{Seq-CIFAR100}     & 5T    & 32x32 & 5  & 20 \\ 
+                                   & 10T   & 32x32 & 10 & 10 \\
+                                   & 20T   & 32x32 & 20 & 5 \\\midrule
+\multirow{2}{*}{Seq-TinyImageNet} & 5T    & 64x64 & 5  & 40 \\ 
+                                   & 10T   & 64x64 & 10 & 20 \\ \midrule
+\multirow{3}{*}{ImageNet-R}       & 5T    & 224x224 & 5  & 40 \\ 
+                                   & 10T   & 224x224 & 10 & 20 \\ 
+                                   & 20T   & 224x224 & 20 & 10 \\ \midrule
+% DomainNet                         & 15T   & 224x224 & 15 & 23 \\ \bottomrule
+\end{tabular}
+}
+\label{tab:dataset_settings}
+\end{table}
+
+% }
+
+PEARL is a CL framework that addresses catastrophic forgetting by using parameter isolation through the dynamic allocation of LoRA components. It creates a distinct sub-network for each task. When a new task is introduced, a sub-network is instantiated from the reference task and trained using a cross-entropy loss function. After a few epochs of fine-tuning on the current task, task vectors are computed and decomposed using SV-Decomposition. The LoRA components are initialized with a rank that is determined dynamically according to the criteria set forth in our approach. These components are then re-initialized and trained for the current task. Once the training for a task is complete, the associated sub-network—which includes the LoRA components, BatchNorm layers, and classification layer—is frozen. 
+% Importantly, the CL model trains concurrently on both Class-IL and Task-IL scenarios, as their training processes are identical. 
+
+% During inference in the Task-IL configuration, the relevant task-specific sub-network is selected based on the task ID, and the output is computed for maximum activation. Conversely, inference in the Class-IL setting presents more challenges since no task ID is provided. In this scenario, each test image is processed through all sub-networks, and their respective classifier outputs are concatenated. Because each task-specific sub-network is trained independently, the activation outputs can vary significantly, leading to performance in the Class-IL setting often being notably lower than in the Task-IL setting.
+
+ 
+% \subsection{Inference overhead in Class-IL}\label{appendix:class_il_overhead}
+% PEARL is a parameter-efficient continual learning approach designed to mitigate catastrophic forgetting through dynamic low-rank adaptation. 
+
+The model is trained simultaneously on both Class-IL and Task-IL settings, as their training regimes are identical. During inference in the Task-IL setting, the appropriate task-specific LoRA weights are selected based on the given task identity, and its output is inferred for maximum activation. However, inference in the
+Class-IL setting is more complex, as no task-identity is available. In this case, each test image passes through every sub-network, and their respective classifier outputs are concatenated. Since each task-specific sub-network is trained independently and the activation magnitudes produced
+can be imbalanced, the performance in the Class-IL setting often lags significantly behind that in the
+Task-IL setting. Although PEARL is highly efficient in terms of parameter allocation, 
+it introduces inference overhead in Class-IL scenarios, similar to C-LoRA. Unlike InfLoRA, where the learned parameters can be folded back into the original model weights for more efficient inference, PEARL stores task-specific LoRA sub-networks for each task. This task-wise separation, while effective for reducing interference between tasks, results in slightly increased storage and retrieval costs during inference, especially as the number of tasks grow beyond a reasonable limit.
+
+
+
+\subsection{Training details}\label{appendix:training_details}
+
+For experiments concerning PEARL (ViT) on the ImageNet-R dataset, we use the Adam optimizer \citep{kingma2015adam} with hyperparameters $\beta_{1} = 0.9$ and $\beta_{2} = 0.999$. The batch size is set to 128. The ViT model is fine-tuned on the current task with a learning rate of $5 \times 10^{-3}$ for 25 epochs ($E_1$). Following this, the LoRA weights are trained separately for an additional 25 epochs ($E_2$) using a learning rate of $5 \times 10^{-4}$. We observed that a cosine-decaying learning rate schedule outperforms a constant learning rate. Regarding the LoRA parameterization, the rank is determined dynamically based on the criteria outlined in our approach, and the LoRA alpha parameter is set to twice the rank.
+
+
+With regard to PEARL convolutional variants, we use a batch size of 32 for all experiments. Furthermore, we fine-tune the reference task weights for 15 epochs ($E_1$) with a best learning rate found in Section \ref{appendix:hyperparam_tuning}. Following this, the LoRA components are initialized with dynamic ranks and are fine-tuned further for 50 epochs ($E_2$).  
+% you set the LoRA alpha parameter to rank.
+
+\begin{algorithm}[hbt!]
+\caption{PEARL (without pre-training)}
+\label{alg:PEARL_no_pretraining}
+\begin{algorithmic}[1]
+   \State \textbf{Input}: Randomly initialized model $\Phi_\theta$, Data distributions $\{\mathcal{D}_t\}_{t=1}^K$, Epochs $E_1$, $E_2$
+   % \State Output: $\theta = \cup_{t=1}^K \{f_{\theta^{t}}, g_{\theta^{t}}  \} \cup \theta_r$
+
+   \State Reference task training using Eqn. \ref{eqn_reference_task}
+   \State $\theta_r = \{f_{\theta^{r}}, g_{\theta^{r}}\}$, $\theta = \theta_r$
+
+   
+   \For {tasks $t \in \{2,..,K\}$}
+        \State $\theta_t \gets \{\text{deepcopy}(f_{\theta^{r}}), g_{\theta^{t}} \}$
+        \State $f_{\theta^{t}} \gets \{\}$
+        \State Fine-tune $\theta_t$ on $\mathcal{D}_t$ for $E_1$ epochs
+
+       \For {target layers $l \in \{1, 2,..,L\}$}
+           \State Compute $\mathcal{W}^{t}_{cl}= \mathcal{W}^{t}_{l} - \mathcal{W}^{r}_{l}$ 
+           \State Decompose $\mathcal{W}_c^t$ using Eqn. \ref{eqn:svd}
+           \State Find dynamic rank $k_l$ (Eqn. \ref{eqn:threshold_dynamic} \& Eqn.\ref{eqn:k})
+           \State Initialize LoRA components $B_l$ and $A_l$ (Eqn. \ref{eqn:a_b_lora})
+           \State $f_{\theta^{t}} = f_{\theta^{t}} \cup \{B_l, A_l\}$
+        \EndFor 
+    \State Re-initialize task-specific weights $\{f_{\theta^{t}}, g_{\theta^{t}}\}$
+    \State $\theta \gets \theta \cup \{f_{\theta^{t}}, g_{\theta^{t}}\}$
+    \State Fine-tune $\{f_{\theta^{t}}, g_{\theta^{t}}\}$ on $\mathcal{D}_t$ for $E_2$ epochs
+   \EndFor
+\State {{\bfseries return} model $\Phi_\theta$ }
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\subsection{PEARL Algorithm in the absence of pre-training}
+
+
+Algorithm \ref{alg:PEARL_pretraining} provides an account of PEARL's functioning when a pre-trained model is readily available. However, pre-training can be a luxury for custom, compact models. Therefore, we design PEARL to seamlessly work even when pre-training is not available. Algorithm \ref{alg:PEARL_no_pretraining} illustrates the functioning of PEARL in the absence of pre-training. The only difference being, the first task is treated as a reference task and all the subsequent tasks leverage first task information for efficient CL. Although it is possible to use more number of classes in the first task for better knowledge consolidation, first task in PEARL contains same number of classes as the rest of the tasks. 
+
+
+\end{document}

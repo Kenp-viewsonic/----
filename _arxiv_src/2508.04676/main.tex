@@ -1,0 +1,163 @@
+\documentclass[10pt,journal,compsoc]{IEEEtran}
+
+% *** CITATION PACKAGES ***
+%
+\ifCLASSOPTIONcompsoc
+  % IEEE Computer Society needs nocompress option
+  % requires cite.sty v4.0 or later (November 2003)
+  \usepackage[nocompress]{cite}
+\else
+  % normal IEEE
+  \usepackage{cite}
+\fi
+
+\ifCLASSOPTIONcompsoc
+	\usepackage[caption=false,font=normalsize,labelfon t=sf,textfont=sf]{subfig}
+\else
+	\usepackage[caption=false,font=footnotesize]{subfig}
+\fi
+\hyphenation{op-tical net-works semi-conduc-tor IEEE-Xplore}
+
+\usepackage[switch]{lineno}
+\usepackage{xspace}
+\usepackage{enumitem}
+\usepackage{ragged2e}
+\usepackage[hyphens]{url}
+\usepackage[pagebackref,breaklinks,colorlinks]{hyperref}
+
+\usepackage{amsmath,amsfonts}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{mathtools}
+\usepackage{resizegather}
+
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{makecell}
+
+\usepackage{graphicx}
+\usepackage{stfloats}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{rotating, float, caption}
+
+
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{verbatim}
+\usepackage{listings}
+
+
+\newcommand{\thsup}[1]{#1^{\text{th}}}
+\lstset{
+    backgroundcolor=\color{gray!10},
+    basicstyle=\ttfamily\small,         
+    breaklines=true,                    
+    frame=single,                       
+    language=Python,                    
+    keywordstyle=\color{blue},          
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{red},            
+}
+
+\begin{document}
+\title{GeRe: Towards Efficient Anti-Forgetting in Continual Learning of LLM via General Samples Replay}
+
+\author{
+Yunan Zhang, Shuoran Jiang, Mengchen Zhao, Yuefeng Li, Yang Fan, Xiangping Wu, Qingcai Chen  
+
+\IEEEcompsocitemizethanks{
+\IEEEcompsocthanksitem Yunan Zhang, Shuoran Jiang, Yang Fan, Mengchen Zhao, Xiangping Wu, Qingcai Chen are with the Department of Computer Science and Technology, Harbin Institute of Technology, Shenzhen, China. (E-mail: zhangyunan@stu.hit.edu.cn, shuoran.chiang@gmail.com, yfan@stu.hit.edu.cn, zhaomengchen@stu.hit.edu.cn, wxpleduole@gmail.com,  qingcai.chen@hit.edu.cn)
+\IEEEcompsocthanksitem Yuefeng Li is with Ysstech Info-Tech Co.,Ltd, Shenzhen.
+\IEEEcompsocthanksitem Qingcai Chen and Xiangping Wu are the corresponding authors. (E-mail: wxpleduole@gmail.com, qingcai.chen@hit.edu.cn)
+\IEEEcompsocthanksitem Code and Data Website: \url{https://github.com/Qznan/GeRe}
+}
+
+
+}
+
+% The paper headers
+\markboth{Journal of \LaTeX\ Class Files,~Vol.~14, No.~8, August~2021}%
+{Shell \MakeLowercase{\textit{et al.}}: A Sample Article Using IEEEtran.cls for IEEE Journals}
+
+\maketitle
+
+% \IEEEtitleabstractindextext{
+\begin{abstract}
+The continual learning capability of large language models (LLMs) is crucial for advancing artificial general intelligence. However, continual fine-tuning LLMs across various domains often suffers from catastrophic forgetting, characterized by: 1) significant forgetting of their general capabilities, and 2) sharp performance declines in previously learned tasks.
+To simultaneously address both issues in a simple yet stable manner, we propose General Sample Replay (GeRe), a framework that use usual pretraining texts for efficient anti-forgetting. Beyond revisiting the most prevalent replay-based practices under GeRe, we further leverage neural states to introduce a enhanced activation states constrained optimization method using threshold-based margin (TM) loss, which maintains activation state consistency during replay learning.
+We are the first to validate that a small, fixed set of pre-collected general replay samples is sufficient to resolve both concerns---retaining general capabilities while promoting overall performance across sequential tasks.
+Indeed, the former can inherently facilitate the latter.
+Through controlled experiments, we systematically compare TM with different replay strategies under the GeRe framework, including vanilla label fitting, logit imitation via KL divergence and feature imitation via L1/L2 losses. Results demonstrate that TM consistently improves performance and exhibits better robustness. Our work paves the way for efficient replay of LLMs for the future.
+Our code and data are available at \url{https://github.com/Qznan/GeRe}.
+
+\end{abstract}
+
+
+\begin{IEEEkeywords}
+Large Language Models, Continual Learning, Finetune, Replay, Activation State
+\end{IEEEkeywords}
+% }
+
+
+\IEEEdisplaynontitleabstractindextext
+\IEEEpeerreviewmaketitle
+
+
+\input{latex/1-introduction}
+\input{latex/2-related_works}
+\input{latex/3-proposed_method}
+\input{latex/4-experiments}
+\input{latex/5-conclusion}
+
+\ifCLASSOPTIONcaptionsoff
+  \newpage
+\fi
+
+\bibliographystyle{IEEEtran}
+\bibliography{main}
+
+
+
+\appendix
+% \appendices
+
+\section*{A}\label{sec:appendix}
+
+\subsection{Examples of General Replay Samples}
+Table.\ref{tab:detailed_gen_samples} presents some selected examples from the general replay samples set $\mathcal{D}^{\text{(g)}}$ used throughout this paper, where each entry is a normal pretraining text sentence. The ID is the line number of our released \textit{jsonl} file of $\mathcal{D}^{\text{(g)}}$, and the set name is the meta information indicating the source.
+(We purposely selected examples from diverse sources for display.)
+The data was obtained through the following process: We downloaded the first chunk of data (\textit{train-00000-of-00048-ab2b35705f029d94.parquet}) from SlimPajama-6B (\url{https://huggingface.co/datasets/DKYoon/SlimPajama-6B}), a sampled version of SlimPajama-627B (\url{https://huggingface.co/datasets/cerebras/SlimPajama-627B}). Then, we simply extracted the first 1000 entries using the following code to generate the \textit{jsonl} file:
+\begin{lstlisting}
+slim_datasets = load_dataset('parquet', 
+    data_files={'train-00000-of-00048-ab2b35705f029d94.parquet'}
+)['train']
+slim_datasets.select(range(1000)).to_json('slimpajama_6B_chunk0_head1k.jsonl')
+\end{lstlisting}
+This acquisition process demonstrates that the general replay sample set was obtained through random selection rather than deliberate curation, thereby substantiating the robustness and universality of our method regarding the replay data.
+\input{figtab/gere_example.tex}
+
+\subsection{Examples of Downstream Task Datasets}
+Table.\ref{tab:detailed_tasks1}\textasciitilde\ref{tab:detailed_tasks2} show detailed examples of 15 downstream task datasets, including task types, dataset names, instructions, inputs, and golden answers.
+All data are constructed using the same template:
+
+\scalebox{0.9}{\texttt{[Instruction]\textbackslash n[Input]\textbackslash nAnswer:[Golden Answer]}.}
+
+\noindent The evaluation criterion for all samples is binary classification for being correct or incorrect , determining whether the model-generated answers exactly match the golden answers. The accuracy for each dataset is then calculated as the corresponding task performance.
+
+\input{figtab/tasks_example.tex}
+
+\subsection{Task-wise Results On Continual Fine-tuning 15 Downstream Tasks}
+
+We show the task-wise results of the continual fine-tuning experiments as in Table.\ref{tab:detail_full_first}\textasciitilde\ref{tab:detail_lora_last}, corresponding to each entry in Table.\ref{tab:continual_full} and Table.\ref{tab:continual_lora}. For instance, Table.\ref{tab:detail_full_first} elaborates the Baseline entry in Table.\ref{tab:continual_full} by including performance of the previous 14 tasks, rather than only listing the final result of the last task. 
+The first column indicates the current learning task, while the remaining columns show evaluation metrics for previously learned tasks and the resulted MMLU and F1 Avg at each learning step.
+
+\input{figtab/detail_full.tex}
+\input{figtab/detail_lora.tex}
+
+
+\end{document}

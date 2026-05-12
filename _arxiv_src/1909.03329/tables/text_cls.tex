@@ -1,0 +1,38 @@
+
+\begin{table}[!tp]
+    \centering
+    \scalebox{0.9}{
+    \begin{tabular}{l*{3}{c}}
+    \toprule
+    \small Order & \small MBPA++ & \small MBPA++ (our impl.) & \small $\text{LAMOL}_{\text{TASK}}^{0.2}$ \\
+    \midrule
+    i & 70.8 & 74.1 & \textbf{76.7} \\
+    ii & 70.9 & 74.9 & \textbf{77.2} \\
+    iii & 70.2 & 73.1 & \textbf{76.1} \\
+    iv & 70.7 & 74.9 & \textbf{76.1} \\
+    \midrule
+    Average & 70.7 & 74.2 & \textbf{76.5} \\
+    \bottomrule
+    \end{tabular}
+    }
+    \caption{Summary of results on text classification tasks using averaged EM score (equivalent to averaged accuracy in \cite{d2019episodic}) of models at last epoch of last task. The four orders mirror those in \cite{d2019episodic}. For MBPA++ (our impl.) and $\text{LAMOL}_{\text{TASK}}^{0.2}$, the results are averaged over two runs. The $p$-value of pairted $t$-test between eight numbers of MBPA++ (our impl.) and $\text{LAMOL}_{\text{TASK}}^{0.2}$ is smaller than 1\%, which shows that there is significant difference. Our implementation of MBPA++ is available at \url{https://github.com/Daikon-Sun/EM-in-LLL}.}
+    \label{tab:text_cls}
+\end{table}
+
+% \begin{table}[t]
+% \centering
+%     \begin{tabular}{l*{4}{c}}
+%     \toprule
+%     \scriptsize Order & \scriptsize MBPA++ & \scriptsize Multitask & \scriptsize MBPA++ (Our Impl.) & \scriptsize $\text{LAMOL}_{\text{TASK}}^{0.2}$ \\
+%     \midrule
+%     i & 70.8 & 73.7 & 76.0 & 77.0 \\
+%     ii & 70.9 & 73.2 & 75.6 & 77.6 \\
+%     iii & 70.2 & 73.7 & 75.3 & 76.2 \\
+%     iv & 70.7 & 73.7 & 76.2 & 76.4 \\
+%     \midrule
+%     Average & 70.7 & 73.6 & 75.8 & 76.8 \\
+%     \bottomrule
+%     \end{tabular}
+%     \caption{Summary of results on text classification tasks using averaged EM score (equivalent to averaged Accuracy in \cite{d2019episodic}) by the models at the last epoch of the last task. Four kinds of the order is as same as the orders in \cite{d2019episodic}.}
+% \label{tab:text_cls}
+% \end{table}

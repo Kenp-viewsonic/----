@@ -1,0 +1,132 @@
+\pdfoutput=1
+% In particular, the hyperref package requires pdfLaTeX in order to break URLs across lines.
+
+\documentclass[11pt]{article}
+
+% Remove the "review" option to generate the final version.
+\usepackage[]{acl}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{latexsym}
+
+
+% For proper rendering and hyphenation of words containing Latin characters (including in bib files)
+\usepackage[T1]{fontenc}
+% For Vietnamese characters
+% \usepackage[T5]{fontenc}
+% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+\usepackage{booktabs}
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{subfig}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+\input{math_commands.tex}
+
+%%%
+\newcommand{\xiang}[1]{\textcolor{red}{[Xiang: #1]}}
+%\newcommand{\xiang}{}
+
+
+\title{
+\textit{Lifelong Pretraining}: Continually Adapting Language Models\\ to Emerging Corpora
+}
+
+
+% \title{
+% Lifelong Pre-training of Language Models
+% }
+
+ 
+
+\author{Xisen Jin$^{\dagger1}$ \quad Dejiao Zhang$^2$ \quad Henghui Zhu$^2$ \quad Wei Xiao$^2$ \\
+        \textbf{Shang-Wen Li}$^{\ddagger2}$ \quad \textbf{Xiaokai Wei}$^2$ \quad \textbf{Andrew Arnold}$^2$ \quad \textbf{Xiang Ren}$^1$
+        \\
+        $^{1}$University of Southern California \quad $^{2}$AWS AI Labs\\
+\texttt{\{xisenjin,xiangren\}@usc.edu} \quad \\
+\texttt{\{dejiaoz, henghui, weixiaow, shangwenl, 
+xiaokaiw, anarnld\}} \\
+\texttt{@amazon.com}
+}
+
+
+
+%
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+\newcommand{\eg}{\textit{e.g.}}
+\newcommand{\setup}{\text{LPT}}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+%\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+
+\maketitle
+\input{acl2022/chaps/0-abstract}
+\input{acl2022/chaps/1-intro}
+\input{acl2022/chaps/3-setup}
+\input{acl2022/chaps/5-exps}
+\input{acl2022/chaps/2-related}
+
+
+
+\bibliography{main}
+\bibliographystyle{acl_natbib}
+
+\appendix
+\clearpage
+\newpage
+
+\input{acl2022/chaps/9-appendix}
+% \section{License of RealNews Dataset}
+
+% \begin{table}[]
+%     \centering
+%     \begin{tabular}{p{10cm}}
+% We, the researchers at the University of Washington, provide access to the RealNews dataset as well as the Grover-Mega checkpoints (the resources) under the following conditions. By selecting "I agree" the researcher agrees to the following:
+
+% 1. RealNews and the Grover-Mega checkpoints must only be used for research or education purposes. Use of the resources for malicious purposes, including but not limited to spreading disinformation, explicitly violates this agreement. The resources should not be used for financial gain or profit.
+% 2. There is no warranty regarding RealNews or the Grover-Mega checkpoints. We cannot be held liable for providing access to the resources.
+% 3. The resources should not be provided to any third party.
+% 4. The researcher takes full responsibility for consequences resulting from usage of the provided resources.
+% 5. If any part of this agreement is found to be invalid, this should not affect the other parts of the remaining agreement. \\
+% \end{tabular}
+% \caption{License of the Realnews dataset}
+
+% \label{tab:license_realnews}
+% \end{table}
+
+
+
+\end{document}

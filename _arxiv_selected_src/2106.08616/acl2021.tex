@@ -1,0 +1,199 @@
+%
+% File acl2021.tex
+%
+%% Based on the style files for EMNLP 2020, which were
+%% Based on the style files for ACL 2020, which were
+%% Based on the style files for ACL 2018, NAACL 2018/19, which were
+%% Based on the style files for ACL-2015, with some improvements
+%%  taken from the NAACL-2016 style
+%% Based on the style files for ACL-2014, which were, in turn,
+%% based on ACL-2013, ACL-2012, ACL-2011, ACL-2010, ACL-IJCNLP-2009,
+%% EACL-2009, IJCNLP-2008...
+%% Based on the style files for EACL 2006 by 
+%%e.agirre@ehu.es or Sergi.Balari@uab.es
+%% and that of ACL 08 by Joakim Nivre and Noah Smith
+\pdfoutput=1
+\documentclass[11pt,a4paper]{article}
+\usepackage[hyperref]{acl2021}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+% \usepackage[demo]{graphicx}
+\usepackage{subcaption}
+\renewcommand{\UrlFont}{\ttfamily\small}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+\aclfinalcopy % Uncomment this line for the final submission
+\def\aclpaperid{527} %  Enter the acl Paper ID here
+
+%\setlength\titlebox{5cm}
+% You can expand the titlebox if you need extra space
+% to show all the authors. Please do not make the titlebox
+% smaller than 5cm (the original size); we will check this
+% in the camera-ready version and ask you to change it back.
+
+\newcommand\BibTeX{B\textsc{ib}\TeX}
+
+\title{Out-of-Scope Intent Detection with Self-Supervision and\\ Discriminative Training}
+
+\author{
+Li-Ming Zhan$^1$ \quad Haowen Liang$^1$\thanks{~ Equal contribution.}  \quad Bo Liu$^{1*}$ \quad Lu Fan$^1$ \quad Xiao-Ming Wu$^1$\Thanks{~ Corresponding author.} \\
+\quad \bf Albert Y.S. Lam$^2$ \\ 
+% {\bf \quad Xiao-Ming Wu$^1$\Thanks{~ Corresponding author.} \quad Albert Y.S. Lam$^2$} \\
+Department of Computing, The Hong Kong Polytechnic University, Hong Kong S.A.R.$^1$ \\
+Fano Labs, Hong Kong S.A.R.$^2$ \\
+{\tt \{lmzhan.zhan, michael.liang, doc-bo.liu\}@connect.polyu.edu.hk}\\
+% {\tt \{newmichael852,boliu.kelvin\}@gmail.com}\\
+{\tt \{cslfan, csxmwu\}@comp.polyu.edu.hk, albert@fano.ai}\\
+}
+% boliu.kelvin@gmail.com
+% \author{
+% Guangfeng Yan$^{1*}$ \quad Lu Fan$^{1*}$ \quad Qimai Li$^{1}$\thanks{~ Equal contribution.} \\ 
+% {\bf \quad Han Liu$^1$ \quad Xiaotong Zhang$^1$ \quad Xiao-Ming Wu$^1$\Thanks{~ Corresponding author.} \quad Albert Y.S. Lam$^2$} \\
+% Department of Computing, The Hong Kong Polytechnic University, Hong Kong S.A.R.$^1$ \\
+% Fano Labs, Hong Kong S.A.R.$^2$ \\
+% {\tt \{csgfyan, cslfan, csqmli\}@comp.polyu.edu.hk}\\
+% {\tt \{cshliu, csxtzhang, csxmwu\}@comp.polyu.edu.hk, albert@fano.ai}\\
+% }
+\date{}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+\input{sec_abstract}
+\end{abstract}
+
+
+\section{Introduction}
+\input{sec_intro}
+
+
+\section{Related Work}
+\input{sec_related_work}
+
+
+\section{Methodology}
+\input{sec_method}
+
+
+
+
+\section{Experiments}\label{sec:exp}
+\input{sec_experiments}
+
+\section{Conclusion}
+\input{sec_conclusion}
+
+\section*{Acknowledgments}
+
+We would like to thank the anonymous reviewers for their helpful comments. This research was supported by the grant HK ITF UIM/377.
+
+% \begin{table}
+% \centering
+% \begin{tabular}{lrl}
+% \hline \textbf{Type of Text} & \textbf{Font Size} & \textbf{Style} \\ \hline
+% paper title & 15 pt & bold \\
+% author names & 12 pt & bold \\
+% author affiliation & 12 pt & \\
+% the word ``Abstract'' & 12 pt & bold \\
+% section titles & 12 pt & bold \\
+% subsection titles & 11 pt & bold \\
+% document text & 11 pt  &\\
+% captions & 10 pt & \\
+% abstract text & 10 pt & \\
+% bibliography & 10 pt & \\
+% footnotes & 9 pt & \\
+% \hline
+% \end{tabular}
+% \caption{\label{font-table} Font guide. }
+% \end{table}
+
+
+
+
+
+
+
+% \begin{table}
+% \centering
+% \begin{tabular}{lc}
+% \hline
+% \textbf{Command} & \textbf{Output}\\
+% \hline
+% \verb|{\"a}| & {\"a} \\
+% \verb|{\^e}| & {\^e} \\
+% \verb|{\`i}| & {\`i} \\ 
+% \verb|{\.I}| & {\.I} \\ 
+% \verb|{\o}| & {\o} \\
+% \verb|{\'u}| & {\'u}  \\ 
+% \verb|{\aa}| & {\aa}  \\\hline
+% \end{tabular}
+% \begin{tabular}{lc}
+% \hline
+% \textbf{Command} & \textbf{Output}\\
+% \hline
+% \verb|{\c c}| & {\c c} \\ 
+% \verb|{\u g}| & {\u g} \\ 
+% \verb|{\l}| & {\l} \\ 
+% \verb|{\~n}| & {\~n} \\ 
+% \verb|{\H o}| & {\H o} \\ 
+% \verb|{\v r}| & {\v r} \\ 
+% \verb|{\ss}| & {\ss} \\
+% \hline
+% \end{tabular}
+% \caption{Example commands for accented characters, to be used in, \emph{e.g.}, \BibTeX\ names.}\label{tab:accents}
+% \end{table}
+
+
+
+% \begin{table*}
+% \centering
+% \begin{tabular}{lll}
+% \hline
+% \textbf{Output} & \textbf{natbib command} & \textbf{Old ACL-style command}\\
+% \hline
+% \citep{Gusfield:97} & \small\verb|\citep| & \small\verb|\cite| \\
+% \citealp{Gusfield:97} & \small\verb|\citealp| & no equivalent \\
+% \citet{Gusfield:97} & \small\verb|\citet| & \small\verb|\newcite| \\
+% \citeyearpar{Gusfield:97} & \small\verb|\citeyearpar| & \small\verb|\shortcite| \\
+% \hline
+% \end{tabular}
+% \caption{\label{citation-guide}
+% Citation commands supported by the style file.
+% The style is based on the natbib package and supports all natbib citation commands.
+% It also supports commands defined in previous ACL style files for compatibility.
+% }
+% \end{table*}
+
+
+% \begin{itemize}
+% \item Example article in journal: \citep{Ando2005}.
+% \item Example article in proceedings, with location: \citep{borschinger-johnson-2011-particle}.
+% \item Example article in proceedings, without location: \citep{andrew2007scalable}.
+% \item Example arxiv paper: \citep{rasooli-tetrault-2015}. 
+% \end{itemize}
+
+
+
+
+% \section*{Acknowledgments}
+
+% The acknowledgments should go immediately before the references. Do not number the acknowledgments section.
+% \textbf{Do not include this section when submitting your paper for review.}
+
+\bibliographystyle{acl_natbib}
+\bibliography{anthology,acl2021}
+
+%\appendix
+
+
+
+\end{document}

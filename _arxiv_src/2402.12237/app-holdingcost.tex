@@ -1,0 +1,59 @@
+% !TEX root = main.tex
+To capture a scenario where an admitted job incurs holding cost while waiting for human review, this appendix considers an alternative objective to \eqref{eq:policy-loss} by including a holding cost function for every job type. In particular, for every type $k$, we assume there is a (cumulative) holding cost function $h_k(\cdot)$ such that for $d \geq 0$, $h_k(d)$ denotes the holding cost for a type-$k$ job if humans review this job after $d$ periods since its arrival. Naturally, we impose $h_k(0) = 0$ and $h_k(d + 1) \geq h_k(d)$.  Let $D(t)$ be the (random) number of periods between the admission of job $t$ and the period humans review this job. If the job is not admitted, we take $D(t) = 0$; if the job is admitted by not reviewed by period $T$, we take $D(t) = T + 1 - t$. We consider the below \emph{holding-adjusted} loss of a policy $\pi$:
+\begin{equation}\label{eq:holding-loss}
+\set{L}_{\bolds{h}}^{\pi}(T) \coloneqq \set{L}^{\pi}(T) + \sum_{t \leq T} h_{\kappa(t)}(D(t)),
+\end{equation}
+where the first term is identical to the \eqref{eq:policy-loss} and counts misclassification loss; the second term is the new component considering the holding cost for every job.
+
+To minimize the holding-adjusted loss of a policy, we consider its \emph{holding-adjusted} regret, which captures the additional holding-adjusted loss compared to the fluid benchmark in \eqref{eq:fluid} (our results similarly extend to the $w-$fluid benchmark in Appendix~\ref{app:w-fluid})): 
+\begin{equation}
+\reg_{\bolds{h}}^{\pi}(T) = \left(\expect{\set{L}_{\bolds{h}}^{\pi}(T)} - \set{L}^\star(T)\right)^+.
+\end{equation}
+Our focus is on the learning setting in Section~\ref{sec:unknown} and the goal is to again obtain sublinear regret. However, since the benchmark completely ignores holding cost, such a goal is not possible even when the holding cost has a simple form: a job has a cost of $1$ for the first waiting period and then zero holding cost. The proof of the below result is in the next subsection.
+\begin{proposition}\label{prop:lower-bound-holding}
+Consider a one-type stationary setting with $N(t) \equiv 1, \lambda_1 = \mu_1 = \ell_1=0.5$ and the holding cost function is $h_1(0) = 0, h_1(d) = 1$ for $d \geq 1$. Then for any horizon $T$, any policy $\pi$ must incur a linear holding-adjusted regret: $\reg_{\bolds{h}}^{\pi}(T) \geq 0.25T$.
+\end{proposition}
+Proposition~\ref{prop:lower-bound-holding} shows that sublinear holding-adjusted regret is not achievable when the marginal increase in holding cost is a constant. As a result, we focus on holding cost functions that have \emph{vanishing} cost increase. Specifically, for some known constant $\omega \in (0,1]$, we assume that for any $k \in \set{K}$ and $d \geq 1$, the marginal holding cost satisfies $h_k(d+1) - h_k(d) \leq T^{-\omega}$. As $T$ becomes large, the maximum marginal holding cost vanishes. For such holding cost functions, we show that $\bacidol$ with suitable hyper-parameters achieve sublinear holding-adjusted regret.
+
+\begin{proposition} $\bacidol$ with $\beta = T^{\omega/2}$ and $\gamma = (T/(K\ln T))^{-1/3}$ has 
+\[\reg_{\bolds{h}}^{\bacidol}(T) \lesssim K\sqrt{T\ln T} + KT^{1-\omega/2} + \min\left(\frac{K\ln T}{\eta^2}, T^{2/3}(K\ln T)^{1/3}\right) = o(T).\]
+\end{proposition}
+\begin{proof}
+The proof is similar to the proof of Theorem~\ref{thm:bacidol}. We first upper bound the expected holding cost under $\bacidol$ by
+\begin{equation}\label{eq:bound-holding}
+\expect{\sum_{t \leq T} h_{\kappa(t)}(D(t))} \leq \expect{\sum_{t \leq T} T^{-\omega} D(t)} = T^{-\omega}\expect{\sum_{t \leq T + 1} |\set{Q}(t)|},
+\end{equation}
+where the first inequality uses the assumption that $h_k(0) = 0$ and $h_k(d+1)-h_k(d) \leq T^{-\omega}$ for any $k \in \set{k}, d \geq 0$; the equality uses Little's Law.
+Using the same notations as in \eqref{eq:learning-loss-decompose} and plugging \eqref{eq:bound-holding} into \eqref{eq:holding-loss}, we bound the holding-adjusted loss of $\bacidol$ by
+\begin{align*}
+\expect{\set{L}^{\pi}_{\bolds{h}}(T)} &\leq \expect{\set{L}^{\pi}(T)} + T^{-\omega}\expect{\sum_{t\leq T+1} |\set{Q}(t)|} \\
+&\leq \text{Classification Loss} + \text{Idiosyncrasy Loss} + \text{Relaxed Delay Loss} + T^{-\omega}\expect{\sum_{t =1}^{T+1} \sum_{k \in \set{K}} Q_k(t)}.
+\end{align*}
+Since $\beta \geq 1$, Lemmas~\ref{lem:bacidol-delay}, \ref{lem:bacidol-class}, \ref{lem:bacidol-idio} apply and bound the first three terms. Using \eqref{eq:bound-olbacid} (and omitting $c_{\max}$) then gives 
+\[
+\expect{\set{L}^{\pi}_{\bolds{h}}(T)} \lesssim \set{L}^\star(T) + \beta K + T / \beta + \min\left(\frac{K\ln T}{\eta^2}, T^{2/3}(K\ln T)^{1/3}\right) + K\sqrt{T\ln T} + T^{-\omega}\expect{\sum_{t =1}^{T+1} \sum_{k \in \set{K}} Q_k(t)}.
+\]
+For the last term, the proof of Lemma~\ref{lem:bacidol-delay} shows that $Q_k(t) \leq \beta c_{\max}+1$ for any $k \in \set{K}, t \in [T+1].$ Plugging this bound gives 
+\begin{align*}
+\expect{\set{L}^{\pi}_{\bolds{h}}(T)} &\lesssim \set{L}^\star(T) + \beta K + T / \beta + \min\left(\frac{K\ln T}{\eta^2}, T^{2/3}(K\ln T)^{1/3}\right) + K\sqrt{T\ln T} + \beta K T^{1-\omega} \\
+&\lesssim K\sqrt{T\ln T} + KT^{1-\omega/2} + \min\left(\frac{K\ln T}{\eta^2}, T^{2/3}(K\ln T)^{1/3}\right),
+\end{align*}
+where the last inequality uses $\beta = T^{\omega / 2}.$
+\end{proof}
+
+\subsection{Necessity of vanishing marginal holding cost (Proposition~\ref{prop:lower-bound-holding})}\label{sec:pf-lowerbound-holding}
+\begin{proof}[Proof of Proposition~\ref{prop:lower-bound-holding}]
+Since there is only one type, this proof omits the dependence on the type for all notations. Because $\lambda = \mu$, the fluid benchmark \eqref{eq:fluid} has zero loss by admitting all jobs, i.e., $\set{L}^\star(T) = 0.$ It remains to show $\expect{\set{L}_{h}^{\pi}(T)} \geq 0.25T$ for any feasible policy $\pi$. Using the definition \eqref{eq:holding-loss} and recalling $\Lambda(t) = 1$ if there is a (type-1) job,
+\begin{align}
+\expect{\set{L}_{\bolds{h}}^{\pi}(T)} &= \expect{\set{L}^{\pi}(T)}+\expect{\sum_{t \leq T} \Lambda(t) h(D(t))} \nonumber\\
+&\geq  \expect{\sum_{t = 1}^T \ell\Lambda(t)(1 - A(t))} + \expect{\sum_{t \leq T} \Lambda(t) A(t)\indic{D(t) \geq 1}} \nonumber\\
+&\overset{\ell=0.5}{=} 0.25 T + \expect{\sum_{t \leq T} \Lambda(t) A(t)(\indic{D(t) \geq 1} - 0.5)}. \label{eq:holding-lower-bound}
+\end{align}
+where the first inequality is by applying \eqref{eq:loss-decompose} to $\expect{\set{L}^{\pi}(T)}$ and by using the fact that $h(d) = 1$ for $d \geq 1$, which implies that job $t$ incurs a holding cost of $1$ if and only if it is admitted ($A(t)=1$) and it has positive delay ($D(t) \geq 1$). For the second term on the right hand side of \eqref{eq:holding-lower-bound}, we claim that it is non-negative. To see this, when the random service for period $t$, $S(t)$, is equal to zero (i.e., humans do not finish the review), then the admitted job (if any) must have a wait time of at least one period. Therefore, $\Lambda(t)A(t)\indic{D(t) \geq 1} \geq \Lambda(t)A(t)\indic{S(t)=0}=\Lambda(t)A(t)(1 - S(t)).$ Plugging this inequality to \eqref{eq:holding-lower-bound}, we obtain
+\begin{align*}
+\expect{\set{L}_{\bolds{h}}^{\pi}(T)} &\geq 0.25T + \expect{\sum_{t \leq T} \Lambda(t)A(t)(0.5-S(t))} \\
+&= 0.25T + \expect{\sum_{t \leq T} \Lambda(t)A(t)\left(0.5-\expect{S(t) \mid \Lambda(t)A(t)}\right)} \\
+&\geq 0.25T + \expect{\sum_{t \leq T} \Lambda(t)A(t)\left(0.5-0.5\right)} = 0.25T,
+\end{align*}
+where the first equality is using the tower property of conditional expectation and the second inequality is by the fact that conditional on $\Lambda(t)A(t)$, the random variable $S(t)$ is either deterministically zero (the platform does not schedule a job for review), or is a Bernoulli random variable of mean $N(t)\mu = 0.5$ because our model assumes independent service completion. The proof finishes by using $\reg_{\bolds{h}}^{\pi}(T) = (\expect{\set{L}_{\bolds{h}}^{\pi}(T)} - \set{L}^\star(T))^+ = (\expect{\set{L}_{\bolds{h}}^{\pi}(T)})^+ \geq 0.25T.$ 
+\end{proof}

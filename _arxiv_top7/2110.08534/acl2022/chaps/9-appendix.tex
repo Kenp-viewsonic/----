@@ -1,0 +1,117 @@
+\section{Detailed Experiment Settings}
+\label{sec:hyps}
+We use a linearly decreasing learning rate initialized with 5e-4 on the research paper stream and 3e-4 on the tweet stream. On the research paper stream, we train the model for 8,000 steps in the first task, and 4,000 steps in the subsequent tasks. On the tweet stream, we train the model for 8,000 steps in all tasks. We hold out 128,000 sentences from each corpus to evaluate MLM performance. As the size of pretraining corpora is large, during training, each training example is visited only once. We use the masked language modeling perplexity over held-out validation sets of the pretraining corpora as the metrics for hyperparameter tuning. 
+Common hyperparameters such as learning rate and batch sizes are tuned with Task-specific models with the first task. Hyperparameters that are specific to continual learning algorithms, such as the scale of the distillation loss, is tuned using the first two domains in the stream according to the MLM performance over validation sets. The weight of the distillation term $\alpha$ is set as 1.0 for logit distillation and 0.1 for other distillation algorithms. By default, we replay or perform distillation with a mini-batch of examples from the replay memory every 10 training steps in ER and Distillation-based CL approaches. We use the huggingface transformers library \url{https://github.com/huggingface/transformers} for implementation.
+%\xiang{1-2 sentences on how hps of all the methods are determined; what metrics/loss we looked at.}
+%In contrastive distillation approaches, we set $\alpha$=1 and $\tau$=0.05.
+
+%Note that the label space of hashtag prediction can be different between years. In our experiments, for evaluation of temporal generalization, we use the label set of the earlier year, and collect examples from the held-out 1M tweets in the latest year that have at least one of the hashtags in the earlier year. We sub-sample 10,000 examples as the test set.
+
+
+
+\section{Low-Resource Fine-Tuning}
+\label{apdx:low_resource}
+
+
+%xiang{\paragraph{\textit{Q5: Will continually pretrained model adapt faster to a new domain?}}
+%--> pretraining data efficiency comparison between a continually pretrained model vs. roberta, when further pretrained to a new domain
+%}
+\input{acl2022/floats/fig_kshot_academics}
+
+Figure~\ref{fig:academics_kshot} summarizes the performance of fine-tuned models from the final model checkpoint ($t=4$) using different amount of downstream training examples. We see on Chemprot and SciERC, the benefit of Sequential Pretraining over RoBERTa-base is more significant in low-resource fine-tuning setups. 
+%while on RCT-Sample and ACL-ARC, Sequential Pretraining improves over RoBERTa-base when there are sufficient amount of training examples. 
+Whenever Seqential Pretraining outperforms RoBERTa-base, we notice Logit-KD could further improve over Sequential Pretraining.
+
+\section{Full Results over the Tweet Stream}
+\label{apdx:full_tweet_results}
+\input{acl2022/floats/tab_twitter}
+\input{acl2022/floats/tab_twitter_tg}
+
+Tables~\ref{tab:twitter_full} and~\ref{tab:twitter_tg_full} summarize full results over the Tweet stream. Compared to the table~\ref{tab:twitter} in the main text, we add downstream performance over data from years 2014 and 2016 ($D_1$, $D_2$), and temporal generalization from year 2014 to 2020 ($D_1 \to D_4$). 
+
+\section{Dataset Details}
+\label{apdx:dataset_details}
+The research paper stream consists of full text of 6.6M, 12.1M, 7.8M, and 7.5M research papers from the S2ORC~\cite{Lo2020S2ORCTS} dataset. We evaluate downstream fine-tuning performance on two in-domain datasets for each research area:
+Chemprot relation exaction dataset~\cite{Vindahl2016ChemProt30AG} and RCT abstract sentence role labeling dataset ~\cite{Dernoncourt2017PubMed2R} for the bio-medical domain; 
+ACL-ARC citation intent classification dataset~\cite{Jurgens2018MeasuringTE} and SciERC relation extraction dataset~\cite{Luan2018MultiTaskIO} for the computer science domain; 
+relation extraction over Synthesis procedures~\cite{mysore2019materials} and named entity recognition over material science papers (MNER)~\cite{olivetti2020data} for material science domain; keyphrase classification and hyponym classification after filtering out physics papers for the physics domain~\cite{augenstein2017semeval}. We report micro-averaged F1 on Chemprot, RCT, MNER datasets following the evaluation metrics in the original work, and report macro-averaged F1 on all other datasets. We use the official data splits for all datasets except for RCT, where we employ a low-resource training setup following~\citet{Gururangan2020DontSP}. %\xiang{say a bit on the train/test splist for these datasets?}
+
+The pretraining corpora for the tweet stream consist of 25M tweets in each year. 
+For downstream tasks, we use a separate set of 1M tweets from each year to construct multi-label hashtag prediction~\cite{Gong2016HashtagRU} datasets and single-label emoji prediction datasets~\cite{Barbieri2018SemEval2T}. We replace user names to special tokens. For Hashtag prediction, the label space consists of tweets containing 200 most frequent hashtags in each year. We independently sample 500 tweets per label (hashtag) as training, validation and test sets, which results 10$k$ examples in each of the data splits. For emoji prediction, we construct 20-way single-label emoji prediction datasets for each year following~\citet{Barbieri2018SemEval2T} with the 1M held out tweets. We sample 5,000 tweets per emoji in each split, resulting in balanced datasets of the same size as the hashtag prediction datasets.
+%\xiang{add a line to point to appendix for more details on the dataset construction and the full list of hashtags used in our exps.}
+
+\section{Details of Continual Learning Algorithms}
+\label{apdx:cl}
+\subsection{Contrastive Distillation}
+During continual pretraining, in addition to the language model pretraining objective, we add a unsupervised contrastive learning objective, namely the SimCSE~\cite{Gao2021SimCSESC} objective, so that the similarity in the sentence representation better reflects the semantic similarity in the sentence. 
+We use the $l^2$-normalized representation of the start-of-sequence token at the final layer as the sentence representation, noted as $\bm{h}$. Then, we distill the intra-batch representational similarity from the previous model $f_{t-1}$ to the current model $f_t$. Given a mini-batch of $N$ examples $\bm{x}$, we compute the representational dot-product similarity matrix between normalized sentence representations $\bm{h}$ between each pair of examples with $f_{t-1}$ and $f_t$, noted as $\mathbf{B}^{t-1}$ and $\mathbf{B}^{t}$, where each element $\mathbf{B}_{ij}$ is, 
+\begin{equation}
+    \label{eq:normalize}
+    \mathbf{B}_{ij} = \frac{\exp(\bm{h}_i \cdot \bm{h}_j / \tau)}{\sum_{k=1..N}\exp(\bm{h}_i \cdot \bm{h}_k / \tau)}
+\end{equation}
+where $\tau$ is a temperature hyperparameter. We specify a temperature $\tau_t=0.05$ for the teacher model $f_{t-1}$ and a temperature $\tau_s$ for the student model $f_t=0.01$. We compute the cross-entropy between $\mathbf{B}^{t-1}$ and $\mathbf{B}^{t}$ as the distillation loss,
+\begin{equation}
+    \label{eq:contrastive_distill}
+    \ell_{\text{distill}} = - \frac{1}{N} \sum_{i=1}^{N} \sum_{j=1}^{N} \mathbf{B}_{ij}^{t-1}\log \mathbf{B}_{ij}^{t}
+\end{equation}
+
+\subsection{SEED Distillation}
+SEED distillation proposed by~\cite{Fang2021SEEDSD} has a similar spirit as the contrastive distillation with differences in the examples used for computing similarity matrices computes. The algorithm distills representational similarity \textit{between the batch and a large set of other examples}, maintained in an example queue $Q$.
+As the number of target examples $K$ can be much larger than the batch size, it allows distillation of richer information by regularizing similarities. During pretraining, the method maintains a fixed-size queue $Q$ to cache examples from the current domain $D_t$. Given a mini-batch of training examples $\bm{x}$, it computes cosine similarity between each pair of examples within the batch $\bm{x}$ and $Q$ with $f_{t-1}$ and $f_{t}$, resulting in two similarity matrices $\mathbf{B}^{t-1}$, $\mathbf{P}^y \in \mathbb{R}^{|B|\times |Q|}$. Similar to the contrastive distillation, the distillation loss is the cross-entropy between two similarity matrices $\mathbf{B}^{t-1}$ and $\mathbf{B}^{t}$ computed in the same way as Eq.~\ref{eq:contrastive_distill}. 
+
+
+\section{Analysis and Controlled Experiments of Computational Costs}
+\label{apdx:controlled_computation_costs}
+
+Computational cost is a crucial matter for online continual learning systems. In this section, we analyze the computational costs of continual learning algorithms and perform controlled experiments of computational costs.
+
+We quantify computational costs with the total number of \textit{forward ($C_f$) and backward ($C_b$)} computations ($C=C_f+C_b$) over the PTLMs, which is easy to control; in practice, we find the wall clock time of training was approximately linear to $C$. We summarize the number of forward and backward passes and the wall clock time of training in Table~\ref{tab:forward_backward_count}. In the visit of $b$ batches from the training stream, Sequential PT performs $b$ forward and backward passes respectively over the PTLM, resulting in $C=2b$. Experience replay further replays 1 batch of examples every $k$ steps over the training stream, which results in $C=(2+2/k)b$. In our main experiments, $r$ is set to 10 (Sec.~\ref{ssec:mem_replay_methods}). Logit-Distill and Rep-Distill require one additional forward pass over a frozen PTLM to compute the target of distillation, resulting in $C=(3+3/k)b$. Distillation algorithms that perform contrastive learning with SimCSE (\textit{i.e.} SEED-Distill and SEED-Logit-Distill) additionally require one forward and backward pass using the same batch of examples with different dropout masks. Therefore, for SEED-Logit-Distill, $C=(5+5/k)b$.
+
+To control the number of forward and backward passes, we present approaches to compensate the lower computation costs compared to Distillation algorithms and one approach to shrink the computational cost of distillation algorithms: (1) for Sequential PT, we train the models for 1.2 times more steps so that $C=2.4b$, noted as Sequential PT$_{b^\prime=1.2b}$; (2) for ER, we increase the replay frequency $k$ to 5 from the default setup 10, so that $C=2.4b$. We also decrease the cost of Logit-KD and SEED-Logit-KD by reducing the frequency of distillation from every 1 batch to every $r^\prime=$10 steps, while still replaying and distilling knowledge over 1 batch of memory examples every 10 training steps. This results in $C_f=(1+2/k+1/k^\prime)b$ and $C_b=(1+1/k)b$, where $C=2.4b$ when both $r$ and $r^\prime$ are 10. The approach is referred to as Sparse Logit-KD. Finally, for SEED-Logit-KD, we remove the SimCSE loss from training and perform sparse distillation similar to Sparse-Logit-KD, which also results in $C=2.4b$.
+
+The performance of the models is presented in Table~\ref{tab:controlled_results}. We notice that at the end of pretraining, increasing the number of training steps in Sequential PT by 1.2 times does not lead to performance boost on the latest domain ($D_4$), while the performance over tasks from earlier domains (Chemprot, ACL-ARC, SciERC) slightly dropped, possibly due to increased forgetting. For ER, we notice replaying only slightly more frequently (ER$_{k=5}$) than the default setup ($k$=10) greatly increased the perplexity of MLM, implying significantly increased overfitting to the memory; while the performance differences of downstream tasks compared to the default ER is mixed. When we decrease the replay frequency of distillation, the performance on Logit-KD and SEED-KD also decreased and does not outperform ER.
+
+The results show additional computation costs can be necessary for continual learning algorithms such as Logit-KD and SEED-Logit-KD. However, the results also show that there is no simple trade-off between computational cost and performance. We have seen that it is not always beneficial to increase the number of training steps over the emerging data, as it increases forgetting in earlier domains. Similarly, increasing the frequency of replay may lead to significant overfitting to the replay memory. Investigating into more effective continual learning algorithms, despite increased computation costs, allows us to obtain performance improvement that cannot be simply traded with more computation with arbitrary continual learning algorithms.  We leave more thorough studies into this topic as future work.
+
+\input{acl2022/floats/tab_roberta_large}
+
+\input{acl2022/floats/fig_roberta_large}
+
+
+\section{Experiments with RoBERTa-large}
+We present additional experiments on RoBERTa-large. Figure~\ref{fig:academics_curve_roberta_large} and Table~\ref{tab:roberta_large} summarizes the results of selected continual learning algorithms and baselines. On Chemprot, RCT-Sample, ACL-ARC and SciERC, either SEED-Logit-KD or Logit-KD achieves best performance with the final pretrained model checkpoint. We notice that sometimes certain continual learning algorithms (ER, Logit-KD) achieves lower F1 at the initial time step  (\textit{e.g.,} $t$=2 in Figure~\ref{fig:academics_curve_roberta_large}(c)). In these cases, we hypothesize continual learning algorithms may hurt model's performance in capturing new knowledge, despite its potential to reduce forgetting. 
+
+
+
+
+\input{acl2022/floats/tab_controlled}
+
+
+\section{Experiments with BERT on Tweet Stream After 2019}
+
+\input{acl2022/floats/tab_bert_hashtag}
+
+
+
+In this section, we present an additional set of experiments on BERT-base~\cite{Devlin2019BERTPO} model, which is originally pretrained with Wikipedia articles before 2019, with Tweets only after 2019. The training corpora $D_{1..4}$ consist of tweets from the first half of 2019, the second half of 2019, the first half of 2020, and the second half of 2020 respectively. We accordingly construct hashtag prediction and cross-year hashtag prediction datasets. The performance of downstream tasks fine-tuned from the final pretrained model is presented in Table~\ref{tab:bert_hashtag}. We see Sequential PT clearly outperforms BERT-base which is not continually pretrained, and that Logit-KD generally improves hashtag prediction performance compared to Sequential PT except on the first half of 2019. We hypothesize the small temporal gap between $D_{1..4}$ makes improvements less significant than our main experiment setup. We present temporal generalization performance in cross-year hashtag prediction tasks in Table~\ref{tab:bert_hashtag_tg}. Similarly, Logit-KD improves over Sequential PT in two out of three cross-year hashtag prediction setups.
+
+\input{acl2022/floats/tab_bert_hastag_tg}
+
+\section{Analysis of Data Streams}
+\label{apdx:analysis_data_streams}
+
+
+
+In this section, we provide further analysis about the created research paper stream and the tweet stream. We measure cosine distances $d_v$ of vocabulary distributions between each pair of different domains $(D_{1..4})$ and summarize the results in Figure~\ref{fig:vocab_sim_analysis}. The results indicate that the Tweet stream has a magnitude smaller vocabulary distribution gap between domains, which is in the scale of $1e^{-5}$, compared to the research paper stream, which is in the scale of $1e^{-2}$. On the Tweet stream, we see the differences of vocabulary distributions align with the temporal gap between domains. On the research paper stream, we find some domains to be more similar than others. For example, Bio-medical ($D_1$) and Material Science domains $(D_3)$ have larger similarity in their vocabulary distributions, which explains general downstream performance increase on $D_1$ after the model is pretrained on $D_3$ (Fig.~\ref{fig:academics_curve} (a,b)).
+
+
+The differences in vocabulary distribution explain inconsistency in results between two data streams, specifically, whether lifelong pretraining improves downstream model performance on the latest domain, as we mentioned in Sec.~\ref{ssec:temporal_data_stream}.
+Other than this, our main findings, such as the effect of distillation-based CL algorithms on reducing forgetting, are consistent over two datasets with such significant differences in their changes of vocabulary distribution. We believe it implies the conclusions in this paper should be reliable in diverse data streams.
+% Other than this, we believe the significant difference between two data stream contributes to the reliability and generalization of conclusions in this paper to more diverse data streams.
+
+%Table~\ref{tab:forward_backward_count}
+
+\input{acl2022/floats/fig_vocab_analysis}
+
+\section{Ethic Risks}
+We would like to note that, in practice, continually pretrained models over real-world data streams would require identification and removal of biased contents from pretraining corpora, which may affect the prediction of downstream models. As PTLMs are continuously updated, the bias in earlier pretraining may have a profound negative impact. In future works, it is preferable to develop algorithms to ``forget'' certain biased knowledge from language models. We further note that any data released in this paper, especially the tweet stream, should only be used for research purposes.

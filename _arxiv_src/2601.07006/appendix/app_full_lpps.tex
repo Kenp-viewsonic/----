@@ -1,0 +1,71 @@
+\begin{table*}[t]
+\centering
+\caption{\textbf{Catalog of LLM Performance Predictors (LPPs).} Features are grouped by access (gray-box vs. black-box). \textbf{A--B}: Outcome-level confidence metrics (top-$k$, schema-filtered). \textbf{C}: Log-probability and confidence margins. \textbf{D--E}: Reasoning-path features from CoT (perplexity, entropy). \textbf{F}: Self-reported confidence. \textbf{G}: Moderation-oriented abstention signals, distinguishing $\textit{aleatoric}$ (evidence) vs. $\textit{epistemic}$ (policy) uncertainty. Filtered variants restrict to schema labels $\mathcal{A}=\{0,1,2,3\}$; $\varepsilon=10^{-12}$ ensures stability.}
+\small
+\begin{tabular}{p{4.0cm} p{4.8cm} p{8.2cm}}
+\toprule
+\textbf{Feature Family} & \textbf{Mathematical Formula} & \textbf{Description / Intuition} \\
+\midrule
+\multicolumn{3}{l}{\textit{\textbf{A. Outcome Distribution: Unfiltered Top-$k$ (Gray-Box Access)}}} \\
+\multicolumn{3}{p{17.0cm}}{\small \textbf{Context}: Given top-$k$ log-probabilities $\{\ell_1, \ldots, \ell_k\}$ for the outcome token (we use $k{=}5$), compute renormalized probabilities $\tilde{p}_i = \exp(\ell_i) / \sum_{j=1}^k \exp(\ell_j)$.} \\[0.5ex]
+\hdashline
+Entropy (base-2) & $H_2(\tilde{p}) = -\sum_{i=1}^k \tilde{p}_i \log_2 \tilde{p}_i$ & Uncertainty over the outcome distribution; higher values indicate greater indecision. \\
+Normalized Entropy & $H_2^{\text{norm}}(\tilde{p}) = \frac{H_2(\tilde{p})}{\log_2 k}$ & Entropy scaled to $[0,1]$, invariant to $k$. \\
+Effective Choices & $N_{\text{eff}} = 2^{H_2(\tilde{p})}$ & Number of equally likely outcomes consistent with the entropy (interpretable as perplexity). \\
+Confidence Score (Top-$k$) & $C_{\text{top-}k} = 1 - H_2^{\text{norm}}(\tilde{p})$ & Complement of normalized entropy; ranges $[0,1]$ with 1 = fully confident. \\
+Max Softmax Probability (MSP) & $\text{MSP} = \max_{i} \tilde{p}_i$ & Classic confidence baseline; lower values imply greater uncertainty. \\
+Top-2 Margin & $\Delta p = \tilde{p}_{(1)} - \tilde{p}_{(2)}$ & Absolute separation between the most and second-most probable outcomes. \\
+Top-2 Margin (Normalized) & $\Delta p^{\text{norm}} = \frac{\tilde{p}_{(1)} - \tilde{p}_{(2)}}{\max\{\tilde{p}_{(1)}, \varepsilon\}}$ & Relative margin; $\varepsilon{=}10^{-12}$ prevents division by zero. \\
+Top-1/Top-2 Ratio & $R_{1/2} = \frac{\tilde{p}_{(1)}}{\max\{\tilde{p}_{(2)}, \varepsilon\}}$ & Confidence ratio between top two candidates. \\
+\midrule
+\multicolumn{3}{l}{\textit{\textbf{B. Outcome Distribution: Filtered to Valid Schema Labels (Gray-Box Access)}}} \\
+\multicolumn{3}{p{17.0cm}}{\small \textbf{Context}: Request top-20 log-probabilities, filter to schema-valid labels $\mathcal{A}$ (binary: $\{0,1\}$; expanded: $\{0,1,2,3\}$), collapse token mass onto each label, renormalize to obtain $\tilde{p}^{(\mathcal{A})}$, then recompute metrics.} \\[0.5ex]
+\hdashline
+Filtered Entropy & $H_2(\tilde{p}^{(\mathcal{A})})$ & Uncertainty conditional on valid labels only; robust to spurious high-probability tokens. \\
+Filtered Normalized Entropy & $H_2^{\text{norm}}(\tilde{p}^{(\mathcal{A})})$ & Filtered entropy scaled to $[0,1]$. \\
+Filtered Effective Choices & $2^{H_2(\tilde{p}^{(\mathcal{A})})}$ & Effective number of schema-consistent outcomes. \\
+Filtered Confidence Score & $1 - H_2^{\text{norm}}(\tilde{p}^{(\mathcal{A})})$ & Confidence over valid decision classes. \\
+Filtered Top-2 Margin & $\Delta p^{(\mathcal{A})} = \tilde{p}^{(\mathcal{A})}_{(1)} - \tilde{p}^{(\mathcal{A})}_{(2)}$ & Margin between top two valid labels. \\
+Filtered Top-2 Margin (Normalized) & $\frac{\tilde{p}^{(\mathcal{A})}_{(1)} - \tilde{p}^{(\mathcal{A})}_{(2)}}{\max\{\tilde{p}^{(\mathcal{A})}_{(1)}, \varepsilon\}}$ & Normalized filtered margin. \\
+Filtered Top-1/Top-2 Ratio & $\frac{\tilde{p}^{(\mathcal{A})}_{(1)}}{\max\{\tilde{p}^{(\mathcal{A})}_{(2)}, \varepsilon\}}$ & Confidence ratio over valid labels. \\
+\midrule
+\multicolumn{3}{l}{\textit{\textbf{C. Log-Probability Margin (Gray-Box Access)}}} \\
+\hdashline
+Log-Odds Margin (Top-2) & $\Delta_\ell = \ell_{(2)} - \ell_{(1)}$ & Difference in log-space; more negative = stronger preference for top outcome. \\
+Normalized Log-Odds Margin & $\Delta_\ell^{\text{norm}} = \frac{\ell_{(2)} - \ell_{(1)}}{\ell_{(2)}}$ & Relative Margin; stabilizes comparison across models/prompts.\\
+Filtered Log-Odds Margin & $\Delta_\ell^{(\mathcal{A})} = \ell^{(\mathcal{A})}_{(2)} - \ell^{(\mathcal{A})}_{(1)}$ & Margin computed over filtered valid labels. \\
+Filtered Normalized Top 2 Margin & $\frac{\ell^{(\mathcal{A})}_{(2)} - \ell^{(\mathcal{A})}_{(1)}}{\ell^{(\mathcal{A})}_{(2)}}$ & Normalized version for filtered labels. \\
+\midrule
+\multicolumn{3}{l}{\textit{\textbf{D. Reasoning Sequence-Level Features (Gray-Box Access, CoT Required; not used in final reported results})}} \\
+\multicolumn{3}{p{17.0cm}}{\small \textbf{Context}: Given a CoT reasoning sequence of $T$ tokens $\{y_1, \ldots, y_T\}$ with per-token log-probabilities $\{\log p(y_t)\}_{t=1}^T$.} \\[0.5ex]
+\hdashline
+Sequence Negative Log-Likelihood & $\text{NLL} = -\sum_{t=1}^{T} \log p(y_t)$ & Total surprise of the reasoning sequence; higher = less confident generation. \\
+Perplexity (Natural Base) & $\text{PPL} = \exp\!\left(-\frac{1}{T} \sum_{t=1}^{T} \log p(y_t)\right)$ & Standard perplexity metric; higher values indicate less fluent reasoning. \\
+\midrule
+\multicolumn{3}{l}{\textit{\textbf{E. Reasoning Token-Level Distributional Features (Gray-Box Access, CoT Required; not used in final reported results})}} \\
+\multicolumn{3}{p{17.0cm}}{\small \textbf{Context}: For each reasoning token $y_t$, compute per-token entropy $h_t = -\sum_j \tilde{q}_{tj} \log_2 \tilde{q}_{tj}$ where $\tilde{q}_{tj}$ are renormalized top-$k$ probabilities. Aggregate over $T$ tokens.} \\[0.5ex]
+\hdashline
+Mean Token Entropy & $\bar{h} = \frac{1}{T} \sum_{t=1}^T h_t$ & Average per-token uncertainty during generation. \\
+Token Entropy Quantiles & $Q_q(\{h_t\}),\ q \in \{0, 0.25, 0.5, 0.75, 1.0\}$ & Distributional shape of per-token uncertainties . \\
+Token Probability Quantiles & $Q_q(\{p(y_t)\}),\ q \in \{0, 0.25, 0.5, 0.75, 1.0\}$ & Distributional quantiles of per-token likelihoods. \\
+\midrule
+\multicolumn{3}{l}{\textit{\textbf{F. Verbalized (Self-Reported) Confidence (Black-Box Compatible)}}} \\
+\hdashline
+Reported Confidence (Scalar) & $\hat{c} \in [0, 100]$ (normalized to $[0,1]$) & LLM's explicit self-assessment of confidence, extracted from structured output. \\
+Confidence Bands (One-Hot) & $\mathbb{I}\{\text{VL, L, M, H, VH}\}$ & Coarse-grained verbalization: Very Low, Low, Medium, High, Very High.\\
+\midrule
+% \multicolumn{3}{l}{\textit{\textbf{G. Uncertainty Attribution Indicators (Black-Box Compatible)}}} \\
+% \hdashline
+% Inconclusive Flag (Binary) & $\mathbb{I}\{\text{outcome} \in \{2, 3\}\}$ & 1 if LLM abstained; 0 otherwise. \\
+\multicolumn{3}{l}{\textit{\textbf{G. Uncertainty Attribution Indicators (Black-Box Compatible)}}} \\
+\hdashline
+Evidence-Deficit Indicator (Binary) &
+$\mathbb{I}\{\text{outcome} = 2\}$ &
+1 if the LLM abstained due to insufficient evidence (aleatoric); 0 otherwise. \\
+Policy-Gap Indicator (Binary) &
+$\mathbb{I}\{\text{outcome} = 3\}$ &
+1 if the LLM abstained due to a definition/policy gap (epistemic); 0 otherwise. \\
+\bottomrule
+\end{tabular}
+\label{app:full_lpps}
+\end{table*}

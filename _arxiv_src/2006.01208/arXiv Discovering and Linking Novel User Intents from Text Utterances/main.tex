@@ -1,0 +1,102 @@
+\pdfoutput=1
+%
+% File coling2020.tex
+%
+% Contact: feiliu@cs.ucf.edu & liang.huang.sh@gmail.com
+%% Based on the style files for COLING-2018, which were, in turn,
+%% Based on the style files for COLING-2016, which were, in turn,
+%% Based on the style files for COLING-2014, which were, in turn,
+%% Based on the style files for ACL-2014, which were, in turn,
+%% Based on the style files for ACL-2013, which were, in turn,
+%% Based on the style files for ACL-2012, which were, in turn,
+%% based on the style files for ACL-2011, which were, in turn, 
+%% based on the style files for ACL-2010, which were, in turn, 
+%% based on the style files for ACL-IJCNLP-2009, which were, in turn,
+%% based on the style files for EACL-2009 and IJCNLP-2008...
+
+%% Based on the style files for EACL 2006 by 
+%%e.agirre@ehu.es or Sergi.Balari@uab.es
+%% and that of ACL 08 by Joakim Nivre and Noah Smith
+
+\documentclass[11pt]{article}
+\usepackage{coling2020}
+\usepackage{times}
+\usepackage{url}
+\usepackage{latexsym}
+\usepackage{float}
+\usepackage{booktabs}
+
+
+
+
+%\setlength\titlebox{5cm}
+\colingfinalcopy % Uncomment this line for the final submission
+
+% You can expand the titlebox if you need extra space
+% to show all the authors. Please do not make the titlebox
+% smaller than 5cm (the original size); we will check this
+% in the camera-ready version and ask you to change it back.
+
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{tabularx}
+\usepackage{comment}
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\newcolumntype{L}[1]{>{\hsize=#1\hsize\raggedright\arraybackslash}X}%
+\newcolumntype{R}[1]{>{\hsize=#1\hsize\raggedleft\arraybackslash}X}%
+\newcolumntype{C}[1]{>{\hsize=#1\hsize\centering\arraybackslash}X}%
+
+\newsavebox{\measurebox}
+
+\newcommand{\mname}{ADVIN} % method name. Use as "\mname{}" to enable spaces after the method name.
+
+
+
+\title{Automatic Discovery of Novel Intents \& Domains from Text Utterances}
+
+
+\author{Nikhita Vedula \\
+  Ohio State University \\
+  {\tt vedula.5@osu.edu} \\\And
+  Rahul Gupta, Aman Alok, Mukund Sridhar \\
+  Amazon Alexa \\
+  {\tt \{gupra,alokaman,harakere\}@amazon.com} 
+  \\}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+One of the primary tasks in Natural Language Understanding (NLU) is to recognize the intents as well as domains of users' spoken and written language utterances. Most existing research formulates this as a supervised classification problem with a closed-world assumption, i.e. the domains or intents to be identified are pre-defined or known beforehand. Real-world applications however increasingly encounter dynamic, rapidly evolving environments with newly emerging intents and domains, about which no information is known during model training. We propose a novel framework, ADVIN, to automatically discover novel domains and intents from large volumes of unlabeled data. We first employ an open classification model to identify all utterances potentially consisting of a novel intent. Next, we build a knowledge transfer component with a pairwise margin loss function. It learns discriminative deep features to group together utterances and discover multiple latent intent categories within them in an unsupervised manner. We finally hierarchically link mutually related intents into domains, forming an intent-domain taxonomy. ADVIN significantly outperforms baselines on three benchmark datasets, and real user utterances from a commercial voice-powered agent. 
+
+\end{abstract}
+
+
+\input{introduction}
+\input{relatedwork}
+\input{methodology}
+\input{experiments}
+\input{conclusion}
+
+
+%\section{ Acknowledgments}
+%The authors would like to thank
+
+
+%\clearpage
+\begin{small}
+\bibliographystyle{coling}
+\bibliography{main.bib}
+\fontsize{9.0pt}{10.0pt}
+\selectfont
+\end{small}
+
+
+\end{document}

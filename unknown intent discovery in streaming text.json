@@ -1,0 +1,45 @@
+[
+  {
+    "link": "https://www.arxiv.org/abs/2310.10184",
+    "title": "Continual Generalized Intent Discovery: Marching Towards Dynamic and Open-world Intent Recognition",
+    "publish_time": "20231016",
+    "authors": [
+      "Xiaoshuai Song",
+      "Yutao Mou",
+      "Keqing He",
+      "Yueyan Qiu",
+      "Pei Wang",
+      "Weiran Xu"
+    ],
+    "abstract": "In a practical dialogue system, users may input out-of-domain (OOD) queries. The Generalized Intent Discovery (GID) task aims to discover OOD intents from OOD queries and extend them to the in-domain (IND) classifier. However, GID only considers one stage of OOD learning, and needs to utilize the data in all previous stages for joint training, which limits its wide application in reality. In this paper, we introduce a new task, Continual Generalized Intent Discovery (CGID), which aims to continuously and automatically discover OOD intents from dynamic OOD data streams and then incrementally add them to the classifier with almost no previous data, thus moving towards dynamic intent recognition in an open world. Next, we propose a method called Prototype-guided Learning with Replay and Distillation (PLRD) for CGID, which bootstraps new intent discovery through class prototypes and balances new and old intents through data replay and feature distillation. Finally, we conduct detailed experiments and analysis to verify the effectiveness of PLRD and understand the key challenges of CGID for future research.",
+    "score": 0.9845874309539795
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2006.01208",
+    "title": "Automatic Discovery of Novel Intents & Domains from Text Utterances",
+    "publish_time": "20200522",
+    "authors": [
+      "Nikhita Vedula",
+      "Rahul Gupta",
+      "Aman Alok",
+      "Mukund Sridhar"
+    ],
+    "abstract": "One of the primary tasks in Natural Language Understanding (NLU) is to recognize the intents as well as domains of users' spoken and written language utterances. Most existing research formulates this as a supervised classification problem with a closed-world assumption, i.e. the domains or intents to be identified are pre-defined or known beforehand. Real-world applications however increasingly encounter dynamic, rapidly evolving environments with newly emerging intents and domains, about which no information is known during model training. We propose a novel framework, ADVIN, to automatically discover novel domains and intents from large volumes of unlabeled data. We first employ an open classification model to identify all utterances potentially consisting of a novel intent. Next, we build a knowledge transfer component with a pairwise margin loss function. It learns discriminative deep features to group together utterances and discover multiple latent intent categories within them in an unsupervised manner. We finally hierarchically link mutually related intents into domains, forming an intent-domain taxonomy. ADVIN significantly outperforms baselines on three benchmark datasets, and real user utterances from a commercial voice-powered agent.",
+    "score": 0.8660728335380554
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2411.10670",
+    "title": "IntentGPT: Few-shot Intent Discovery with Large Language Models",
+    "publish_time": "20241116",
+    "authors": [
+      "Juan A. Rodriguez",
+      "Nicholas Botzer",
+      "David Vazquez",
+      "Christopher Pal",
+      "Marco Pedersoli",
+      "Issam Laradji"
+    ],
+    "abstract": "In today's digitally driven world, dialogue systems play a pivotal role in enhancing user interactions, from customer service to virtual assistants. In these dialogues, it is important to identify user's goals automatically to resolve their needs promptly. This has necessitated the integration of models that perform Intent Detection. However, users' intents are diverse and dynamic, making it challenging to maintain a fixed set of predefined intents. As a result, a more practical approach is to develop a model capable of identifying new intents as they emerge. We address the challenge of Intent Discovery, an area that has drawn significant attention in recent research efforts. Existing methods need to train on a substantial amount of data for correctly identifying new intents, demanding significant human effort. To overcome this, we introduce IntentGPT, a novel training-free method that effectively prompts Large Language Models (LLMs) such as GPT-4 to discover new intents with minimal labeled data. IntentGPT comprises an \\textit{In-Context Prompt Generator}, which generates informative prompts for In-Context Learning, an \\textit{Intent Predictor} for classifying and discovering user intents from utterances, and a \\textit{Semantic Few-Shot Sampler} that selects relevant few-shot examples and a set of known intents to be injected into the prompt. Our experiments show that IntentGPT outperforms previous methods that require extensive domain-specific data and fine-tuning, in popular benchmarks, including CLINC and BANKING, among others.",
+    "score": 0.49957358837127686
+  }
+]

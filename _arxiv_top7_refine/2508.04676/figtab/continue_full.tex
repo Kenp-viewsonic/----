@@ -1,0 +1,82 @@
+\begin{table}[hp]
+\footnotesize
+\centering
+\caption{Comparison of different methods on continual full-parameter finetuning (15 epochs per task) in 15 downstream tasks.}
+\label{tab:continual_full}
+\begin{tabular}{l|c|c|c}
+\toprule
+\makecell{Methods \\(Full-Parameter)}& \makecell{MMLU Score\\(Final)} & \makecell{15 Tasks AP\\(Final)} & \makecell{F1 Avg} \\
+\midrule
+\midrule
+Baseline &
+38.3213& 37.4720& 37.8919\\
+\midrule
+
+Baseline\textsuperscript{R} &
+50.5332& 39.2741&44.1979\\
+\rowcolor{gray!10}\quad w/ BI &
+ 55.5556&43.9903& 49.1011\\
+\midrule
+
+Baseline\textsuperscript{R}+KL &
+ 51.0492& 42.0231&46.0985\\
+\rowcolor{gray!10}\quad w/ BI &
+ 52.7692 &35.5259&42.4638\\
+\midrule
+
+Baseline\textsuperscript{R}+L1 &
+ 54.9364&66.8605&60.3147\\
+\rowcolor{gray!20}\quad w/ BI&
+ 54.5942& 66.7673&60.0691\\
+
+Baseline\textsuperscript{R}+L2 &
+55.0052 & 67.4899& 60.6113\\
+\rowcolor{gray!10}\quad w/ BI &
+ 56.6219& 66.7462&61.2686\\
+
+\midrule
+Baseline\textsuperscript{R}+L1 (w=100)&
+57.9635&72.4376&64.3973 \\
+\rowcolor{gray!20}\quad w/ BI&
+59.0299 &71.1125 & 64.5103 \\
+Baseline\textsuperscript{R}+L2 (w=100) &
+60.7499 &72.6112 &66.1531\\
+\rowcolor{gray!20}\quad w/ BI&
+57.8947 &73.2265 & 64.6643\\
+
+\midrule
+Baseline\textsuperscript{R}+L1 (w=d.)&
+53.1132&67.4546&59.4309 \\
+\rowcolor{gray!20}\quad w/ BI&
+53.2852&64.4925&58.3556 \\
+Baseline\textsuperscript{R}+L2 (w=d.) &
+55.1772&71.0094&62.1001 \\
+\rowcolor{gray!20}\quad w/ BI&
+54.7988&68.2590&60.7927 \\
+
+\midrule
+\rowcolor{gray!40}
+\textcolor{red!80!black}{\textbf{Ours}}& & &\\
+Baseline\textsuperscript{R}+TM & 55.3836 &70.3490 & 61.9756 \\
+\rowcolor{gray!10}\quad w/ BI & 57.6539& 68.7473&  62.7138\\
+
+
+Baseline\textsuperscript{R}+TM (w=100) &
+60.7155 & 74.0817 & 66.7359 \\
+\rowcolor{gray!10}\quad w/ BI &
+\textbf{60.9907}&72.4771&  66.2396\\
+
+Baseline\textsuperscript{R}+TM (w=d.) &
+60.7843 & \textbf{74.4796} & \textbf{66.9386} \\
+\rowcolor{gray!10}\quad w/ BI &
+57.2411 & 70.5607 & 63.2068 \\
+
+\midrule
+  
+Upper Bound &
+\makecell{Orig\\ 66.5291} & \makecell{MTL\\ 81.0079} & 73.0580\\
+
+\bottomrule
+\end{tabular}
+
+\end{table}

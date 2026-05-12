@@ -1,0 +1,69 @@
+% =================================================================
+% PACKAGES
+% =================================================================
+% Keep your most-used packages here for portability.
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{xcolor} % For adding colored text, useful for comments
+\usepackage{hyperref} % For clickable links and references
+\usepackage{color}
+\usepackage{xspace}
+\usepackage{array}
+\usepackage{seqsplit}
+\usepackage{epsfig}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{balance}
+\usepackage{pifont}
+\usepackage{rotating}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta}
+\usepackage{placeins}
+\usepackage{enumitem}
+\usepackage{arydshln}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{titlesec}
+% =================================================================
+% MATH COMMANDS
+% =================================================================
+% Use these to ensure consistent mathematical notation.
+
+% --- Basic Math Sets ---
+\newcommand{\R}{\mathbb{R}}          % Real numbers
+\newcommand{\N}{\mathbb{N}}          % Natural numbers
+\newcommand{\Z}{\mathbb{Z}}          % Integers
+
+% --- Vectors and Matrices ---
+\newcommand{\vect}[1]{\mathbf{#1}}   % Bold vectors
+\newcommand{\mat}[1]{\mathbf{#1}}    % Bold matrices
+\newcommand{\trans}{^{\mathsf{T}}}   % Transpose
+
+% --- Probability / Statistics ---
+\newcommand{\E}[1]{\mathbb{E}\left[#1\right]}   % Expectation
+\newcommand{\Var}[1]{\mathrm{Var}\!\left[#1\right]} % Variance
+\newcommand{\Prob}[1]{\mathbb{P}\left[#1\right]}    % Probability
+
+% Math Operators
+
+% Shorthand for common expressions
+\newcommand{\Ltwo}{\mathcal{L}_2} % L2 Norm
+
+
+% =================================================================
+% COLLABORATION & EDITING COMMANDS
+% =================================================================
+% These are invaluable for working with co-authors.
+
+% Usage: \todo{Fix this paragraph.}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+
+% Usage: \note{AG}{Maybe we should cite Smith et al.?}
+\newcommand{\note}[2]{\textcolor{blue}{[#1: #2]}}
+
+\newcommand\eilon[1]{\textcolor{red}{#1}}
+% safe run-in paragraph heading (no \vspace)
+\newcommand{\myparagraph}[1]{\par\noindent\textbf{#1}. }
+\newcommand{\firstmention}[1]{{\bf #1}}

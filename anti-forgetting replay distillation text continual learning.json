@@ -1,0 +1,126 @@
+[
+  {
+    "link": "https://www.arxiv.org/abs/2309.15038",
+    "title": "HPCR: Holistic Proxy-based Contrastive Replay for Online Continual Learning",
+    "publish_time": "20230926",
+    "authors": [
+      "Huiwei Lin",
+      "Shanshan Feng",
+      "Baoquan Zhang",
+      "Xutao Li",
+      "Yew-soon Ong",
+      "Yunming Ye"
+    ],
+    "abstract": "Online continual learning (OCL) aims to continuously learn new data from a single pass over the online data stream. It generally suffers from the catastrophic forgetting issue. Existing replay-based methods effectively alleviate this issue by replaying part of old data in a proxy-based or contrastive-based replay manner. In this paper, we conduct a comprehensive analysis of these two replay manners and find they can be complementary. Inspired by this finding, we propose a novel replay-based method called proxy-based contrastive replay (PCR), which replaces anchor-to-sample pairs with anchor-to-proxy pairs in the contrastive-based loss to alleviate the phenomenon of forgetting. Based on PCR, we further develop a more advanced method named holistic proxy-based contrastive replay (HPCR), which consists of three components. The contrastive component conditionally incorporates anchor-to-sample pairs to PCR, learning more fine-grained semantic information with a large training batch. The second is a temperature component that decouples the temperature coefficient into two parts based on their impacts on the gradient and sets different values for them to learn more novel knowledge. The third is a distillation component that constrains the learning process to keep more historical knowledge. Experiments on four datasets consistently demonstrate the superiority of HPCR over various state-of-the-art methods.",
+    "score": 0.7765554785728455
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2505.20135",
+    "title": "Data-Distill-Net: A Data Distillation Approach Tailored for Reply-based Continual Learning",
+    "publish_time": "20250526",
+    "authors": [
+      "Wenyang Liao",
+      "Quanziang Wang",
+      "Yichen Wu",
+      "Renzhen Wang and Deyu Meng"
+    ],
+    "abstract": "Replay-based continual learning (CL) methods assume that models trained on a small subset can also effectively minimize the empirical risk of the complete dataset. These methods maintain a memory buffer that stores a sampled subset of data from previous tasks to consolidate past knowledge. However, this assumption is not guaranteed in practice due to the limited capacity of the memory buffer and the heuristic criteria used for buffer data selection. To address this issue, we propose a new dataset distillation framework tailored for CL, which maintains a learnable memory buffer to distill the global information from the current task data and accumulated knowledge preserved in the previous memory buffer. Moreover, to avoid the computational overhead and overfitting risks associated with parameterizing the entire buffer during distillation, we introduce a lightweight distillation module that can achieve global information distillation solely by generating learnable soft labels for the memory buffer data. Extensive experiments show that, our method can achieve competitive results and effectively mitigates forgetting across various datasets. The source code will be publicly available.",
+    "score": 0.7764735817909241
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2505.06995",
+    "title": "Replay-Based Continual Learning with Dual-Layered Distillation and a Streamlined U-Net for Efficient Text-to-Image Generation",
+    "publish_time": "20250511",
+    "authors": [
+      "Md. Naimur Asif Borno",
+      "Md Sakib Hossain Shovon",
+      "Asmaa Soliman Al-Moisheer and Mohammad Ali Moni"
+    ],
+    "abstract": "Recent advancements in text-to-image diffusion models are hindered by high computational demands, limiting accessibility and scalability. This paper introduces KDC-Diff, a novel stable diffusion framework that enhances efficiency while maintaining image quality. KDC-Diff features a streamlined U-Net architecture with nearly half the parameters of the original U-Net (482M), significantly reducing model complexity. We propose a dual-layered distillation strategy to ensure high-fidelity generation, transferring semantic and structural insights from a teacher to a compact student model while minimizing quality degradation. Additionally, replay-based continual learning is integrated to mitigate catastrophic forgetting, allowing the model to retain prior knowledge while adapting to new data. Despite operating under extremely low computational resources, KDC-Diff achieves state-of-the-art performance on the Oxford Flowers and Butterflies & Moths 100 Species datasets, demonstrating competitive metrics such as FID, CLIP, and LPIPS. Moreover, it significantly reduces inference time compared to existing models. These results establish KDC-Diff as a highly efficient and adaptable solution for text-to-image generation, particularly in computationally constrained environments.",
+    "score": 0.7537824511528015
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2110.08534",
+    "title": "Lifelong Pretraining: Continually Adapting Language Models to Emerging Corpora",
+    "publish_time": "20211016",
+    "authors": [
+      "Xisen Jin",
+      "Dejiao Zhang",
+      "Henghui Zhu",
+      "Wei Xiao",
+      "Shang-Wen Li",
+      "Xiaokai Wei",
+      "Andrew Arnold",
+      "Xiang Ren"
+    ],
+    "abstract": "Pretrained language models (PTLMs) are typically learned over a large, static corpus and further fine-tuned for various downstream tasks. However, when deployed in the real world, a PTLM-based model must deal with data distributions that deviate from what the PTLM was initially trained on. In this paper, we study a lifelong language model pretraining challenge where a PTLM is continually updated so as to adapt to emerging data. Over a domain-incremental research paper stream and a chronologically-ordered tweet stream, we incrementally pretrain a PTLM with different continual learning algorithms, and keep track of the downstream task performance (after fine-tuning). We evaluate PTLM's ability to adapt to new corpora while retaining learned knowledge in earlier corpora. Our experiments show distillation-based approaches to be most effective in retaining downstream performance in earlier domains. The algorithms also improve knowledge transfer, allowing models to achieve better downstream performance over the latest data, and improve temporal generalization when distribution gaps exist between training and evaluation because of time. We believe our problem formulation, methods, and analysis will inspire future studies towards continual pretraining of language models.",
+    "score": 0.6218275427818298
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2502.04469",
+    "title": "No Images, No Problem: Retaining Knowledge in Continual VQA with Questions-Only Memory",
+    "publish_time": "20250206",
+    "authors": [
+      "Imad Eddine Marouf",
+      "Enzo Tartaglione",
+      "Stephane Lathuiliere",
+      "Joost van de Weijer"
+    ],
+    "abstract": "Continual Learning in Visual Question Answering (VQACL) requires models to learn new visual-linguistic tasks (plasticity) while retaining knowledge from previous tasks (stability). The multimodal nature of VQACL presents unique challenges, requiring models to balance stability across visual and textual domains while maintaining plasticity to adapt to novel objects and reasoning tasks. Existing methods, predominantly designed for unimodal tasks, often struggle to balance these demands effectively. In this work, we introduce QUestion-only replay with Attention Distillation (QUAD), a novel approach for VQACL that leverages only past task questions for regularisation, eliminating the need to store visual data and addressing both memory and privacy concerns. QUAD achieves stability by introducing a question-only replay mechanism that selectively uses questions from previous tasks to prevent overfitting to the current task's answer space, thereby mitigating the out-of-answer-set problem. Complementing this, we propose attention consistency distillation, which uniquely enforces both intra-modal and inter-modal attention consistency across tasks, preserving essential visual-linguistic associations. Extensive experiments on VQAv2 and NExT-QA demonstrate that QUAD significantly outperforms state-of-the-art methods, achieving robust performance in continual VQA.",
+    "score": 0.6217786073684692
+  },
+  {
+    "link": "https://www.arxiv.org/abs/1909.03329",
+    "title": "LAMOL: LAnguage MOdeling for Lifelong Language Learning",
+    "publish_time": "20190907",
+    "authors": [
+      "Fan-Keng Sun",
+      "Cheng-Hao Ho",
+      "and Hung-Yi Lee"
+    ],
+    "abstract": "Most research on lifelong learning applies to images or games, but not language. We present LAMOL, a simple yet effective method for lifelong language learning (LLL) based on language modeling. LAMOL replays pseudo-samples of previous tasks while requiring no extra memory or model capacity. Specifically, LAMOL is a language model that simultaneously learns to solve the tasks and generate training samples. When the model is trained for a new task, it generates pseudo-samples of previous tasks for training alongside data for the new task. The results show that LAMOL prevents catastrophic forgetting without any sign of intransigence and can perform five very different language tasks sequentially with only one model. Overall, LAMOL outperforms previous methods by a considerable margin and is only 2-3% worse than multitasking, which is usually considered the LLL upper bound. The source code is available at https://github.com/jojotenya/LAMOL.",
+    "score": 0.5617468953132629
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2209.04212",
+    "title": "Selecting Related Knowledge via Efficient Channel Attention for Online Continual Learning",
+    "publish_time": "20220909",
+    "authors": [
+      "Ya-nan Han",
+      "Jian-wei Liu"
+    ],
+    "abstract": "Continual learning aims to learn a sequence of tasks by leveraging the knowledge acquired in the past in an online-learning manner while being able to perform well on all previous tasks, this ability is crucial to the artificial intelligence (AI) system, hence continual learning is more suitable for most real-word and complex applicative scenarios compared to the traditional learning pattern. However, the current models usually learn a generic representation base on the class label on each task and an effective strategy is selected to avoid catastrophic forgetting. We postulate that selecting the related and useful parts only from the knowledge obtained to perform each task is more effective than utilizing the whole knowledge. Based on this fact, in this paper we propose a new framework, named Selecting Related Knowledge for Online Continual Learning (SRKOCL), which incorporates an additional efficient channel attention mechanism to pick the particular related knowledge for every task. Our model also combines experience replay and knowledge distillation to circumvent the catastrophic forgetting. Finally, extensive experiments are conducted on different benchmarks and the competitive experimental results demonstrate that our proposed SRKOCL is a promised approach against the state-of-the-art.",
+    "score": 0.4374946653842926
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2508.04676",
+    "title": "GeRe: Towards Efficient Anti-Forgetting in Continual Learning of LLM via General Samples Replay",
+    "publish_time": "20250806",
+    "authors": [
+      "Yunan Zhang",
+      "Shuoran Jiang",
+      "Mengchen Zhao",
+      "Yuefeng Li",
+      "Yang Fan",
+      "Xiangping Wu",
+      "Qingcai Chen"
+    ],
+    "abstract": "The continual learning capability of large language models (LLMs) is crucial for advancing artificial general intelligence. However, continual fine-tuning LLMs across various domains often suffers from catastrophic forgetting, characterized by: 1) significant forgetting of their general capabilities, and 2) sharp performance declines in previously learned tasks. To simultaneously address both issues in a simple yet stable manner, we propose General Sample Replay (GeRe), a framework that use usual pretraining texts for efficient anti-forgetting. Beyond revisiting the most prevalent replay-based practices under GeRe, we further leverage neural states to introduce a enhanced activation states constrained optimization method using threshold-based margin (TM) loss, which maintains activation state consistency during replay learning. We are the first to validate that a small, fixed set of pre-collected general replay samples is sufficient to resolve both concerns--retaining general capabilities while promoting overall performance across sequential tasks. Indeed, the former can inherently facilitate the latter. Through controlled experiments, we systematically compare TM with different replay strategies under the GeRe framework, including vanilla label fitting, logit imitation via KL divergence and feature imitation via L1/L2 losses. Results demonstrate that TM consistently improves performance and exhibits better robustness. Our work paves the way for efficient replay of LLMs for the future. Our code and data are available at https://github.com/Qznan/GeRe.",
+    "score": 0.43746331334114075
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2305.12270",
+    "title": "Mitigating Catastrophic Forgetting in Task-Incremental Continual Learning with Adaptive Classification Criterion",
+    "publish_time": "20230520",
+    "authors": [
+      "Yun Luo",
+      "Xiaotian Lin",
+      "Zhen Yang",
+      "Fandong Meng",
+      "Jie Zhou",
+      "Yue Zhang"
+    ],
+    "abstract": "Task-incremental continual learning refers to continually training a model in a sequence of tasks while overcoming the problem of catastrophic forgetting (CF). The issue arrives for the reason that the learned representations are forgotten for learning new tasks, and the decision boundary is destructed. Previous studies mostly consider how to recover the representations of learned tasks. It is seldom considered to adapt the decision boundary for new representations and in this paper we propose a Supervised Contrastive learning framework with adaptive classification criterion for Continual Learning (SCCL), In our method, a contrastive loss is used to directly learn representations for different tasks and a limited number of data samples are saved as the classification criterion. During inference, the saved data samples are fed into the current model to obtain updated representations, and a k Nearest Neighbour module is used for classification. In this way, the extensible model can solve the learned tasks with adaptive criteria of saved samples. To mitigate CF, we further use an instance-wise relation distillation regularization term and a memory replay module to maintain the information of previous tasks. Experiments show that SCCL achieves state-of-the-art performance and has a stronger ability to overcome CF compared with the classification baselines.",
+    "score": 0.4069896638393402
+  }
+]

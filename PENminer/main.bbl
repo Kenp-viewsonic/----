@@ -1,0 +1,162 @@
+\begin{thebibliography}{10}
+
+\bibitem{bikedatasets}
+{Motivate International Inc.}
+\newblock \url{https://www.motivateco.com/where-we-do-it/}.
+
+\bibitem{taxidataset}
+{NYC Taxi \& Limousine Commission}.
+\newblock \url{https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page}.
+
+\bibitem{abdelhamid2017incremental}
+Ehab Abdelhamid, Mustafa Canim, Mohammad Sadoghi, Bishwaranjan Bhattacharjee,
+  Yuan-Chi Chang, and Panos Kalnis.
+\newblock Incremental frequent subgraph mining on large evolving graphs.
+\newblock {\em IEEE TKDE}, 29(12):2710--2723, 2017.
+
+\bibitem{aggarwal2010dense}
+Charu~C Aggarwal, Yao Li, Philip~S Yu, and Ruoming Jin.
+\newblock On dense pattern mining in graph streams.
+\newblock {\em PVLDB}, 3(1-2):975--984, 2010.
+
+\bibitem{ahmed2015algorithms}
+Rezwan Ahmed and George Karypis.
+\newblock Algorithms for mining the coevolving relational motifs in dynamic
+  networks.
+\newblock {\em ACM TKDD}, 10(1):1--31, 2015.
+
+\bibitem{aslay2018mining}
+Cigdem Aslay, Muhammad Anis~Uddin Nasir, Gianmarco De~Francisci~Morales, and
+  Aristides Gionis.
+\newblock Mining frequent patterns in evolving graphs.
+\newblock In {\em CIKM}, pages 923--932. ACM, 2018.
+
+\bibitem{bhatia2020midas}
+Siddharth Bhatia, Bryan Hooi, Minji Yoon, Kijung Shin, and Christos Faloutsos.
+\newblock {MIDAS: Microcluster-Based Detector of Anomalies in Edge Streams}.
+\newblock In {\em AAAI}, 2020.
+
+\bibitem{cover2012elements}
+Thomas~M Cover and Joy~A Thomas.
+\newblock {\em Elements of information theory}.
+\newblock Wiley, 2012.
+
+\bibitem{dai2016finding}
+Haipeng Dai, Muhammad Shahzad, Alex~X Liu, and Yuankun Zhong.
+\newblock Finding persistent items in data streams.
+\newblock {\em PVLDB}, 10(4):289--300, 2016.
+
+\bibitem{elseidy2014grami}
+Mohammed Elseidy, Ehab Abdelhamid, Spiros Skiadopoulos, and Panos Kalnis.
+\newblock Grami: Frequent subgraph and pattern mining in a single large graph.
+\newblock {\em PVLDB}, 7(7):517--528, 2014.
+
+\bibitem{eswaran2018sedanspot}
+Dhivya Eswaran and Christos Faloutsos.
+\newblock Sedanspot: Detecting anomalies in edge streams.
+\newblock In {\em ICDM}, pages 953--958. IEEE, 2018.
+
+\bibitem{specgreedy}
+Wenjie Feng, Shenghua Liu, Danai Koutra, Huawei Shen, and Xueqi Cheng.
+\newblock Unified dense subgraph detection.
+\newblock In {\em ECML/PKDD}, 2020.
+
+\bibitem{guha2016robust}
+Sudipto Guha, Nina Mishra, Gourav Roy, and Okke Schrijvers.
+\newblock Robust random cut forest based anomaly detection on streams.
+\newblock In {\em ICML}, pages 2712--2721, 2016.
+
+\bibitem{gurukar2015commit}
+Saket Gurukar, Sayan Ranu, and Balaraman Ravindran.
+\newblock Commit: A scalable approach to mining communication motifs from
+  dynamic networks.
+\newblock In {\em SIGMOD}, pages 475--489. ACM, 2015.
+
+\bibitem{jiang2013survey}
+Chuntao Jiang, Frans Coenen, and Michele Zito.
+\newblock A survey of frequent subgraph mining algorithms.
+\newblock {\em The Knowledge Engineering Review}, 28(1):75--105, 2013.
+
+\bibitem{Kosyfaki2018FlowMI}
+Chrysanthi Kosyfaki, Nikos Mamoulis, Evaggelia Pitoura, and Panayiotis
+  Tsaparas.
+\newblock Flow motifs in interaction networks.
+\newblock In {\em EDBT}, 2018.
+
+\bibitem{kovanen2011temporal}
+Lauri Kovanen, M{\'a}rton Karsai, Kimmo Kaski, J{\'a}nos Kert{\'e}sz, and Jari
+  Saram{\"a}ki.
+\newblock Temporal motifs in time-dependent networks.
+\newblock {\em JSTAT}, 2011(11):P11005, 2011.
+
+\bibitem{snapnets}
+Jure Leskovec and Andrej Krevl.
+\newblock {SNAP Datasets}: {Stanford} large network dataset collection.
+\newblock \url{http://snap.stanford.edu/data}, June 2020.
+
+\bibitem{li2018persistent}
+Rong-Hua Li, Jiao Su, Lu~Qin, Jeffrey~Xu Yu, and Qiangqiang Dai.
+\newblock Persistent community search in temporal networks.
+\newblock In {\em ICDE}, pages 797--808. IEEE, 2018.
+
+\bibitem{lippmann1999results}
+Richard Lippmann, Robert~K Cunningham, David~J Fried, Isaac Graf, Kris~R
+  Kendall, Seth~E Webster, and Marc~A Zissman.
+\newblock Results of the darpa 1998 offline intrusion detection evaluation.
+\newblock In {\em RAID}, volume~99, pages 829--835, 1999.
+
+\bibitem{Liu2019SamplingMF}
+Paul Liu, Austin~R. Benson, and Moses Charikar.
+\newblock Sampling methods for counting temporal motifs.
+\newblock In {\em WSDM}, 2019.
+
+\bibitem{LiuSDK18-survey}
+Yike Liu, Tara Safavi, Abhilash Dighe, and Danai Koutra.
+\newblock Graph summarization methods and applications: A survey.
+\newblock {\em ACM Comput. Surv.}, 51(3), 2018.
+
+\bibitem{Milo2002NetworkMS}
+Ron Milo, Shai~S Shen-Orr, Shalev Itzkovitz, Nadav Kashtan, D.~Chklovskii, and
+  Uri Alon.
+\newblock Network motifs: simple building blocks of complex networks.
+\newblock {\em Science}, 298 5594:824--7, 2002.
+
+\bibitem{paranjape2017motifs}
+Ashwin Paranjape, Austin~R Benson, and Jure Leskovec.
+\newblock Motifs in temporal networks.
+\newblock In {\em WSDM}, pages 601--610. ACM, 2017.
+
+\bibitem{ray2014frequent}
+Abhik Ray, Larry Holder, and Sutanay Choudhury.
+\newblock Frequent subgraph discovery in large attributed streaming graphs.
+\newblock In {\em BigMine}, pages 166--181, 2014.
+
+\bibitem{semertzidis2019finding}
+Konstantinos Semertzidis, Evaggelia Pitoura, Evimaria Terzi, and Panayiotis
+  Tsaparas.
+\newblock Finding lasting dense subgraphs.
+\newblock {\em DAMI}, 33(5):1417--1445, 2019.
+
+\bibitem{timecrunch}
+Neil Shah, Danai Koutra, Tianmin Zou, Brian Gallagher, and Christos Faloutsos.
+\newblock Timecrunch: Interpretable dynamic graph summarization.
+\newblock In {\em KDD}, pages 1055--1064. ACM, 2015.
+
+\bibitem{stefani2017triest}
+Lorenzo~De Stefani, Alessandro Epasto, Matteo Riondato, and Eli Upfal.
+\newblock Triest: Counting local and global triangles in fully dynamic streams
+  with fixed memory size.
+\newblock {\em ACM TKDD}, 11(4):1--50, 2017.
+
+\bibitem{walczyszyn2019battling}
+Maciej Walczyszyn, Shalin Patel, Maly Oron, and Bushra Mina.
+\newblock Battling superstorm sandy at lenox hill hospital: When the hospital
+  is ground zero.
+\newblock {\em Critical care clinics}, 35(4):711--715, 2019.
+
+\bibitem{Zhao2010CommunicationMA}
+Qiankun Zhao, Yuan Tian, Qi~He, Nuria Oliver, Ruoming Jin, and Wang-Chien Lee.
+\newblock Communication motifs: a tool to characterize social communications.
+\newblock In {\em CIKM}. ACM, 2010.
+
+\end{thebibliography}

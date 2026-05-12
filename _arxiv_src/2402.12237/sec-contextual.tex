@@ -1,0 +1,184 @@
+% !TEX root = main.tex
+In this section, we design an algorithm whose performance does not deteriorate with the number of types $K$. We adopt a linear contextual structure assumption that is common in the bandit literature \citep{LiCLS10,ChuLRS11,Abbasi-YadkoriPS11}, and in online content moderation practice \citep{Avadhanula2022}. In particular, we assume that each job comes with a $d$-dimensional feature vector $\bphi_k \in \mathbb{R}^d$ associated with its type $k$. The expected loss of accepting a job, $\ell_k^+ = \expectsub{k}{C_t^+}$, and the expected loss of rejecting a job, $\ell_k^- = \expectsub{k}{-C_t^-}$, both satisfy a linear model such that $\ell_k^+ = \bphi_k^{\trans}\btheta^{\star,+}$ and $\ell_k^- = \bphi_k^{\trans}\btheta^{\star,-}$ with two fixed unknown vectors $\btheta^{\star,+},\btheta^{\star,-} \in \mathbb{R}^d$. This model also implies $c_k = \bphi_k^{\trans}\bolds{c}^{\star}$ with $\bolds{c}^{\star} = \btheta^{\star,+} - \btheta^{\star,-}$. Letting $\bolds{L}_k$ be the vector $[\ell_k^+, \ell_k^-]$ and $\bTheta^\star = [\btheta^{\star,+}, \btheta^{\star,-}]$, the linear model is equivalent to $\bolds{L}_k = \bphi_k^{\trans}\bTheta^\star.$ We assume that the Euclidean norms of $\btheta^{\star,+},\btheta^{\star,-}$ and feature vectors $\bphi_k$ are upper bounded by a known constant~$U\geq 1$.
+
+Two challenges arise when the number of types is large: \emph{over-exploration} and \emph{over-admission}. First, it is no longer amenable to maintain separate confidence intervals for each type because there are few arrivals of each type and the algorithm may end up exploring all arrivals to learn. Second, using queue lengths of each type as estimates of the delay loss for admission leads to over-admission of arrivals as the delay loss is underestimated when there are many types. We next elaborate how to address these two challenges.
+
+\subsection{Contextual Learning for Efficient Exploration}
+We incorporate the contextual information of types to design an efficient exploration mechanism. Our approach is motivated by contextual bandit techniques \citep{Abbasi-YadkoriPS11}, but it is tailored to handle the impact of delayed feedback; see a detailed comparison in Appendix~\ref{app:comparison}.
+
+The algorithm constructs confidence intervals around $c_k$ as follows. First, we maintain confidence sets for $\btheta^{\star,+}, \btheta^{\star,-}$ based on the collected dataset $\set{D}(t)$. Recalling that $\set{S}(\tau)$ is the reviewed job for period $\tau$ (or $\perp$ when no job is reviewed), the dataset in period $t$ is
+$\{(\bolds{X}_{\tau},\bolds{Z}_{\tau})\}_{\tau \leq t}$ with feature $\bolds{X}_{\tau} = \bolds{\phi}_{\kappa}(\set{S}(\tau))$ and observation $\bolds{O}_{\tau} = \begin{pmatrix}C^+_{\set{S}(\tau)} \\ C^-_{\set{S}(\tau)} \end{pmatrix}$. We use the ridge estimator with regularization parameter~$\xi$, 
+\begin{equation}\label{eq:regression}
+\begin{aligned}
+\hat{\bTheta}(t) = [\hat{\btheta}^+(t),\hat{\btheta}^-(t)] &=  \bar{\bolds{V}}_t^{-1}[\bolds{X}_1,\ldots,\bolds{X}_{t}][\bolds{O}_1,\ldots,\bolds{O}_{t}]^{\trans} \\
+&\text{where}~ \bar{\bolds{V}}_{t} = \xi \bolds{I} + \sum_{\tau \leq t} \bolds{X}_{\tau}\bolds{X}_{\tau}^{\trans},~ \hat{\bTheta}(0) = [\bolds{0},\bolds{0}].
+\end{aligned}
+\end{equation}
+We also construct an estimator for $\bolds{c}^{\star}$ by $\hat{\bolds{c}}(t) = \hat{\btheta}^+(t) - \hat{\btheta}^-(t).$
+
+Recalling that $\sigma_{\max}$ is the variance proxy of cost distributions and  $U$ upper bounds the Euclidean norm of $\btheta^{\star,+},\btheta^{\star,-}$ and any feature $\bphi_k$, we define the confidence sets with a confidence level $\delta$ by 
+\begin{equation}\label{eq:contextual-def-conf}
+\begin{aligned}
+\set{C}^+_t \coloneqq \left\{\btheta^{+} \in \mathbb{R}^{d} \colon \|\hat{\btheta}^{+}(t) - \btheta^{+}\|_{\bar{\bolds{V}}_t} \leq B_{\delta}(t)\right\}, &\quad \set{C}^-_t \coloneqq \left\{\btheta^{-}\in \mathbb{R}^{d} \colon \|\hat{\btheta}^{-}(t) - \btheta^{-}\|_{\bar{\bolds{V}}_t} \leq B_{\delta}(t)\right\} \\ 
+\text{where }
+B_{\delta}(t) &\coloneqq \sigma_{\max}\sqrt{2d\ln\left(\frac{1+tU^2/\xi}{\delta}\right)} + \sqrt{\xi}U.
+\end{aligned}
+\end{equation}
+For ease of notation, we also define 
+the confidence set of $\bolds{c}^{\star}$: $\set{C}_t = \{\btheta^{+} - \btheta^{-} \colon [\btheta^{+},\btheta^{-}] \in \set{C}_t^+ \times \set{C}_t^-\}$. Using confidence sets from period $t-1$, we can modify our confidence bounds from \eqref{eq:conf-h} and \eqref{eq:conf-r} for period $t$: 
+\begin{equation}\label{eq:conf-h-feature}
+\ubar{c}_k(t) = \max\left(-c_{\max},\min_{\bolds{c} \in \set{C}_{t-1}} \bphi_k^{\trans}\bolds{c}\right),~\bar{c}_k(t) = \min\left(c_{\max},\max_{\bolds{c} \in \set{C}_{t-1}}\bphi_k^{\trans}\bolds{c}\right).
+\end{equation}
+\begin{equation}\label{eq:conf-r-feature}
+\bar{\ell}_k(t) = \max_{[\btheta^{+},\btheta^{-}] \in \set{C}^+_{t-1} \times \set{C}^-_{t-1}} \min\left\{\bphi_k^{\trans}\btheta^{+}, \bphi_k^{\trans}\btheta^{-}\right\}.
+\end{equation}
+
+\subsection{Type Aggregation for Better Admission Decisions}\label{sec:aggregate}
+As discussed above, when the number of types $K$ is large, it is difficult to estimate delay loss, a crucial component in the design of \textsc{BACID} which admits a job if and only if its idiosyncrasy loss is above an estimated delay loss. $\bacid$ estimates the delay loss of a job based on the number of same-type waiting jobs. With a large $K$, this approach underestimates the real delay loss, leading to overly admitting jobs into the review system. An alternative delay estimator uses the total number of waiting jobs $|\set{Q}(t)|$. This ignores the heterogeneous delay loss of admitting different types. In particular, our scheduling algorithm prioritizes jobs with less review workload (higher $\mu_k$) to effectively manage the limited capacity. A job with a higher service rate thus has smaller delay loss and neglecting this heterogeneity results in overestimating its delay loss.
+
+To address this challenge, we create an estimator for the delay loss that lies in the middle ground of the aforementioned estimators. In particular, we map each type $k$ to a group $g(k)$ based on its  service rate; we denote this partition by $\set{K}_{\set{G}} = \{\set{K}_g\}_{g \in \set{G}}$ where $\set{G}$ is the set of groups, $G=|\set{G}|$ is its cardinality, and $\set{K}_g$ is the set of types in group $g \in \set{G}$.
+For a group $g$, we define its proxy service rate $\tilde{\mu}_g = \min_{k \in \set{K}_g} \mu_k$ as the minimum service rate across types in this group. For a new job of type~$k$, we estimate its delay loss by the number of jobs of types in $\set{K}_{g(k)}$ waiting in the review queue. This estimator is efficient if the number of groups is small, and service rates of types in a group are close to each other. Specifically, letting $N_{\max} = \max_t N(t)$ be the maximum number of reviewers, we define the \emph{aggregation gap} $\Delta(\set{K}_{\set{G}})= \max_{g \in \set{G}} \max_{k \in \set{K}_g} N_{\max}(\mu_{k} - \tilde{\mu}_g)$ of a group partition $\set{K}_{\set{G}}$ as the maximum within-group service rate difference (scaled by reviewing capacity). 
+
+\subsection{Algorithm, Theorem and Proof Sketch}
+Our algorithm, \textsc{Contextual} $\bacidol$ (Algorithm~\ref{algo:cbacidol}), or $\conbacid$ in short, works as follows. In
+period $t$, we first compute a ridge estimator $\hat{\bTheta}(t-1)$ of $\bTheta^\star$ by \eqref{eq:regression}. The algorithm then rejects a new job ($Y(t) = -1$) if its empirical average cost, $\hat{c}_{\kappa(t)}(t)=\bphi_{\kappa(t)}^{\trans}\hat{\bolds{c}}(t-1)$, is positive. We follow the same label-driven admission with $\bacidol$ in Line~\ref{line:conbacid-lda} but we set the confidence interval on $c_{k}$ by \eqref{eq:conf-h-feature} using the confidence sets $\set{C}_t^+, \set{C}_t^-$  from \eqref{eq:contextual-def-conf}. The optimistic admission rule (Line~\ref{line:conbacid-admit}) similarly finds an optimistic per-period idiosyncrasy loss $\bar{\ell}_k(t)$ but estimates the delay loss by type-aggregated queue lengths. Specifically, letting $\tilde{\set{Q}}_g(t) = \{\tau \in \set{Q}(t)\colon g(\kappa(\tau)) = g\}$ be the set of waiting jobs whose types belong to group $g$ and $\tilde{Q}_g(t) = |\tilde{\set{Q}}_g(t)|$, we admit a type-$k$ job if and only if its (optimistic) idiosyncrasy loss is higher than the estimated delay loss, i.e., $\beta \bar{\ell}_{k}(t) \geq \tilde{Q}_{g(k)}(t)$. We still prioritize the label-driven queue for scheduling. If there is no job in the label-driven queue, we use a type-aggregated \textsc{MaxWeight} scheduling: we first pick a group $g$ maximizing $\tilde{\mu}_g \tilde{Q}_g(t)$, and then pick the earliest admitted job in the review queue $\set{Q}(t)$ whose type is of group $g$ to review. 
+
+\input{algo-cbacidol}
+
+For ease of exposition, we follow the $\lesssim$ notation to include only dependence on the number of groups $G$, feature dimension $d$, the margin $\eta$ (recall that $\eta = \min(1,\min_{k \in \set{K}} |c_k|)$), the time horizon $T$, and the aggregation gap $\Delta(\set{K}_{\set{G}})$. By setting $\beta = \sqrt{T / (Gd^{1.5})}, \gamma = (T / (d^{2.5}\ln^{2}(T)))^{-1/3}$, we obtain the following guarantee of $\conbacid$. 
+\begin{theorem}\label{thm:cbacidol}
+The regret of $\conbacid$ is upper bounded by
+\[
+\reg^{\conbacid}(T) \lesssim \Delta(\set{K}_{\set{G}})T+\min\left(\frac{d^{2.5}\ln^{2} T}{\eta^2}, d^{5/6}(T\ln(T))^{2/3}\right)+ d\sqrt{GT \ln T}.
+\]
+\end{theorem}
+\noindent Note that, if, for all groups $g \in \set{G}$, all types $k \in \set{K}_g$ have the same service rate, then $\Delta(\set{K}_{\set{G}}) = 0$, but the regret still depends on $G$ which is large if there are many types with unequal service rates.
+
+To provide a worst-case guarantee, we select a fixed aggregation gap $0<\zeta\leq 1$ and create a partition $\set{K}_{\set{G}}^{\zeta}$ that segments types based on the their maximum scaled service rate $N_{\max}\mu_k$ into intervals $(0,\zeta],(\zeta,2\zeta],\ldots,(\lfloor \frac{1}{\zeta}\rfloor \zeta,1]$. The number of groups is at most $G \leq \frac{1}{\zeta} + 1 \leq \frac{2}{\zeta}$ and the aggregation gap $\Delta(\set{K}_{\set{G}}^{\zeta})$ is at most $\zeta$. Optimizing the bound in Theorem~\ref{thm:cbacidol} for the term $d\sqrt{GT} + \Delta(\set{K}_{\set{G}})T$, and setting $\zeta^\star = d^{2/3}T^{-1/3}$, we obtain that the regret of $\conbacid$ scales as $\tilde{O}(T^{2/3})$.
+\begin{corollary}\label{corr:group-ind}
+$\conbacid$ with group partition $\set{K}_{\set{G}}^{\zeta^\star}$ has
+$
+\reg^{\conbacid}(T) \lesssim d^{5/6}(T\ln(T))^{2/3}.
+$
+\end{corollary}
+\noindent The proof of Theorem~\ref{thm:cbacidol} (Appendix~\ref{app:thm-cbacidol}) bounds the losses in the same decomposition as in \eqref{eq:learning-loss-decompose},\footnote{Note that $\sum_{g \in \set{G}} \tilde{Q}_g(T+1) = \sum_{k \in \set{K}} Q_k(T+1)$ but summing across groups facilitates our per-group analysis.}
+\begin{align}
+&\hspace{0.1in}\underbrace{\expect{\sum_{t=1}^T \left(Y(t)^+(\ell_{\kappa(t)}^{+} - \ell_{\kappa(t)}) + Y(t)^-(\ell_{\kappa(t)}^{-}-\ell_{\kappa(t)})\right)(1 - A(t) - E(t))}}_{\text{Classification Loss}} \nonumber\\
+&+  \underbrace{\expect{\sum_{t=1}^T  \ell_{\kappa(t)}(1 - A(t) - E(t))}}_{\text{Idiosyncrasy Loss}} +\underbrace{c_{\max}\expect{\sum_{g \in \set{G}} \tilde{Q}_g(T+1) + \left|\set{Q}^{\ld}(T+1)\right|}}_{\text{Relaxed Delay Loss}}.\label{eq:contextual-loss-decompose}
+\end{align}
+Similar to the proof of Theorem~\ref{thm:bacidol}, we set $\hat{\mu}_{\min} = \min_{t \leq T, k \in \set{K}} N(t)\mu_k$ and focus on $T \geq 3$. The following lemmas also assume $G \leq T$; Theorem~\ref{thm:cbacidol} holds directly otherwise.
+
+\begin{lemma}\label{lem:contextual-delay}
+For any $\beta \geq 1 / c_{\max}$, the Relaxed Delay Loss of $\conbacid$ is at most $3c^2_{\max}G\beta$. 
+\end{lemma}
+The proof of Lemma~\ref{lem:contextual-delay} is identical to that of Lemma~\ref{lem:bacidol-delay} but bounds the group-level queue length $\{\tilde{Q}_g(t)\}_{g \in \set{G}}$ by $2\beta c_{\max}$ instead of bounding the type-level queue length $\{Q_k(t)\}_{k \in \set{K}}$.
+\begin{lemma}\label{lem:contextual-class}
+For any $0 < \gamma \leq 1$, $\xi \geq U^2$ and $\delta \in (0,0.5/T]$,
+\[
+\text{Classification Loss} \leq c_{\max} + \gamma \indic{\gamma \geq \eta} T + \frac{34c_{\max}B_{\delta}^2(T)d\ln(1+T/d)}{\max(\eta,\gamma)^2\hat{\mu}_{\min}}.
+\]
+\end{lemma}
+\begin{lemma}\label{lem:contextual-idio}
+For any $\beta \geq 1 / c_{\max}, \gamma \in (0,1]$, $\xi \geq U^2$ and $\delta \in (0,0.5/T]$,  \[\text{Idiosyncrasy Loss} \lesssim
+\set{L}^\star(T) + \frac{T}{\beta} +\left(\Delta(\set{K}_{\set{G}})T+\beta Gd^{1.5}\sqrt{\ln T}+d\sqrt{GT \ln T}+\frac{d^{2.5}\ln^{2} T}{\max(\eta,\gamma)^2}\right).\]
+\end{lemma}
+
+\subsection{Bounding Classification Loss (Lemma~\ref{lem:contextual-class})}
+Similar to the proof of Lemma~\ref{lem:bacidol-class}, we first bound the sum of the label-driven queue length $\expect{\sum_{t=1}^T Q^{\ld}(t)}$. By Lemma~\ref{lem:connect-et-qe}, bounding the first term requires bounding the expected number of jobs that we admit into the label-driven queue, i.e., $\expect{\sum_{t=1}^T E(t)}.$ We first define the ``good'' event $\set{E}$, where the confidence sets are valid for any period $t$: $\set{E} \coloneqq \{\forall t, \bTheta^\star \in \set{C}_t^+ \times \set{C}_t^-\}$. Our first lemma shows that this event happens with probability at least $1-2\delta$ using \cite[Theorem~2]{Abbasi-YadkoriPS11} (proof in Appendix~\ref{app:lem-contextual-prob-good-event}).
+\begin{lemma}\label{lem:contextual-prob-good-event}
+For any $\delta \in (0,1)$, it holds that with probability at least $1-2\delta$, for any $t \geq 0$, the confidence sets are valid, i.e., $\bTheta^\star \in \set{C}_t^+ \times \set{C}_t^-$.
+\end{lemma}
+Our second lemma bounds the expected number of jobs admitted into the label-driven queue. The proof is based on classical linear contextual bandit analysis and is provided in Appendix~\ref{app:lem-bound-norm-selective}.
+\begin{lemma}\label{lem:bound-norm-selective}
+If $\xi \geq U^2, \gamma \leq 1$, $\delta \leq 0.5/T$, the number of jobs admitted to the label-driven queue is  \[\expect{\sum_{t=1}^T E(t)} \leq \frac{34B_{\delta}^2(T)d\ln(1+T/d)}{\max(\eta,\gamma)^2}.\]
+\end{lemma}
+We next bound the per-period classification loss (proof in Appendix~\ref{app:lem-con-period-class}), i.e.,
+\[
+Z_k(t) = \Lambda_k(t)(Y(t)^+(\ell_k^+ - \ell_k) + Y(t)^-(\ell_k^- -\ell_k))(1-A(t)-E(t)).\]
+\begin{lemma}\label{lem:con-period-class}
+For any type $k$ and period $t$, $Z_k(t)\indic{\set{E}} \leq \left(\gamma\indic{\gamma \geq \eta} + c_{\max}Q^{\ld}(t)\right)\Lambda_k(t).$
+\end{lemma}
+\begin{proof}[Proof of Lemma~\ref{lem:contextual-class}]
+The classification loss is given by $\expect{\sum_{t=1}^T\sum_{k \in \set{K}} Z_k(t)}$, which we bound by
+\begin{align*}
+\expect{\sum_{t=1}^T\sum_{k \in \set{K}} Z_k(t)} &\leq  c_{\max}\expect{\sum_{t=1}^T \indic{\set{E}^c}} + \expect{\sum_{t=1}^T \sum_{k \in \set{K}} Z_k(t)\indic{\set{E}}}  \tag{$\sum_{k \in \set{K}} Z_k(t) \leq c_{\max}$}\\
+&\leq 2c_{\max} \delta T+ \expect{\sum_{t=1}^T \sum_{k \in \set{K}} Z_k(t)\mid \set{E}} \tag{By Lemma~\ref{lem:contextual-prob-good-event}}\\
+&\hspace{-0.7in}\leq c_{\max} + \expect{\sum_{t=1}^T \left(\gamma \indic{\gamma \geq \eta} + c_{\max}Q^{\ld}(t)\right)} \tag{By Lemma~\ref{lem:con-period-class} and $\delta \leq 0.5 / T$} \\
+&\hspace{-0.7in}\leq c_{\max} + \gamma \indic{\gamma \geq \eta} T + \frac{34c_{\max}B_{\delta}^2(T)d\ln(1+T/d)}{\max(\eta,\gamma)^2\hat{\mu}_{\min}} \tag{By Lemmas~\ref{lem:connect-et-qe},~\ref{lem:bound-norm-selective}}.
+\end{align*}
+\end{proof}
+
+\subsection{Bounding the Idiosyncrasy Loss (Lemma~\ref{lem:contextual-idio})}
+To bound the idiosyncrasy loss, we connect it to the fluid benchmark via Lagrangians. In the corresponding lemmas of the previous sections (Lemmas~\ref{lem:known-idiosyncrasy} and \ref{lem:bacidol-idio}), we evaluate the Lagrangians by the queue length vector across types $\bolds{Q}(t)$ because we estimate the delay loss of admitting a new type-$k$ job by the number of type-$k$ jobs in the review queue. To avoid greatly underestimating the delay loss (due to the larger number of types), a key innovation of $\conbacid$ is to use the number of waiting jobs in the same group $\tilde{Q}_{g(k)}(t)$ as an estimator. This new estimator motivates us to use $\tilde{Q}_{g(k)}(t)$ as the dual for the Lagrangian analysis and to define a new Lyapunov function
+\[
+\tilde{L}(t) = \beta\sum_{t'=1}^{t-1}\ell_{\kappa(t')}(1- A(t') - E(t')) + \frac{1}{2}\sum_{g \in \set{G}} \tilde{Q}_g^2(t).
+\]
+We also define the \emph{type-aggregated} queue length vector, $\bolds{Q}^{\ta}(t) = (Q^{\ta}_k(t))_{k \in \set{K}}$, such that $Q^{\ta}_k(t) = \tilde{Q}_{g(k)}(t)$ for any $k \in \set{K}$. We denote $\bar{A}_k(t) = \Lambda_k(t)\indic{\beta \bar{\ell}_k(t) \geq \tilde{Q}_{g(k)}(t)}$, which captures whether the job would have been admitted in the absence of the label-driven admission. For scheduling, we select a group $g$ that maximizes $\tilde{\mu}_g\tilde{Q}_g(t)$ and choose the first waiting job of that group to review if the label-driven queue is empty.  We denote $\psi_{k}(t) = 1$ where $k$ is the type of that reviewed job and let $\bolds{\psi}(t) = (\psi_k(t))_{k \in \set{K}}$. The following lemma (proved in Appendix~\ref{app:lem-cbacidol-idio-lag}) connects the idiosyncrasy loss and the per-period Lagrangian \eqref{eq:per-period-lag} with the type-aggregated queue lengths $\bolds{Q}^{\ta}(t)$ as the dual.
+\begin{lemma}\label{lem:cbacidol-idio-lag}
+The expected Lagrangian of $\conbacid$ upper bounds the idiosyncrasy loss by:
+\[\expect{\beta\sum_{t=1}^{T}\ell_{\kappa(t)}(1-A(t)-E(t))} \leq \expect{\tilde{L}(T+1) - \tilde{L}(1)} \leq T + \sum_{t=1}^T \expect{f_t(\bolds{\bar{A}}(t), \bolds{\psi}(t), \bolds{Q}^{\ta}(t))}.\]
+\end{lemma}
+
+Our next step is to bound the Lagrangian with $\bolds{Q}^{\ta}(t)$ as the dual. In Lemma~\ref{lem:lagrang-bacid} (Section~\ref{sec:lagrang-bacid}), the Lagrangian of \textsc{BACID} for dual $\bolds{Q}(t)$ is connected to the fluid benchmark via a Lagrangian optimality result of \textsc{BACID} (Lemma~\ref{lem:bacid-mw}). We also use this result to bound the Lagrangian of $\bacidol$ (Section~\ref{sec:bacidol-idio}). However, with the type-aggregated queue length $\bolds{Q}^{\ta}(t)$ as the dual, the Lagrangian optimality of $\bacid$ no longer holds. To deal with this challenge, we thus introduce another benchmark policy which we call \textsc{Type Aggregated BACID} or $\tabacid$. 
+
+Letting $\{\bolds{A}^{\tabacid}(t)\}_{t \in [T]}, \{\bolds{\psi}^{\tabacid}(t)\}_{t \in [T]}$ be the admission and scheduling decisions, $\tabacid$ admits a type-$k$ job if $A^{\tabacid}_k(t) = \Lambda_k(t)\indic{\beta \ell_k \geq \tilde{Q}_{g(k)}(t)} = 1$. For scheduling, we first pick a group $g$ maximizing $\tilde{\mu}_g\tilde{Q}_g(t)$ and then select the earliest job $j$ in the review queue that belongs to this group (unless there is no waiting job). We set $\psi^{\tabacid}_{\kappa(j)}(t) = 1$ for the corresponding type. Note that the admission decisions of $\tabacid$ are the same as $\conbacid$ except that $\tabacid$ uses the ground-truth $\ell_k$ for admission (not the optimistic estimation) and does not consider the impact of label-driven admission. The scheduling differs from $\textsc{MaxWeight}$ and is suboptimal due to grouping types with different service rates which is captured by $\Delta(\set{K}_{\set{G}})\max_g \tilde{Q}_g(t)$. We now upper bound the expected Lagrangian of $\tabacid$ (proved in Appendix~\ref{app:lem-context-benchmark-lagran}). 
+\begin{lemma}\label{lem:context-benchmark-lagran}
+The expected Lagrangian of $\tabacid$ is upper bounded by:
+\[
+\sum_{t=1}^T \expect{f_t(\bolds{A}^{\tabacid}(t), \bolds{\psi}^{\tabacid}(t), \bolds{Q}^{\ta}(t))} \leq \beta \set{L}^\star(T) + 2\beta c_{\max}\Delta(\set{K}_{\set{G}})T.
+\]
+\end{lemma}
+As in the proof of Lemma~\ref{lem:bacidol-idio} (Section~\ref{sec:bacidol-idio}), we relate the right hand side in Lemma~\ref{lem:cbacidol-idio-lag} (Lagrangian of $\conbacid$) to the left hand side in Lemma~\ref{lem:context-benchmark-lagran} (Lagrangian of $\tabacid$) by 
+\begin{align}
+\textsc{RegL}(T) &=\expect{\sum_{t=1}^T f_t(\bolds{\bar{A}}(t), \bolds{\psi}(t), \bolds{Q}^{\ta}(t)) - f_t(\bolds{A}^{\tabacid}(t), \bolds{\psi}^{\tabacid}(t), \bolds{Q}^{\ta}(t))} \nonumber\\
+&= \underbrace{\expect{\sum_{t=1}^T \sum_{k\in\set{K}} (A_k^{\tabacid}(t) - \bar{A}_k(t))(\beta \ell_k-\tilde{Q}_{g(k)}(t))}}_{\textsc{RegA}(T)} \nonumber \\
+&\hspace{0.2in}+ \underbrace{\expect{\sum_{t=1}^T \sum_{k \in \set{K}} (\psi_k^{\tabacid}(t) - \psi_k(t))\tilde{Q}_{g(k)}(t)\mu_k N(t)}}_{\textsc{RegS}(T)}\label{eq:cbacid-decomp-RegL}.
+\end{align}
+Letting $Q_{\max} = 2\beta c_{\max}$, we bound $\textsc{RegS}(T)$ as for Lemma~\ref{lem:bacidol-regs} (proof in Appendix~\ref{app:lem-cbacid-regS}).
+\begin{lemma}\label{lem:cbacid-regS}
+If $\xi \geq U^2, \gamma \leq 1,\delta \leq 0.5/T$, the regret in scheduling is $\textsc{RegS}(T) \leq \frac{68Q_{\max}B^2_{\delta}(T)d\ln(1+T/d)}{\max(\eta,\gamma)^2\hat{\mu}_{\min}}.$
+\end{lemma}
+Our novel contribution is the following result bounding the regret in admission $\textsc{RegA}(T)$. The proof handles contextual learning with queueing delayed feedback, which we discuss in Section~\ref{sec:contextual-regret}.
+\begin{lemma}\label{lem:conbacid-rega}
+If $\xi \geq U^2, \gamma \leq 1,\delta \leq 0.5/T$, the regret in admission is 
+\[
+\textsc{RegA}(T) \leq 3\beta c_{\max}B_{\delta}(T)\left(d\ln(1+T/d)\left(4GQ_{\max} + \frac{34B_{\delta}^2(T)}{\max(\eta,\gamma)^2}\right) + \sqrt{2GTd\ln(1+T/d)}\right).
+\]
+\end{lemma}
+\begin{proof}[Proof of Lemma~\ref{lem:contextual-idio}]
+By Lemma~\ref{lem:cbacidol-idio-lag}, we have 
+\begin{align*}
+\expect{\beta\sum_{t=1}^{T}\ell_{\kappa(t)}(1-A(t)-E(t))} &\leq T + \sum_{t=1}^T \expect{f_t(\bolds{\bar{A}}(t), \bolds{\psi}(t), \bolds{Q}^{\ta}(t))} \\
+&\hspace{-2in}= T + \sum_{t=1}^T \expect{f_t(\bolds{A}^{\tabacid}(t), \bolds{\psi}^{\tabacid}(t), \bolds{Q}^{\ta}(t))} + \textsc{RegS}(T) + \textsc{RegA}(T) \\
+&\hspace{-2in}\leq T+\beta \set{L}^\star(T) + 2\beta c_{\max}\Delta(\set{K}_{\set{G}})T + \textsc{RegS}(T) + \textsc{RegA}(T)\tag{Lemma~\ref{lem:context-benchmark-lagran}}.
+\end{align*}
+The result follows by bounding $\textsc{RegS}(T)$ and $\textsc{RegA}(T)$ respectively by Lemmas~\ref{lem:cbacid-regS} and \ref{lem:conbacid-rega}, and by dividing both sides by $\beta$ and noting that $B_{\delta}(T) \lesssim \sqrt{d\ln T}, Q_{\max} \lesssim \beta c_{\max}$.
+\end{proof}
+
+\subsection{Contextual Learning with Queueing-Delayed Feedback (Lemma~\ref{lem:conbacid-rega})}\label{sec:contextual-regret}
+
+To bound the regret in admission in a way that avoids dependence on $K$ (that Lemma~\ref{lem:bacidol-rega} exhibits), we rely on the contextual structure to more effectively bound the total estimation error of admitted jobs. This has the additional complexity that feedback is observed after a queueing delay (that is endogenous to the algorithmic decisions) and is handled via Lemma~\ref{lem:conbacid-error} below.
+The proof of Lemma~\ref{lem:conbacid-rega} (Appendix~\ref{app:lem-conbacid-rega}) then follows from classical linear contextual bandit analysis. 
+
+The estimation error for one job with feature $\bphi_k$ given observed data points that form matrix $\bar{V}_{t-1}$ (defined in \eqref{eq:regression}) corresponds to $\|\bphi_k\|_{\bar{V}_{t-1}^{-1}}$. To see the correspondence, in a non-contextual setting, $\bphi_k$ is a unit vector for the $k-$th dimension, and $\bar{\bV}_{t-1}$ is a diagonal matrix where the $k-$th element is the number of type-$k$ reviewed jobs $n_k(t-1)$. As a result, $\|\bphi_k\|_{\bar{\bV}_{t-1}^{-1}} = 1 /\sqrt{n_k(t-1)}$, which is the estimation error we expect from a concentration inequality. 
+
+Our first result (proof in Appendix~\ref{app:lem-bound-delayed-error}) bounds the estimation error when feedback of all admitted jobs is delayed by a fixed duration, which we utilize to accommodate random delays.
+\begin{lemma}\label{lem:bound-delayed-error}
+Given a sequence of $M$ vectors $\hat{\bphi}_1,\ldots,\hat{\bphi}_M$ in $\mathbb{R}^d$, let $\hat{\bV}_j = \xi \bI + \sum_{j'=1}^j \hat{\bphi}_{j'}\hat{\bphi}_{j'}^{\trans}$. If $\|\hat{\bphi}_i\|_2 \leq U$ for any $i \leq M$ and $\xi \geq U^2$, the estimation error for a fixed delay $q \geq 1$ is \[\sum_{i=q}^M \|\hat{\bphi}_i\|_{\hat{\bV}_{i-q}^{-1}} \leq \sqrt{2Md\ln(1+M/d)}+2qd\ln(1+M/d).\]
+\end{lemma}
+The challenge in our setting is that the feedback delay is not fixed, but is indeed affected by both the admission and scheduling decisions. The following lemma upper bounds the estimation error under this queueing delayed feedback, enabling our contextual online learning result.
+
+\begin{lemma}\label{lem:conbacid-error}
+If $\xi \geq U^2$ and $T \geq 3$, the estimation error is bounded by 
+\[
+\expect{\sum_{t=1}^T \sum_{k \in \set{K}} \|\bphi_k\|_{\bar{\bV}_{t-1}^{-1}}\bar{A}_k(t)} \leq \sqrt{2GTd\ln(1+T/d)} + d\ln(1+T/d)\left(3GQ_{\max}+\frac{34B_{\delta}^2(T)}{\max(\eta,\gamma)^2}\right).
+\]
+\end{lemma}
+
+\begin{proof}[Proof sketch] 
+The proof contains three steps. The first step is to connect the error of a job in our setting to a fixed-delay setting by the first-come-first-serve (FCFS) property of our scheduling algorithm (Lemma~\ref{lem:connect-fix-delay}). In particular, consider the sequence of admitted group-$g$ jobs. For a job $j$ on this sequence, the set of jobs before $j$ whose feedback is still not available can include at most the $Q_{\max}$ jobs right before $j$ on the sequence (where $Q_{\max}$ is controlled by our admission rule). Therefore, the error of group-$g$ jobs accumulates as in a setting with a fixed delay $Q_{\max}$. 
+
+Based on this result, the second step (Lemma~\ref{lem:error-total}) bounds $\expect{\sum_{t=1}^T \sum_k \|\bphi_k\|_{\bar{\bV}_{t-1}^{-1}}A_k(t)}$, which is the estimation error for admitted jobs. Enabled by the connection to the fixed-delay setting, we bound the estimation error for each group separately by Lemma~\ref{lem:bound-delayed-error} and aggregate them to get the total error, i.e, the first two terms in Lemma~\ref{lem:conbacid-error}. 
+
+For the third step, corresponding to the last term of our bound, we bound the difference between the error of all admitted jobs (which we upper bounded in the second step) and the error of jobs admitted by the optimistic admission. We show that this difference is at most the number of label-driven admissions $\expect{\sum_{t=1}^T E(t)}$ (bounded by Lemma~\ref{lem:bound-norm-selective}) because $\bar{A}_k(t) - A_k(t) \leq E(t)$ and $\|\bphi_k\|_{\bar{\bV}_{t-1}^{-1}} \leq 1$. The full proof is provided in Appendix~\ref{app:lem-conbacid-error}.
+\end{proof}

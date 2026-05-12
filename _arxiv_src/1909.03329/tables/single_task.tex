@@ -1,0 +1,17 @@
+\begin{table*}[t]
+\centering
+    \begin{adjustbox}{max width=\textwidth}
+    \begin{tabular}{l*{10}{c}}
+    \toprule
+    & SQuAD & WikiSQL & SST & SRL & WOZ & AGNews & Amazon & DBPedia & Yahoo & Yelp \\
+    \midrule
+    GPT-2 score & 72.3 & 70.7 & \textbf{90.9} & 70.4 & \textbf{84.9} & \textbf{94.6} & \textbf{62.3} & \textbf{99.1} & \textbf{73.9} & \textbf{67.7} \\
+    Other scores & \textbf{75.5} & \textbf{72.6} & 88.1 &  \textbf{75.2} & 84.4 & 93.8 & 60.1 & 30.5 & 68.6 & 50.7 \\
+    % Our score & 76.9.3 & 72.7 & 90.9 & 70.0 & 86.6 &  &  &  &  & \\
+    % Others' score & 74.3 & 58.7 & 86.4 & 77.6 & 84.1 & 93.8 & 60.1 & 30.5 & 68.6 & 50.7 \\
+    \bottomrule
+    \end{tabular}
+    \end{adjustbox}
+    \caption{Comparison of GPT-2 and other methods on single task scores. Other scores are retrieved from~\cite{McCann2018decaNLP} or~\cite{d2019episodic}. Better performance in boldface.}
+\label{tab:single_task}
+\end{table*}

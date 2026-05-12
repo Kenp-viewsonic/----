@@ -1,0 +1,61 @@
+% \section{Implementation Details}
+% \label{sec:implementation_f}
+
+% We use hidden layer size of 56 with dropout probability of 0.3. Hyper-parameter optimization gave value of 3 for context history window $K$. We use embedding layer size of 56 as well, training the embeddings from scratch. Adadelta \cite{zeiler2012adadelta} algorithm with initial learning rate of 0.0001 gave the optimal performance. Concatenation window size, $P$ of 3 is used. $\alpha$ and $\beta$ in loss objective are set to 0.9. Early stopping is used with patience of 10 and threshold of 0.5. Each model is trained for 3 seeds and average F1 is reported.
+
+
+%\section{Appendix}
+\section{Utterance Encoding}
+%\subsection{Utterance Encoding}
+
+We first take the current user utterance for turn $i$, denoted by $\mathbf{U}_i\in \mathbb{R}^{d_e\times k}$ where $k$ represents maximum number of tokens in the utterance.
+Then we pass this vector through an embedding layer to generate a hidden state, $\mathbf{H}_i \in\mathbb{R}^{d_h\times k}$ where $d_h$ is the hidden layer dimension. We add learned absolute position embedding, $\mathbf{p}_u \in \mathbb{R}^{d_h\times k}$ \cite{gehring2017convolutional}, resulting in a  new vector, $\mathbf{H}_i = \mathbf{H}_i + \mathbf{p}_u$. The intuition is that this embedding will capture syntactic information.
+
+We pass this input through a \pretty{DiSAN} unit that broadly comprises  token-to-token (t2t) attention, masks, and source-to-token (s2t) attention:
+\begin{itemize}
+\item On input $\mathbf{H}_i$, we first apply a multi-dimensional \textbf{t2t} attention layer that encodes the dependency between a token and all other tokens in the sentence. In addition, forward and backward masks are added to attention computation to incorporate directional information;
+\item For each of these masks, we apply a fusion gate that controls the flow of information from the original hidden representation $\mathbf{H}_i$ and the mask outputs, $\mathbf{Hm}_i^F$ and $\mathbf{Hm}_i^B$, generating contextualized representations $\mathbf{C}_i^F$ and $\mathbf{C}_i^B$, respectively.
+
+$$\mathbf{G} = \sigma(W^{(1)}\mathbf{H}_i + W^{(2)}\mathbf{Hm}_i^F + \mathbf{b})$$
+$$\mathbf{C}_i^F = \mathbf{G} \odot \mathbf{H}_i + (1 - \mathbf{G}) \odot \mathbf{Hm}_i^F$$
+
+Similarly, we obtain $\mathbf{C}_i^B$. Both $\mathbf{C}_i^F$ and $\mathbf{C}_i^B$ are concatenated to render $\mathbf{C}_i$;
+\item Finally, we have a multi-dimensional \textbf{s2t} attention which learns a gating function that determines, element-wise, how to attend to each individual token of the sentence. It takes $\mathbf{C}_i$ as input and outputs a single vector for the entire sentence.
+$$\mathbf{F(C_i)} = W^{(1)T}\sigma(W^{(2)}\mathbf{C}_i + \mathbf{b}) + \mathbf{b}$$
+$$\h({\text{Utt}_i}) = \mathbf{F(C_i)} \odot \mathbf{C_i}$$
+%$$h_{Utt_i} = \sum_{j=1}^{k_i} f(c_{ij}) \odot c_{ij}$$
+
+
+\end{itemize}
+
+%Note that we use this utterance encoder (without any contextual signals) as our baseline and denote it by \textbf{UttEncoder($u_i$)}.
+
+\section{Datasets}
+%\subsubsection{Datasets}
+
+Below is the detailed description of both the conversational datasets:
+\begin{enumerate}
+    \item \textbf{Booking} provides a shared test framework containing conversations between human and machines for the domain of restaurant. In original \pretty{DSTC-2} data, a user's goal is to find information about restaurants based on certain constraints. The original data contains \textit{states} and \textit{goals} as it is mainly targeted for \pretty{DST} tasks \cite{glad, statenet}. To convert it to \pretty{IC-SL} task, we perform pre-processing on states and goals present in original data to derive intent labels and slots for each user utterance. Some of the sample intents are 'confirm\_pricerange', 'request\_slot\_area', etc. There are only 3 slots - 'food', 'pricerange' and 'area'.
+    \item \textbf{Cable} is a synthetic  dataset developed in-house.  It is more diverse compared to {Booking} dataset. It is based on user conversations in the cable service domain. It includes 18 intents like 'ViewDataUsage', 'Help', 'StartService', etc. It has total of 64 slots such as 'UserName', 'CurrentZipCode', etc., yielding a more challenging dataset for modeling.
+    \item \textbf{\pretty{Snips}} dataset contains 16K crowdsourced queries. It has total of 7 intents ranging from ‘Play Music’ to ‘Book Restaurant’. Training data has 13,784 utterances and the test data consists of 700 utterances.
+    \item \textbf{\pretty{ATIS}} dataset contains 4,978 training utterances and 893 test utterances. There are total of 18 intents and 127 slot labels.
+\end{enumerate}
+
+
+\begin{table}[h]
+\centering
+\setlength\tabcolsep{1.5pt} % default value: 6pt
+\begin{tabular}{lcccc}
+\textbf{Dataset} & \textbf{Booking} & \textbf{Cable} & \textbf{\pretty{ATIS}} & \textbf{\pretty{Snips}} \\
+\hline
+Train Size            & 9351                & 1856           & 4978          & 13784          \\
+Val Size              & 4691                  & 1814           & --            & --             \\
+Test Size             & 6727                & 1836           & 893           & 700            \\
+\#Intents      & 19                  & 21             & 18            & 7              \\
+\#SL          & 5                   & 26             & 127           & 41             \\
+\#DA          & 4                   & 4              & --            & --             \\
+\#ConvLen     & 4.25                & 4.68           & --            & --             \\          
+\hline
+\end{tabular}
+\caption{\label{data_table}Data statistics for {Booking}, {Cable}, \pretty{ATIS} and \pretty{Snips}. Legend - \pretty{SL}: Slot Labels; \pretty{DA}: Dialog Acts; ConvLen: Average Conversation length}
+\end{table}

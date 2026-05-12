@@ -1,0 +1,214 @@
+\begin{thebibliography}{32}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Aljundi et~al.(2018)Aljundi, Babiloni, Elhoseiny, Rohrbach, and
+  Tuytelaars]{aljundi2018memory}
+Rahaf Aljundi, Francesca Babiloni, Mohamed Elhoseiny, Marcus Rohrbach, and
+  Tinne Tuytelaars.
+\newblock Memory aware synapses: Learning what (not) to forget.
+\newblock In \emph{Proceedings of the European Conference on Computer Vision
+  (ECCV)}, pp.\  139--154, 2018.
+
+\bibitem[Bryan~McCann \& Socher(2018)Bryan~McCann and
+  Socher]{McCann2018decaNLP}
+Caiming~Xiong Bryan~McCann, Nitish Shirish~Keskar and Richard Socher.
+\newblock The natural language decathlon: Multitask learning as question
+  answering.
+\newblock \emph{arXiv preprint arXiv:1806.08730}, 2018.
+
+\bibitem[Chaudhry et~al.(2018)Chaudhry, Ranzato, Rohrbach, and
+  Elhoseiny]{chaudhry2018efficient}
+Arslan Chaudhry, Marc'Aurelio Ranzato, Marcus Rohrbach, and Mohamed Elhoseiny.
+\newblock Efficient lifelong learning with a-gem.
+\newblock \emph{arXiv preprint arXiv:1812.00420}, 2018.
+
+\bibitem[Chen et~al.(2015{\natexlab{a}})Chen, Goodfellow, and
+  Shlens]{chen2015net2net}
+Tianqi Chen, Ian Goodfellow, and Jonathon Shlens.
+\newblock Net2net: Accelerating learning via knowledge transfer.
+\newblock \emph{arXiv preprint arXiv:1511.05641}, 2015{\natexlab{a}}.
+
+\bibitem[Chen \& Liu(2016)Chen and Liu]{lll_book}
+Zhiyuan Chen and Bing Liu.
+\newblock \emph{Lifelong Machine Learning}.
+\newblock Morgan \& Claypool Publishers, 2016.
+
+\bibitem[Chen et~al.(2015{\natexlab{b}})Chen, Ma, and
+  Liu]{chen-etal-2015-lifelong}
+Zhiyuan Chen, Nianzu Ma, and Bing Liu.
+\newblock Lifelong learning for sentiment classification.
+\newblock In \emph{Proceedings of the 53rd Annual Meeting of the Association
+  for Computational Linguistics and the 7th International Joint Conference on
+  Natural Language Processing (Volume 2: Short Papers)}, 2015{\natexlab{b}}.
+
+\bibitem[d'Autume et~al.(2019)d'Autume, Ruder, Kong, and
+  Yogatama]{d2019episodic}
+Cyprien de~Masson d'Autume, Sebastian Ruder, Lingpeng Kong, and Dani Yogatama.
+\newblock Episodic memory in lifelong language learning.
+\newblock \emph{arXiv preprint arXiv:1906.01076}, 2019.
+
+\bibitem[Elhoseiny et~al.(2018)Elhoseiny, Babiloni, Aljundi, Rohrbach, Paluri,
+  and Tuytelaars]{elhoseiny2018exploring}
+Mohamed Elhoseiny, Francesca Babiloni, Rahaf Aljundi, Marcus Rohrbach, Manohar
+  Paluri, and Tinne Tuytelaars.
+\newblock Exploring the challenges towards lifelong fact learning.
+\newblock In \emph{Asian Conference on Computer Vision}, pp.\  66--84.
+  Springer, 2018.
+
+\bibitem[Fernando et~al.(2017)Fernando, Banarse, Blundell, Zwols, Ha, Rusu,
+  Pritzel, and Wierstra]{fernando2017pathnet}
+Chrisantha Fernando, Dylan Banarse, Charles Blundell, Yori Zwols, David Ha,
+  Andrei~A Rusu, Alexander Pritzel, and Daan Wierstra.
+\newblock Pathnet: Evolution channels gradient descent in super neural
+  networks.
+\newblock \emph{arXiv preprint arXiv:1701.08734}, 2017.
+
+\bibitem[Hanul~Shin \& Kim(2017)Hanul~Shin and Kim]{shin2017continual}
+Jaehong~Kim Hanul~Shin, Jung Kwon~Lee and Jiwon Kim.
+\newblock Continual learning with deep generative replay.
+\newblock \emph{arXiv preprint arXiv:1705.08690}, 2017.
+
+\bibitem[He et~al.(2017)He, Lee, Lewis, and Zettlemoyer]{he2017deep}
+Luheng He, Kenton Lee, Mike Lewis, and Luke Zettlemoyer.
+\newblock Deep semantic role labeling: What works and what’s next.
+\newblock In \emph{Proceedings of the 55th Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pp.\  473--483, 2017.
+
+\bibitem[Kemker \& Kanan(2017)Kemker and Kanan]{kemker2017fearnet}
+Ronald Kemker and Christopher Kanan.
+\newblock Fearnet: Brain-inspired model for incremental learning.
+\newblock \emph{arXiv preprint arXiv:1711.10563}, 2017.
+
+\bibitem[Kirkpatrick et~al.(2017)Kirkpatrick, Pascanu, Rabinowitz, Veness,
+  Desjardins, Rusu, Milan, Quan, Ramalho, Grabska-Barwinska,
+  et~al.]{kirkpatrick2017overcoming}
+James Kirkpatrick, Razvan Pascanu, Neil Rabinowitz, Joel Veness, Guillaume
+  Desjardins, Andrei~A Rusu, Kieran Milan, John Quan, Tiago Ramalho, Agnieszka
+  Grabska-Barwinska, et~al.
+\newblock Overcoming catastrophic forgetting in neural networks.
+\newblock \emph{Proceedings of the national academy of sciences}, 114\penalty0
+  (13):\penalty0 3521--3526, 2017.
+
+\bibitem[Lee et~al.(2017)Lee, Kim, Jun, Ha, and Zhang]{lee2017overcoming}
+Sang-Woo Lee, Jin-Hwa Kim, Jaehyun Jun, Jung-Woo Ha, and Byoung-Tak Zhang.
+\newblock Overcoming catastrophic forgetting by incremental moment matching.
+\newblock In \emph{Advances in neural information processing systems}, pp.\
+  4652--4662, 2017.
+
+\bibitem[Lee(2017)]{LLL_chatbot}
+Sungjin Lee.
+\newblock Toward continual learning for conversational agents.
+\newblock In \emph{arXiv}, 2017.
+
+\bibitem[Li \& Hoiem(2017)Li and Hoiem]{li2017learning}
+Zhizhong Li and Derek Hoiem.
+\newblock Learning without forgetting.
+\newblock \emph{IEEE transactions on pattern analysis and machine
+  intelligence}, 40\penalty0 (12):\penalty0 2935--2947, 2017.
+
+\bibitem[Liu et~al.(2019)Liu, Ungar, and Sedoc]{Liu2019ContinualLF}
+Tianlin Liu, Lyle Ungar, and Jo{\~a}o Sedoc.
+\newblock Continual learning for sentence representations using conceptors.
+\newblock In \emph{NAACL-HLT}, 2019.
+
+\bibitem[Lopez-Paz et~al.(2017)]{lopez2017gradient}
+David Lopez-Paz et~al.
+\newblock Gradient episodic memory for continual learning.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pp.\
+  6467--6476, 2017.
+
+\bibitem[Mallya \& Lazebnik(2018)Mallya and Lazebnik]{mallya2018packnet}
+Arun Mallya and Svetlana Lazebnik.
+\newblock Packnet: Adding multiple tasks to a single network by iterative
+  pruning.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pp.\  7765--7773, 2018.
+
+\bibitem[McCloskey \& Cohen(1989)McCloskey and
+  Cohen]{mccloskey1989catastrophic}
+Michael McCloskey and Neal~J Cohen.
+\newblock Catastrophic interference in connectionist networks: The sequential
+  learning problem.
+\newblock In \emph{Psychology of learning and motivation}, volume~24, pp.\
+  109--165. Elsevier, 1989.
+
+\bibitem[Radford et~al.(2017)Radford, Jozefowicz, and
+  Sutskever]{radford2017learning}
+Alec Radford, Rafal Jozefowicz, and Ilya Sutskever.
+\newblock Learning to generate reviews and discovering sentiment.
+\newblock \emph{arXiv preprint arXiv:1704.01444}, 2017.
+
+\bibitem[Radford et~al.(2019)Radford, Wu, Child, Luan, Amodei, and
+  Sutskever]{radford2019language}
+Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya
+  Sutskever.
+\newblock Language models are unsupervised multitask learners.
+\newblock \emph{OpenAI Blog}, 1\penalty0 (8), 2019.
+
+\bibitem[Rajpurkar et~al.(2016)Rajpurkar, Zhang, Lopyrev, and
+  Liang]{rajpurkar2016squad}
+Pranav Rajpurkar, Jian Zhang, Konstantin Lopyrev, and Percy Liang.
+\newblock Squad: 100,000+ questions for machine comprehension of text.
+\newblock \emph{arXiv preprint arXiv:1606.05250}, 2016.
+
+\bibitem[Rusu et~al.(2016)Rusu, Rabinowitz, Desjardins, Soyer, Kirkpatrick,
+  Kavukcuoglu, Pascanu, and Hadsell]{rusu2016progressive}
+Andrei~A Rusu, Neil~C Rabinowitz, Guillaume Desjardins, Hubert Soyer, James
+  Kirkpatrick, Koray Kavukcuoglu, Razvan Pascanu, and Raia Hadsell.
+\newblock Progressive neural networks.
+\newblock \emph{arXiv preprint arXiv:1606.04671}, 2016.
+
+\bibitem[Schwarz et~al.(2018)Schwarz, Luketina, Czarnecki, Grabska-Barwinska,
+  Teh, Pascanu, and Hadsell]{schwarz2018progress}
+Jonathan Schwarz, Jelena Luketina, Wojciech~M Czarnecki, Agnieszka
+  Grabska-Barwinska, Yee~Whye Teh, Razvan Pascanu, and Raia Hadsell.
+\newblock Progress \& compress: A scalable framework for continual learning.
+\newblock \emph{arXiv preprint arXiv:1805.06370}, 2018.
+
+\bibitem[Sodhani et~al.(2018)Sodhani, Chandar, and Bengio]{sodhani2018training}
+Shagun Sodhani, Sarath Chandar, and Yoshua Bengio.
+\newblock On training recurrent neural networks for lifelong learning.
+\newblock \emph{arXiv preprint arXiv:1811.07017}, 2018.
+
+\bibitem[Wen et~al.(2016)Wen, Vandyke, Mrksic, Gasic, Rojas-Barahona, Su,
+  Ultes, and Young]{wen2016network}
+Tsung-Hsien Wen, David Vandyke, Nikola Mrksic, Milica Gasic, Lina~M
+  Rojas-Barahona, Pei-Hao Su, Stefan Ultes, and Steve Young.
+\newblock A network-based end-to-end trainable task-oriented dialogue system.
+\newblock \emph{arXiv preprint arXiv:1604.04562}, 2016.
+
+\bibitem[{Xia} et~al.(2017){Xia}, {Jiang}, and {He}]{8101496}
+R.~{Xia}, J.~{Jiang}, and H.~{He}.
+\newblock Distantly supervised lifelong learning for large-scale social media
+  sentiment analysis.
+\newblock \emph{IEEE Transactions on Affective Computing}, 8\penalty0
+  (4):\penalty0 480--491, 2017.
+
+\bibitem[Xiang~Zhang(2015)]{cls}
+Yann~LeCun Xiang~Zhang, Junbo~Zhao.
+\newblock Character-level convolutional networks for text classification.
+\newblock \emph{arXiv preprint arXiv:1509.01626}, 2015.
+
+\bibitem[Xu et~al.(2018)Xu, Liu, Shu, and Yu]{LLL_word}
+Hu~Xu, Bing Liu, Lei Shu, and Philip~S. Yu.
+\newblock Lifelong domain word embedding via meta-learning.
+\newblock In \emph{Proceedings of the 27th International Joint Conference on
+  Artificial Intelligence}, 2018.
+
+\bibitem[Zenke et~al.(2017)Zenke, Poole, and Ganguli]{zenke2017continual}
+Friedemann Zenke, Ben Poole, and Surya Ganguli.
+\newblock Continual learning through synaptic intelligence.
+\newblock In \emph{Proceedings of the 34th International Conference on Machine
+  Learning-Volume 70}, pp.\  3987--3995. JMLR. org, 2017.
+
+\bibitem[Zhong et~al.(2017)Zhong, Xiong, and Socher]{zhong2017seq2sql}
+Victor Zhong, Caiming Xiong, and Richard Socher.
+\newblock Seq2sql: Generating structured queries from natural language using
+  reinforcement learning.
+\newblock \emph{arXiv preprint arXiv:1709.00103}, 2017.
+
+\end{thebibliography}

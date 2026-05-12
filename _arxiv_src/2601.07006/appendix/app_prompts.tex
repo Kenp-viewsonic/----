@@ -1,0 +1,75 @@
+\section{Prompt Templates and Inference Configuration}
+\label{app:prompts}
+
+This appendix documents the schemas, prompt templates, and inference settings used to generate LLM outputs. Placeholders \verb+{{TEXT}}+, \verb+{{TRANSCRIPT}}+, \verb+{{THUMBNAIL}}+, \verb+{{VIDEO\FRAMES}}+, and \verb+{{CONCEPT_DEFINITION}}+ were filled dynamically for each query.
+
+\subsection{Structured Output Schema}
+\label{app:schema}
+
+Models were instructed to emit a \texttt{JSON} object conforming to a predefined schema with a single integer outcome in: \texttt{0}~=~``no'', \texttt{1}~=~``yes'', \texttt{2}~=~``inconclusive\_evidence'', \texttt{3}~=~``inconclusive\_definition'', which are validated against a fixed schema; invalid (malformed) outputs trigger up to three deterministic retries.\\
+The \texttt{ConceptClassification} object contains the final \texttt{outcome}, optional \verb+reasoning_steps+, self-reported confidence \verb+p_correct+, and a confidence \texttt{band}. \\
+For reproducibility, the overall \verb+LLMClassification+ object and \verb+ReasoningStep+ are shown below.
+
+\begingroup\small
+\begin{verbatim}
+class LLMClassification(BaseModel):
+    classifications: Dict[ConceptEnum, ConceptClassification]
+
+class ConceptClassification(BaseModel):
+    outcome: Optional[OutcomeEnum]
+    reasoning_steps: Optional[List[ReasoningStep]]
+    p_correct: Optional[int]
+    band: Optional[BandEnum]
+
+class ReasoningStep(BaseModel):
+    step_number: int
+    description: str
+\end{verbatim}
+\endgroup
+
+\myparagraph{Schema Clarifications}
+All CoT prompts enforced exactly three \verb+reasoning_steps+. We used regular expressions to normalize the outcome tokens\\
+\texttt{(yes|no|inconclusive\_(definition|evidence))} for consistent parsing. The \verb+p_correct+ field was snapped to the nearest multiple of 5 in \([0,100]\), and the \texttt{band} was validated against \verb+{VL, L, M, H, VH}+.
+
+\subsection{Representative Prompt Templates}
+\label{app:prompts-templates}
+
+\myparagraph{Text-only Baseline (System Prompt)}
+\begin{verbatim}
+# ROLE AND GOAL
+You are a meticulous Chief Marketing Officer (CMO) ...
+...
+\end{verbatim}
+
+\myparagraph{Text-only User Prompt}
+\begin{verbatim}
+Please classify the following content:
+--- CONTENT START ---
+{{TEXT}}
+--- CONTENT END ---
+\end{verbatim}
+
+\myparagraph{Multimodal User Prompt}
+\begin{verbatim}
+Analyze the following multimodal content.
+
+--- START OF MULTIMODAL CONTENT ---
+<VIDEO\FRAMES> {{VIDEO\FRAMES}} </VIDEO\FRAMES>
+<THUMBNAIL> {{THUMBNAIL}} </THUMBNAIL>
+<TRANSCRIPT> {{TRANSCRIPT}} </TRANSCRIPT>
+<CONTENT_TEXT> {{TEXT}} </CONTENT_TEXT>
+--- END OF MULTIMODAL CONTENT ---
+\end{verbatim}
+Depending on the base LLM, the visual input was provided either as a video URI or as a set of key frames; the placeholder \verb+{{VIDEO\FRAMES}}+ denotes this modality.
+The CoT variants added a \texttt{REASONING FRAMEWORK} section to the system prompt to enforce a step-by-step thought process. The multimodal variants included placeholders for all four modalities and a protocol requiring a review of each.
+
+\subsection{Inference Configuration}
+\label{app:inference}
+
+The following fixed decoding parameters were used for all API calls:
+\begin{itemize}
+    \item Decoding: \texttt{temperature=0}, \texttt{top-p=1}, \texttt{n=1}.
+    \item Max output tokens: \texttt{8096}.
+    \item Log-probabilities: top-20 per token.
+\end{itemize}
+Tokens were segmented into classification and reasoning spans based on the structured output. Assets (images, videos) were passed as Google Cloud Storage URIs, and malformed JSON responses (fewer than 2\% of total requests) were retried up to three times.

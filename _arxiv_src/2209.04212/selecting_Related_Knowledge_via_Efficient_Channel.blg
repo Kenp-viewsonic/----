@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: selecting Related Knowledge via Efficient Channel.aux
+Reallocating 'name_of_file' (item size: 1) to 15 items.
+The style file: elsarticle-num.bst
+Reallocating 'name_of_file' (item size: 1) to 10 items.
+Database file #1: mybibfile.bib
+Warning--empty year in 2sahoo2018online
+Warning--empty journal in 20krizhevsky2009learning
+Warning--empty journal in 22chaudhry2019continual
+You've used 24 entries,
+            2952 wiz_defined-function locations,
+            797 strings with 10329 characters,
+and the built_in function-call counts, 9475 in all, are:
+= -- 863
+> -- 345
+< -- 14
++ -- 131
+- -- 107
+* -- 566
+:= -- 1207
+add.period$ -- 24
+call.type$ -- 24
+change.case$ -- 23
+chr.to.int$ -- 0
+cite$ -- 27
+duplicate$ -- 365
+empty$ -- 1057
+format.name$ -- 129
+if$ -- 2493
+int.to.chr$ -- 0
+int.to.str$ -- 24
+missing$ -- 24
+newline$ -- 80
+num.names$ -- 24
+pop$ -- 214
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 668
+stack$ -- 0
+substring$ -- 596
+swap$ -- 148
+text.length$ -- 14
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 3
+while$ -- 71
+width$ -- 26
+write$ -- 207
+(There were 3 warnings)

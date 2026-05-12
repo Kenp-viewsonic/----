@@ -1,0 +1,122 @@
+\definecolor{lightblue}{RGB}{173,216,230}
+\definecolor{lightyellow}{RGB}{255,255,224}
+\definecolor{lightgreen}{RGB}{200,255,200}
+\definecolor{darkgreen}{RGB}{0,100,0}
+
+\begin{table*}[t]
+\centering
+\caption{Fine-grained VQA performance AP (\%) on the Novel and Seen skill-concept compositions of VQAv2 and NExT-QA. +$\Delta$ denotes the improvement of our method over the state of the art. Best results are in \textbf{bold}, second-best are \underline{underlined}.}
+\label{tab:vqa_performance}
+\vspace{-3mm}
+\definecolor{lightyellow}{RGB}{255, 255, 204}  % Define colors
+\definecolor{lightgreen}{RGB}{204, 255, 204}
+
+\resizebox{\linewidth}{!}{  % Scale the table properly
+\begin{tabular}{c|c|c|cc|cc|cc|cc|cc|cc}
+\toprule
+\multirow{2}{*}{\textbf{Dataset}} & \multirow{2}{*}{\textbf{Method}} & \multirow{2}{*}{\textbf{Memory}} & \multicolumn{2}{c|}{\textbf{Group-1}} & \multicolumn{2}{c|}{\textbf{Group-2}} & \multicolumn{2}{c|}{\textbf{Group-3}} & \multicolumn{2}{c|}{\textbf{Group-4}} & \multicolumn{2}{c|}{\textbf{Group-5}} & \multicolumn{2}{c}{\textbf{Avg}} \\
+& & & \textbf{Novel} & \textbf{Seen} & \textbf{Novel} & \textbf{Seen} & \textbf{Novel} & \textbf{Seen} & \textbf{Novel} & \textbf{Seen} & \textbf{Novel} & \textbf{Seen} & \textbf{Novel} & \textbf{Seen} \\
+\midrule
+
+\multirow{5}{*}{\textbf{NExT-QA}} 
+& DER \citep{Chaudhry2019er} & \faQuestionCircle / \faImage & 27.56 & 26.09 & 26.14 & 24.54 & 23.53 & 26.43 & 9.30 & 9.79 & 21.26 & 23.74 & 21.56 & 21.38 \\
+
+& VS \citep{Wan_2022_CVPR} & \faQuestionCircle / \faImage & 31.42 & 30.88 & 29.17 & 31.26 & 25.23 & 26.10 & 30.01 & 29.10 & 31.54 & 31.79 & 29.47 & 29.83 \\
+
+& ER \citep{chaudhry2019tinyepisodicmemoriescontinual} & \faQuestionCircle / \faImage & 31.86 & 34.51 & 32.36 & 35.08 & 29.50 & 34.30 & 33.57 & 33.30 & 33.71 & 32.91 & 32.20 & 34.02 \\
+
+& VQACL \citep{zhang2023vqacl} & \faQuestionCircle / \faImage & 32.86 & 31.47 & 31.98 & 35.58 & 31.79 & 35.70 & 35.04 & 34.12 & 37.62 & 34.92 & \textbf{33.85} & \underline{34.35} \\
+
+& \cellcolor{lightgreen} \textbf{\qstmethodshort{} (Ours)} & \cellcolor{lightgreen}\faQuestionCircle & \cellcolor{lightgreen}33.42 & \cellcolor{lightgreen}33.92 & \cellcolor{lightgreen}32.02 & \cellcolor{lightgreen}35.42 & \cellcolor{lightgreen}31.78 & \cellcolor{lightgreen}36.36 & \cellcolor{lightgreen}32.98 & \cellcolor{lightgreen}33.34 & \cellcolor{lightgreen}37.84 & \cellcolor{lightgreen}34.06 & \cellcolor{lightgreen}\underline{33.21} & \cellcolor{lightgreen}\textbf{34.62} \\
+\midrule
+\multirow{5}{*}{\textbf{VQAv2}} 
+& DER \citep{Chaudhry2019er} & \faQuestionCircle / \faImage & 30.80 & 29.89 & 32.19 & 33.24 & 34.88 & 34.08 & 29.60 & 30.90 & 30.14 & 32.56 & 31.52 & 32.13 \\
+
+& VS \citep{Wan_2022_CVPR} & \faQuestionCircle / \faImage & 33.35 & 33.87 & 33.18 & 32.21 & 34.50 & 33.84 & 31.29 & 33.98 & 32.46 & 33.87 & 32.96 & 33.55 \\
+
+& ER \citep{chaudhry2019tinyepisodicmemoriescontinual} & \faQuestionCircle / \faImage & 34.52 & 37.03 & 33.40 & 35.55 & 34.79 & 34.20 & 33.86 & 35.02 & 32.34 & 35.91 & 33.78 & 35.54 \\
+
+& VQACL \citep{zhang2023vqacl} & \faQuestionCircle / \faImage & 36.12 & 37.99 & 35.39 & 36.92 & 36.26 & 35.16 & 34.85 & 35.64 & 34.36 & 36.28 & \underline{35.40} & \underline{36.40} \\
+
+& \cellcolor{lightgreen} \textbf{\qstmethodshort{} (Ours)} & \cellcolor{lightgreen} \faQuestionCircle & \cellcolor{lightgreen}39.19 & \cellcolor{lightgreen}41.06 & \cellcolor{lightgreen}38.40 & \cellcolor{lightgreen}39.50 & \cellcolor{lightgreen}43.15 & \cellcolor{lightgreen}39.19 & \cellcolor{lightgreen}40.01 & \cellcolor{lightgreen}40.72 & \cellcolor{lightgreen}39.20 & \cellcolor{lightgreen}40.62 & \cellcolor{lightgreen}\textbf{40.00} & \cellcolor{lightgreen}\textbf{40.21} \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+
+
+% \begin{table*}[t]
+% \begin{center}
+% \caption{Fine-grained VQA performance AP (\%) on the Novel and Seen skill-concept compositions of VQAv2 and NExT-QA. +$\Delta$ denotes the improvement of our method over the state of the art. Best 
+% results are in \textbf{bold}, second-best are \underline{underlined.}}
+% \resizebox{\linewidth}{!}{
+% \begin{tabular}{c|c|c|cc|cc|cc|cc|cc|cc}
+% \toprule
+% \multirow{2}{*}{\textbf{Dataset}} & \multirow{2}{*}{\textbf{Method}} & \multirow{2}{*}{\textbf{Memory}} & \multicolumn{2}{c|}{\textbf{Group-1}} & \multicolumn{2}{c|}{\textbf{Group-2}} & \multicolumn{2}{c|}{\textbf{Group-3}} & \multicolumn{2}{c|}{\textbf{Group-4}} & \multicolumn{2}{c|}{\textbf{Group-5}} & \multicolumn{2}{c}{\textbf{Avg}} \\
+% & & & \textbf{Novel} & \textbf{Seen} & \textbf{Novel} & \textbf{Seen} & \textbf{Novel} & \textbf{Seen} & \textbf{Novel} & \textbf{Seen} & \textbf{Novel} & \textbf{Seen} & \textbf{Novel} & \textbf{Seen} \\
+% \midrule
+% \multirow{5}{*}{\textbf{NExT-QA}} 
+% & \rowcolor[HTML]{FEF9E7} DER \citep{Chaudhry2019er} & \faQuestionCircle / \faImage & 27.56 & 26.09 & 26.14 & 24.54 & 23.53 & 26.43 & 9.30 & 9.79 & 21.26 & 23.74 & 21.56 & 21.38 \\
+% & \rowcolor[HTML]{FEF9E7} VS \citep{Wan_2022_CVPR} & \faQuestionCircle / \faImage & 31.42 & 30.88 & 29.17 & 31.26 & 25.23 & 26.10 & 30.01 & 29.10 & 31.54 & 31.79 & 29.47 & 29.83 \\
+% & \rowcolor[HTML]{FEF9E7} ER \citep{chaudhry2019tinyepisodicmemoriescontinual} & \faQuestionCircle / \faImage & 31.86 & 34.51 & 32.36 & 35.08 & 29.50 & 34.30 & 33.57 & 33.30 & 33.71 & 32.91 & 32.20 & 34.02 \\
+% & \rowcolor[HTML]{FEF9E7} VQACL \citep{zhang2023vqacl} & \faQuestionCircle / \faImage & 32.86 & 31.47 & 31.98 & 35.58 & 31.79 & 35.70 & 35.04 & 34.12 & 37.62 & 34.92 & \textbf{33.85} & \underline{34.35} \\
+% & \cellcolor{lightgreen} \textbf{\qstmethodshort{} (Ours)} & \cellcolor{lightgreen} \faQuestionCircle & \cellcolor{lightgreen} 33.42 & \cellcolor{lightgreen} 33.92 & \cellcolor{lightgreen} 32.02 & \cellcolor{lightgreen} 35.42 & \cellcolor{lightgreen} 31.78 & \cellcolor{lightgreen} 36.36 & \cellcolor{lightgreen} 32.98 & \cellcolor{lightgreen} 33.34 & \cellcolor{lightgreen} 37.84 & \cellcolor{lightgreen} 34.06 & \cellcolor{lightgreen} \underline{33.21} & \cellcolor{lightgreen} \textbf{34.62} \\
+% \midrule
+% \multirow{5}{*}{\textbf{VQAv2}} 
+% & \rowcolor[HTML]{FEF9E7} DER \citep{Chaudhry2019er} & \faQuestionCircle / \faImage & 30.80 & 29.89 & 32.19 & 33.24 & 34.88 & 34.08 & 29.60 & 30.90 & 30.14 & 32.56 & 31.52 & 32.13 \\
+% & \rowcolor[HTML]{FEF9E7} VS \citep{Wan_2022_CVPR} & \faQuestionCircle / \faImage & 33.35 & 33.87 & 33.18 & 32.21 & 34.50 & 33.84 & 31.29 & 33.98 & 32.46 & 33.87 & 32.96 & 33.55 \\
+% & \rowcolor[HTML]{FEF9E7} ER \citep{chaudhry2019tinyepisodicmemoriescontinual} & \faQuestionCircle / \faImage & 34.52 & 37.03 & 33.40 & 35.55 & 34.79 & 34.20 & 33.86 & 35.02 & 32.34 & 35.91 & 33.78 & 35.54 \\
+% & \rowcolor[HTML]{FEF9E7} VQACL \citep{zhang2023vqacl} & \faQuestionCircle / \faImage & 36.12 & 37.99 & 35.39 & 36.92 & 36.26 & 35.16 & 34.85 & 35.64 & 34.36 & 36.28 & \underline{35.40} & \underline{36.40} \\
+% & \cellcolor{lightgreen} \textbf{\qstmethodshort{} (Ours)} & \cellcolor{lightgreen} \faQuestionCircle & \cellcolor{lightgreen} 39.19 & \cellcolor{lightgreen} 41.06 & \cellcolor{lightgreen} 38.40 & \cellcolor{lightgreen} 39.50 & \cellcolor{lightgreen} 43.15 & \cellcolor{lightgreen} 39.19 & \cellcolor{lightgreen} 40.01 & \cellcolor{lightgreen} 40.72 & \cellcolor{lightgreen} 39.20 & \cellcolor{lightgreen} 40.62 & \cellcolor{lightgreen} \textbf{40.00} & \cellcolor{lightgreen} \textbf{40.21} \\
+% \bottomrule
+% \end{tabular}
+% }
+% \vspace{-3mm}
+% \label{tab:vqa_performance}
+
+% \end{center}
+% \end{table*}
+
+
+% \definecolor{lightblue}{RGB}{173,216,230}
+% \definecolor{lightyellow}{RGB}{255,255,224}
+% \definecolor{lightgreen}{RGB}{200,255,200}
+% \definecolor{darkgreen}{RGB}{0,100,0}
+% \begin{table*}[t]
+% \begin{center}
+% \caption{Fine-grained VQA performance AP (\%) on the Novel and Seen skill-concept compositions of VQAv2 and NExT-QA. +$\Delta$ denotes the improvement of our method over the state of the art. Best 
+% results are in \textbf{bold}, second-best are \underline{underlined.}}
+% \resizebox{\linewidth}{!}{
+% \begin{tabular}{c|c|c|cc|cc|cc|cc|cc|cc}
+% \toprule
+% \multirow{2}{*}{\textbf{Dataset}} & \multirow{2}{*}{\textbf{Method}} & \multirow{2}{*}{\textbf{Memory}} & \multicolumn{2}{c|}{\textbf{Group-1}} & \multicolumn{2}{c|}{\textbf{Group-2}} & \multicolumn{2}{c|}{\textbf{Group-3}} & \multicolumn{2}{c|}{\textbf{Group-4}} & \multicolumn{2}{c|}{\textbf{Group-5}} & \multicolumn{2}{c}{\textbf{Avg}} \\
+% & & & \textbf{Novel} & \textbf{Seen} & \textbf{Novel} & \textbf{Seen} & \textbf{Novel} & \textbf{Seen} & \textbf{Novel} & \textbf{Seen} & \textbf{Novel} & \textbf{Seen} & \textbf{Novel} & \textbf{Seen} \\
+% \midrule
+% \multirow{5}{*}{\textbf{NExT-QA}} & \rowcolor[HTML]{FEF9E7} DER \citep{Chaudhry2019er} & \faQuestionCircle / \faImage & 27.56 & 26.09 & 26.14 & 24.54 & 23.53 & 26.43 & 9.30 & 9.79 & 21.26 & 23.74 & 21.56 & 21.38 \\
+
+% & \rowcolor[HTML]{FEF9E7} VS \citep{Wan_2022_CVPR} & \faQuestionCircle / \faImage & 31.42 & 30.88 & 29.17 & 31.26 & 25.23 & 26.10 & 30.01 & 29.10 & 31.54 & 31.79 & 29.47 & 29.83 \\
+
+% & \rowcolor[HTML]{FEF9E7} ER \citep{chaudhry2019tinyepisodicmemoriescontinual} & \faQuestionCircle / \faImage & 31.86 & 34.51 & 32.36 & 35.08 & 29.50 & 34.30 & 33.57 & 33.30 & 33.71 & 32.91 & 32.20 & 34.02 \\
+
+% & \rowcolor[HTML]{FEF9E7} VQACL \citep{zhang2023vqacl} & \faQuestionCircle / \faImage & 32.86 & 31.47 & 31.98 & 35.58 & 31.79 & 35.70 & 35.04 & 34.12 & 37.62 & 34.92 & \textbf{33.85} & \underline{34.35} \\
+
+% & \cellcolor{lightgreen} \textbf{\qstmethodshort{} (Ours)} & \cellcolor{lightgreen} \faQuestionCircle & \cellcolor{lightgreen} 33.42 & \cellcolor{lightgreen} 33.92 & \cellcolor{lightgreen} 32.02 & \cellcolor{lightgreen} 35.42 & \cellcolor{lightgreen} 31.78 & \cellcolor{lightgreen} 36.36 & \cellcolor{lightgreen} 32.98 & \cellcolor{lightgreen} 33.34 & \cellcolor{lightgreen} 37.84 & \cellcolor{lightgreen} 34.06 & \cellcolor{lightgreen} \underline{33.21} & \cellcolor{lightgreen} \textbf{34.62} \\
+% \midrule
+% \multirow{5}{*}{\textbf{VQAv2}} & \rowcolor[HTML]{FEF9E7} DER \citep{Chaudhry2019er} & \faQuestionCircle / \faImage & 30.80 & 29.89 & 32.19 & 33.24 & 34.88 & 34.08 & 29.60 & 30.90 & 30.14 & 32.56 & 31.52 & 32.13 \\
+
+% & \rowcolor[HTML]{FEF9E7} VS \citep{Wan_2022_CVPR} & \faQuestionCircle / \faImage & 33.35 & 33.87 & 33.18 & 32.21 & 34.50 & 33.84 & 31.29 & 33.98 & 32.46 & 33.87 & 32.96 & 33.55 \\
+
+%  & \rowcolor[HTML]{FEF9E7} ER \citep{chaudhry2019tinyepisodicmemoriescontinual} & \faQuestionCircle / \faImage & 34.52 & 37.03 & 33.40 & 35.55 & 34.79 & 34.20 & 33.86 & 35.02 & 32.34 & 35.91 & 33.78 & 35.54 \\
+
+%  & \rowcolor[HTML]{FEF9E7} VQACL \citep{zhang2023vqacl} & \faQuestionCircle / \faImage & 36.12 & 37.99 & 35.39 & 36.92 & 36.26 & 35.16 & 34.85 & 35.64 & 34.36 & 36.28 & \underline{35.40} & \underline{36.40} \\
+
+% & \cellcolor{lightgreen} \textbf{\qstmethodshort{} (Ours)} & \cellcolor{lightgreen} \faQuestionCircle & \cellcolor{lightgreen} 39.19 & \cellcolor{lightgreen} 41.06 & \cellcolor{lightgreen} 38.40 & \cellcolor{lightgreen} 39.50 & \cellcolor{lightgreen} 43.15 & \cellcolor{lightgreen} 39.19 & \cellcolor{lightgreen} 40.01 & \cellcolor{lightgreen} 40.72 & \cellcolor{lightgreen} 39.20 & \cellcolor{lightgreen} 40.62 & \cellcolor{lightgreen} \textbf{40.00} & \cellcolor{lightgreen} \textbf{40.21} \\
+% \bottomrule
+% \end{tabular}
+% }
+% \vspace{-3mm}
+% \label{tab:vqa_performance}
+
+% \end{center}
+% \end{table*}

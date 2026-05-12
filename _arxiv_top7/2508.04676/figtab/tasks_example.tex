@@ -1,0 +1,61 @@
+\begin{table*}[htbp]
+\centering
+
+\resizebox{\linewidth}{!}{
+
+\begin{tabular}{c|c|c|c|c}
+\toprule
+Task Type& Dataset & Instruction & Input & Golden Answer\\
+\midrule
+\midrule
+SC & yelp & \parbox{5cm}{What is the sentiment of the following paragraph? Choose one from the option.\\Option: very negative, negative, neutral, positive, very positive} & \parbox{5cm}{Text: This place is printing money and rightfully so. They simply do a bang up job. Best BBQ in AZ.} & very positive \\
+\midrule
+SC & amazon & \parbox{5cm}{What is the sentiment of the following paragraph? Choose one from the option.\\Option: very negative, negative, neutral, positive, very positive} & \parbox{5cm}{Title: Very fragile...arrived broken\\Text: The set is cute, but refrigerator door was broken on arrival and not repairable. The table top and hutch had come apart and required regluing. This set will not stand up to play.} & negative\\
+\midrule
+NLI & MNLI & \parbox{5cm}{What is the logical relationship between the ``sentence 1'' and the ``sentence 2''? Choose one from the option.\\Option: neutral, entailment, contradiction} & \parbox{5cm}{sentence 1: She leaned back in her chair.\\sentence 2: She stood next to a chair.} & neutral \\
+\midrule
+NLI & CB & \parbox{5cm}{What is the logical relationship between the ``sentence 1'' and the ``sentence 2''? Choose one from the option.\\Option: entailment, contradiction, neutral} & \parbox{5cm}{sentence 1: A: Your turn. B: Okay. Uh, I don't think they should abolish it.\\sentence 2: they should abolish it} & contradiction \\
+\midrule
+COPA & COPA & \parbox{5cm}{} & \parbox{5cm}{Which sentence is the cause of ``I coughed.''? Choose one between A and B.\\A: I inhaled smoke.\\B: I lowered my voice.} & A \\
+\midrule
+QQP & QQP & \parbox{5cm}{Whether the ``first sentence'' and the ``second sentence'' have the same meaning? Choose one from the option.\\Option: False, True} & \parbox{5cm}{first sentence: What are the best franchises in India?\\second sentence: What are the best franchise in India?} & True \\
+\midrule
+NLI & RTE & \parbox{5cm}{What is the logical relationship between the ``sentence 1'' and the ``sentence 2''? Choose one from the option.\\Option: contradiction, entailment} & \parbox{5cm}{sentence 1: The girl was found in Drummondville.\\sentence 2: Drummondville contains the girl.} & contradiction \\
+\midrule
+SC & IMDB & \parbox{5cm}{What is the sentiment of the following paragraph? Choose one from the option.\\Option: Good, Bad} & \parbox{5cm}{This is a good film. This is very funny. Yet after this film there were no good Ernest films!} & Good \\
+\midrule
+SC & SST-2 & \parbox{5cm}{What is the sentiment of the following paragraph? Choose one from the option.\\Option: Good, Bad} & \parbox{5cm}{Text: it 's not the ultimate depression-era gangster movie .} & Bad \\
+\midrule
+TC & dbpedia & \parbox{5cm}{What is the topic of the following paragraph? Choose one from the option.\\Option: Company, Educational Institution, Artist, Athlete, Office Holder, Mean of Transportation, Building, Natural Place, Village, Animal, Plant, Album, Film, Written Work} & \parbox{5cm}{Title: Cori Schumacher\\Text:  Cori Schumacher is a world champion surfer from California.} & Athlete \\
+\midrule
+TC & agnews & \parbox{5cm}{What is the topic of the following paragraph? Choose one from the option.\\Option: World, Sports, Business, Science or Technology} & \parbox{5cm}{Title: British sailors bag bronze\\Text: Britain's Chris Draper and Simon Hiscocks win bronze in a tense final 49er race on the Saronic Gulf.} & Sports \\
+\midrule
+TC & yahoo & \parbox{5cm}{What is the topic of the following paragraph? Choose one from the option.\\Option: Society \& Culture, Science \& Mathematics, Health, Education \& Reference, Computers \& Internet, Sports, Business \& Finance, Entertainment \& Music, Family \& Relationships, Politics \& Government} & \parbox{5cm}{Title: did God create people or did people create god?..?\\Question: think about it...\\Answer: Good question dude.} & Society \& Culture \\
+\bottomrule
+\end{tabular}
+
+}
+\caption{The example of the 15 downstream tasks for fine-tuning}
+\label{tab:detailed_tasks1}
+\end{table*}
+
+\begin{table*}[htbp]
+\centering
+\resizebox{\linewidth}{!}{
+
+\begin{tabular}{c|c|c|c|c}
+\toprule
+MultiRC & MultiRC & \parbox{5cm}{According to the following passage and question, is the candidate answer true or false? Choose one from the option.\\Option: False, True} & \parbox{5cm}{paragraph: Susan wanted to have a birthday party. She called all of her friends. She has five friends. Her mom said that Susan can invite them all to the party. Her first friend could not go to the party because she was sick. Her second friend was going out of town. Her third friend was not so sure if her parents would let her. The fourth friend said maybe. The fifth friend could go to the party for sure. Susan was a little sad. On the day of the party, all five friends showed up. Each friend had a present for Susan. Susan was happy and sent each friend a thank you card the next week. \\question: Did Susan call her friends before or after asking her mother?\\candidate answer: Before asking her mother} & True \\
+\midrule
+BoolQA & BoolQA & \parbox{5cm}{According to the following passage, is the question true or false? Choose one from the option.\\Option: True, False} & \parbox{5cm}{question: can u drive in canada with us license\\passage: American entry into Canada by land -- Persons driving into Canada must have their vehicle's registration document and proof of insurance.} & True \\
+\midrule
+WiC & WiC & \parbox{5cm}{Given a word and two sentences, whether the word is used with the same sense in both sentence? Choose one from the option.\\Option: True, False} & \parbox{5cm}{word: touch\\He has a touch of rheumatism.\\He longed for the touch of her hand.} & False \\
+
+
+\bottomrule
+\end{tabular}
+
+}
+\caption{The example of the 15 downstream tasks for fine-tuning}
+\label{tab:detailed_tasks2}
+\end{table*}

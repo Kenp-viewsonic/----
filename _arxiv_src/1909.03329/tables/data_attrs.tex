@@ -1,0 +1,24 @@
+\begin{table}[!tp]
+    \centering
+    \scalebox{0.85}{
+    \begin{tabular}{l@{\hspace{0.05in}}l@{\hspace{0.03in}}r@{\hspace{0.05in}}r@{\hspace{0.03in}}r}
+    \toprule
+    Task & Dataset & \# Train & \# Test & Metric \\
+    \midrule
+    Question answering & SQuAD & 87599 & 10570 & nF1\\
+    Semantic parsing & WikiSQL & 56355 & 15878 & lfEM\\
+    Sentiment analysis & SST & 6920 & 1821 & EM\\
+    Semantic role labeling & QA-SRL & 6414 & 2201 & nF1\\
+    Goal-oriented dialogue & WOZ & 2536 & 1646 & dsEM\\
+    \midrule
+    \multirow{5}{*}{Text classification} & AGNews & \multirow{5}{*}{115000} & \multirow{5}{*}{7600} & \multirow{5}{*}{EM} \\
+    & Amazon & & & \\
+    & DBPedia& & & \\
+    & Yahoo & & \\
+    & Yelp & & \\
+    \bottomrule
+    \end{tabular}
+    }
+    \caption{Summary of tasks, datasets, dataset sizes, and their corresponding metrics. As this work uses no development set, only the training and test datasets are shown. nF1 is the normalized version of the F1 score; EM represents an exact match between texts: for text classification, this amounts to accuracy; for WOZ, it is equivalent to dfEM (turn-based dialogue state exact match); for WikiSQL, it is equivalent to lfEM (exact match of logical forms).}
+    \label{tab:data_attrs}
+\end{table}

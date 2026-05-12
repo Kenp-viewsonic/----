@@ -1,0 +1,30 @@
+\section{Related Works}
+\vspace{-0.1cm}
+%\xiang{compress to ~1.1 page}
+
+\paragraph{Domain and Temporal Adaptation of Language Models.} 
+~\citet{Gururangan2020DontSP} study adaptation of PTLMs to domain-specific corpora. ~\citet{Arumae2020AnEI} study algorithms to mitigate forgetting in original PTLMs, but does not investigate forgetting that happens over a sequence of domains. \citet{Maronikolakis2021MultidomainPL,Rttger2021TemporalAO, luu2021time} proposes sequential pretraining over domains or emerging data, but did not investigate CL algorithms. Several recent studies have demonstrated the necessity of adapting LMs over time~\cite{Lazaridou2021PitfallsOS} while %some of them 
+specifically focusing on factual knowledge~\cite{Dhingra2021TimeAwareLM, jang2021towards}.
+
+\paragraph{Continual Learning Algorithms in NLP.}
+Continual learning in NLP has mainly been studied for classification tasks. An effective approach is to utilize a number of stored past examples~\cite{dAutume2019EpisodicMI,Wang2020EfficientML}, or pseudo examples (\textit{e.g.,} the ones generated with a PTLM~\cite{Sun2020LAMOLLM,Kanwatchara2021RationalLA}). Recent extensions of the algorithm~\cite{Chuang2020LifelongLK} perform knowledge distillation with generated pseudo examples. Other lines of works focus on regularization over the sentence representations~\cite{Wang2019SentenceEA,Huang2021ContinualLF,Liu2019ContinualLF} or directly merging models in the parameter space~\cite{Matena2021MergingMW}. % propose an information disentanglement and regularization-based approach which disentangles and applies separate regularization to task-agnostic and task-specific representations.
+%In addition, methods such as EWC~\cite{Schwarz2018ProgressC} and online EWC~\cite{Kirkpatrick2017OvercomingCF} performs regularization directly in the weight space. The algorithms are not intensively studied for NLP tasks. M
+Model expansion-based approaches~\cite{Liu2019ContinualLF,Pfeiffer2021AdapterFusionNT}, including learning domain specific expert models~\cite{Gururangan2021DEMixLD}, are also actively studied.~\citet{wu2022pretrained} present a comparative study of algorithms in the context of continual fine-tuning over NLP tasks.
+
+
+
+
+
+
+\section{Conclusion}
+\vspace{-0.1cm}
+In this paper, we formulated the lifelong language model pretraining problem and constructed two data streams associated with downstream datasets. 
+%We constructed the domain-incremental research paper stream and the chronologically-ordered tweet stream, each of which is representative of a practical scenario of continual pretraining. 
+We evaluated knowledge retention, adaptation to the latest data, and temporal generalization ability of continually pretrained language models. 
+%We evaluated a number of continual learning algorithms spanning over adapters, memory replay, and distillation-based approaches. 
+Our experiments show distillation-based approaches being most effective in these evaluation setups. A limitation of the work is that it has not been fully addressed whether there exists a variant of distillation-based CL approach that consistently outperforms Logit-KD. Based on the current observation, we conclude the performance of different KD approaches for CL is highly task-dependent.
+%Over the tweet stream, we find continual pretraining improves adaptation ability to the latest data and temporal generalization. 
+It asks for more future works into continual learning algorithms within the proposed problem setup.
+
+
+%In our setup, the model is continuously pretrained over a sequence of unlabeled corpus and is fine-tuend over downstream tasks related to pretraining. We evaluate the performance of various continual learning algorithms, encompassing adapter based, memory based, and distillation based approaches. We proposed a novel continual learning algorithm, contrastive learning experience replay (CER) to improve the informativeness of the replay memory and effectively mitigate forgetting in the representation space. Our experiments over academic paper datasets show CER is efficient in reducing catastrohpic forgetting. We will further perform experiments over other datasets proposed in the paper and include more continual learning baselines for study.

@@ -1,0 +1,122 @@
+%
+% File acl2019.tex
+%
+%% Based on the style files for ACL 2018, NAACL 2018/19, which were
+%% Based on the style files for ACL-2015, with some improvements
+%%  taken from the NAACL-2016 style
+%% Based on the style files for ACL-2014, which were, in turn,
+%% based on ACL-2013, ACL-2012, ACL-2011, ACL-2010, ACL-IJCNLP-2009,
+%% EACL-2009, IJCNLP-2008...
+%% Based on the style files for EACL 2006 by 
+%%e.agirre@ehu.es or Sergi.Balari@uab.es
+%% and that of ACL 08 by Joakim Nivre and Noah Smith
+\pdfoutput=1 
+\documentclass[11pt,a4paper]{article}
+\usepackage{hyperref}
+\usepackage[hyperref]{acl2019}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{booktabs}
+%\usepackage{soul,xcolor}
+\usepackage{amssymb}
+%\usepackage{url}
+%\usepackage{ulem}
+\usepackage[toc,page]{appendix}
+
+\aclfinalcopy % Uncomment this line for the final submission
+% \def\aclpaperid{1447} %  Enter the acl Paper ID here
+
+%\setlength\titlebox{5cm}
+% You can expand the titlebox if you need extra space
+% to show all the authors. Please do not make the titlebox
+% smaller than 5cm (the original size); we will check this
+% in the camera-ready version and ask you to change it back.
+
+
+%\usepackage{soul}
+\newcommand{\pretty}[1]{\textsc{#1}}
+\newcommand{\h}[0]{\mathbf{h}}
+\newcommand{\specialcell}[2][l]{%
+  \begin{tabular}[#1]{@{}l@{}}#2\end{tabular}}
+
+\newcommand\BibTeX{B\textsc{ib}\TeX}
+
+\title{\pretty{Casa-nlu}: Context-Aware Self-Attentive Natural Language Understanding for Task-Oriented Chatbots}
+
+% \author{First Author \\
+%   Affiliation / Address line 1 \\
+%   Affiliation / Address line 2 \\
+%   Affiliation / Address line 3 \\
+%   \texttt{email@domain} \\\And
+%   Second Author \\
+%   Affiliation / Address line 1 \\
+%   Affiliation / Address line 2 \\
+%   Affiliation / Address line 3 \\
+%   \texttt{email@domain} \\}
+
+\author{Arshit Gupta$^\dagger$  
+  \quad Peng Zhang$^\ddagger$ \quad Garima Lalwani$^\ddagger$ \quad Mona Diab$^\dagger$\\
+$^\dagger$Amazon AI, Seattle \quad $^\ddagger$Amazon AI, East Palo Alto\\
+{\tt \{arshig, pezha, glalwani, diabmona\}@amazon.com}}
+
+
+\date{}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Natural Language Understanding (NLU) is a core component of dialog systems. It typically involves two tasks - intent classification (IC) and slot labeling (SL), which are then followed by a dialogue management (DM) component. 
+Such NLU systems cater to
+%\peng{current} 
+utterances in isolation, thus pushing the problem of context management to DM. 
+However, contextual information is critical to the correct prediction of intents and slots in a conversation. 
+Prior work on contextual NLU has been limited in terms of the types of contextual signals used and the understanding of their impact on the model. 
+%Prior work on contextual \pretty{Nlu} has been limited in terms of the types of both the contextual signals used and understanding their impact on the model. 
+In this work, we propose a context-aware self-attentive NLU (\pretty{Casa-nlu}) model that uses multiple signals, such as previous intents, slots, dialog acts and utterances over a variable context window, in addition to the current user utterance. \pretty{Casa-nlu} outperforms a recurrent contextual NLU baseline on two conversational datasets, yielding a gain of up to 7\% on the IC task for one of the datasets. Moreover, a non-contextual variant of \pretty{Casa-nlu} achieves state-of-the-art performance for IC task on standard public datasets -  \pretty{Snips} and \pretty{ATIS}.
+\end{abstract}
+
+
+
+\input{introduction_f}
+\input{related_work_f}
+\input{cdisan_f}
+%\input{dataset_f}
+\input{experiments_f}
+\input{results_f2}
+\input{qualitative_f}
+
+\input{conclusion_f}
+\input{implementation_f}
+\input{acknowledgement}
+
+
+%\begin{appendices}
+%\chapter{Appendix}
+%\input{supp}
+%\end{appendices}
+
+
+% \section*{Acknowledgments}
+
+% The acknowledgments should go immediately before the references.  Do
+% not number the acknowledgments section. Do not include this section
+%s when submitting your paper for review. \\
+
+\bibliography{acl2019}
+\bibliographystyle{acl_natbib}
+%\appendix
+%\input{supp}
+\clearpage
+\newpage
+%\input{supplementary_material}
+%\appendix
+%\section{Supplementary Material}
+\begin{appendices}
+\input{supp}
+\end{appendices}
+
+
+\end{document}

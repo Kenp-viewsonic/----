@@ -1,0 +1,6 @@
+\section{Conclusion}
+In this paper, we proposed a supervised contrastive learning model for task-incremental continual learning (SCCL) to boost the extensibility of continual learning. The model used contrastive learning to learn representations and a kNN module was adopted for inference, together with an instance-wise distillation and a memory replay module to maintain previously learned knowledge.   With extensive experiments, our model achieved state-of-the-art performance compared with standard CE-based methods. Ablation studies and visualizations also proved the effectiveness of our model in solving the problem of CF. 
+
+\clearpage
+\section{Limitations}
+Our model SCCL is specific for task-incremental continual learning scenarios, but not suitable for class-incremental scenarios. In class-incremental scenarios, the representations of current classes should be designed to be far away from previous ones. For simplicity,  we do not consider data augmentation in our model, so the batch size should be large enough to contain positive pairs for each label. But data augmentation (such as two different dropout representations \cite{gao-etal-2021-simcse}) is a plug-and-play module for our model if there are plenty of labels in each task.

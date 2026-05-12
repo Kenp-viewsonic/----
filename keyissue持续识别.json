@@ -1,0 +1,128 @@
+[
+  {
+    "link": "https://www.arxiv.org/abs/2408.09053",
+    "title": "Learning to Route for Dynamic Adapter Composition in Continual Learning with Language Models",
+    "publish_time": "20240816",
+    "authors": [
+      "Vladimir Araujo",
+      "Marie-Francine Moens",
+      "Tinne Tuytelaars"
+    ],
+    "abstract": "Parameter-efficient fine-tuning (PEFT) methods are increasingly used with pre-trained language models (PLMs) for continual learning (CL). These methods typically involve training a PEFT module for each new task and employing similarity-based selection to route modules during inference. However, they face two major limitations: 1) interference during module training with already learned modules and 2) suboptimal routing when composing modules. In this paper, we present L2R, a method that isolates the training of new PEFT modules to ensure their task specialization. L2R then learns to compose the learned modules by training a network of routers that leverages a small memory containing examples of previously seen tasks. We evaluate our method in two CL setups using various benchmarks. Our results demonstrate that L2R provides an effective composition of PEFT modules, leading to improved generalization and performance compared to other methods.",
+    "score": 0.7972028255462646
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2501.05017",
+    "title": "Continuous Knowledge-Preserving Decomposition for Few-Shot Continual Learning",
+    "publish_time": "20250109",
+    "authors": [
+      "Xiaojie Li",
+      "Yibo Yang",
+      "Jianlong Wu",
+      "David A. Clifton",
+      "Yue Yu",
+      "Bernard Ghanem",
+      "Min Zhang"
+    ],
+    "abstract": "Few-shot class-incremental learning (FSCIL) involves learning new classes from limited data while retaining prior knowledge, and often results in catastrophic forgetting. Existing methods either freeze backbone networks to preserve knowledge, which limits adaptability, or rely on additional modules or prompts, introducing inference overhead. To this end, we propose Continuous Knowledge-Preserving Decomposition for FSCIL (CKPD-FSCIL), a framework that decomposes a model's weights into two parts: one that compacts existing knowledge (knowledge-sensitive components) and another that carries redundant capacity to accommodate new abilities (redundant-capacity components). The decomposition is guided by a covariance matrix from replay samples, ensuring principal components align with classification abilities. During adaptation, we freeze the knowledge-sensitive components and only adapt the redundant-capacity components, fostering plasticity while minimizing interference without changing the architecture or increasing overhead. Additionally, CKPD introduces an adaptive layer selection strategy to identify layers with redundant capacity, dynamically allocating adapters. Experiments on multiple benchmarks show that CKPD-FSCIL outperforms state-of-the-art methods.",
+    "score": 0.7540897727012634
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2601.02232",
+    "title": "ELLA: Efficient Lifelong Learning for Adapters in Large Language Models",
+    "publish_time": "20260105",
+    "authors": [
+      "Shristi Das Biswas",
+      "Yue Zhang",
+      "Anwesan Pal",
+      "Radhika Bhargava",
+      "Kaushik Roy"
+    ],
+    "abstract": "Large Language Models (LLMs) suffer severe catastrophic forgetting when adapted sequentially to new tasks in a continual learning (CL) setting. Existing approaches are fundamentally limited: replay-based methods are impractical and privacy-violating, while strict orthogonality-based methods collapse under scale: each new task is projected onto an orthogonal complement, progressively reducing the residual degrees of freedom and eliminating forward transfer by forbidding overlap in shared representations. In this work, we introduce ELLA, a training framework built on the principle of selective subspace de-correlation. Rather than forbidding all overlap, ELLA explicitly characterizes the structure of past updates and penalizes alignments along their high-energy, task-specific directions, while preserving freedom in the low-energy residual subspaces to enable transfer. Formally, this is realized via a lightweight regularizer on a single aggregated update matrix. We prove this mechanism corresponds to an anisotropic shrinkage operator that bounds interference, yielding a penalty that is both memory- and compute-constant regardless of task sequence length. ELLA requires no data replay, no architectural expansion, and negligible storage. Empirically, it achieves state-of-the-art CL performance on three popular benchmarks, with relative accuracy gains of up to $9.6\\%$ and a $35\\times$ smaller memory footprint. Further, ELLA scales robustly across architectures and actively enhances the model's zero-shot generalization performance on unseen tasks, establishing a principled and scalable solution for constructive lifelong LLM adaptation.",
+    "score": 0.6784818172454834
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2012.15504",
+    "title": "Continual Learning in Task-Oriented Dialogue Systems",
+    "publish_time": "20201231",
+    "authors": [
+      "Andrea Madotto",
+      "Zhaojiang Lin",
+      "Zhenpeng Zhou",
+      "Seungwhan Moon",
+      "Paul Crook",
+      "Bing Liu",
+      "Zhou Yu",
+      "Eunjoon Cho",
+      "Zhiguang Wang"
+    ],
+    "abstract": "Continual learning in task-oriented dialogue systems can allow us to add new domains and functionalities through time without incurring the high cost of a whole system retraining. In this paper, we propose a continual learning benchmark for task-oriented dialogue systems with 37 domains to be learned continuously in four settings, such as intent recognition, state tracking, natural language generation, and end-to-end. Moreover, we implement and compare multiple existing continual learning baselines, and we propose a simple yet effective architectural method based on residual adapters. Our experiments demonstrate that the proposed architectural method and a simple replay-based strategy perform comparably well but they both achieve inferior performance to the multi-task learning baseline, in where all the data are shown at once, showing that continual learning in task-oriented dialogue systems is a challenging task. Furthermore, we reveal several trade-offs between different continual learning methods in term of parameter usage and memory size, which are important in the design of a task-oriented dialogue system. The proposed benchmark is released together with several baselines to promote more research in this direction.",
+    "score": 0.6784741282463074
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2403.19979",
+    "title": "Semantically-Shifted Incremental Adapter-Tuning is A Continual ViTransformer",
+    "publish_time": "20240329",
+    "authors": [
+      "Yuwen Tan",
+      "Qinhao Zhou",
+      "Xiang Xiang",
+      "Ke Wang",
+      "Yuchuan Wu",
+      "Yongbin Li"
+    ],
+    "abstract": "Class-incremental learning (CIL) aims to enable models to continuously learn new classes while overcoming catastrophic forgetting. The introduction of pre-trained models has brought new tuning paradigms to CIL. In this paper, we revisit different parameter-efficient tuning (PET) methods within the context of continual learning. We observe that adapter tuning demonstrates superiority over prompt-based methods, even without parameter expansion in each learning session. Motivated by this, we propose incrementally tuning the shared adapter without imposing parameter update constraints, enhancing the learning capacity of the backbone. Additionally, we employ feature sampling from stored prototypes to retrain a unified classifier, further improving its performance. We estimate the semantic shift of old prototypes without access to past samples and update stored prototypes session by session. Our proposed method eliminates model expansion and avoids retaining any image samples. It surpasses previous pre-trained model-based CIL methods and demonstrates remarkable continual learning capabilities. Experimental results on five CIL benchmarks validate the effectiveness of our approach, achieving state-of-the-art (SOTA) performance.",
+    "score": 0.592075526714325
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2104.11882",
+    "title": "Incremental Few-shot Text Classification with Multi-round New Classes: Formulation, Dataset and System",
+    "publish_time": "20210424",
+    "authors": [
+      "Congying Xia",
+      "Wenpeng Yin",
+      "Yihao Feng",
+      "Philip Yu"
+    ],
+    "abstract": "Text classification is usually studied by labeling natural language texts with relevant categories from a predefined set. In the real world, new classes might keep challenging the existing system with limited labeled data. The system should be intelligent enough to recognize upcoming new classes with a few examples. In this work, we define a new task in the NLP domain, incremental few-shot text classification, where the system incrementally handles multiple rounds of new classes. For each round, there is a batch of new classes with a few labeled examples per class. Two major challenges exist in this new task: (i) For the learning process, the system should incrementally learn new classes round by round without re-training on the examples of preceding classes; (ii) For the performance, the system should perform well on new classes without much loss on preceding classes. In addition to formulating the new task, we also release two benchmark datasets in the incremental few-shot setting: intent classification and relation classification. Moreover, we propose two entailment approaches, ENTAILMENT and HYBRID, which show promise for solving this novel problem.",
+    "score": 0.5920552015304565
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2407.10281",
+    "title": "Beyond Prompt Learning: Continual Adapter for Efficient Rehearsal-Free Continual Learning",
+    "publish_time": "20240714",
+    "authors": [
+      "Xinyuan Gao",
+      "Songlin Dong",
+      "Yuhang He",
+      "Qiang Wang",
+      "and Yihong Gong"
+    ],
+    "abstract": "The problem of Rehearsal-Free Continual Learning (RFCL) aims to continually learn new knowledge while preventing forgetting of the old knowledge, without storing any old samples and prototypes. The latest methods leverage large-scale pre-trained models as the backbone and use key-query matching to generate trainable prompts to learn new knowledge. However, the domain gap between the pre-training dataset and the downstream datasets can easily lead to inaccuracies in key-query matching prompt selection when directly generating queries using the pre-trained model, which hampers learning new knowledge. Thus, in this paper, we propose a beyond prompt learning approach to the RFCL task, called Continual Adapter (C-ADA). It mainly comprises a parameter-extensible continual adapter layer (CAL) and a scaling and shifting (S&S) module in parallel with the pre-trained model. C-ADA flexibly extends specific weights in CAL to learn new knowledge for each task and freezes old weights to preserve prior knowledge, thereby avoiding matching errors and operational inefficiencies introduced by key-query matching. To reduce the gap, C-ADA employs an S&S module to transfer the feature space from pre-trained datasets to downstream datasets. Moreover, we propose an orthogonal loss to mitigate the interaction between old and new knowledge. Our approach achieves significantly improved performance and training speed, outperforming the current state-of-the-art (SOTA) method. Additionally, we conduct experiments on domain-incremental learning, surpassing the SOTA, and demonstrating the generality of our approach in different settings.",
+    "score": 0.5306931734085083
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2404.08417",
+    "title": "AdapterSwap: Continuous Training of LLMs with Data Removal and Access-Control Guarantees",
+    "publish_time": "20240412",
+    "authors": [
+      "William Fleshman",
+      "Aleem Khan",
+      "Marc Marone",
+      "and Benjamin Van Durme"
+    ],
+    "abstract": "Large language models (LLMs) are increasingly capable of completing knowledge intensive tasks by recalling information from a static pretraining corpus. Here we are concerned with LLMs in the context of evolving data requirements. For instance: batches of new data that are introduced periodically; subsets of data with user-based access controls; or requirements on dynamic removal of documents with guarantees that associated knowledge cannot be recalled. We wish to satisfy these requirements while at the same time ensuring a model does not forget old information when new data becomes available. To address these issues, we introduce AdapterSwap, a training and inference scheme that organizes knowledge from a data collection into a set of low-rank adapters, which are dynamically composed during inference. Our experiments demonstrate AdapterSwap's ability to support efficient continual learning, while also enabling organizations to have fine-grained control over data access and deletion.",
+    "score": 0.5306529402732849
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2110.07298",
+    "title": "LFPT5: A Unified Framework for Lifelong Few-shot Language Learning Based on Prompt Tuning of T5",
+    "publish_time": "20211014",
+    "authors": [
+      "Chengwei Qin",
+      "Shafiq Joty"
+    ],
+    "abstract": "Existing approaches to lifelong language learning rely on plenty of labeled data for learning a new task, which is hard to obtain in most real scenarios. Considering that humans can continually learn new tasks from a handful of examples, we expect the models also to be able to generalize well on new few-shot tasks without forgetting the previous ones. In this work, we define this more challenging yet practical problem as Lifelong Few-shot Language Learning (LFLL) and propose a unified framework for it based on prompt tuning of T5. Our framework called LFPT5 takes full advantage of PT's strong few-shot learning ability, and simultaneously trains the model as a task solver and a data generator. Before learning a new domain of the same task type, LFPT5 generates pseudo (labeled) samples of previously learned domains, and later gets trained on those samples to alleviate forgetting of previous knowledge as it learns the new domain. In addition, a KL divergence loss is minimized to achieve label consistency between the previous and the current model. While adapting to a new task type, LFPT5 includes and tunes additional prompt embeddings for the new task. With extensive experiments, we demonstrate that LFPT5 can be applied to various different types of tasks and significantly outperform previous methods in different LFLL settings.",
+    "score": 0.46840962767601013
+  }
+]

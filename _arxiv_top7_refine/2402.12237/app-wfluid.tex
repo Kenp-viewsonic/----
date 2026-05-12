@@ -1,0 +1,89 @@
+% !TEX root = main.tex
+To motivate our $w-$fluid benchmarks, which include \eqref{eq:fluid} as a special case, we start from the stationary case where $\lambda_k(t) \equiv \lambda_k$ and $N(t) \equiv N$ across any period $t \leq T$. The classical fluid benchmark corresponds to a linear program (LP) as in \eqref{eq:T-fluid}. In particular, the objective is the expected total loss and the first constraint captures the capacity constraint requiring all admitted posts are reviewed eventually in expectation. An alternative formulation is to satisfy the capacity constraint for \emph{each period} as in \eqref{eq:fluid}, which is restated in \eqref{eq:1-fluid}. With the stationary property that $\lambda_k(t) \equiv \lambda_k$ and $N(t) \equiv N$, the two LPs are equivalent. 
+ 
+\noindent
+\begin{minipage}[t]{0.5\textwidth}
+\begin{equation}\label{eq:T-fluid}
+\begin{aligned}
+&\min_{\{a_k(t),\nu_k(t)\}}\sum_{t=1}^T \sum_{k \in \set{K}} \ell_k(\lambda_k(t) - a_k(t)),\text{s.t.} \\
+\quad& \bolds{\sum_{t=1}^{T} a_k(t) \leq \mu_k\sum_{t=1}^{T} N(t)\nu_k(t),\forall k \in \set{K}} \\
+&a_k(t) \leq \lambda_k(t),~\nu_k(t) \geq 0,~\forall k \in \set{K}, t\in [T] \\
+& \sum_{k\in \set{K}} \nu_k(t) \leq 1,~\forall t \in [T].
+\end{aligned}
+\end{equation}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{equation}\label{eq:1-fluid}
+\begin{aligned}
+&\min_{\{a_k(t),\nu_k(t)\}}\sum_{t=1}^T \sum_{k \in \set{K}} \ell_k(\lambda_k(t) - a_k(t)),\text{s.t.} \\
+\quad& \bolds{a_k(t) \leq \mu_k N(t)\nu_k(t),\forall k \in \set{K}, t \in [T]} \\
+&a_k(t) \leq \lambda_k(t),~\nu_k(t) \geq 0,~\forall k \in \set{K}, t\in [T] \\
+& \sum_{k\in \set{K}} \nu_k(t) \leq 1,~\forall t \in [T].
+\end{aligned}
+\end{equation}
+\end{minipage}
+Extending the fluid benchmark to a non-stationary setting is non-trivial. In particular, the benchmark in \eqref{eq:T-fluid} allows the decision maker to use human capacity of the entire time horizon to review any job and can greatly underestimate the loss any policy must incur, as illustrated in Example~\ref{ex:fluid}. Alternatively, using the benchmark in \eqref{eq:1-fluid} can overestimate the loss of an optimal policy. It requires an admitted job to be reviewed in the same period it arrives, even though an admitted job can wait in the review queue and be reviewed by later human capacity.
+\begin{example}\label{ex:fluid}
+Consider a setting with one type of jobs. Arrival rates and review capacity are time-varying such that $\lambda(t) = 0, \mu N(t) = 1$ for $t \leq T / 2$ and $\lambda(t) = 1, \mu N(t) = 0$ for $t > T / 2$. Benchmark \eqref{eq:T-fluid} will always give a loss of $0$. However, the uneven capacity indeed makes it a ``difficult'' setting where no job can be reviewed.
+\end{example}
+Given that \eqref{eq:T-fluid} is too strong and \eqref{eq:1-fluid} is too weak as the benchmark, we consider a series of fluid benchmarks that interpolate between them, which we call the \emph{$w-$fluid benchmarks}. In particular, we assume that the interval $\{1,\ldots, T\}$ can be partitioned into consecutive windows of sizes at most~$w$, such that the admission mass of the benchmark is no larger than the service capacity in each window. In other words, a $w-$fluid benchmark limits the range of human capacity used to review an admitted job and the available information: a larger window size allows an admitted job to be reviewed by later human capacity and allows the decision maker to know more information. Benchmarks \eqref{eq:T-fluid} and \eqref{eq:1-fluid} are special cases where $w=T$ and $w = 1$ respectively. 
+
+Formally, consider the set of feasible window partitions \[\set{P}(w) = \left\{\bolds{\tau}=(\tau_1,\ldots,\tau_{I+1})\colon 1 = \tau_1 < \cdots < \tau_{I+1}=T+1;~\tau_{i+1}-\tau_i < w,~\forall i \leq I;~I \in \mathbb{N}\right\}.\]
+The $w$-fluid benchmark minimizes the expected total loss over admission vector $\{a_k(t)\}_{k \in \set{K}, t \in [T]}$, partition $\bolds{\tau}$ and probabilistic service vector $\{\nu_k(t)\}_{k \in \set{K}, t \in [T]}$ that satisfy $w$-capacity constraints:
+\begin{equation}\label{eq:w-fluid}
+\tag{$w$-fluid}
+\begin{aligned}
+\set{L}^\star(w,T) \coloneqq &\min_{\substack{\bolds{\tau} \in \set{P}(w)\\\{a_k(t)\}_{k \in \set{K}, t \in [T]},\{\nu_k(t)\}_{k \in \set{K},t \in [T]}}} \sum_{t=1}^T \sum_{k \in \set{K}} \ell_k(\lambda_k(t) - a_k(t)) \\
+\text{s.t.}\quad& \bolds{\sum_{t=\tau_i}^{\tau_{i+1}-1} a_k(t) \leq \mu_k\sum_{t=\tau_i}^{\tau_{i+1}-1} N(t)\nu_k(t),~\forall i \leq I, k \in \set{K}} \\
+&a_k(t) \leq \lambda_k(t),~\nu_k(t) \geq 0,~\forall k \in \set{K}, t\in [T] \\
+& \sum_{k\in \set{K}} \nu_k(t) \leq 1,~\forall t \in [T].
+\end{aligned}
+\end{equation}
+We note that the idea of enforcing capacity constraints in consecutive windows is widely used in defining capacity regions for non-stationary (adversarial) queueing systems; see, e.g., \cite{borodin2001adversarial,liang2018minimizing,yang2023learning,nguyen2023learning}. 
+
+As discussed above, if arrival rates and review capacity are stationary, then $\set{L}^\star(1,T) = \cdots=\set{L}^\star(T,T)$ and thus the choice of $w$ does not matter. For a general non-stationary system, we aim to design a feasible policy~$\pi$ that is robust to different choices of window size $w$. More formally, we define the regret for a window size $w$ as
+\begin{equation}\label{eq:w-regret}
+\reg^\pi(w,T) \coloneqq \expect{\set{L}^\pi(T)} - \set{L}^\star(w,T).
+\end{equation}
+
+\subsection{Regret guarantee for the $w-$fluid benchmarks}
+Our regret guarantees for \eqref{eq:fluid} extend to guarantees for the $w-$fluid benchmarks. In a nutshell, the terms $\sqrt{KT}$ and $\sqrt{GT}$ in Theorems~\ref{thm:bacid}, \ref{thm:bacidol} and \ref{thm:cbacidol} become $w\sqrt{KT}$ and $w\sqrt{GT}$ when the regret is for a window size $w$, i.e., \eqref{eq:w-regret}. If $w$ is known, then by optimizing the hyperparameter $\beta \approx \sqrt{T / w}$ we can reduce the linear dependence on $w$ to be $\sqrt{w}$.
+
+We illustrate how to derive such a guarantee for $\bacid$; the derivation is similar for $\bacidol$ and $\conbacid$. The crux is establishing Lemma~\ref{lem:window-known-idiosyncrasy}, a general version of Lemma~\ref{lem:known-idiosyncrasy} based on $w-$fluid benchmarks. Replacing Lemma~\ref{lem:known-idiosyncrasy} with Lemma~\ref{lem:window-known-idiosyncrasy} in the proof of Theorem~\ref{thm:bacid} then gives $\reg^{\bacid}(w,T) \lesssim w\sqrt{KT} + K$.
+ \begin{lemma}\label{lem:window-known-idiosyncrasy}
+\textsc{BACID}'s idiosyncrasy loss is
+$\expect{\sum_{t=1}^T \ell_{\kappa(t)}(1 - A(t))} \leq \loss^\star(w,T)+\frac{wT}{\beta}$.
+\end{lemma}
+The proof of  Lemma~\ref{lem:window-known-idiosyncrasy} follows a similar structure with the proof of Lemma~\ref{lem:known-idiosyncrasy} in Section~\ref{ssec:bacid-idiosyncrasy}. Fix a window size $w$ and let $\bolds{\tau}^\star = (\tau^\star_1,\ldots,\tau^\star_I), \{a^\star_k(t), \nu^\star_k(t)\}_{k \in \set{K},t \in [T]}$ be the optimal solution to the $w$-fluid benchmark \eqref{eq:w-fluid}. Scaling the objective in \eqref{eq:w-fluid} by $\beta$, we let 
+\[f(\{\bolds{a}(t)\}_t,\{\bolds{\nu}(t)\}_t,\bolds{u}) = \beta\sum_{t=1}^T \sum_{k \in \set{K}} \ell_k(\lambda_k(t) - a_k(t))-\sum_{i=1}^I\sum_{k\in\set{K}}u_{i,k}\left(\mu_k\sum_{t=\tau^\star_i}^{\tau^\star_{i+1}-1} N(t)\nu_k(t) - \sum_{t=\tau^\star_i}^{\tau^\star_{i+1}-1} a_k(t)\right),\]
+where $\bolds{u} = (u_{i,k})_{i \in \set{I}, k \in \set{K}} \geq 0$ are dual variables for the capacity constraints. The Lagrangian for the given window partitions $\bolds{\tau}^\star$ is 
+\begin{equation}
+\begin{aligned}
+f(\bolds{u})\coloneqq&\min_{a_k(t),\nu_k(t)} f(\{\bolds{a}(t)\}_t,\{\bolds{\nu}(t)\}_t,\bolds{u})  \\
+\text{s.t.}\quad& a_k(t) \leq \lambda_k(t),~\nu_k(t) \geq 0,~\sum_{k' \in \set{K}} \nu_{k'}(t) \leq 1,~\forall k \in \set{K}, t\in [T].
+\end{aligned}
+\end{equation}
+Recall the per-period Lagrangian in \eqref{eq:per-period-lag}, the following lemma, extending Lemma~\ref{lem:lagrang-bacid}, shows that the expected Lagrangian of \textsc{BACID}, $\sum_{t=1}^T \expect{f_t(\bolds{A}(t), \bolds{\psi}(t), \bolds{Q}(t))}$, is close to the $w-$fluid benchmark. 
+\begin{lemma}\label{lem:window-lagrang-bacid}
+For any window size $w$, the expected Lagrangian of \textsc{BACID} is upper bounded by:
+\[
+\sum_{t=1}^T \expect{f_t(\bolds{A}(t), \bolds{\psi}(t), \bolds{Q}(t))}  \leq \beta \loss^\star(w,T) + (w-1)T.
+\]
+\end{lemma}
+\begin{proof}[Proof sketch.]
+We provide a proof sketch of the result. The proof structure is similar with the proof of Lemma \ref{lem:lagrang-bacid} in Section~\ref{sec:lagrang-bacid}.
+
+To connect the left hand side of Lemma~\ref{lem:window-lagrang-bacid} with the primal, we select a vector of dual variables $\bolds{u}^\star$ consisting of the queue lengths in the first period of each window: $u^\star_{i,k} = Q_k(\tau^\star_i)$. Then we have
+\begin{align}
+\sum_{t=1}^T \expect{f_t(\bolds{A}(t), \bolds{\psi}(t), \bolds{Q}(t))} - \beta \loss^\star(w,T) &= \expect{f(\{\bolds{a}^\star(t)\}_t,\{\bolds{\nu}^\star(t)\}_t,\bolds{u}^\star)} - \beta \loss^\star(w,T) \label{eq:window-lagran-relax}\\
+&\hspace{-1in}+\sum_{t=1}^T\left(\expect{f_t(\bolds{A}(t), \bolds{\psi}(t), \bolds{Q}(t))} -\expect{f_t(\bolds{a}^\star(t), \bolds{\nu}^\star(t), \bolds{Q}(t))}\right) \label{eq:window-bacid-step-subopt} \\
+&\hspace{-1in}+\sum_{i=1}^I\sum_{t=\tau_i^\star}^{\tau_{i+1}^\star-1}\left(\expect{f_t(\bolds{a}^\star(t), \bolds{\nu}^\star(t), \bolds{Q}(t))} - \expect{f_t(\bolds{a}^\star(t), \bolds{\nu}^\star(t), \bolds{Q}(\tau^\star_{i}))}\right)\label{eq:bacid-dual-subopt}
+\end{align}
+Compared to the decomposition at the top of Section~\ref{sec:lagrang-bacid}, there is a new term, \eqref{eq:bacid-dual-subopt}, that occurs due to the $w-$fluid benchmark.
+
+The proof proceeds by bounding each of the three terms. First, a slight change to the proof of Lemma~\ref{lem:bound-lagrang} can  upper bound \eqref{eq:window-lagran-relax} by $0.$ Second, Lemma~\ref{lem:bacid-mw} upper bounds \eqref{eq:window-bacid-step-subopt} by $0$. Third, \eqref{eq:bacid-dual-subopt} is no larger than $(w-1)T$.
+This is because the queue length  changes  at most linearly within a window and thus the difference in the Lagrangian is bounded by the window size when using either the per-period queue length or the initial queue length of a window as the duals. Summing up the above three bounds gives the desired result.
+\end{proof}
+\begin{proof}[Proof of Lemma~\ref{lem:window-known-idiosyncrasy}]
+Combining Lemmas~\ref{lem:connect-idio-lag} and \ref{lem:window-lagrang-bacid} gives $\beta \expect{\sum_{t=1}^{T}\ell_{\kappa(t)}(1-A(t))} \leq wT + \beta \loss^\star(w,T)$, which finishes the proof by dividing both sides by $\beta$.
+\end{proof}

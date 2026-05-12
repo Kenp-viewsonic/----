@@ -1,0 +1,77 @@
+% requires: \usetikzlibrary{positioning}
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[
+  font=\footnotesize,
+  node distance=10mm and 8mm, % layout spacing only (not size)
+  box/.style={draw, rounded corners, semithick, align=center, fill=#1!10},
+  arr/.style={-Latex, semithick}
+]
+
+% Stage 1
+\node[box=blue] (s1) {%
+  \textbf{Stage 1}\\
+  Base LLM inference\\
+  \scriptsize multimodal input\\
+  \scriptsize structured prompts
+};
+
+% Stage 2
+\node[box=green, right=of s1] (s2) {%
+  \textbf{Stage 2}\\
+  Integer-token output schema\\
+  \scriptsize \texttt{0,1,2,3} labels
+};
+
+% Stage 3
+% \node[box=yellow, right=of s2] (s3) {%
+%   \textbf{Stage 3}\\
+%   LPP feature extraction\\
+%    $\bullet$ Outcome probs\\
+%    $\bullet$ Verbalized conf.\\
+%    $\bullet$ Abstention flags
+% };
+% Stage 3
+\node[box=yellow, right=of s2, text width=0.14\textwidth] (s3) {%
+  \centering\textbf{Stage 3}\\
+  \centering LPP feature extraction\\[-0.25ex]
+  \raggedright\scriptsize
+  \begin{tabular}{@{}l@{}}
+    \textbullet\ Outcome probs\\
+    \textbullet\ Verbalized conf.\\
+    \textbullet\ Abstention flags
+  \end{tabular}
+};
+
+
+% Stage 4a
+\node[box=orange, right=of s3] (s4a) {%
+  \textbf{Stage 4a}\\
+  Meta-model training\\
+  \scriptsize Ridge; outputs $s_\theta(x)$
+};
+
+% Stage 4b
+\node[box=red, right=of s4a] (s4b) {%
+  \textbf{Stage 4b}\\
+  Cost-aware routing\\
+  \scriptsize $s_\theta(x)\!\ge\!\tau$\\
+  \scriptsize \emph{trust} vs. \emph{escalate}
+};
+
+% Arrows
+\draw[arr] (s1) -- (s2);
+\draw[arr] (s2) -- (s3);
+\draw[arr] (s3) -- (s4a);
+\draw[arr] (s4a) -- (s4b);
+
+\end{tikzpicture}
+
+\caption{A four-stage framework:
+\textbf{(1)} Base LLM Inference;
+\textbf{(2)} Integer-Token Output Schema;
+\textbf{(3)} LPP Feature Extraction;
+\textbf{(4a)} Meta-Model Training to estimate $s_\theta(x)$;
+\textbf{(4b)} Cost-Aware Routing to \emph{trust} or \emph{escalate}.}
+\label{fig:pipeline}
+\end{figure*}

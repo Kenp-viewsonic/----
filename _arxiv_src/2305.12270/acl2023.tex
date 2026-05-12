@@ -1,0 +1,156 @@
+  % This must be in the first 5 lines to tell arXiv to use pdfLaTeX, which is strongly recommended.
+\pdfoutput=1
+% In particular, the hyperref package requires pdfLaTeX in order to break URLs across lines.
+
+\documentclass[11pt]{article}
+
+% Remove the "review" option to generate the final version.
+\usepackage[]{ACL2023}
+\usepackage{multicol}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{hyperref}
+\usepackage{epsfig}
+\usepackage{arydshln}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{booktabs}
+% For proper rendering  and hyphenation of words containing Latin characters (including in bib files)
+\usepackage[T1]{fontenc}
+% For Vietnamese characters
+% \usepackage[T5]{fontenc}
+% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+% This is not strictly necessary, and may be commented out.
+% However, it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+\usepackage{dsfont}
+% This is also not strictly necessary, and may be commented out.
+% However, it will improve the aesthetics of text in
+% the typewriter font.
+\usepackage{inconsolata}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+% If the title and author information does not fit in the area allocated, uncomment the following
+%
+%\setlength\titlebox{<dim>}
+%
+% and set <dim> to something 5cm or larger.
+
+\title{Mitigating Catastrophic Forgetting in Task-Incremental Continual Learning with Adaptive Classification Criterion}
+
+% Author information can be set in various styles:
+% For several authors from the same institution:
+% \author{Author 1 \and ... \and Author n \\
+%         Address line \\ ... \\ Address line}
+% if the names do not fit well on one line use
+%         Author 1 \\ {\bf Author 2} \\ ... \\ {\bf Author n} \\
+% For authors from different institutions:
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \And  ... \And
+%         Author n \\ Address line \\ ... \\ Address line}
+% To start a seperate ``row'' of authors use \AND, as in
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \AND
+%         Author 2 \\ Address line \\ ... \\ Address line \And
+%         Author 3 \\ Address line \\ ... \\ Address line}
+    
+\author{
+    % Authors
+    Yun Luo  \textsuperscript{\rm1 $\#$},
+    Xiaotian  Lin  \textsuperscript{\rm2 $\#$},
+    Zhen Yang \textsuperscript{\rm3},
+    Fandong Meng \textsuperscript{\rm3},
+    Jie Zhou  \textsuperscript{\rm3},
+    Yue Zhang \textsuperscript{\rm1,4   *}
+    \\
+        % \textsuperscript{1} School of Computer Science And Technology, Zhejiang University, Hangzhou, 310024, P.R. China. \\
+    \textsuperscript{1} School of Engineering, Westlake University, Hangzhou, 310024, P.R. China. \\
+        \textsuperscript{2} Guangdong University of Foreign Studies. Guangzhou  \\
+    \textsuperscript{3} Pattern Recognition Center, WeChat AI, Tencent Inc, Beijing, China.  \\
+    \textsuperscript{4} Institute of Advanced Technology, Westlake Institute for Advanced Study, Hangzhou, 310024, P.R. China.  \\
+    % \textsuperscript{4} SenseTime Research \\
+    \texttt{\{luoyun, zhangyue\}@westlake.edu.cn}\\
+    \texttt{\{zieenyang, fandongmeng, withtomzhou\}@tentent.com}
+}
+% which implies that the predicting layer must be restructured with additional parameters for a new arriving task, limiting the extensibility of the model
+\begin{document}
+\maketitle
+\begin{abstract}
+Task-incremental continual learning refers to continually training a model in a sequence of tasks while overcoming the problem of catastrophic forgetting (CF). The issue arrives for the reason that the learned representations are forgotten for learning new tasks, and the decision boundary is destructed.  Previous studies mostly consider how to recover the representations of learned tasks. It is seldom considered to adapt the decision boundary for new representations  and in this paper we propose a \textbf{S}upervised \textbf{C}ontrastive learning framework with adaptive classification criterion for \textbf{C}ontinual \textbf{L}earning (SCCL), In our method, a contrastive loss is used to directly learn representations for different tasks and a limited number of data samples are saved as the classification criterion. During inference, the saved data samples are fed into the current model to obtain updated representations, and a k Nearest Neighbour module is used for classification. In this way, the extensible model can solve the learned tasks with adaptive criteria of saved samples.  To mitigate CF, we further use an instance-wise relation distillation regularization term and a memory replay module to maintain the information of previous tasks. Experiments show that SCCL achieves state-of-the-art performance and has a stronger ability to overcome CF compared with the classification baselines. 
+\end{abstract}
+
+% Task-incremental continual learning refers to continually training a model in a sequence of tasks while overcoming the problem of catastrophic forgetting (CF). Previous work mostly uses classification networks for continual learning, which implies that the predicting layer must be restructured with additional parameters for the new arriving task, limiting the extensibility of the model. To tackle this problem, we propose a Supervised Contrastive learning framework for Continual Learning (SCCL), where a contrastive loss is used to directly learn representations for different tasks, and a limited number of data samples are saved as the classification criterion. During inference, the saved data samples are fed into the current model to obtain updated representations and a k Nearest Neighbour module is used for classification. In this way, the extensible model can solve new coming tasks with newly saved samples.  To mitigate CF, we further use an instance-wise relation distillation regularization term and a memory replay module to maintain the information of previous tasks. Experiments show that the SCCL framework achieves state-of-the-art performance and have a stronger ability to overcome CF compared with the classification baselines. 
+\input{intro}
+
+\input{related_work}
+
+\input{method}
+
+\input{exp}
+
+\input{results}
+
+
+\input{conclusion}
+% \begin{table}[]\small
+
+
+
+
+
+
+
+
+
+% Entries for the entire Anthology, followed by custom entries
+\bibliography{ref}
+\bibliographystyle{acl_natbib}
+
+\clearpage
+\appendix
+
+\section{Data Statistics}
+We show the data statistics in Table \ref{task}.
+\begin{table}[h] \small
+\centering
+\begin{tabular}{ccccc}
+\hline
+Task &Type &\#Train &\#Test &\#Labels         \\ \hline
+
+ AG &News & 16000 & 7600 & 4 \\
+QNLI & Q \& A & 8000 & 5266 & 2\\
+Yelp & Sentiment & 20000 & 7600 & 5\\
+CoLA &Linguistics  & 6527 & 1042 & 2\\
+MNLI & Inference & 12000 & 9815 & 3 \\
+MRPC &Paraphrase & 4074 & 1725 & 2\\
+\hline
+\end{tabular}
+\caption{Statistics for different classification tasks.}
+\label{task}
+    \vspace{-2mm}
+\end{table}
+
+\section{kNN Sensitivity}
+% \subsection{Influence of $k$}
+We show the sensitivity of SCCL to the number of $k$ in the kNN module (Figure \ref{knn}). We find that the performance of our model  fluctuates from 80.24\% to  80.28\% (a significantly small range) in our method, indicating  the representations in our model cluster well in the feature space and are robust to the hyper-parameter $k$.   But the performance in CL fluctuates more severely, ranging from 
+ 59.02\% to 60.12\%.  The best performance is achieved when $k=10$ and decreases with the increase of $k$, which means the representations drift significantly and the clusters become less reliable. The experiment demonstrates  the effectiveness of IRD regularization term and the memory replay 
+module in maintaining the representation distribution, and without them the representations drift significantly, suffering from the CF problem. 
+
+
+\begin{figure}[p]
+    % \centering
+    \includegraphics[width=0.95\hsize]{knn.pdf}
+    \caption{Test results with respect to different numbers of $k$  for Order 3.}
+    \label{knn}
+    \vspace{-4mm}
+\end{figure}    
+
+\end{document}

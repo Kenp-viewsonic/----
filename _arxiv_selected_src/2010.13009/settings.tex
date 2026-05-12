@@ -1,0 +1,204 @@
+\section{Experimental Settings}
+
+\subsection{Dataset: Multi-Domain Intent Detection}
+
+\begin{table}[t]
+  \begin{center}
+{\small
+    \begin{tabular}{l|r||r|r|r}
+
+                  & $N$ & Train & Dev. & Test \\ \hline
+    All domains   & 150 & 15,000 & 3,000 & 4,500 \\
+    Single domain & 15  & 1,500  & 300   & 450 \\
+    OOS           & -   & n/a    & 100   & 1,000 \\ \hline
+
+    \end{tabular}
+}
+    \caption{Dataset statistics. The number of the examples is equally distributed across the intent classes.}
+    %Where ``n/a'' indicates OOS examples are not used during the training stage.}
+    % \textcolor{red}{cite more papers why n/a?} \textcolor{blue}{because of ``out-of-distribution'' detection}
+    \label{tb:dataset}
+    \vspace{-1em}
+  \end{center}
+\end{table}
+
+We use a recently-released dataset, CLINC150,\footnote{\url{https://github.com/clinc/oos-eval}.} for multi-domain intent detection~\citep{oos-intent}.
+The CLINC150 dataset defines 150 types of intents in total (i.e., $N=150$), where there are 10 different domains and 15 intents for each of them.
+Table~\ref{tb:dataset} shows the dataset statistics.
+
+\paragraph{OOS evaluation examples}
+The dataset also provides OOS examples whose intents do not belong to any of the 150 intents.
+From the viewpoint of out-of-distribution detection~\citep{softmax_conf,acl-ood}, we do not use the OOS examples during the training stage; we only use the evaluation splits as in Table~\ref{tb:dataset}.
+
+\paragraph{Single-domain experiments}
+The task in the CLINC150 dataset is like handling many different services in a single system; that is, topically different intents are mixed (e.g., ``alarm'' in the ``Utility'' domain, and ``pay bill'' in the ``Banking'' domain).
+In contrast, it is also a reasonable setting to handle each domain (or service) separately as in \citet{google-schema-guided}.
+In addition to the all-domain experiment, we conduct single-domain experiments, where we only focus on a specific domain with its 15 intents (i.e., $N=15$).
+More specifically, we use four domains, ``Banking,'' ``Credit cards,'' ``Work,'' and ``Travel,'' among the ten domains.
+%\footnote{The domain split can be found in the Appendix of \citet{oos-intent}.}
+Note that the same OOS evaluation sets are used.
+
+
+\subsection{Evaluation Metrics}
+\label{subsection:evalMetrics}
+
+We follow \citet{oos-intent} to report in-domain accuracy, $\mathrm{Acc}_\mathrm{in}$, and OOS recall, $R_\mathrm{oos}$.
+These two metrics are defined as follows:
+\begin{equation}
+        \label{eq:two_metrics}
+        \mathrm{Acc}_\mathrm{in} = C_\mathrm{in}/N_\mathrm{in}, ~~~ R_\mathrm{oos} = C_\mathrm{oos}/N_\mathrm{oos}, \\
+\end{equation}
+where $C_\mathrm{in}$ is the number of correctly predicted in-domain intent examples, and $N_\mathrm{in}$ is the total number of the examples evaluated.
+This is analogous to the calculation of the OOS recall.
+
+\paragraph{Threshold selection}
+We use the uncertainty-based OOS detection, and therefore we need a way to set the threshold $T$.
+For each $T$ in $[0.0, 0.1, \ldots, 0.9, 1.0]$, we calculate a joint score $J_\mathrm{in\_oos}$ defined as follows:
+\begin{equation}
+\label{eq:joint_score}
+J_\mathrm{in\_oos} = \mathrm{Acc}_\mathrm{in} + R_\mathrm{oos},
+\end{equation}
+and select a threshold value to maximize the score on the development set.
+%\footnote{A note on this selection process is in Appendix~B.}
+There is a trade-off to be noted; the larger the value of $T$ is, the higher $R_\mathrm{oos}$ (and the lower $\mathrm{Acc}_\mathrm{in}$) we expect, because the models predict OOS more frequently.
+%[Check: quite confusing]}
+%The two extreme cases are $\mathrm{Acc}_\mathrm{in}=0.0$ ($R_\mathrm{oos}=1.0$) with $T=1.0$, and $R_\mathrm{oos}=0.0$ with $T=0.0$.
+
+\paragraph{Notes on $J_\mathrm{in\_oos}$}
+Our joint score $J_\mathrm{in\_oos}$ in Equation~(\ref{eq:joint_score}) gives the same weight to the two metrics, $\mathrm{Acc}_\mathrm{in}$ and $R_\mathrm{oos}$, compared to other combined metrics.
+For example, \citet{oos-intent} and \citet{tod-bert} used a joint accuracy score: 
+\begin{equation}
+\frac{C_\mathrm{in}+C_\mathrm{oos}}{N_\mathrm{in}+N_\mathrm{oos}} = \frac{\mathrm{Acc}_\mathrm{in} + r R_\mathrm{oos}}{1 + r},
+\end{equation}
+where $r=N_\mathrm{oos}/N_\mathrm{in}$ depends on the balance between $N_\mathrm{in}$ and $N_\mathrm{oos}$, and thus this combined metric can put much more weight on the in-domain accuracy when $N_\mathrm{in} \gg N_\mathrm{oos}$.
+Table~\ref{tb:dataset} shows $r=100/3000~(=0.0333)$ in the development set of the ``all domains'' setting, which underestimates the importance of $R_\mathrm{oos}$.
+Actually, the OOS recall scores in \citet{oos-intent} and \citet{tod-bert} are much lower than those with our RoBERTa classifier, and the trade-off with respect to the tuning process was not discussed.\footnote{When we refer to our RoBERTa classifier's scores $(A_\mathrm{in}, R_\mathrm{oos})=(92.9\pm0.2,~90.2\pm0.5)$ in Table~\ref{table:wholeDataset}, their corresponding scores are $(96.2,~52.3)$ and $(96.1,~46.3)$ in \citet{oos-intent} and \citet{tod-bert}, respectively.}
+
+
+
+We also report OOS precision and OOS F1 for more comprehensive evaluation:
+\begin{equation}
+    P_\mathrm{oos} = C_\mathrm{oos}/N'_\mathrm{oos}, ~~~ F_1 = H(P_\mathrm{oos}, R_\mathrm{oos}),
+\end{equation}
+where $N'_\mathrm{oos}$ is the number of examples predicted as OOS, and $H(\cdot, \cdot)$ is the harmonic mean.
+
+\if0
+\begin{equation}
+    \hspace{-0.5mm}
+    P_\mathrm{oos} = C_\mathrm{oos}/N'_\mathrm{oos}, ~ F1_\mathrm{oos} = H(P_\mathrm{oos}, R_\mathrm{oos}),
+\end{equation}
+\fi
+
+
+\subsection{Model Training and Configurations}
+\label{subsec:model_setting}
+
+We use RoBERTa (the {\tt base} configuration with $d=768$) as a BERT encoder for all the BERT/SBERT-based models in our experiments,\footnote{We use \url{https://github.com/huggingface/transformers} and \url{https://github.com/UKPLab/sentence-transformers}.}
+because RoBERTa performed significantly better and more stably than the original BERT in our few-shot experiments.
+We combine three NLI datasets, SNLI~\citep{snli}, MNLI~\citep{mnli}, and WNLI~\citep{wnli} from the GLUE benchmark~\citep{glue} to pre-train our proposed model.
+
+We apply label smoothing~\citep{label_smoothing_orig} to all the cross-entropy loss functions, which has been shown to improve the reliability of the model confidence~\citep{label_smoothing}.
+Experiments were conducted on single NVIDIA Tesla V100 GPU with 16GB memory.
+
+
+\paragraph{Sampling training examples}
+We conduct our experiments with $K=5, 10$ following the task definition in Section~\ref{subsec:task-def}.
+We randomly sample $K$ examples from the entire training sets in Table~\ref{tb:dataset}, for each in-domain intent class 10 times unless otherwise stated.
+We train a model with a consistent hyper-parameter setting across the 10 different runs and follow the threshold selection process based on a mean score for each threshold.
+We also report a standard deviation for each result.
+
+\begin{table*}[h]
+\centering
+\tiny
+\resizebox{1.0\linewidth}{!}{
+\begin{tabular}{lcccccccc}
+\hline
+\multicolumn{1}{l|}{}                 & \multicolumn{2}{c|}{\textbf{In-domain accuracy}}                                                 & \multicolumn{2}{c|}{\textbf{OOS recall}}                                                         & \multicolumn{2}{c|}{\textbf{OOS precision}}                                                      & \multicolumn{2}{c}{\textbf{OOS F1}}                                         \\
+\multicolumn{1}{l|}{\textbf{5-shot}}  & \textbf{Banking}                     & \multicolumn{1}{c|}{\textbf{Credit cards}}               & \textbf{Banking}                     & \multicolumn{1}{c|}{\textbf{Credit cards}}               & \textbf{Banking}                     & \multicolumn{1}{c|}{\textbf{Credit cards}}               & \textbf{Banking}                     & \textbf{Credit cards}               \\ \hline
+\multicolumn{1}{l|}{classifier}       & 79.7 $\pm$ 1.8          & \multicolumn{1}{c|}{79.9 $\pm$ 3.7}          & 93.3 $\pm$ 2.9          & \multicolumn{1}{c|}{93.3 $\pm$ 3.0}          & 92.5  $\pm$ 0.9         & \multicolumn{1}{c|}{93.6 $\pm$ 1.3}          & 92.9 $\pm$ 1.8          & 93.4 $\pm$ 1.6          \\
+\multicolumn{1}{l|}{classifier-EDA}   & 79.9 $\pm$ 3.0          & \multicolumn{1}{c|}{73.1 $\pm$ 5.0}          & 91.0 $\pm$ 2.6          & \multicolumn{1}{c|}{94.1 $\pm$ 2.6}          & 92.6  $\pm$ 1.5         & \multicolumn{1}{c|}{90.0 $\pm$ 1.7}          & 91.8 $\pm$ 1.9          & 92.0 $\pm$ 1.3          \\
+\multicolumn{1}{l|}{classifier-BT}    & 77.2  $\pm$ 2.8         & \multicolumn{1}{c|}{70.3 $\pm$ 4.4}          & 91.5 $\pm$ 2.4          & \multicolumn{1}{c|}{91.1 $\pm$ 1.8}          & 91.4 $\pm$ 1.2          & \multicolumn{1}{c|}{89.5 $\pm$ 1.8}          & 91.4 $\pm$ 1.4          & 90.3 $\pm$ 1.7          \\
+\multicolumn{1}{l|}{DNNC-scratch}      & 83.4 $\pm$ 1.9          & \multicolumn{1}{c|}{84.6 $\pm$ 3.2}          & 93.2 $\pm$ 2.7          & \multicolumn{1}{c|}{96.4 $\pm$ 1.0}          & 96.2 $\pm$ 0.9          & \multicolumn{1}{c|}{95.8 $\pm$ 1.1}          & 94.7 $\pm$ 1.2          & 96.1 $\pm$ 0.9          \\
+\multicolumn{1}{l|}{DNNC}    & \textbf{88.6 $\pm$ 1.3} & \multicolumn{1}{c|}{\textbf{90.5 $\pm$ 2.9}} & \textbf{94.7 $\pm$ 1.0} & \multicolumn{1}{c|}{\textbf{97.7 $\pm$ 1.1}} & \textbf{97.0 $\pm$ 0.3} & \multicolumn{1}{c|}{\textbf{97.8 $\pm$ 0.5}} & \textbf{95.9 $\pm$ 0.5} & \textbf{97.8 $\pm$ 0.6} \\ \hdashline
+\multicolumn{1}{l|}{classifier (50-shot)}       &   90.0 $\pm$ 1.4       & \multicolumn{1}{c|}{90.3 $\pm$ 1.4}          &     93.3 $\pm$ 1.1     & \multicolumn{1}{c|}{93.9 $\pm$ 1.2}          &     96.3 $\pm$ 0.6     & \multicolumn{1}{c|}{96.4 $\pm$ 0.6}          &    94.8  $\pm$ 0.7     &  95.1 $\pm$ 0.6        \\ \hline
+\multicolumn{1}{l|}{\textbf{5-shot}}  & \textbf{Work}                        & \multicolumn{1}{c|}{\textbf{Travel}}                      & \textbf{Work}                        & \multicolumn{1}{c|}{\textbf{Travel}}                      & \textbf{Work}                        & \multicolumn{1}{c|}{\textbf{Travel}}                      & \textbf{Work}                        & \textbf{Travel}                      \\ \hline
+\multicolumn{1}{l|}{classifier}       & 84.4 $\pm$ 1.9          & \multicolumn{1}{c|}{87.8 $\pm$ 2.5}          & 94.8 $\pm$ 1.6          & \multicolumn{1}{c|}{96.1 $\pm$ 0.9}          & 95.4 $\pm$ 0.7          & \multicolumn{1}{c|}{94.7 $\pm$ 1.0}          & 95.1 $\pm$ 0.9          & 95.4 $\pm$ 0.7          \\
+\multicolumn{1}{l|}{classifier-EDA}   & 80.5 $\pm$ 3.3          & \multicolumn{1}{c|}{88.2 $\pm$ 2.4}          & 95.2 $\pm$ 1.6          & \multicolumn{1}{c|}{94.6 $\pm$ 2.1}          & 92.8 $\pm$ 1.3          & \multicolumn{1}{c|}{94.9 $\pm$ 1.0}          & 94.0 $\pm$ 0.9          & 94.7 $\pm$ 0.9          \\
+\multicolumn{1}{l|}{classifier-BT}    & 80.3 $\pm$ 3.4          & \multicolumn{1}{c|}{90.8 $\pm$ 2.4}          & 94.4 $\pm$ 1.1          & \multicolumn{1}{c|}{92.3 $\pm$ 1.9}          & 93.1 $\pm$ 1.0          & \multicolumn{1}{c|}{95.9 $\pm$ 1.1}          & 93.8 $\pm$ 0.8          & 94.1 $\pm$ 1.3          \\
+\multicolumn{1}{l|}{DNNC-scratch}      & 83.2 $\pm$ 2.1          & \multicolumn{1}{c|}{87.8 $\pm$ 3.5}          & 96.3 $\pm$ 1.7          & \multicolumn{1}{c|}{94.9 $\pm$ 2.8}          & 96.7 $\pm$ 0.9          & \multicolumn{1}{c|}{94.9 $\pm$ 1.4}          & 96.5 $\pm$ 0.6          & 94.9 $\pm$ 0.9          \\
+\multicolumn{1}{l|}{DNNC}    & \textbf{89.9 $\pm$ 3.2} & \multicolumn{1}{c|}{\textbf{91.8 $\pm$ 1.6}} & \textbf{96.7 $\pm$ 1.1} & \multicolumn{1}{c|}{\textbf{96.4 $\pm$ 1.2}} & \textbf{97.9 $\pm$ 1.1} & \multicolumn{1}{c|}{\textbf{96.5 $\pm$ 0.7}} & \textbf{97.3 $\pm$ 0.5} & \textbf{96.5 $\pm$ 0.7} \\ \hdashline
+\multicolumn{1}{l|}{classifier (50-shot)}       &  94.3 $\pm$ 0.8      & \multicolumn{1}{c|}{97.0 $\pm$ 0.3}          &   95.2 $\pm$ 0.8       & \multicolumn{1}{c|}{92.6 $\pm$ 1.4}          &     97.7 $\pm$ 0.3     & \multicolumn{1}{c|}{98.6 $\pm$ 0.2}          &     96.5 $\pm$ 0.5     &    95.5 $\pm$ 0.8      \\ \hline
+                                      & \multicolumn{1}{l}{}                 & \multicolumn{1}{l}{}                                      & \multicolumn{1}{l}{}                 & \multicolumn{1}{l}{}                                      & \multicolumn{1}{l}{}                 & \multicolumn{1}{l}{}                                      & \textbf{}                            & \textbf{}                            \\ \hline
+\multicolumn{1}{l|}{}                 & \multicolumn{2}{c|}{\textbf{In-domain accuracy}}                                                 & \multicolumn{2}{c|}{\textbf{OOS recall}}                                                         & \multicolumn{2}{c|}{\textbf{OOS precision}}                                                      & \multicolumn{2}{c}{\textbf{OOS F1}}                                         \\
+\multicolumn{1}{l|}{\textbf{10-shot}} & \textbf{Banking}                     & \multicolumn{1}{c|}{\textbf{Credit cards}}               & \textbf{Banking}                     & \multicolumn{1}{c|}{\textbf{Credit cards}}               & \textbf{Banking}                     & \multicolumn{1}{c|}{\textbf{Credit cards}}               & \textbf{Banking}                     & \textbf{Credit cards}               \\ \hline
+\multicolumn{1}{l|}{classifier}       & 85.2 $\pm$ 1.3          & \multicolumn{1}{c|}{83.7 $\pm$ 2.1}          & 93.3 $\pm$ 1.0          & \multicolumn{1}{c|}{93.8 $\pm$ 1.4}          & 94.4 $\pm$ 0.5          & \multicolumn{1}{c|}{93.9 $\pm$ 0.9}          & 93.8 $\pm$ 0.6          & 93.8 $\pm$ 0.7          \\
+\multicolumn{1}{l|}{classifier-EDA}   & 82.5 $\pm$ 1.3          & \multicolumn{1}{c|}{79.3 $\pm$ 1.7}          & \textbf{95.9 $\pm$ 0.8} & \multicolumn{1}{c|}{96.8 $\pm$ 0.8}          & 93.3 $\pm$ 0.4          & \multicolumn{1}{c|}{92.3 $\pm$ 0.8}          & 94.6 $\pm$ 0.5          & 94.5 $\pm$ 0.3          \\
+\multicolumn{1}{l|}{classifier-BT}    & 82.2 $\pm$ 1.9          & \multicolumn{1}{c|}{82.9 $\pm$ 1.8}          & 94.9 $\pm$ 1.9          & \multicolumn{1}{c|}{89.3 $\pm$ 2.0}          & 93.1 $\pm$ 0.8          & \multicolumn{1}{c|}{94.3 $\pm$ 0.6}          & 94.0 $\pm$ 0.9         & 91.7 $\pm$ 1.2          \\
+\multicolumn{1}{l|}{DNNC-scratch}      & 89.6 $\pm$ 1.6          & \multicolumn{1}{c|}{92.1 $\pm$ 1.1}          & 92.1 $\pm$ 3.1          & \multicolumn{1}{c|}{94.8 $\pm$ 1.2}          & 97.5 $\pm$ 0.9          & \multicolumn{1}{c|}{\textbf{98.1 $\pm$ 0.4}} & 94.7 $\pm$ 1.5          & 96.4 $\pm$ 0.6          \\
+\multicolumn{1}{l|}{DNNC}    & \textbf{91.2 $\pm$ 1.1} & \multicolumn{1}{c|}{\textbf{92.1 $\pm$ 1.0}} & 94.8 $\pm$ 1.1          & \multicolumn{1}{c|}{\textbf{97.8 $\pm$ 0.8}} & \textbf{97.5 $\pm$ 0.4} & \multicolumn{1}{c|}{97.8 $\pm$ 0.3}          & \textbf{96.1 $\pm$ 0.6} & \textbf{97.8 $\pm$ 0.4} \\ \hdashline
+\multicolumn{1}{l|}{classifier (50-shot)}       &   90.0 $\pm$ 1.4       & \multicolumn{1}{c|}{90.3 $\pm$ 1.4}          &     93.3 $\pm$ 1.1     & \multicolumn{1}{c|}{93.9 $\pm$ 1.2}          &     96.3 $\pm$ 0.6     & \multicolumn{1}{c|}{96.4 $\pm$ 0.6}          &    94.8  $\pm$ 0.7     &  95.1 $\pm$ 0.6        \\ \hline
+\multicolumn{1}{l|}{\textbf{10-shot}} & \textbf{Work}                        & \multicolumn{1}{c|}{\textbf{Travel}}                      & \textbf{Work}                        & \multicolumn{1}{c|}{\textbf{Travel}}                      & \textbf{Work}                        & \multicolumn{1}{c|}{\textbf{Travel}}                      & \textbf{Work}                        & \textbf{Travel}                      \\ \hline
+\multicolumn{1}{l|}{classifier}       & 86.0 $\pm$ 2.2          & \multicolumn{1}{c|}{93.0 $\pm$ 1.2}          & 97.2 $\pm$ 0.7          & \multicolumn{1}{c|}{94.8 $\pm$ 0.9}          & 94.5 $\pm$ 0.8          & \multicolumn{1}{c|}{96.8 $\pm$ 0.6}          & 95.8 $\pm$ 0.3          & 95.8 $\pm$ 0.4          \\
+\multicolumn{1}{l|}{classifier-EDA}   & 86.4 $\pm$ 1.7          & \multicolumn{1}{c|}{93.0 $\pm$ 1.0}          & 97.0 $\pm$ 0.9          & \multicolumn{1}{c|}{95.2 $\pm$ 1.3}          & 94.7 $\pm$ 0.7          & \multicolumn{1}{c|}{96.9 $\pm$ 0.5}          & 95.8 $\pm$ 0.5          & 96.0 $\pm$ 0.6          \\
+\multicolumn{1}{l|}{classifier-BT}    & 83.7 $\pm$ 1.7          & \multicolumn{1}{c|}{91.9 $\pm$ 1.1}          & \textbf{97.4 $\pm$ 0.9} & \multicolumn{1}{c|}{\textbf{96.1 $\pm$ 0.8}} & 93.6 $\pm$ 0.7          & \multicolumn{1}{c|}{96.4 $\pm$ 0.5}          & 95.5 $\pm$ 0.6          & \textbf{96.2 $\pm$ 0.3} \\
+\multicolumn{1}{l|}{DNNC-scratch}      & 92.6 $\pm$ 1.7          & \multicolumn{1}{c|}{\textbf{96.4 $\pm$ 0.6}} & 94.1 $\pm$ 1.4          & \multicolumn{1}{c|}{84.8 $\pm$ 3.0}          & 98.4 $\pm$ 0.6          & \multicolumn{1}{c|}{\textbf{98.5 $\pm$ 0.3}} & 96.2 $\pm$ 0.8          & 91.1 $\pm$ 1.8          \\
+\multicolumn{1}{l|}{DNNC}    & \textbf{95.0 $\pm$ 1.0} & \multicolumn{1}{c|}{96.0 $\pm$ 0.8}          & 95.5 $\pm$ 0.9          & \multicolumn{1}{c|}{93.3 $\pm$ 1.9}          & \textbf{99.0 $\pm$ 0.4} & \multicolumn{1}{c|}{98.3 $\pm$ 0.4}          & \textbf{97.2 $\pm$ 0.5} & 95.7 $\pm$ 1.0          \\ \hdashline
+\multicolumn{1}{l|}{classifier (50-shot)}       &  94.3 $\pm$ 0.8      & \multicolumn{1}{c|}{97.0 $\pm$ 0.3}          &   95.2 $\pm$ 0.8       & \multicolumn{1}{c|}{92.6 $\pm$ 1.4}          &     97.7 $\pm$ 0.3     & \multicolumn{1}{c|}{98.6 $\pm$ 0.2}          &     96.5 $\pm$ 0.5     &    95.5 $\pm$ 0.8      \\ \hline
+\end{tabular}}\caption{Testing results on the four different domains.}
+\label{table:fourDomain}
+\vspace{1em}
+
+%\centering
+\tiny
+\resizebox{1.0\linewidth}{!}{
+\begin{tabular}{l|cl|cl|cl|cc}
+\hline
+                       & \multicolumn{2}{c|}{\textbf{In-domain accuracy}}                & \multicolumn{2}{c|}{\textbf{OOS recall}}                        & \multicolumn{2}{c|}{\textbf{OOS precision}}                     & \multicolumn{2}{c}{\textbf{OOS F1}}              \\
+                       & \textbf{5-shot}         & \multicolumn{1}{c|}{\textbf{10-shot}} & \textbf{5-shot}         & \multicolumn{1}{c|}{\textbf{10-shot}} & \textbf{5-shot}         & \multicolumn{1}{c|}{\textbf{10-shot}} & \textbf{5-shot}                      & \textbf{10-shot} \\ \cline{2-9} 
+classifier             & 77.7 $\pm$ 0.6          & 83.2 $\pm$ 0.6                        & \textbf{91.9 $\pm$ 1.1}          & \textbf{92.9 $\pm$ 0.8}               & 53.9 $\pm$ 0.8          & 58.2 $\pm$ 1.0                        & 68.0 $\pm$ 1.0          &      71.6 $\pm$ 0.8            \\
+USE+ConveRT             & 76.9 $\pm$ 0.7          &  82.6 $\pm$ 0.5                    & 90.7 $\pm$ 0.8        &    89.1  $\pm$  0.4        & 49.0 $\pm$ 0.8          &       55.1   $\pm$  0.7             & 63.6 $\pm$ 0.7          &   68.1 $\pm$ 0.6          \\
+DNNC          & \textbf{84.9 $\pm$ 0.8} & \textbf{91.6 $\pm$ 0.3}               & 90.1 $\pm$ 1.6 & 83.0 $\pm$ 2.0                        & \textbf{64.7 $\pm$ 2.5} & \textbf{81.4 $\pm$ 2.0}               &  \textbf{75.3 $\pm$ 2.0}        &   \textbf{82.1 $\pm$ 0.3}               \\ \hdashline
+classifier (full-shot) & \multicolumn{2}{c|}{92.9 $\pm$ 0.2}                & \multicolumn{2}{c|}{90.2 $\pm$ 0.5}                & \multicolumn{2}{c|}{76.7 $\pm$ 0.7}                & \multicolumn{2}{c}{82.9 $\pm$ 0.6}         \\
+USE+ConveRT (full-shot) & \multicolumn{2}{c|}{95.0 $\pm$ 0.1}                & \multicolumn{2}{c|}{64.6 $\pm$ 0.6}                & \multicolumn{2}{c|}{79.3 $\pm$ 0.7}                & \multicolumn{2}{c}{71.2 $\pm$ 0.5}         \\ \hline
+\end{tabular}}\caption{Testing results on the whole dataset (5 runs).}
+\label{table:wholeDataset}
+\vspace{-0.5em}
+
+\end{table*}
+
+\paragraph{Using the development set}
+We would not always have access to a large enough development set in the few-shot learning scenario.
+However, we still use the development set provided by the dataset to investigate the models' behaviors when changing hyper-parameters like the threshold. 
+
+\paragraph{Models compared}
+We list the models used in our experiments:
+
+\begin{itemize}
+\item{\bf Classifier baselines:}
+``Classifier'' is the RoBERTa-based classification model described in Section~\ref{subsec:classifier}.
+We further seek solid baselines by data augmentation.
+%\footnote{Details about the data augmentation configurations are described in our supplementary material.}
+``Classifier-EDA'' is the classifier trained with data augmentation techniques in \citet{eda}.
+``Classifier-BT'' is the classifier trained with back-translation data augmentation~\citep{qanet,backtrans-da} by using a transformer-based English$\leftrightarrow$German translation system~\citep{transformer}.
+
+\item{\bf Non-BERT classifier:}
+We also test a state-of-the-art fast embedding-based classifier, ``USE+ConveRT''~\citep{convert,efficient_intent}, in the ``all domains'' setting.
+\citet{efficient_intent} showed that the ``USE+ConveRT'' outperformed a BERT classifier on the CLINC150 dataset, while it was not evaluated along with the OOS detection task.
+We modified their original code\footnote{\url{https://github.com/connorbrinton/polyai-models/releases/tag/v1.0}.} to apply the uncertainty-based OOS detection.
+
+\item{\bf $k$NN baselines:\footnote{We tried weighted voting in \citet{knn-classifier}, but $k=1$ performed better in general.}}
+``Emb-$k$NN'' is the $k$NN method with S(Ro)BERT(a) described in Section~\ref{subsec:joint}, and ``Emb-$k$NN-vanilla'' is {\it without} using our intent training examples for fine-tuning.
+``TF-IDF-$k$NN'' is another $k$NN baseline using TF-IDF vectors, which tells us how well string matching performs on our task.
+We also implement a relation network~\citep{relation_net}, ``RN-$k$NN,'' to learn a similarity metric between the SRoBERTa embeddings, instead of using the cosine similarity.
+%\footnote{We also considered other baseline ideas by prototypical networks~\citep{proto-net,hierarchical-proto-net} with RoBERTa, but those did not outperform our simple Emb-$k$NN baseline.}
+
+\item{\bf Proposed method:\footnote{Our code will be available at \url{https://github.com/salesforce/DNNC-few-shot-intent}.}}
+``DNNC'' is our proposed method, and ``DNNC-scratch'' is {\it without} the NLI pre-training in Section~\ref{subsec:nli_transfer}.
+``DNNC-joint'' is our joint approach on top of top-$k$ retrieval by Emb-$k$NN (Section~\ref{subsec:joint}).
+
+\end{itemize}
+
+\noindent
+More details about the model training and the data augmentation configurations are described in  Appendix~\ref{training-details} and Appendix~\ref{data-augmentation}, respectively.
+%\footnote{All the code will be released in future.}
+

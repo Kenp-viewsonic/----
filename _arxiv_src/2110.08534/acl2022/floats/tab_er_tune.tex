@@ -1,0 +1,15 @@
+\begin{table}[]
+\centering
+\scalebox{0.66}{
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+$|M|$, k       & Chemprot & RCT   & ACL-ARC & SciERC & MLM-$D_{1,2}$ \\ \midrule
+$100k, 10$  & 82.73    & 79.98 & 72.50   & 81.64  & 1.737/1.857     \\
+$100k, 100$ & 82.06    & 78.64 & 71.97   & 81.62  & 1.599/1.789     \\
+$10M, 10$  & 82.87    & 79.98 & 71.80   & 81.63  & 1.438/1.732     \\ \bottomrule
+\end{tabular}
+}
+\caption{\small Downstream task and MLM performance of $f_T$ under different memory sizes $|M|$ and the frequency of replay $k$ (replaying every $k$ steps of training) in ER.}
+\label{tab:er_tune}
+\vspace{-0.2cm}
+\end{table}

@@ -1,0 +1,347 @@
+\begin{thebibliography}{49}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Ba et~al.(2016)Ba, Kiros, and Hinton}]{ba2016layer}
+Jimmy~Lei Ba, Jamie~Ryan Kiros, and Geoffrey~E Hinton. 2016.
+\newblock Layer normalization.
+\newblock \emph{arXiv preprint arXiv:1607.06450}.
+
+\bibitem[{Bengio et~al.(2003)Bengio, Ducharme, Vincent, and
+  Jauvin}]{bengio2003neural}
+Yoshua Bengio, R{\'e}jean Ducharme, Pascal Vincent, and Christian Jauvin. 2003.
+\newblock A neural probabilistic language model.
+\newblock \emph{Journal of machine learning research}, 3(Feb):1137--1155.
+
+\bibitem[{Brown et~al.(2020)Brown, Mann, Ryder, Subbiah, Kaplan, Dhariwal,
+  Neelakantan, Shyam, Sastry, Askell et~al.}]{brown2020language}
+Tom~B Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla
+  Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell,
+  et~al. 2020.
+\newblock Language models are few-shot learners.
+\newblock \emph{arXiv preprint arXiv:2005.14165}.
+
+\bibitem[{Budzianowski et~al.(2018)Budzianowski, Wen, Tseng, Casanueva, Stefan,
+  Osman, and Ga{\v{s}}i\'c}]{budzianowski2018large}
+Pawe{\l} Budzianowski, Tsung-Hsien Wen, Bo-Hsiang Tseng, I{\~n}igo Casanueva,
+  Ultes Stefan, Ramadan Osman, and Milica Ga{\v{s}}i\'c. 2018.
+\newblock Multiwoz - a large-scale multi-domain wizard-of-oz dataset for
+  task-oriented dialogue modelling.
+\newblock In \emph{Proceedings of the 2018 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}.
+
+\bibitem[{Byrne et~al.(2020)Byrne, Krishnamoorthi, Ganesh, and
+  Kale}]{byrne2020tickettalk}
+Bill Byrne, Karthik Krishnamoorthi, Saravanan Ganesh, and Mihir~Sanjay Kale.
+  2020.
+\newblock Tickettalk: Toward human-level performance with end-to-end,
+  transaction-based dialog systems.
+\newblock \emph{arXiv preprint arXiv:2012.12458}.
+
+\bibitem[{Byrne et~al.(2019)Byrne, Krishnamoorthi, Sankar, Neelakantan,
+  Duckworth, Yavuz, Goodrich, Dubey, Kim, and
+  Cedilnik}]{byrne-etal-2019-taskmaster}
+Bill Byrne, Karthik Krishnamoorthi, Chinnadhurai Sankar, Arvind Neelakantan,
+  Daniel Duckworth, Semih Yavuz, Ben Goodrich, Amit Dubey, Kyu-Young Kim, and
+  Andy Cedilnik. 2019.
+\newblock Taskmaster-1:toward a realistic and diverse dialog dataset.
+\newblock In \emph{2019 Conference on Empirical Methods in Natural Language
+  Processing and 9th International Joint Conference on Natural Language
+  Processing}, Hong Kong.
+
+\bibitem[{Chaudhry et~al.(2018)Chaudhry, Ranzato, Rohrbach, and
+  Elhoseiny}]{chaudhry2018efficient}
+Arslan Chaudhry, Marc'Aurelio Ranzato, Marcus Rohrbach, and Mohamed Elhoseiny.
+  2018.
+\newblock Efficient lifelong learning with a-gem.
+\newblock \emph{arXiv preprint arXiv:1812.00420}.
+
+\bibitem[{Chen and Liu(2018)}]{chen2018lifelong}
+Zhiyuan Chen and Bing Liu. 2018.
+\newblock Lifelong machine learning.
+\newblock \emph{Synthesis Lectures on Artificial Intelligence and Machine
+  Learning}, 12(3):1--207.
+
+\bibitem[{Chuang et~al.(2020)Chuang, Su, and Chen}]{chuang2020lifelong}
+Yung-Sung Chuang, Shang-Yu Su, and Yun-Nung Chen. 2020.
+\newblock Lifelong language knowledge distillation.
+\newblock \emph{arXiv preprint arXiv:2010.02123}.
+
+\bibitem[{d'Autume et~al.(2019)d'Autume, Ruder, Kong, and
+  Yogatama}]{d2019episodic}
+Cyprien de~Masson d'Autume, Sebastian Ruder, Lingpeng Kong, and Dani Yogatama.
+  2019.
+\newblock Episodic memory in lifelong language learning.
+\newblock \emph{arXiv preprint arXiv:1906.01076}.
+
+\bibitem[{De~Lange et~al.(2019)De~Lange, Aljundi, Masana, Parisot, Jia,
+  Leonardis, Slabaugh, and Tuytelaars}]{de2019continual}
+Matthias De~Lange, Rahaf Aljundi, Marc Masana, Sarah Parisot, Xu~Jia,
+  Ale{\v{s}} Leonardis, Gregory Slabaugh, and Tinne Tuytelaars. 2019.
+\newblock A continual learning survey: Defying forgetting in classification
+  tasks.
+\newblock \emph{arXiv preprint arXiv:1909.08383}.
+
+\bibitem[{Fan et~al.(2020)Fan, Urbanek, Ringshia, Dinan, Qian, Karamcheti,
+  Prabhumoye, Kiela, Rockt{\"a}schel, Szlam et~al.}]{fan2020generating}
+Angela Fan, Jack Urbanek, Pratik Ringshia, Emily Dinan, Emma Qian, Siddharth
+  Karamcheti, Shrimai Prabhumoye, Douwe Kiela, Tim Rockt{\"a}schel, Arthur
+  Szlam, et~al. 2020.
+\newblock Generating interactive worlds with text.
+\newblock In \emph{AAAI}, pages 1693--1700.
+
+\bibitem[{Fernando et~al.(2017)Fernando, Banarse, Blundell, Zwols, Ha, Rusu,
+  Pritzel, and Wierstra}]{fernando2017pathnet}
+Chrisantha Fernando, Dylan Banarse, Charles Blundell, Yori Zwols, David Ha,
+  Andrei~A Rusu, Alexander Pritzel, and Daan Wierstra. 2017.
+\newblock Pathnet: Evolution channels gradient descent in super neural
+  networks.
+\newblock \emph{arXiv preprint arXiv:1701.08734}.
+
+\bibitem[{Han et~al.(2020)Han, Dai, Gao, Lin, Liu, Li, Sun, and
+  Zhou}]{han2020continual}
+Xu~Han, Yi~Dai, Tianyu Gao, Yankai Lin, Zhiyuan Liu, Peng Li, Maosong Sun, and
+  Jie Zhou. 2020.
+\newblock Continual relation learning via episodic memory activation and
+  reconsolidation.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 6429--6440.
+
+\bibitem[{He et~al.(2019)He, Liu, Cho, Ott, Liu, Glass, and Peng}]{he2019mix}
+Tianxing He, Jun Liu, Kyunghyun Cho, Myle Ott, Bing Liu, James Glass, and
+  Fuchun Peng. 2019.
+\newblock Mix-review: Alleviate forgetting in the pretrain-finetune framework
+  for neural language generation models.
+\newblock \emph{arXiv preprint arXiv:1910.07117}.
+
+\bibitem[{Hinton and Zemel(1994)}]{hinton1994autoencoders}
+Geoffrey~E Hinton and Richard~S Zemel. 1994.
+\newblock Autoencoders, minimum description length and helmholtz free energy.
+\newblock In \emph{Advances in neural information processing systems}, pages
+  3--10.
+
+\bibitem[{Hosseini-Asl et~al.(2020)Hosseini-Asl, McCann, Wu, Yavuz, and
+  Socher}]{hosseini2020simple}
+Ehsan Hosseini-Asl, Bryan McCann, Chien-Sheng Wu, Semih Yavuz, and Richard
+  Socher. 2020.
+\newblock A simple language model for task-oriented dialogue.
+\newblock \emph{arXiv preprint arXiv:2005.00796}.
+
+\bibitem[{Houlsby et~al.(2019)Houlsby, Giurgiu, Jastrzebski, Morrone,
+  De~Laroussilhe, Gesmundo, Attariyan, and Gelly}]{houlsby2019parameter}
+Neil Houlsby, Andrei Giurgiu, Stanislaw Jastrzebski, Bruna Morrone, Quentin
+  De~Laroussilhe, Andrea Gesmundo, Mona Attariyan, and Sylvain Gelly. 2019.
+\newblock Parameter-efficient transfer learning for nlp.
+\newblock \emph{arXiv preprint arXiv:1902.00751}.
+
+\bibitem[{Hu et~al.(2020)Hu, Sener, Sha, and Koltun}]{hu2020drinking}
+Hexiang Hu, Ozan Sener, Fei Sha, and Vladlen Koltun. 2020.
+\newblock Drinking from a firehose: Continual learning with web-scale natural
+  language.
+\newblock \emph{arXiv preprint arXiv:2007.09335}.
+
+\bibitem[{Kale and Rastogi(2020)}]{kale2020few}
+Mihir Kale and Abhinav Rastogi. 2020.
+\newblock Few-shot natural language generation by rewriting templates.
+\newblock \emph{arXiv preprint arXiv:2004.15006}.
+
+\bibitem[{Kirkpatrick et~al.(2017)Kirkpatrick, Pascanu, Rabinowitz, Veness,
+  Desjardins, Rusu, Milan, Quan, Ramalho, Grabska-Barwinska
+  et~al.}]{kirkpatrick2017overcoming}
+James Kirkpatrick, Razvan Pascanu, Neil Rabinowitz, Joel Veness, Guillaume
+  Desjardins, Andrei~A Rusu, Kieran Milan, John Quan, Tiago Ramalho, Agnieszka
+  Grabska-Barwinska, et~al. 2017.
+\newblock Overcoming catastrophic forgetting in neural networks.
+\newblock \emph{Proceedings of the national academy of sciences},
+  114(13):3521--3526.
+
+\bibitem[{Lee(2017)}]{lee2017toward}
+Sungjin Lee. 2017.
+\newblock Toward continual learning for conversational agents.
+\newblock \emph{arXiv preprint arXiv:1712.09943}.
+
+\bibitem[{Lei et~al.(2018)Lei, Jin, Kan, Ren, He, and Yin}]{lei2018sequicity}
+Wenqiang Lei, Xisen Jin, Min-Yen Kan, Zhaochun Ren, Xiangnan He, and Dawei Yin.
+  2018.
+\newblock Sequicity: Simplifying task-oriented dialogue systems with single
+  sequence-to-sequence architectures.
+\newblock In \emph{Proceedings of the 56th Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pages 1437--1447.
+
+\bibitem[{Li et~al.(2019{\natexlab{a}})Li, He, Zhou, and Yu}]{li2019evaluate}
+Lu~Li, Zhongheng He, Xiangyang Zhou, and Dianhai Yu. 2019{\natexlab{a}}.
+\newblock How to evaluate the next system: Automatic dialogue evaluation from
+  the perspective of continual learning.
+\newblock \emph{arXiv preprint arXiv:1912.04664}.
+
+\bibitem[{Li et~al.(2019{\natexlab{b}})Li, Zhou, Wu, Socher, and
+  Xiong}]{li2019learn}
+Xilai Li, Yingbo Zhou, Tianfu Wu, Richard Socher, and Caiming Xiong.
+  2019{\natexlab{b}}.
+\newblock Learn to grow: A continual structure learning framework for
+  overcoming catastrophic forgetting.
+\newblock \emph{arXiv preprint arXiv:1904.00310}.
+
+\bibitem[{Li et~al.(2019{\natexlab{c}})Li, Zhao, Church, and
+  Elhoseiny}]{li2019compositional}
+Yuanpeng Li, Liang Zhao, Kenneth Church, and Mohamed Elhoseiny.
+  2019{\natexlab{c}}.
+\newblock Compositional language continual learning.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Liu and Mei(2020)}]{liu2020lifelong}
+Bing Liu and Chuhe Mei. 2020.
+\newblock Lifelong knowledge learning in rule-based dialogue systems.
+\newblock \emph{arXiv preprint arXiv:2011.09811}.
+
+\bibitem[{Liu et~al.(2019)Liu, Ungar, and Sedoc}]{liu2019continual}
+Tianlin Liu, Lyle Ungar, and Jo{\~a}o Sedoc. 2019.
+\newblock Continual learning for sentence representations using conceptors.
+\newblock \emph{arXiv preprint arXiv:1904.09187}.
+
+\bibitem[{Lopez-Paz and Ranzato(2017)}]{lopez2017gradient}
+David Lopez-Paz and Marc'Aurelio Ranzato. 2017.
+\newblock Gradient episodic memory for continual learning.
+\newblock In \emph{Advances in neural information processing systems}, pages
+  6467--6476.
+
+\bibitem[{Mallya et~al.(2018)Mallya, Davis, and Lazebnik}]{mallya2018piggyback}
+Arun Mallya, Dillon Davis, and Svetlana Lazebnik. 2018.
+\newblock Piggyback: Adapting a single network to multiple tasks by learning to
+  mask weights.
+\newblock In \emph{Proceedings of the European Conference on Computer Vision
+  (ECCV)}, pages 67--82.
+
+\bibitem[{McCann et~al.(2018)McCann, Keskar, Xiong, and
+  Socher}]{mccann2018natural}
+Bryan McCann, Nitish~Shirish Keskar, Caiming Xiong, and Richard Socher. 2018.
+\newblock The natural language decathlon: Multitask learning as question
+  answering.
+\newblock \emph{arXiv preprint arXiv:1806.08730}.
+
+\bibitem[{McCloskey and Cohen(1989)}]{mccloskey1989catastrophic}
+Michael McCloskey and Neal~J Cohen. 1989.
+\newblock Catastrophic interference in connectionist networks: The sequential
+  learning problem.
+\newblock In \emph{Psychology of learning and motivation}, volume~24, pages
+  109--165. Elsevier.
+
+\bibitem[{Mi et~al.(2020)Mi, Chen, Zhao, Huang, and Faltings}]{mi2020continual}
+Fei Mi, Liangwei Chen, Mengjie Zhao, Minlie Huang, and Boi Faltings. 2020.
+\newblock Continual learning for natural language generation in task-oriented
+  dialog systems.
+\newblock \emph{arXiv preprint arXiv:2010.00910}.
+
+\bibitem[{Mundt et~al.(2020)Mundt, Hong, Pliushch, and
+  Ramesh}]{mundt2020wholistic}
+Martin Mundt, Yong~Won Hong, Iuliia Pliushch, and Visvanathan Ramesh. 2020.
+\newblock A wholistic view of continual learning with deep neural networks:
+  Forgotten lessons and the bridge to active and open world learning.
+\newblock \emph{arXiv preprint arXiv:2009.01797}.
+
+\bibitem[{Papineni et~al.(2002)Papineni, Roukos, Ward, and
+  Zhu}]{papineni-etal-2002-bleu}
+Kishore Papineni, Salim Roukos, Todd Ward, and Wei-Jing Zhu. 2002.
+\newblock \href {https://doi.org/10.3115/1073083.1073135} {{B}leu: a method for
+  automatic evaluation of machine translation}.
+\newblock In \emph{Proceedings of the 40th Annual Meeting of the Association
+  for Computational Linguistics}, pages 311--318, Philadelphia, Pennsylvania,
+  USA. Association for Computational Linguistics.
+
+\bibitem[{Parisi et~al.(2019)Parisi, Kemker, Part, Kanan, and
+  Wermter}]{parisi2019continual}
+German~I Parisi, Ronald Kemker, Jose~L Part, Christopher Kanan, and Stefan
+  Wermter. 2019.
+\newblock Continual lifelong learning with neural networks: A review.
+\newblock \emph{Neural Networks}, 113:54--71.
+
+\bibitem[{Peng et~al.(2020)Peng, Li, Li, Shayandeh, Liden, and
+  Gao}]{peng2020soloist}
+Baolin Peng, Chunyuan Li, Jinchao Li, Shahin Shayandeh, Lars Liden, and
+  Jianfeng Gao. 2020.
+\newblock Soloist: Few-shot task-oriented dialog with a single pre-trained
+  auto-regressive model.
+\newblock \emph{arXiv preprint arXiv:2005.05298}.
+
+\bibitem[{Rastogi et~al.(2019)Rastogi, Zang, Sunkara, Gupta, and
+  Khaitan}]{rastogi2019towards}
+Abhinav Rastogi, Xiaoxue Zang, Srinivas Sunkara, Raghav Gupta, and Pranav
+  Khaitan. 2019.
+\newblock Towards scalable multi-domain conversational agents: The
+  schema-guided dialogue dataset.
+\newblock \emph{arXiv preprint arXiv:1909.05855}.
+
+\bibitem[{Rusu et~al.(2016)Rusu, Rabinowitz, Desjardins, Soyer, Kirkpatrick,
+  Kavukcuoglu, Pascanu, and Hadsell}]{rusu2016progressive}
+Andrei~A Rusu, Neil~C Rabinowitz, Guillaume Desjardins, Hubert Soyer, James
+  Kirkpatrick, Koray Kavukcuoglu, Razvan Pascanu, and Raia Hadsell. 2016.
+\newblock Progressive neural networks.
+\newblock \emph{arXiv preprint arXiv:1606.04671}.
+
+\bibitem[{Shuster et~al.(2020)Shuster, Urbanek, Dinan, Szlam, and
+  Weston}]{shuster2020deploying}
+Kurt Shuster, Jack Urbanek, Emily Dinan, Arthur Szlam, and Jason Weston. 2020.
+\newblock Deploying lifelong open-domain dialogue learning.
+\newblock \emph{arXiv preprint arXiv:2008.08076}.
+
+\bibitem[{Sprechmann et~al.(2018)Sprechmann, Jayakumar, Rae, Pritzel, Badia,
+  Uria, Vinyals, Hassabis, Pascanu, and Blundell}]{sprechmann2018memory}
+Pablo Sprechmann, Siddhant~M Jayakumar, Jack~W Rae, Alexander Pritzel,
+  Adria~Puigdomenech Badia, Benigno Uria, Oriol Vinyals, Demis Hassabis, Razvan
+  Pascanu, and Charles Blundell. 2018.
+\newblock Memory-based parameter adaptation.
+\newblock \emph{arXiv preprint arXiv:1802.10542}.
+
+\bibitem[{Sun et~al.(2019)Sun, Ho, and Lee}]{sun2019lamol}
+Fan-Keng Sun, Cheng-Hao Ho, and Hung-Yi Lee. 2019.
+\newblock Lamol: Language modeling for lifelong language learning.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Thrun and Pratt(2012)}]{thrun2012learning}
+Sebastian Thrun and Lorien Pratt. 2012.
+\newblock \emph{Learning to learn}.
+\newblock Springer Science \& Business Media.
+
+\bibitem[{Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones,
+  Gomez, Kaiser, and Polosukhin}]{vaswani2017attention}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N Gomez, {\L}ukasz Kaiser, and Illia Polosukhin. 2017.
+\newblock Attention is all you need.
+\newblock In \emph{Advances in neural information processing systems}, pages
+  5998--6008.
+
+\bibitem[{Wang et~al.(2020)Wang, Mehta, P{\'o}czos, and
+  Carbonell}]{wang2020efficient}
+Zirui Wang, Sanket~Vaibhav Mehta, Barnab{\'a}s P{\'o}czos, and Jaime Carbonell.
+  2020.
+\newblock Efficient meta lifelong-learning with limited memory.
+\newblock \emph{arXiv preprint arXiv:2010.02500}.
+
+\bibitem[{Wen et~al.(2015)Wen, Gasic, Mrksic, Su, Vandyke, and
+  Young}]{wen2015semantically}
+Tsung-Hsien Wen, Milica Gasic, Nikola Mrksic, Pei-Hao Su, David Vandyke, and
+  Steve Young. 2015.
+\newblock Semantically conditioned lstm-based natural language generation for
+  spoken dialogue systems.
+\newblock \emph{arXiv preprint arXiv:1508.01745}.
+
+\bibitem[{Wortsman et~al.(2020)Wortsman, Ramanujan, Liu, Kembhavi, Rastegari,
+  Yosinski, and Farhadi}]{wortsman2020supermasks}
+Mitchell Wortsman, Vivek Ramanujan, Rosanne Liu, Aniruddha Kembhavi, Mohammad
+  Rastegari, Jason Yosinski, and Ali Farhadi. 2020.
+\newblock Supermasks in superposition.
+\newblock \emph{Advances in Neural Information Processing Systems}, 33.
+
+\bibitem[{Wu et~al.(2019)Wu, Madotto, Hosseini-Asl, Xiong, Socher, and
+  Fung}]{wu2019transferable}
+Chien-Sheng Wu, Andrea Madotto, Ehsan Hosseini-Asl, Caiming Xiong, Richard
+  Socher, and Pascale Fung. 2019.
+\newblock Transferable multi-domain state generator for task-oriented dialogue
+  systems.
+\newblock \emph{arXiv preprint arXiv:1905.08743}.
+
+\bibitem[{Yoon et~al.(2017)Yoon, Yang, Lee, and Hwang}]{yoon2017lifelong}
+Jaehong Yoon, Eunho Yang, Jeongtae Lee, and Sung~Ju Hwang. 2017.
+\newblock Lifelong learning with dynamically expandable networks.
+\newblock \emph{arXiv preprint arXiv:1708.01547}.
+
+\end{thebibliography}

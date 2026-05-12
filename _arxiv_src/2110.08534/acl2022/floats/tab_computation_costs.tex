@@ -1,0 +1,25 @@
+\begin{table*}[]
+\centering
+\scalebox{0.70}{
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Method                                     & \#. of Forward & \#. of Backward & \#. Total   & \#. Total ($k$=10) & \ Wall Time$_{4k}$ \\ \midrule
+\textit{Main results}                      &                          &                            &            &      &     \\
+Sequential PT                              & $b$                      & $b$                        & $2b$       & $2b$   &  $4.0\times 10^4$ sec.  \\
+ER                                         & $(1+1/k)b$               & $(1+1/k)b$                 & $(2+2/k)b$ & $2.2b$ & $4.2\times 10^4$ sec.  \\
+Logit-Distill                              & $(2+2/k)b$               & $(1+1/k)b$                 & $(3+3/k)b$ & $3.3b$ &  $6.9\times 10^4$ sec.  \\
+SEED-Logit-Distill                         & $(3+3/k)b$               & $(2+2/k)b$                 & $(5+5/k)b$ & $5.5b$  & $9.7\times 10^4$ sec.\\
+\midrule
+\textit{Additional Controlled Experiments} &                          &                            &            &        &  \\
+Sequential PT$_{b^\prime=1.2b}$                     & $1.2b$                   & $1.2b$                     & $2.4b$     & $2.4b$  &  $4.4 \times 10^4$ sec. \\
+%Sequential PT$_{b^\prime=1.65b}$                     & $1.65b$                   & $1.65b$                     & $3.3b$     & $3.3b$  &   \\
+ER$_{k=5}$   & $1.2b$                   & $1.2b$                     & $2.4b$     & $2.4b$  &  $4.4 \times 10^4$ sec.  \\
+Sparse Logit-KD                            & $1.3b$                  & $1.1b$                    & $2.4b$     & $2.4b$  & $4.4 \times 10^4$ sec.  \\
+Sparse SEED-Logit-KD$_{\backslash contrast}$         & $1.3b$                  & $1.1b$                    & $2.4b$     & $2.4b$  &  $4.8 \times 10^4$ sec. \\ \bottomrule
+\end{tabular}
+}
+\caption{Number of forward and backward passes over PTLMs and wall clock time of different approaches. The number of forward and backwards passes are computed over visits of $b$ batches from the training data stream, where $k$ is the frequency of replay. The wall clock time is calculated over 4$k$ steps of training (which is the number of training steps of a single domain in the Research Paper stream) excluding the first domain, as no replay or distillation happens while learning the first domain. In the additional controlled experiments (described in~Appendix.~\ref{apdx:controlled_computation_costs}), we control the total number of forward and backward passes of different approaches. %This also yields approximately the same wall clock time for approaches.
+}
+\label{tab:forward_backward_count}
+\end{table*}
+

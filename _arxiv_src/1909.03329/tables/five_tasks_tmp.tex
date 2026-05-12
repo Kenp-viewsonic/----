@@ -1,0 +1,34 @@
+\begin{table}[]
+\centering
+    \begin{tabular}{lccccccccc}
+    \toprule
+    {} &  finetune &   mas &  0.05 &  tag-0.05 &  real-0.05 &   0.2 &  tag-0.2 &  real-0.2 &  multitask \\
+    \midrule
+    squad1  &     35.75 & 40.05 & 55.65 &     56.33 &      64.70 & 58.22 &    61.87 &     68.68 &      76.93 \\
+    wikisql &      1.21 &  1.45 & 50.38 &     59.57 &      65.06 & 64.13 &    64.40 &     66.99 &      72.71 \\
+    sst     &     75.56 & 62.38 & 89.51 &     88.96 &      91.21 & 89.79 &    90.50 &     90.83 &      89.95 \\
+    srl     &     59.68 & 58.09 & 67.78 &     67.07 &      67.11 & 68.27 &    69.49 &     69.08 &      69.98 \\
+    woz.en  &     85.42 & 85.36 & 84.81 &     85.42 &      84.63 & 85.05 &    85.42 &     84.45 &      73.03 \\
+    Ave.    &     51.52 & 49.46 & 69.63 &     71.47 &      74.54 & 73.09 &    74.33 &     76.01 &      76.52 \\
+    \bottomrule
+    \end{tabular}
+    \caption{The result that different training manner test on each tasks' testing dataset after the last task has been trained. The boundaries of each task are clear in this set-up. For the column names, finetune, mas and multitask are corresponding to fine-tune, mas and multitask manner; 0.05 and 0.2 represent the percentage of previous tasks' (pseudo) data are generated for new tasks; "tag" means the manner assigns a specific tag for representing each task. "real" means keep true sample for new tasks.}
+\label{tab:bound-model-to-tasks}
+\end{table}
+
+\begin{table}[]
+    \centering
+\begin{tabular}{lccccccccc}
+\toprule
+{} & finetune &     mas &    0.05 & tag-0.05 & real-0.05 &     0.2 & tag-0.2 & real-0.2 \\
+\midrule
+squad1  &        - &       - &       - &        - &         - &       - &       - &        - \\
+wikisql &  -41.68\% & -49.95\% &  -8.61\% &   -8.61\% &    -4.61\% &  -7.24\% &  -8.05\% &   -3.36\% \\
+sst     &  -86.63\% & -84.40\% & -23.07\% &  -18.14\% &   -10.22\% & -14.86\% & -13.65\% &   -6.93\% \\
+srl     &  -28.95\% & -27.86\% & -22.32\% &  -21.39\% &   -12.21\% & -19.67\% & -14.43\% &   -8.82\% \\
+woz.en  &  -53.32\% & -48.07\% & -27.83\% &  -26.95\% &   -16.10\% & -24.51\% & -19.59\% &  -10.91\% \\
+\bottomrule
+    \end{tabular}
+    \caption{The result shows how much performance testing on SQuAD drops during training procedure for each manner. The boundaries of each task are clear. At the moment a task (excluding SQuAd itself) has been trained to converge, the model is used to test the SQuAd dataset. For the column names, finetune, mas and multitask are corresponding to fine-tune, mas and multitask manner; 0.05 and 0.2 represent the percentage of previous tasks' (pseudo) data are generated for new tasks; "tag" means the manner assigns a specific tag for representing each task. "real" means keep true sample for new tasks.}
+    \label{tab:bound-squad-forget}
+\end{table}

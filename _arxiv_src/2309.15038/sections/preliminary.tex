@@ -1,0 +1,67 @@
+\begin{table*}[t]
+% \renewcommand\tabcolsep{1pt}
+\centering
+\caption{The characteristics of the proxy-based and contrastive-based replay manners.}
+\vspace{-2ex}
+\label{table:characteristics}
+\begin{tabular}{l|l|l|l|l}
+\hline
+Replay Manner  & Classifier     & Pairs of Loss      & Advantages  & Disadvantages \\ \hline
+Proxy-based     & Softmax          & All Anchor-to-proxy Pairs          & \makecell[l]{Fast Convergence\\Stable}  & \makecell[l]{Bias\\Incomplete Semantic Knowledge}  \\\hline
+Contrastive-based     & NCM          & Selective Anchor-to-sample Pairs          & \makecell[l]{Avoid Bias\\Complete Semantic Knowledge}  & \makecell[l]{Slow Convergence\\Unstable}  \\\hline
+\end{tabular}
+\vspace{-4ex}
+\end{table*}
+
+\section{Background}
+\label{sec:preliminary}
+\subsection{Online Continual Learning} 
+OCL divides a data stream into a sequence of learning tasks as $\mathcal{D}=\{\mathcal{D}_t\}_{t=1}^T$, where $\mathcal{D}_t=\{\mathcal{X}_t\times \mathcal{Y}_t,\mathcal{C}_t\}$ contains the samples $\mathcal{X}_t$, corresponding labels $\mathcal{Y}_t$, and task-specific classes $\mathcal{C}_t$. Different tasks have no overlap in the classes. All of learned classes are denoted as $\mathcal{C}_{1:t}=\bigcup_{k=1}^t \mathcal{C}_k$. The neural network is made up of a feature extractor $\bm{z}=h(\bm{x};\bm{\Phi})$ and a softmax (proxy-based) classifier $\bm{o}=f(\bm{z};\bm{W})=[o_c]_{c=1}^{\mathcal{C}_{1:t}}$~\cite{hou2019learning}, where $o_c=\langle\bm{z},\bm{w}_c\rangle/\tau$ is the $i$th dimension value of $\bm{o}$, $\langle\cdot,\cdot\rangle$ is the cosine similarity, $\tau$ is a scale factor and $\bm{W}=[\bm{w}_1,\bm{w}_2,...,\bm{w}_c]$ contains trainable proxies of all classes. The categorical probability that sample $\bm{x}$ belongs to class $y$ is
+\begin{equation}
+    \label{eq:probability}
+	p_y=\frac{exp(o_y)}{\sum_{c\in\mathcal{C}_{1:t}}exp(o_c)}.
+\end{equation}
+Generally, the model learns each mini-batch current samples ${\mathcal{B}\subset\mathcal{D}_t}$ by the following loss function
+\begin{equation}
+    \label{eq:oclloss}
+	L=E_{(\bm{x},y)\sim{\mathcal{B}}}[-log(p_y)].
+\end{equation}
+In this case, the model can learn new classes well and forget old classes, resulting in the forgetting problem. To mitigate the forgetting, existing replay-based methods replay part of previous samples in two ways.
+
+First, the proxy-based replay manners (such as ER~\cite{rolnick2019experience}) select a mini-batch of previous samples $\mathcal{B}_\mathcal{M}\subset\mathcal{M}$ to calculate proxy-based loss by
+\begin{equation}
+\label{eq:erloss}
+\begin{split}
+L_{ER}=E_{(\bm{x},y)\sim{\mathcal{B}\cup\mathcal{B}_\mathcal{M}}}[-log(\frac{exp(o_y)}{\sum_{c\in{\mathcal{C}_{1:t}}}exp(o_c)})],
+\end{split}
+\end{equation}
+where $\mathcal{M}$ is a memory buffer to store part of previous samples. And it predicts unknown instances by a softmax classifier  
+\begin{equation}
+\label{eq:test}
+ 	\begin{split}
+	 	y^* = \mathop{\arg\max}_{c}p_c,c\in C_{1:t}.
+ 	\end{split}
+\end{equation}
+Moreover, other proxy-based replay manners~\cite{ahn2021ss,caccia2021new} improve ER by selecting part of anchor-to-proxy pairs to calculate the objective function. Although effective, they can easily hurt the model's generalization ability to learn new classes.
+
+Second, the contrastive-based replay manners (such as SCR~\cite{mai2021supervised}) replay $\mathcal{B}_\mathcal{M}\subset\mathcal{M}$ using a contrastive-based loss
+\begin{equation}\small
+\begin{split}
+    \label{eq:scrloss}   
+L_{PCR}=E_{(\bm{x},y)\sim{\mathcal{B}}\cup\mathcal{B}_\mathcal{M}}
+    [\frac{-1}{|\mathcal{P}|}\sum_{p\in \mathcal{P}}
+    log\frac{exp(\langle \bm{z},\bm{z}_p\rangle/\tau)}{\sum_{j\in {\mathcal{J}}}exp(\langle \bm{z},\bm{z}_j\rangle/\tau)}].
+\end{split}
+\end{equation} 
+Different from the proxy-based loss, the selected pairs rely on the number of samples in a training batch. And it inferences by an NCM classifier
+\begin{equation}
+ 	\begin{split}
+	 	y^* = \mathop{\arg\min}_{c}\Vert\bm{z}-\bm{\mu}_c\Vert,c\in C_{1:t},
+ 	\end{split}
+\end{equation}
+To obtain the classification centers $\bm{\mu}_c$ of all classes, it has to compute the embeddings of all samples in the memory buffer before each inferring. Due to the high complexity of training, its effect is unstable and the convergence speed is slow.
+
+
+
+
+

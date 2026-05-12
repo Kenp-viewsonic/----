@@ -1,0 +1,91 @@
+\section{Results and Analysis}
+% Results and Analysis}
+\label{sec:results_f}
+
+% \subsection{State-of-art non-contextual NLU model}
+%\paragraph{Results:}
+Table~\ref{tab:non_context_results} shows the performance of our non-contextual model on two datasets, \pretty{ATIS} and \pretty{Snips}. As shown, we obtain a \textbf{new SOTA} for IC on both the datasets.\footnote{Since we compute token-level F1, SL performance is not compared to results reported in previous work} We hypothesize that the high performance is due to the utterance-level position-aware multi-dimensional self-attention.% for an utterance. % \subsection{High performing Context Aware Self-Attentive NLU model}
+
+As shown in Table \ref{tab:saca_results}, \pretty{Casa-nlu} model outperforms non-contextual NLU on both the Booking and Cable datasets. Further, \pretty{Casa-nlu} model significantly \textbf{outperforms} \pretty{Cgru-nlu} on the Cable dataset by 7.26\% on IC accuracy and 5.31\% on SL F1 absolute, respectively. We believe the reason for strong performance yielded by the \pretty{Casa-nlu} model is due to its multi-dimensional nature, where we learn different weights for different dimensions within the context feature vector ${\mathbf{T}_i}$. This enables the model to learn different attention distributions for different contextual signals leading to more robust modeling compared to \pretty{Cgru-nlu} model. Table \ref{tab:saca_divided_results} gives further breakdown of the results by showing performance on
+%switch (Sw)
+first
+vs. follow-up turns in a dialogue. For the more challenging follow-up turns, \pretty{Casa-nlu} yields significant gains over the baseline IC performance.
+
+\begin{table}
+\small
+\begin{center}
+\setlength\tabcolsep{4.4pt} 
+\begin{tabular}{@{}lcccc@{}}
+\hline
+\bf Model & \multicolumn{1}{@{}c@{}}{\bf \pretty{ATIS}} & \multicolumn{1}{@{}c@{}}{\bf \pretty{Snips}} \\
+\hline
+%  & F1_{IC} & F1_{IC} \\
+% \hline
+  \specialcell[c]{RNN-LSTM*  \cite{hakkani2016multi}}  & 92.6 & 96.9 \\
+  \specialcell[c]{Atten.-BiRNN* \cite{joint_ic_sl}} & 91.1 & 96.7\\
+  \specialcell[c]{LSTM+attn+gates \cite{Goo2018SlotGatedMF}}  & 94.1 & 97.0 \\
+  \specialcell[c]{Capsules Neural Network \cite{zhang2018joint}}  & 95.0 & 97.7 \\
+  \hline
+  \pretty{Nc-nlu} (ours) & \textbf{95.4} & \textbf{98.4} \\
+\hline
+\end{tabular}
+\end{center}
+%\vspace{-7pt}
+\caption {Average IC accuracy scores (\%) on non-contextual datasets. *: as reported in \cite{Goo2018SlotGatedMF}}
+\label{tab:non_context_results}
+%\vspace{-10pt}
+\end{table}
+
+\begin{table}
+\small
+\begin{center}
+\setlength\tabcolsep{11.5pt} 
+\begin{tabular}{@{}lcccc@{}}
+\hline
+\bf Model & \multicolumn{2}{@{}c@{}}{\bf Booking} & \multicolumn{2}{@{}c@{}}{\bf Cable} \\
+\hline
+% & Acc_{IC} & F1_{SL} & Acc_{IC} & F1_{SL} \\
+ & IC & SL & IC & SL \\
+\hline
+ \pretty{Nc-nlu} & 91.11 & 88.21 & 44.98 & 27.34 \\
+  \pretty{Cgru-nlu} & 94.86 & 88.47 & 66.68  & 51.58 \\
+  \hline
+  \pretty{Casa-nlu} & \textbf{95.16}  & \textbf{88.80}  & \textbf{73.94}  & \textbf{56.97} \\
+\hline
+\end{tabular}
+\end{center}
+%\vspace{-7pt}
+\caption {IC accuracy and SL F1 scores (\%) for the three models \pretty{Nc-nlu}, \pretty{Cgru-nlu}, \pretty{Casa-nlu} on the 2 contextual datasets - {Booking} and {Cable}.}
+%\caption {F1 scores (\%) for IC and SL for the three models \pretty{Nc-nlu}, \pretty{Cgru-nlu}, \pretty{Casa-nlu} on the 2 contextual datasets, {Booking} and {Cable}.}
+%. \textit{non-contextual} and \textit{gru-contextual} are the baselines and \textit{\pretty{Casa-Nlu}} is our proposed model}
+%\vspace{-10pt}
+\label{tab:saca_results}
+\end{table}
+
+
+%CASA NLU gets gains over followup turns that the non-contextual models are unable to predict correctly.
+\begin{table}[ht]
+\small
+\begin{center}
+\setlength\tabcolsep{11.5pt} 
+\begin{tabular}{@{}lcccc@{}}
+\hline
+\bf Model & \multicolumn{2}{@{}c@{}}{\bf Booking} & \multicolumn{2}{@{}c@{}}{\bf Cable} \\
+\hline
+& Ft & FU & Ft & FU \\
+% & F1_{Ft} & F1_{FU} & F1_{Ft} & F1_{FU} \\
+\hline
+  \pretty{Nc-Nlu}& 95.67 & 89.51 & 40.35 & 48.33 \\
+  \pretty{Cgru-Nlu} & 98.93 & 94.24 & 46.6  & 72.22 \\
+  \hline
+  \pretty{Casa-Nlu} & \textbf{99.70}  & \textbf{94.45}  & \textbf{47.44}  & \textbf{81.25} \\
+\hline
+\end{tabular}
+\end{center}
+%\vspace{-7pt}
+\caption {IC accuracy scores (\%) on first (Ft) and follow-up (FU) turns in contextual datasets - {Booking} and {Cable}.}
+\label{tab:saca_divided_results}
+%\vspace{-10pt}
+\end{table}
+
+

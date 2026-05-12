@@ -1,0 +1,31 @@
+[
+  {
+    "link": "https://www.arxiv.org/abs/2601.07006",
+    "title": "LLM Performance Predictors: Learning When to Escalate in Hybrid Human-AI Moderation Systems",
+    "publish_time": "20260111",
+    "authors": [
+      "Or Bachar",
+      "Or Levi",
+      "Sardhendu Mishra",
+      "Adi Levi",
+      "Manpreet Singh Minhas",
+      "Justin Miller",
+      "Omer Ben-Porat",
+      "Eilon Sheetrit",
+      "Jonathan Morra"
+    ],
+    "abstract": "As LLMs are increasingly integrated into human-in-the-loop content moderation systems, a central challenge is deciding when their outputs can be trusted versus when escalation for human review is preferable. We propose a novel framework for supervised LLM uncertainty quantification, learning a dedicated meta-model based on LLM Performance Predictors (LPPs) derived from LLM outputs: log-probabilities, entropy, and novel uncertainty attribution indicators. We demonstrate that our method enables cost-aware selective classification in real-world human-AI workflows: escalating high-risk cases while automating the rest. Experiments across state-of-the-art LLMs, including both off-the-shelf (Gemini, GPT) and open-source (Llama, Qwen), on multimodal and multilingual moderation tasks, show significant improvements over existing uncertainty estimators in accuracy-cost trade-offs. Beyond uncertainty estimation, the LPPs enhance explainability by providing new insights into failure conditions (e.g., ambiguous content vs. under-specified policy). This work establishes a principled framework for uncertainty-aware, scalable, and responsible human-AI moderation workflows.",
+    "score": 0.8659771680831909
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2402.12237",
+    "title": "Learning to Defer in Content Moderation: The Human-AI Interplay",
+    "publish_time": "20240219",
+    "authors": [
+      "Thodoris Lykouris",
+      "Wentao Weng"
+    ],
+    "abstract": "Successful content moderation in online platforms relies on a human-AI collaboration approach. A typical heuristic estimates the expected harmfulness of a post and uses fixed thresholds to decide whether to remove it and whether to send it for human review. This disregards the prediction uncertainty, the time-varying element of human review capacity and post arrivals, and the selective sampling in the dataset (humans only review posts filtered by the admission algorithm). In this paper, we introduce a model to capture the human-AI interplay in content moderation. The algorithm observes contextual information for incoming posts, makes classification and admission decisions, and schedules posts for human review. Only admitted posts receive human reviews on their harmfulness. These reviews help educate the machine-learning algorithms but are delayed due to congestion in the human review system. The classical learning-theoretic way to capture this human-AI interplay is via the framework of learning to defer, where the algorithm has the option to defer a classification task to humans for a fixed cost and immediately receive feedback. Our model contributes to this literature by introducing congestion in the human review system. Moreover, unlike work on online learning with delayed feedback where the delay in the feedback is exogenous to the algorithm's decisions, the delay in our model is endogenous to both the admission and the scheduling decisions. We propose a near-optimal learning algorithm that carefully balances the classification loss from a selectively sampled dataset, the idiosyncratic loss of non-reviewed posts, and the delay loss of having congestion in the human review system. To the best of our knowledge, this is the first result for online learning in contextual queueing systems and hence our analytical framework may be of independent interest.",
+    "score": 0.5306175351142883
+  }
+]

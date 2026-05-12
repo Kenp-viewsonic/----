@@ -1,0 +1,42 @@
+\begin{table}[]
+\centering
+\scalebox{0.607}{
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Years                  & 2018 $(D_3)$              & 2020 $(D_4)$              & \begin{tabular}[c]{@{}c@{}}2014 $(D_1)$ \\ $\to$ 2020 $(D_4)$\end{tabular} & \begin{tabular}[c]{@{}c@{}}2016 $(D_2)$\\ $\to$ 2020 $(D_4)$\end{tabular} \\ \midrule
+\multicolumn{5}{c}{Hashtag Prediction}                                                                   \\ \midrule
+RoBERTa-base           & 48.08$_{\pm 1.0}$ & 56.42$_{\pm 0.2}$  & 39.31$_{\pm 2.7}$ & 42.23$_{\pm 2.7}$ \\
+Sequential PT          & 56.79$_{\pm 0.5}$ & 59.85$_{\pm 0.4}$  & 44.00$_{\pm 1.1}$ & 49.87$_{\pm 1.8}$ \\
+ER                     & 56.93$_{\pm 0.1}$ & 59.56$_{\pm 1.7}$  & 43.31$_{\pm 0.2}$ & 50.72$_{\pm 0.6}$ \\
+%Adapter                & 54.34$_{\pm1.7}$  & 59.01$_{\pm 1.0 }$ & 42.61$_{\pm 0.5}$ & 48.00$_{\pm 1.6}$ \\
+Logit-KD               & \textbf{58.21$_{\pm 0.5}$} & 60.52$_{\pm 0.2}$  & 44.26$_{\pm 0.9}$ & 50.92$_{\pm 0.8}$ \\
+%Rep-KD                 & 55.79$_{\pm 1.4}$ & 59.80$_{\pm 0.2}$  & 42.48$_{\pm 0.2}$ & 50.38$_{\pm 1.5}$ \\
+Contrast-KD            & 57.94$_{\pm 0.4}$ & 59.54$_{\pm 0.3}$  & 45.22$_{\pm 0.1}$ & \textbf{52.14$_{\pm 1.1}$} \\
+SEED-KD                & 56.87$_{\pm 0.2}$ & 59.71$_{\pm 0.2}$  & 43.39$_{\pm 0.4}$ & 49.62$_{\pm 1.0}$ \\
+SEED-Logit-KD          & 57.75$_{\pm 0.4}$ & \textbf{60.74$_{\pm 0.6}$}  & \textbf{45.35$_{\pm 0.6}$} & 51.56$_{\pm 0.7}$ \\  \midrule
+Task-Specific (2014)   & 56.16$_{\pm 0.6}$ & 59.59$_{\pm 0.3}$  & 44.34$_{\pm 0.6}$ & 49.26$_{\pm 0.7}$ \\
+Task-Specific (Latest) & 56.61$_{\pm 0.4}$ & 59.87$_{\pm 0.6}$  & 43.44$_{\pm 0.5}$ & 49.41$_{\pm 1.1}$ \\
+MTL                    & 57.89$_{\pm 0.4}$ & 59.95$_{\pm 0.3}$  & 44.04$_{\pm 0.3}$ & 50.37$_{\pm 0.3}$ \\
+\midrule
+\multicolumn{5}{c}{Emoji Prediction}                                                                     \\ \midrule
+RoBERTa-base           & 25.71$_{\pm 0.1}$ & 24.42$_{\pm 0.2}$  & 12.02$_{\pm 0.4}$ & 13.24$_{\pm 0.2}$ \\
+Sequential PT          & 29.30$_{\pm 0.1}$ & 27.69$_{\pm 0.1}$  & 14.20$_{\pm 0.2}$ & 16.08$_{\pm 1.4}$ \\
+ER                     & 29.50$_{\pm 0.1}$ & 27.75$_{\pm 0.1}$  & 14.36$_{\pm 0.4}$ & 16.82$_{\pm 0.3}$ \\
+%Adapter                & 28.72$_{\pm 0.0}$ & 26.80$_{\pm 0.3}$  & 13.53$_{\pm 0.2}$ & 15.68$_{\pm 0.3}$ \\
+Logit-KD               & 29.77$_{\pm 0.1}$ & 27.80$_{\pm 0.1}$  & 14.20$_{\pm 0.3}$ & 16.28$_{\pm 1.1}$ \\
+%Rep-KD                 & 29.45$_{\pm 0.1}$ & 27.27$_{\pm 0.2}$  & 13.89$_{\pm 0.1}$ & 16.03$_{\pm 0.3}$ \\
+Contrast-KD            & 29.48$_{\pm 0.2}$ & 27.72$_{\pm 0.3}$  & \textbf{14.42$_{\pm 0.3}$} & \textbf{17.52$_{\pm 0.1}$} \\
+SEED-KD                & \textbf{30.12$_{\pm 0.1}$} & 27.66$_{\pm 0.1}$  & 14.36$_{\pm 0.1}$ & 16.97$_{\pm 0.4}$ \\
+SEED-Logit-KD          & 29.98$_{\pm 0.1}$ & \textbf{27.84$_{\pm 0.2}$}  & 14.36$_{\pm 0.1}$ & 16.97$_{\pm 0.3}$ \\ \midrule
+Task-Specific (2014)   & 28.94$_{\pm 0.0}$ & 26.98$_{\pm 0.2}$  & 13.39$_{\pm 0.2}$ & 15.14$_{\pm 0.2}$ \\
+Task-Specific (Latest) & 29.06$_{\pm 0.2}$ & 27.19$_{\pm 0.1}$  & 13.00$_{\pm 0.2}$ & 14.48$_{\pm 0.3}$ \\
+MTL                    & 29.52$_{\pm 0.2}$ & 27.47$_{\pm 0.0}$  & 14.07$_{\pm 0.2}$ & 16.64$_{\pm0.2}$   \\  \bottomrule
+\end{tabular}
+}
+\caption{\small \textbf{Results on temporal data stream.} We show fine-tuning performance over years 2018 and 2020 ($D_3$, $D_4$) and the Temporal generalization from 2014 or 2016 to 2020 data ($D_1\to D_4$, $D_2 \to D_4$) on Twitter Hashtag and Emoji prediction datasets. Models are fine-tuned from the final pre-trained model $f_T$. We include full results on other years ($D_1$, $D_2$, $D_3 \to D_4$) in Appendix~\ref{apdx:full_tweet_results}.
+%\texttt{Year 1}$\to$\texttt{Year 2} indicates the hashtag prediction model is fine-tuned on data in year \texttt{Year 1}, and evaluated on test data in \texttt{Year 2}.
+}
+\label{tab:twitter}
+\end{table}

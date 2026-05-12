@@ -1,0 +1,660 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{MVCV20}
+
+\bibitem[ABB{\etalchar{+}}22]{Avadhanula2022}
+Vashist Avadhanula, Omar~Abdul Baki, Hamsa Bastani, Osbert Bastani, Caner Gocmen, Daniel Haimovich, Darren Hwang, Dima Karamshuk, Thomas~J. Leeper, Jiayuan Ma, Gregory Macnamara, Jake Mullett, Christopher Palow, Sung Park, Varun~S. Rajagopal, Kevin Schaeffer, Parikshit Shah, Deeksha Sinha, Nicol{\'{a}}s~Stier Moses, and Peng Xu.
+\newblock Bandits for online calibration: An application to content moderation on social media platforms.
+\newblock 2022.
+
+\bibitem[AD16]{AgrawalD16}
+Shipra Agrawal and Nikhil~R. Devanur.
+\newblock Linear contextual bandits with knapsacks.
+\newblock In {\em Annual Conference on Neural Information Processing Systems 2016}, pages 3450--3458, 2016.
+
+\bibitem[AD19]{agrawal2019bandits}
+Shipra Agrawal and Nikhil~R Devanur.
+\newblock Bandits with global convex constraints and objective.
+\newblock {\em Operations Research}, 67(5):1486--1502, 2019.
+
+\bibitem[ADL16]{AgrawalDL16}
+Shipra Agrawal, Nikhil~R. Devanur, and Lihong Li.
+\newblock An efficient algorithm for contextual bandits with knapsacks, and an extension to concave objectives.
+\newblock In {\em the 29th Conference on Learning Theory, {COLT}}, 2016.
+
+\bibitem[AGP{\etalchar{+}}23]{ahani2023dynamic}
+Narges Ahani, Paul G{\"o}lz, Ariel~D Procaccia, Alexander Teytelboym, and Andrew~C Trapp.
+\newblock Dynamic placement in refugee resettlement.
+\newblock {\em Operations Research}, 2023.
+
+\bibitem[APS11]{Abbasi-YadkoriPS11}
+Yasin Abbasi{-}Yadkori, D{\'{a}}vid P{\'{a}}l, and Csaba Szepesv{\'{a}}ri.
+\newblock Improved algorithms for linear stochastic bandits.
+\newblock In {\em 25th Annual Conference on Neural Information Processing Systems 2011}, pages 2312--2320, 2011.
+
+\bibitem[AS23]{adler2023bayesian}
+Saghar Adler and Vijay Subramanian.
+\newblock Bayesian learning of optimal policies in markov decision processes with countably infinite state-space.
+\newblock {\em arXiv preprint arXiv:2306.02574}, 2023.
+
+\bibitem[AZ09]{argon2009priority}
+Nilay~Tan{\i}k Argon and Serhan Ziya.
+\newblock Priority assignment under imperfect information on customer type identities.
+\newblock {\em Manufacturing \& Service Operations Management}, 11(4):674--693, 2009.
+
+\bibitem[BBS21]{bastani2021improving}
+Hamsa Bastani, Osbert Bastani, and Wichinpong~Park Sinchaisri.
+\newblock Improving human decision-making with machine learning.
+\newblock {\em arXiv preprint arXiv:2108.08454}, 2021.
+
+\bibitem[BDL{\etalchar{+}}20]{BrantleyDLMSSS20}
+Kiant{\'{e}} Brantley, Miroslav Dud{\'{\i}}k, Thodoris Lykouris, Sobhan Miryoosefi, Max Simchowitz, Aleksandrs Slivkins, and Wen Sun.
+\newblock Constrained episodic reinforcement learning in concave-convex and knapsack settings.
+\newblock In {\em Annual Conference on Neural Information Processing Systems, NeurIPS 2020}, 2020.
+
+\bibitem[BKR{\etalchar{+}}01]{borodin2001adversarial}
+Allan Borodin, Jon Kleinberg, Prabhakar Raghavan, Madhu Sudan, and David~P Williamson.
+\newblock Adversarial queuing theory.
+\newblock {\em Journal of the ACM (JACM)}, 48(1):13--38, 2001.
+
+\bibitem[BKS18]{badanidiyuru2018bandits}
+Ashwinkumar Badanidiyuru, Robert Kleinberg, and Aleksandrs Slivkins.
+\newblock Bandits with knapsacks.
+\newblock {\em Journal of the ACM (JACM)}, 65(3):1--55, 2018.
+
+\bibitem[BLM13]{boucheron2013concentration}
+St{\'e}phane Boucheron, G{\'a}bor Lugosi, and Pascal Massart.
+\newblock {\em Concentration inequalities: A nonasymptotic theory of independence}.
+\newblock Oxford university press, 2013.
+
+\bibitem[BLS14]{badanidiyuru2014resourceful}
+Ashwinkumar Badanidiyuru, John Langford, and Aleksandrs Slivkins.
+\newblock Resourceful contextual bandits.
+\newblock In {\em Conference on Learning Theory}, pages 1109--1134. PMLR, 2014.
+
+\bibitem[BM17]{brynjolfsson2017can}
+Erik Brynjolfsson and Tom Mitchell.
+\newblock What can machine learning do? workforce implications.
+\newblock {\em Science}, 358(6370):1530--1534, 2017.
+
+\bibitem[BP22]{bansak2020outcome}
+Kirk Bansak and Elisabeth Paulson.
+\newblock Outcome-driven dynamic refugee assignment with allocation balancing.
+\newblock In {\em The 23rd {ACM} Conference on Economics and Computation}, pages 1182--1183. {ACM}, 2022.
+
+\bibitem[BW08]{BartlettW08}
+Peter~L. Bartlett and Marten~H. Wegkamp.
+\newblock Classification with a reject option using a hinge loss.
+\newblock {\em J. Mach. Learn. Res.}, 9:1823--1840, 2008.
+
+\bibitem[BXZ23]{blanchet2023delay}
+Jose Blanchet, Renyuan Xu, and Zhengyuan Zhou.
+\newblock Delay-adaptive learning in generalized linear contextual bandits.
+\newblock {\em Mathematics of Operations Research}, 2023.
+
+\bibitem[BZ12]{besbes2012blind}
+Omar Besbes and Assaf Zeevi.
+\newblock Blind network revenue management.
+\newblock {\em Operations research}, 60(6):1537--1550, 2012.
+
+\bibitem[CBGO09]{cesa2009robust}
+Nicolo Cesa-Bianchi, Claudio Gentile, and Francesco Orabona.
+\newblock Robust bounds for classification via selective sampling.
+\newblock In {\em Proceedings of the 26th annual international conference on machine learning}, pages 121--128, 2009.
+
+\bibitem[cBi{\etalchar{+}}19]{dataset-civil}
+cjadams, Daniel Borkan, inversion, Jeffrey Sorensen, Lucas Dixon, Lucy Vasserman, and nithum.
+\newblock Jigsaw unintended bias in toxicity classification, 2019.
+\newblock Retrieved on June 21, 2025 from \url{https://www.kaggle.com/competitions/jigsaw-unintended-bias-in-toxicity-classification}.
+
+\bibitem[CDG{\etalchar{+}}18]{CortesDGMY18}
+Corinna Cortes, Giulia DeSalvo, Claudio Gentile, Mehryar Mohri, and Scott Yang.
+\newblock Online learning with abstention.
+\newblock In {\em Proceedings of the 35th International Conference on Machine Learning, {ICML}}, volume~80 of {\em Proceedings of Machine Learning Research}, pages 1067--1075. {PMLR}, 2018.
+
+\bibitem[CDM16]{CortesDM16a}
+Corinna Cortes, Giulia DeSalvo, and Mehryar Mohri.
+\newblock Learning with rejection.
+\newblock In {\em Algorithmic Learning Theory - 27th International Conference, {ALT}}, volume 9925 of {\em Lecture Notes in Computer Science}, pages 67--82, 2016.
+
+\bibitem[Cha14]{Chapelle14}
+Olivier Chapelle.
+\newblock Modeling delayed feedback in display advertising.
+\newblock In {\em The 20th {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining, {KDD} '14}, pages 1097--1105. {ACM}, 2014.
+
+\bibitem[Che19]{Cheung19}
+Wang~Chi Cheung.
+\newblock Regret minimization for reinforcement learning with vectorial feedback and complex objectives.
+\newblock In {\em Annual Conference on Neural Information Processing Systems, NeurIPS 2019}, pages 724--734, 2019.
+
+\bibitem[Cho57]{Chow57}
+C.~K. Chow.
+\newblock An optimum character recognition system using decision functions.
+\newblock {\em {IRE} Trans. Electron. Comput.}, 6(4):247--254, 1957.
+
+\bibitem[Cho70]{Chow70}
+C.~K. Chow.
+\newblock On optimum recognition error and reject tradeoff.
+\newblock {\em {IEEE} Trans. Inf. Theory}, 16(1):41--46, 1970.
+
+\bibitem[CJWS21]{choudhury2021job}
+Tuhinangshu Choudhury, Gauri Joshi, Weina Wang, and Sanjay Shakkottai.
+\newblock Job dispatching policies for queueing systems with unknown service rates.
+\newblock In {\em Proceedings of the Twenty-second International Symposium on Theory, Algorithmic Foundations, and Protocol Design for Mobile Networks and Mobile Computing}, pages 181--190, 2021.
+
+\bibitem[CLH23]{chen2023online}
+Xinyun Chen, Yunan Liu, and Guiyu Hong.
+\newblock Online learning and optimization for queues with unknown demand curve and service distribution.
+\newblock {\em arXiv preprint arXiv:2303.03399}, 2023.
+
+\bibitem[CLRS11]{ChuLRS11}
+Wei Chu, Lihong Li, Lev Reyzin, and Robert~E. Schapire.
+\newblock Contextual bandits with linear payoff functions.
+\newblock In {\em Proceedings of the Fourteenth International Conference on Artificial Intelligence and Statistics, {AISTATS} 2011}, 2011.
+
+\bibitem[CLS05]{Cesa-BianchiLS05}
+Nicol{\`{o}} Cesa{-}Bianchi, G{\'{a}}bor Lugosi, and Gilles Stoltz.
+\newblock Minimizing regret with label efficient prediction.
+\newblock {\em {IEEE} Trans. Inf. Theory}, 51(6):2152--2162, 2005.
+
+\bibitem[CMSS22]{CharusaieMSS22}
+Mohammad{-}Amin Charusaie, Hussein Mozannar, David~A. Sontag, and Samira Samadi.
+\newblock Sample efficient learning of predictors that complement humans.
+\newblock In {\em International Conference on Machine Learning, {ICML} 2022}, 2022.
+
+\bibitem[cSE{\etalchar{+}}17]{dataset-wiki}
+cjadams, Jeffrey Sorensen, Julia Elliott, Lucas Dixon, Mark McDonald, nithum, and Will Cukierski.
+\newblock Toxic comment classification challenge, 2017.
+\newblock Retrieved on May 9, 2025 from \url{https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge}.
+
+\bibitem[DCLT19]{devlin2019bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova.
+\newblock Bert: Pre-training of deep bidirectional transformers for language understanding.
+\newblock In {\em Proceedings of the 2019 conference of the North American chapter of the association for computational linguistics: human language technologies, volume 1 (long and short papers)}, pages 4171--4186, 2019.
+
+\bibitem[DFC20]{De-ArteagaFC20}
+Maria De{-}Arteaga, Riccardo Fogliato, and Alexandra Chouldechova.
+\newblock A case for humans-in-the-loop: Decisions in the presence of erroneous algorithmic scores.
+\newblock In {\em {CHI} Conference on Human Factors in Computing Systems}, pages 1--12. {ACM}, 2020.
+
+\bibitem[DGS12]{DekelGS12}
+Ofer Dekel, Claudio Gentile, and Karthik Sridharan.
+\newblock Selective sampling and active learning from single and multiple teachers.
+\newblock {\em J. Mach. Learn. Res.}, 13:2655--2697, 2012.
+
+\bibitem[DHK{\etalchar{+}}11]{DudikHKKLRZ11}
+Miroslav Dud{\'{\i}}k, Daniel~J. Hsu, Satyen Kale, Nikos Karampatziakis, John Langford, Lev Reyzin, and Tong Zhang.
+\newblock Efficient optimal learning for contextual bandits.
+\newblock In {\em Proceedings of the Twenty-Seventh Conference on Uncertainty in Artificial Intelligence}, pages 169--178. {AUAI} Press, 2011.
+
+\bibitem[DKGG20]{DeKGG20}
+Abir De, Paramita Koley, Niloy Ganguly, and Manuel Gomez{-}Rodriguez.
+\newblock Regression under human assistance.
+\newblock In {\em The Thirty-Fourth Conference on Artificial Intelligence, {AAAI} 2020}, pages 2611--2620. {AAAI} Press, 2020.
+
+\bibitem[DOZR21]{DeOZR21}
+Abir De, Nastaran Okati, Ali Zarezade, and Manuel~Gomez Rodriguez.
+\newblock Classification under human assistance.
+\newblock In {\em Thirty-Fifth Conference on Artificial Intelligence, {AAAI} 2021}, pages 5905--5913. {AAAI} Press, 2021.
+
+\bibitem[Dur19]{durrett2019probability}
+Rick Durrett.
+\newblock {\em Probability: theory and examples}, volume~49.
+\newblock Cambridge university press, 2019.
+
+\bibitem[Eub18]{eubanks2018automating}
+Virginia Eubanks.
+\newblock {\em Automating inequality: How high-tech tools profile, police, and punish the poor}.
+\newblock St. Martin's Press, 2018.
+
+\bibitem[EW10]{El-YanivW10}
+Ran El{-}Yaniv and Yair Wiener.
+\newblock On the foundations of noise-free selective classification.
+\newblock {\em J. Mach. Learn. Res.}, 2010.
+
+\bibitem[FHL22]{FuHL22}
+Hu~Fu, Qun Hu, and Jia'nan Lin.
+\newblock Stability of decentralized queueing networks beyond complete bipartite cases.
+\newblock In {\em Web and Internet Economics - 18th International Conference, {WINE}}, volume 13778 of {\em Lecture Notes in Computer Science}, pages 96--114. Springer, 2022.
+
+\bibitem[FLW23a]{FreundLW22}
+Daniel Freund, Thodoris Lykouris, and Wentao Weng.
+\newblock Efficient decentralized multi-agent learning in asymmetric bipartite queueing systems.
+\newblock {\em Operations Research}, 2023.
+
+\bibitem[FLW23b]{freund2023quantifying}
+Daniel Freund, Thodoris Lykouris, and Wentao Weng.
+\newblock The transient cost of learning in queueing systems.
+\newblock {\em arXiv preprint arXiv:2308.07817v3}, 2023.
+
+\bibitem[FM22]{fu2022optimal}
+Xinzhe Fu and Eytan Modiano.
+\newblock Optimal routing to parallel servers with unknown utilities—multi-armed bandit with queues.
+\newblock {\em IEEE/ACM Transactions on Networking}, 2022.
+
+\bibitem[FMGC24]{felicioniimportance}
+Nicol{\`o} Felicioni, Lucas Maystre, Sina Ghiassian, and Kamil Ciosek.
+\newblock On the importance of uncertainty in decision-making with large language models.
+\newblock {\em Transactions on Machine Learning Research}, 2024.
+
+\bibitem[FSW18]{ferreira2018online}
+Kris~Johnson Ferreira, David {Simchi-Levi}, and He~Wang.
+\newblock Online network revenue management using thompson sampling.
+\newblock {\em Operations research}, 66(6):1586--1602, 2018.
+
+\bibitem[GBB23]{ge2023rethinking}
+Haosen Ge, Hamsa Bastani, and Osbert Bastani.
+\newblock Rethinking fairness for human-ai collaboration.
+\newblock {\em arXiv:2310.03647}, 2023.
+
+\bibitem[GBK20]{gorwa2020algorithmic}
+Robert Gorwa, Reuben Binns, and Christian Katzenbach.
+\newblock Algorithmic content moderation: Technical and political challenges in the automation of platform governance.
+\newblock {\em Big Data \& Society}, 7(1):2053951719897945, 2020.
+
+\bibitem[Git23]{Github}
+Github.
+\newblock Github copilot, 2023.
+\newblock \url{https://github.com/features/copilot}. Accessed on December 19, 2023.
+
+\bibitem[GLSW25]{gocmen2025scheduling}
+Caner Gocmen, Thodoris Lykouris, Deeksha Sinha, and Wentao Weng.
+\newblock Scheduling with uncertain holding costs and its application to content moderation.
+\newblock {\em arXiv preprint arXiv:2505.21331}, 2025.
+
+\bibitem[GT23]{gaitonde2023price}
+Jason Gaitonde and {\'E}va Tardos.
+\newblock The price of anarchy of strategic queuing systems.
+\newblock {\em Journal of the ACM}, 2023.
+
+\bibitem[HGH23]{huang2023queue}
+Jiatai Huang, Leana Golubchik, and Longbo Huang.
+\newblock Queue scheduling with adversarial bandit learning.
+\newblock {\em arXiv preprint arXiv:2303.01745}, 2023.
+
+\bibitem[HN11]{huang2009delay}
+Longbo Huang and Michael~J. Neely.
+\newblock Delay reduction via lagrange multipliers in stochastic network optimization.
+\newblock {\em {IEEE} Trans. Autom. Control.}, 56(4):842--857, 2011.
+
+\bibitem[HU20]{detoxify}
+Laura Hanu and {Unitary team}.
+\newblock Detoxify.
+\newblock Github. https://github.com/unitaryai/detoxify, 2020.
+
+\bibitem[HXLB22]{hsu2022integrated}
+Wei-Kang Hsu, Jiaming Xu, Xiaojun Lin, and Mark~R Bell.
+\newblock Integrated online learning and adaptive control in queueing systems with uncertain payoffs.
+\newblock {\em Operations Research}, 70(2):1166--1181, 2022.
+
+\bibitem[JGS13]{JoulaniGS13}
+Pooria Joulani, Andr{\'{a}}s Gy{\"{o}}rgy, and Csaba Szepesv{\'{a}}ri.
+\newblock Online learning under delayed feedback.
+\newblock In {\em Proceedings of the 30th International Conference on Machine Learning, {ICML}}, volume~28, pages 1453--1461. JMLR.org, 2013.
+
+\bibitem[JKK21]{johari2021matching}
+Ramesh Johari, Vijay Kamble, and Yash Kanoria.
+\newblock Matching while learning.
+\newblock {\em Operations Research}, 69(2):655--681, 2021.
+
+\bibitem[JSS22a]{Jia0S22}
+Huiwen Jia, Cong Shi, and Siqian Shen.
+\newblock Online learning and pricing for network revenue management with reusable resources.
+\newblock In {\em NeurIPS}, 2022.
+
+\bibitem[JSS22b]{jia2022online}
+Huiwen Jia, Cong Shi, and Siqian Shen.
+\newblock Online learning and pricing for service systems with reusable resources.
+\newblock {\em Operations Research}, 2022.
+
+\bibitem[KAJS18]{krishnasamy2018learning}
+Subhashini Krishnasamy, Ari Arapostathis, Ramesh Johari, and Sanjay Shakkottai.
+\newblock On learning the c$\mu$ rule in single and parallel server networks.
+\newblock {\em arXiv preprint arXiv:1802.06723}, 2018.
+
+\bibitem[KLK21]{KeswaniLK21}
+Vijay Keswani, Matthew Lease, and Krishnaram Kenthapadi.
+\newblock Towards unbiased and accurate deferral to multiple experts.
+\newblock In {\em {AIES} '21: {AAAI/ACM} Conference on AI, Ethics, and Society}, pages 154--165. {ACM}, 2021.
+
+\bibitem[KLL{\etalchar{+}}18]{kleinberg2018human}
+Jon Kleinberg, Himabindu Lakkaraju, Jure Leskovec, Jens Ludwig, and Sendhil Mullainathan.
+\newblock Human decisions and machine predictions.
+\newblock {\em The quarterly journal of economics}, 133(1):237--293, 2018.
+
+\bibitem[KMT98]{kelly1998rate}
+Frank~P Kelly, Aman~K Maulloo, and David Kim~Hong Tan.
+\newblock Rate control for communication networks: shadow prices, proportional fairness and stability.
+\newblock {\em Journal of the Operational Research society}, 49:237--252, 1998.
+
+\bibitem[Kon14]{kontorovich2014concentration}
+Aryeh Kontorovich.
+\newblock Concentration in unbounded metric spaces and algorithmic stability.
+\newblock In {\em International conference on machine learning}, pages 28--36. PMLR, 2014.
+
+\bibitem[KSJS21]{KrishnasamySJS21}
+Subhashini Krishnasamy, Rajat Sen, Ramesh Johari, and Sanjay Shakkottai.
+\newblock Learning unknown service rates in queues: {A} multiarmed bandit approach.
+\newblock {\em Oper. Res.}, 69(1):315--330, 2021.
+
+\bibitem[LCLS10]{LiCLS10}
+Lihong Li, Wei Chu, John Langford, and Robert~E. Schapire.
+\newblock A contextual-bandit approach to personalized news article recommendation.
+\newblock In {\em Proceedings of the 19th International Conference on World Wide Web, {WWW} 2010}, pages 661--670. {ACM}, 2010.
+
+\bibitem[LJWX23]{li2023experimenting}
+Shuangning Li, Ramesh Johari, Stefan Wager, and Kuang Xu.
+\newblock Experimenting under stochastic congestion.
+\newblock {\em arXiv preprint arXiv:2302.12093}, 2023.
+
+\bibitem[LLL22]{lebovitz2022engage}
+Sarah Lebovitz, Hila {Lifshitz-Assaf}, and Natalia Levina.
+\newblock To engage or not to engage with ai for critical judgments: How professionals deal with opacity when using ai for medical diagnosis.
+\newblock {\em Organization Science}, 33(1):126--148, 2022.
+
+\bibitem[LLSY21]{LiuLSY21}
+Xin Liu, Bin Li, Pengyi Shi, and Lei Ying.
+\newblock An efficient pessimistic-optimistic algorithm for stochastic linear bandits with general constraints.
+\newblock In {\em Annual Conference on Neural Information Processing Systems}, pages 24075--24086, 2021.
+
+\bibitem[LLWS11]{LiLWS11}
+Lihong Li, Michael~L. Littman, Thomas~J. Walsh, and Alexander~L. Strehl.
+\newblock Knows what it knows: a framework for self-aware learning.
+\newblock {\em Mach. Learn.}, 82(3):399--443, 2011.
+
+\bibitem[LM18]{liang2018minimizing}
+Qingkai Liang and Eytan Modiano.
+\newblock Minimizing queue length regret under adversarial network models.
+\newblock {\em Proceedings of the ACM on Measurement and Analysis of Computing Systems}, 2(1):1--32, 2018.
+
+\bibitem[LNZ24]{lee2024design}
+Jiung Lee, Hongseok Namkoong, and Yibo Zeng.
+\newblock Design and scheduling of an ai-based queueing system.
+\newblock {\em arXiv preprint arXiv:2406.06855}, 2024.
+
+\bibitem[LSFB22]{Leitao22}
+Diogo Leit{\~{a}}o, Pedro Saleiro, M{\'{a}}rio A.~T. Figueiredo, and Pedro Bizarro.
+\newblock Human-ai collaboration in decision-making: Beyond learning to defer.
+\newblock {\em CoRR}, abs/2206.13202, 2022.
+
+\bibitem[LSKM21]{LancewickiSKM21}
+Tal Lancewicki, Shahar Segal, Tomer Koren, and Yishay Mansour.
+\newblock Stochastic multi-armed bandits with unrestricted delay distributions.
+\newblock In {\em Proceedings of the 38th International Conference on Machine Learning, {ICML}}, volume 139 of {\em Proceedings of Machine Learning Research}, pages 5969--5978. {PMLR}, 2021.
+
+\bibitem[LSS06]{lin2006tutorial}
+Xiaojun Lin, Ness~B Shroff, and Rayadurgam Srikant.
+\newblock A tutorial on cross-layer optimization in wireless networks.
+\newblock {\em IEEE Journal on Selected areas in Communications}, 24(8):1452--1463, 2006.
+
+\bibitem[LSY21]{LiSY21}
+Xiaocheng Li, Chunlin Sun, and Yinyu Ye.
+\newblock The symmetry between arms and knapsacks: {A} primal-dual approach for bandits with knapsacks.
+\newblock In {\em the 38th International Conference on Machine Learning, {ICML}}, volume 139 of {\em Proceedings of Machine Learning Research}, pages 6483--6492. {PMLR}, 2021.
+
+\bibitem[LZM{\etalchar{+}}25]{lu2025}
+Xingyu Lu, Tianke Zhang, Chang Meng, Xiaobei Wang, Jinpeng Wang, Yi-Fan Zhang, Shisong Tang, Changyi Liu, Haojie Ding, Kaiyu Jiang, Kaiyu Tang, Bin Wen, Hai-Tao Zheng, Fan Yang, Tingting Gao, Di~Zhang, and Kun Gai.
+\newblock Vlm as policy: Common-law content moderation framework for short video platform.
+\newblock In {\em Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining V.2}, KDD '25, page 4682–4693, New York, NY, USA, 2025. Association for Computing Machinery.
+
+\bibitem[{Met}22]{Facebook-content}
+{Meta Platforms, Inc.}
+\newblock How meta prioritizes content for review, 2022.
+\newblock \url{https://transparency.fb.com/policies/improving/prioritizing-content-review/}. Accessed on May 25, 2024 [https://perma.cc/6ARK-SWB8?type=image].
+
+\bibitem[{Met}23]{Facebook-standard}
+{Meta Platforms, Inc.}
+\newblock Facebook community standards, 2023.
+\newblock \url{https://transparency.fb.com/policies/community-standards/}. Accessed on December 19, 2023.
+
+\bibitem[MLBP15]{MandelLBP15}
+Travis Mandel, Yun{-}En Liu, Emma Brunskill, and Zoran Popovic.
+\newblock The queue method: Handling delay, heuristics, prior data, and evaluation in bandits.
+\newblock In {\em Proceedings of the Twenty-Ninth {AAAI} Conference on Artificial Intelligence}, pages 2849--2856, 2015.
+
+\bibitem[MMZ23]{mao2023principled}
+Anqi Mao, Mehryar Mohri, and Yutao Zhong.
+\newblock Principled approaches for learning to defer with multiple experts.
+\newblock {\em arXiv preprint arXiv:2310.14774}, 2023.
+
+\bibitem[Mod22]{linkedin}
+Sanket Modi.
+\newblock How our content abuse defense systems work to keep members safe, 2022.
+\newblock \url{https://www.linkedin.com/blog/engineering/trust-and-safety/how-our-content-abuse-defense-systems-work-to-keep-members-safe}.
+
+\bibitem[MPZ18]{MadrasCPZ18}
+David Madras, Toni Pitassi, and Richard Zemel.
+\newblock Predict responsibly: improving fairness and accuracy by learning to defer.
+\newblock volume~31, 2018.
+
+\bibitem[MS20]{MozannarS20}
+Hussein Mozannar and David~A. Sontag.
+\newblock Consistent estimators for learning to defer to an expert.
+\newblock In {\em Proceedings of the 37th International Conference on Machine Learning, {ICML} 2020}, volume 119 of {\em Proceedings of Machine Learning Research}, pages 7076--7087. {PMLR}, 2020.
+
+\bibitem[MS22]{mclaughlin2022algorithmic}
+Bryce McLaughlin and Jann Spiess.
+\newblock Algorithmic assistance with recommendation-dependent preferences.
+\newblock {\em arXiv preprint arXiv:2208.07626}, 2022.
+
+\bibitem[MSA{\etalchar{+}}21]{makhijani2021quest}
+Rahul Makhijani, Parikshit Shah, Vashist Avadhanula, Caner Gocmen, Nicol{\'a}s~E Stier-Moses, and Juli{\'a}n Mestre.
+\newblock Quest: Queue simulation for content moderation at scale.
+\newblock {\em arXiv preprint arXiv:2103.16816}, 2021.
+
+\bibitem[MSG22]{McLaughlinSG22}
+Bryce McLaughlin, Jann Spiess, and Talia Gillis.
+\newblock On the fairness of machine-assisted human decisions.
+\newblock In {\em {ACM} Conference on Fairness, Accountability, and Transparency}, page 890. {ACM}, 2022.
+
+\bibitem[MVCV20]{ManegueuVCV20}
+Anne~Gael Manegueu, Claire Vernade, Alexandra Carpentier, and Michal Valko.
+\newblock Stochastic bandits with arm-dependent delays.
+\newblock In {\em the 37th International Conference on Machine Learning, {ICML}}, volume 119 of {\em Proceedings of Machine Learning Research}, pages 3348--3356. {PMLR}, 2020.
+
+\bibitem[MX18]{massoulie2018capacity}
+Laurent Massouli{\'e} and Kuang Xu.
+\newblock On the capacity of information processing systems.
+\newblock {\em Operations Research}, 66(2):568--586, 2018.
+
+\bibitem[Nee22]{neely2022stochastic}
+Michael Neely.
+\newblock {\em Stochastic network optimization with application to communication and queueing systems}.
+\newblock 2022.
+
+\bibitem[NM23]{nguyen2023learning}
+Quang~Minh Nguyen and Eytan Modiano.
+\newblock Learning to schedule in non-stationary wireless networks with unknown statistics.
+\newblock {\em arXiv preprint arXiv:2308.02734}, 2023.
+
+\bibitem[Nov23]{Lawyer-chatgpt}
+Matt Novak.
+\newblock Lawyer uses chatgpt in federal court and it goes horribly wrong, 2023.
+\newblock \url{https://www.forbes.com/sites/mattnovak/2023/05/27/lawyer-uses-chatgpt-in-federal-court-and-it-goes-horribly-wrong/?sh=735755923494}. Accessed on December 19, 2023.
+
+\bibitem[NRP12]{NeelyRP12}
+Michael~J. Neely, Scott Rager, and Thomas F.~La Porta.
+\newblock Max weight learning algorithms for scheduling in unknown environments.
+\newblock {\em {IEEE} Trans. Autom. Control.}, 57(5):1179--1191, 2012.
+
+\bibitem[NZ20]{NeuZ20}
+Gergely Neu and Nikita Zhivotovskiy.
+\newblock Fast rates for online prediction with abstention.
+\newblock In {\em Conference on Learning Theory, {COLT} 2020}, volume 125 of {\em Proceedings of Machine Learning Research}, pages 3030--3048. {PMLR}, 2020.
+
+\bibitem[OC11]{OrabonaC11}
+Francesco Orabona and Nicol{\`{o}} Cesa{-}Bianchi.
+\newblock Better algorithms for selective sampling.
+\newblock In {\em Proceedings of the 28th International Conference on Machine Learning, {ICML}}, pages 433--440, 2011.
+
+\bibitem[PGBJ21]{PacchianoGBJ21}
+Aldo Pacchiano, Mohammad Ghavamzadeh, Peter~L. Bartlett, and Heinrich Jiang.
+\newblock Stochastic bandits with linear constraints.
+\newblock In {\em The 24th International Conference on Artificial Intelligence and Statistics, {AISTATS}}, volume 130 of {\em Proceedings of Machine Learning Research}, pages 2827--2835. {PMLR}, 2021.
+
+\bibitem[{Pin}23]{Pingan}
+{Ping An Insurance}.
+\newblock Insurance business, 2023.
+\newblock \url{https://group.pingan.com/about_us/our_businesses/insurance.html}. Accessed on December 19, 2023.
+
+\bibitem[PZ22]{PuchkinZ22}
+Nikita Puchkin and Nikita Zhivotovskiy.
+\newblock Exponential savings in agnostic active learning through abstention.
+\newblock {\em {IEEE} Trans. Inf. Theory}, 68(7):4651--4665, 2022.
+
+\bibitem[RBC{\etalchar{+}}19]{raghu2019algorithmic}
+Maithra Raghu, Katy Blumer, Greg Corrado, Jon Kleinberg, Ziad Obermeyer, and Sendhil Mullainathan.
+\newblock The algorithmic automation problem: Prediction, triage, and human effort.
+\newblock {\em arXiv preprint arXiv:1903.12220}, 2019.
+
+\bibitem[{Red}23]{reddit-automod}
+{Reddit Inc.}
+\newblock Automoderator, 2023.
+\newblock \url{https://www.reddit.com/wiki/automoderator/}. Accessed on December 19, 2023.
+
+\bibitem[RK21]{raisch2021artificial}
+Sebastian Raisch and Sebastian Krakowski.
+\newblock Artificial intelligence and management: The automation--augmentation paradox.
+\newblock {\em Academy of management review}, 46(1):192--210, 2021.
+
+\bibitem[Rob19]{roberts2019behind}
+Sarah~T Roberts.
+\newblock {\em Behind the screen}.
+\newblock Yale University Press, 2019.
+
+\bibitem[SBP21]{sentenac2021decentralized}
+Flore Sentenac, Etienne Boursier, and Vianney Perchet.
+\newblock Decentralized learning in online queuing systems.
+\newblock pages 18501--18512, 2021.
+
+\bibitem[SGMV20]{ShahGMV20}
+Virag Shah, Lennart Gulikers, Laurent Massouli{\'{e}}, and Milan Vojnovic.
+\newblock Adaptive matching for expert systems with uncertain task types.
+\newblock {\em Oper. Res.}, 68(5):1403--1424, 2020.
+
+\bibitem[SGVM22]{singh2022feature}
+Simrita Singh, Itai Gurvich, and Jan~A Van~Mieghem.
+\newblock Feature-based priority queuing.
+\newblock {\em Available at SSRN 3731865}, 2022.
+
+\bibitem[SI21]{Facebook-nyt}
+Adam Satariano and Mike Isaac.
+\newblock The silent partner cleaning up facebook for \$ 500 million a year.
+\newblock {\em The New York Times}, 2021.
+\newblock \url{https://www.nytimes.com/2021/08/31/technology/facebook-accenture-content-moderation.html}. Accessed on June 22, 2025.
+
+\bibitem[Sli19]{slivkins2019introduction}
+Aleksandrs Slivkins.
+\newblock Introduction to multi-armed bandits.
+\newblock {\em Foundations and Trends{\textregistered} in Machine Learning}, 12(1-2):1--286, 2019.
+
+\bibitem[SSF23]{SlivkinsSF23}
+Aleksandrs Slivkins, Karthik~Abinav Sankararaman, and Dylan~J. Foster.
+\newblock Contextual bandits with packing and covering constraints: {A} modular lagrangian approach via regression.
+\newblock In {\em The Thirty Sixth Annual Conference on Learning Theory}, volume 195 of {\em Proceedings of Machine Learning Research}, pages 4633--4656. {PMLR}, 2023.
+
+\bibitem[SSM19]{StahlbuhkSM19}
+Thomas Stahlbuhk, Brooke Shrader, and Eytan~H. Modiano.
+\newblock Learning algorithms for scheduling in wireless networks with unknown channel statistics.
+\newblock {\em Ad Hoc Networks}, 85:131--144, 2019.
+
+\bibitem[SSM21]{StahlbuhkSM21}
+Thomas Stahlbuhk, Brooke Shrader, and Eytan~H. Modiano.
+\newblock Learning algorithms for minimizing queue length regret.
+\newblock {\em {IEEE} Trans. Inf. Theory}, 67(3):1759--1781, 2021.
+
+\bibitem[Sto05]{stolyar2005maximizing}
+Alexander~L Stolyar.
+\newblock Maximizing queueing network utility subject to stability: Greedy primal-dual algorithm.
+\newblock {\em Queueing Systems}, 50:401--457, 2005.
+
+\bibitem[SZB10]{SayediZB10}
+Amin Sayedi, Morteza Zadimoghaddam, and Avrim Blum.
+\newblock Trading off mistakes and don't-know predictions.
+\newblock In {\em 24th Annual Conference on Neural Information Processing Systems}, pages 2092--2100, 2010.
+
+\bibitem[TE92]{tassiulas1992stability}
+L~Tassiulas and A~Ephremides.
+\newblock Stability properties of constrained queueing systems and scheduling policies for maximum throughput in multihop radio networks.
+\newblock {\em IEEE Transactions on Automatic Control}, 37(12):1936--1948, 1992.
+
+\bibitem[VBN23]{VermaBN23}
+Rajeev Verma, Daniel Barrej{\'{o}}n, and Eric~T. Nalisnick.
+\newblock Learning to defer to multiple experts: Consistent surrogate losses, confidence calibration, and conformal ensembles.
+\newblock In {\em International Conference on Artificial Intelligence and Statistics}, volume 206 of {\em Proceedings of Machine Learning Research}, pages 11415--11434. {PMLR}, 2023.
+
+\bibitem[VCL{\etalchar{+}}20]{VernadeCLZEB20}
+Claire Vernade, Alexandra Carpentier, Tor Lattimore, Giovanni Zappella, Beyza Ermis, and Michael Br{\"{u}}ckner.
+\newblock Linear bandits with stochastic delayed feedback.
+\newblock In {\em Proceedings of the 37th International Conference on Machine Learning, {ICML}}, volume 119 of {\em Proceedings of Machine Learning Research}, pages 9712--9721. {PMLR}, 2020.
+
+\bibitem[VCP17]{VernadeCP17}
+Claire Vernade, Olivier Capp{\'{e}}, and Vianney Perchet.
+\newblock Stochastic bandit models for delayed conversions.
+\newblock In {\em Proceedings of the Thirty-Third Conference on Uncertainty in Artificial Intelligence, {UAI}}. {AUAI} Press, 2017.
+
+\bibitem[VLSV23]{vishwakarma2023promises}
+Harit Vishwakarma, Heguang Lin, Frederic Sala, and Ramya~Korlakai Vinayak.
+\newblock Promises and pitfalls of threshold-based auto-labeling.
+\newblock In {\em Thirty-seventh Conference on Neural Information Processing Systems}, 2023.
+
+\bibitem[Wal14]{Walton14}
+Neil~S. Walton.
+\newblock Two queues with non-stochastic arrivals.
+\newblock {\em Oper. Res. Lett.}, 42(1):53--57, 2014.
+
+\bibitem[WDY14]{wang2014close}
+Zizhuo Wang, Shiming Deng, and Yinyu Ye.
+\newblock Close the gaps: A learning-while-doing algorithm for single-product revenue management problems.
+\newblock {\em Operations Research}, 62(2):318--331, 2014.
+
+\bibitem[WHK20]{wilder2020learning}
+Bryan Wilder, Eric Horvitz, and Ece Kamar.
+\newblock Learning to complement humans.
+\newblock {\em arXiv preprint arXiv:2005.00582}, 2020.
+
+\bibitem[WSLJ15]{WuSLJ15}
+Huasen Wu, R.~Srikant, Xin Liu, and Chong Jiang.
+\newblock Algorithms with logarithmic or sublinear regret for constrained contextual bandits.
+\newblock In {\em Annual Conference on Neural Information Processing Systems}, pages 433--441, 2015.
+
+\bibitem[WW22]{WuW22}
+Han Wu and Stefan Wager.
+\newblock Thompson sampling with unrestricted delays.
+\newblock In {\em The 23rd {ACM} Conference on Economics and Computation}, pages 937--955. {ACM}, 2022.
+
+\bibitem[WX21]{walton2021learning}
+Neil Walton and Kuang Xu.
+\newblock Learning and information in stochastic networks and queues.
+\newblock In {\em Tutorials in Operations Research: Emerging Optimization Methods and Modeling Techniques with Applications}, pages 161--198. INFORMS, 2021.
+
+\bibitem[{X C}23]{X-rule}
+{X Corp.}
+\newblock The {X} rules, 2023.
+\newblock \url{https://help.twitter.com/en/rules-and-policies/x-rules}. Accessed on December 19, 2023.
+
+\bibitem[Yeh23]{forbesAI}
+Guy Yehiav.
+\newblock Will ai augment or replace workers?, 2023.
+\newblock \url{https://www.forbes.com/sites/forbestechcouncil/2023/08/08/will-ai-augment-or-replace-workers/}.
+
+\bibitem[YSY23]{yang2023learning}
+Zixian Yang, R~Srikant, and Lei Ying.
+\newblock Learning while scheduling in multi-server systems with unknown statistics: Maxweight with discounted ucb.
+\newblock In {\em International Conference on Artificial Intelligence and Statistics}, pages 4275--4312. PMLR, 2023.
+
+\bibitem[ZBW22]{zhong2022learning}
+Yueyang Zhong, John~R Birge, and Amy Ward.
+\newblock Learning the scheduling policy in time-varying multiclass many server queues with abandonment.
+\newblock {\em SSRN}, 2022.
+
+\bibitem[ZC16]{ZhangC16}
+Chicheng Zhang and Kamalika Chaudhuri.
+\newblock The extended littlestone's dimension for learning with mistakes and abstentions.
+\newblock In {\em Proceedings of the 29th Conference on Learning Theory, {COLT}}, volume~49, pages 1584--1616. JMLR.org, 2016.
+
+\bibitem[ZN22]{Zhu022a}
+Yinglun Zhu and Robert Nowak.
+\newblock Efficient active learning with abstention.
+\newblock In {\em NeurIPS}, 2022.
+
+\end{thebibliography}

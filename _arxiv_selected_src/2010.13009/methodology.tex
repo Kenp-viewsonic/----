@@ -1,0 +1,202 @@
+\section{Background}
+
+%This section describes the definition of our task, and a baseline approach with state-of-the-art pre-trained models for multi-class classification.
+
+\subsection{Task: Few-Shot Intent Detection}
+\label{subsec:task-def}
+
+Given a user utterance $u$ at every turn in a goal-oriented dialog system, an intent detection model $I(u)$ aims at predicting the speaker's intent:
+\begin{equation}
+    I(u) = c,
+\end{equation}
+where $c$ is one of pre-defined $N$ intent classes $\mathbf{C}=\{C_1, C_2, \ldots, C_N\}$, or is categorized as OOS.
+The OOS category corresponds to user utterances whose requests are not covered by the system.
+In other words, any utterance can be OOS as long as it does {\it not} fall into any of the $N$ intent classes, so the definition of OOS is different depending on $\mathbf{C}$.
+
+\paragraph{Balanced $K$-shot learning}
+In a few-shot learning scenario, we have a limited number of training examples for each class, and we assume that we have $K$ examples for each of the $N$ classes in our training data.
+In other words, we have $N\cdot K$ training examples in total.
+We denote the $i$-th training example from the $j$-th class $C_j$ as $e_{j,i}\in E$, where $E$ is the set of the examples.
+$K$ is typically 5 or 10.
+
+
+\subsection{Multi-Class Classification}
+\label{subsec:classifier}
+
+The goal is to achieve high accuracy both for the intent classification and OOS detection.
+One common approach to this task is using a multi-class classification model.
+% More specifically, we can leverage a general pre-trained model as a basic building block, since it is reasonable to start from a pre-trained model especially for few-shot learning.
+Specifically, to get a strong baseline for the few-shot learning use case, one can leverage a pre-trained model as transfer learning, which has been shown to achieve state-of-the-art results on numerous natural language processing tasks.
+We use BERT~\citep{bert,roberta} as a text encoder:
+\begin{equation}
+    \label{eq:bert}
+    h = \mathrm{BERT}(u) \in\mathbb{R}^{d},
+\end{equation}
+where $h$ is a $d$-dimensional output vector corresponding to the special token {\tt[CLS]} as in the follwing input format: [{\tt[CLS]}, $u$, {\tt[SEP]}].\footnote{The format of these special tokens is different in RoBERTa, but we use the original BERT's notations.}
+
+To handle the intent classification and the OOS detection, we apply the threshold-based strategy in \citet{oos-intent}, to the softmax output of the $N$-class classification model~\citep{softmax_conf}:
+\begin{equation}
+    \label{eq:softmax}
+    p(c | u) = \mathrm{softmax}(W h + b) \in\mathbb{R}^{N},
+\end{equation}
+where $W\in\mathbb{R}^{N\times d}$ and $b\in\mathbb{R}^{N}$ are the classifier's model parameters.
+The classification model is trained by cross-entropy loss with the ground-truth intent labels of the training examples.
+At inference time, we first take the class $C_j$ with the largest value of $p(c=C_j|u)$, then output $I(u)=C_j$ if $p(c=C_j|u) > T$, where $T\in[0.0, 1.0]$ is a threshold to be tuned, and otherwise we output $I(u)=\mathrm{OOS}$.
+
+
+\begin{table*}[t]
+
+ \begin{center}
+{\small
+ \resizebox{1.0\linewidth}{!}{
+    \begin{tabular}{l|l|l|l}
+    
+    & Input utterance & Utterance to be compared & Label \\ \hline
+    (a) & i need you to send 500 dollars from & help me move my money please & pos. \\
+        & my high tier account to my regular checking & & \\ \hdashline
+    (b) & i would like to know when the bill is due & i need to know the amounts due for my utilities and cable bills & neg. \\ \hline
+    %(c) & what is saas marketing & why would i have been locked out of my own account & neg. \\ \hline
+
+    (c) & And can you tell me any of the names and & Are you able to inform me of any name or address? & pos. \\
+        & addresses? Annie considered. & & \\ \hdashline
+    (d) & It's Sunday, what channel is this? & It's Sunday, can you change the channel? & neg. \\ \hdashline
+    (e) & I want to go back to Marguerite. & I never want to return to Marguerite. & neg. \\ \hline
+
+    \end{tabular}}
+%}
+    \caption{Training examples for our model. The first two examples ((a)--(b)) come from the CLINC150 dataset~\citep{oos-intent}, and the other three examples ((c)--(e)) come from the MNLI dataset~\citep{mnli}.}
+    \label{tb:examples}
+    \vspace{-1em}
+}
+  \end{center}
+\end{table*}
+
+\subsection{Nearest Neighbor Classification}
+
+As the fundamental building block of our proposed method, we also review nearest neighbor classification (i.e., $k$-nearest neighbors ($k$NN) classification with $k=1$), a simple and well-established concept for classification~\citep{knn-nips,knn-classifier}.
+The basic idea is to classify an input into the same class of the most relevant training example based on a certain metric.
+
+In our task, we formulate a nearest neighbor classification model as the following:
+\begin{equation}
+    \label{eq:example-based}
+    I(u) = \mathrm{class}\left(\argmax{e_{j, i}\in E} S(u, e_{j, i}) \right),
+\end{equation}
+where $\mathrm{class}(e_{j, i})$ is a function returning the intent label (class) of the training example $e_{j, i}$, and $S$ is a function that estimates some relevance score between $u$ and $e_{j, i}$.
+To detect OOS, we can also use the uncertainty-based strategy in Section~\ref{subsec:classifier}; that is, we take the output label from Equation~(\ref{eq:example-based}) if the corresponding relevance score is greater than a threshold, and otherwise we output $I(u)=\mathrm{OOS}$.
+
+
+
+\section{Proposed Method}
+\label{subsec:method}
+
+
+This section first describes how to directly model inter-utterance relations in our nearest neighbor classification scenario.
+We then introduce a binary classification strategy by synthesizing pairwise examples, and propose a seamless transfer of NLI.
+Finally, we describe how to speedup our method's inference process.
+
+\subsection{Deep Pairwise Matching Function}
+The objective of $S(u, e_{j, i})$ in Equation~(\ref{eq:example-based}) is to find the best matched utterance from the training set $E$, given the input utterance $u$.
+The typical methodology is to embed each data example into a vector space and (1) use an off-the-shelf distance metric to perform a similarity search~\citep{knn-classifier} or (2) learn a distant metric between the embeddings~\citep{relation_net}.
+However, as shown in Figure~\ref{fig:tsne-main}, the text embedding methods do not discriminate the OOS examples well enough.
+
+To model fine-grained relations of utterance pairs to distinguish in-domain and OOS intents, we propose to formulate $S(u, e_{j, i})$ as follows:
+\begin{eqnarray}
+    h &=& \mathrm{BERT}(u, e_{j, i}) \in\mathbb{R}^{d}, \label{eq:NLI} \\
+    S(u, e_{j, i}) &=& \sigma(W \cdot h + b) \in\mathbb{R}, \label{eq:sigmoid}
+\end{eqnarray}
+where $\mathrm{BERT}$ is the same model in Equation~(\ref{eq:bert}), except that we follow a different input format to accommodate pairs of utterances: [{\tt[CLS]}, $u$, {\tt[SEP]}, $e_{j, i}$, {\tt[SEP]}].
+$\sigma$ is the sigmoid function, and $W\in\mathbb{R}^{1\times d}$ and $b\in\mathbb{R}$ are the model parameters.
+We can interpret our method as wrapping both the embedding and matching functions into the paired encoding with the deep self-attention in BERT (Equation~(\ref{eq:NLI})) along with the discriminative model (Equation~(\ref{eq:sigmoid})).
+It has been shown that the paired text encoding is crucial in capturing complex relations between queries and documents in document retrieval~\citep{watanabe-query,sem-bert,graph-retriever}.
+
+
+\subsection{Discriminative Training}
+\label{subsec:pos_neg}
+
+We train the matching model $S(u, e_{j, i})$ as a binary classifier, such that $S(u, e_{j, i})$ is closed to 1.0 if $u$ belongs to the same class of $e_{j, i}$, and otherwise closed to 0.0.
+The model is trained by a binary cross-entropy loss function.
+
+\paragraph{Positive examples}
+To create positive examples, we consider all the possible ordered pairs within the same intent class: $(e_{j, i}, e_{j, \ell})$ such that $i \neq \ell$.
+We thus have $N\times K\times(K-1)$ positive examples in total.
+Table~\ref{tb:examples} (a) shows a positive example created from an intent, ``transfer,'' in a banking domain.
+
+\paragraph{Negative examples}
+For negative examples, we consider all the possible ordered pairs across any two different intent classes: $(e_{j, i}, e_{o, \ell})$ such that $j \neq o$.
+We thus have $K^2\times N\times(N-1)$ negative examples in total, and this number is in general greater than that of the positive examples.
+%(i.e. $\mathcal{O}(K^2N^2) > \mathcal{O}(K^2N)$).
+Table~\ref{tb:examples} (b) shows a negative example, where the input utterance comes from the intent, ``bill due'', and the paired sentence from another intent, ``bill balance''. 
+
+
+\subsection{Seamless Transfer from NLI}
+\label{subsec:nli_transfer}
+
+A key characteristic of our method is that we seek to model the relations between the utterance pairs, instead of explicitly modeling the intent classes.
+To mitigate the data scarcity setting in few-shot learning, we consider transferring another inter-sentence-relation task.
+
+This work focuses on NLI; the task is to identify whether a hypothesis sentence can be entailed by a premise sentence~\citep{deep-nli}.
+We treat the NLI task as a binary classification task: {\tt entailment} (positive) or {\tt non-entailment} (negative).\footnote{A widely-used format is a three-way classification task with {\tt entailment}, {\tt neutral}, and {\tt contradiction}, but we merge the latter two classes into a single {\tt non-entailment} class.}
+We first pre-train our model with the NLI task, where the premise sentence corresponds to the $u$-position, and the hypothesis sentence corresponds to the $e_{j, i}$-position in Equation~(\ref{eq:NLI}).
+Note that it is not necessary to modify the model architecture since the task format is consistent, and we can train the NLI model solely based on existing NLI datasets.
+Once the NLI model pre-training is completed, we fine-tune the NLI model with the intent classification training examples described in Section~\ref{subsec:pos_neg}.
+This allows us to transfer the NLI model to any intent detection datasets seamlessly.
+
+\paragraph{Why NLI?}
+The NLI task has been actively studied, especially since the emergence of large scale datasets~\citep{snli,mnli}, and we can directly leverage the progress.
+%The existing datasets are designed to describe a single event in a sentence~\citep{deep-nli}, which is well-aligned with the intent detection task.
+Moreover, recent work is investigating cross-lingual NLI~\citep{eriguchi-crosslingual,xnli}, and this is encouraging to consider multilinguality in future work.
+On the other hand, while we can find examples relevant to the intent detection task, as shown in Table~\ref{tb:examples} ((c), (d), and (e)), we still need the few-shot fine-tuning.
+This is because a domain mismatch still exists in general, and perhaps more importantly, our intent detection approach is not exactly modeling NLI.
+%Additional notes are available in Appendix~A.
+
+\paragraph{Why not other tasks?}
+There are other tasks modeling relationships between sentences.
+Paraphrase~\citep{paranmt} and semantic relatedness~\citep{semeval} tasks are such examples.
+It is possible to automatically create large-scale paraphrase datasets by machine translation~\citep{ppdb}.
+However, our task is not a paraphrasing task, and creating negative examples is crucial and non-trivial~\citep{selectional-preference}.
+In contrast, as described above, the NLI setting comes with negative examples by nature.
+The semantic relatedness (or textual similarity) task is considered as a coarse-grained task compared to NLI, as discussed in the previous work~\citep{jmt}, in that the task measures semantic or topical relatedness.
+This is not ideal for the intent detection task, because we need to discriminate between topically similar utterances of different intents.
+In summary, the NLI task well matches our objective, with access to the large datasets.
+
+
+
+\subsection{A Joint Approach with Fast Retrieval}
+\label{subsec:joint}
+
+The number of model parameters of the multi-class classification model in Section~\ref{subsec:classifier} and our model in Section~\ref{subsec:method} is almost the same when we use the same pre-trained models.
+%\footnote{The actual difference is $(N-1)(d+1)$, but this is negligible compared with the model size of BERT.}
+% However, our example-based method has an inference-time bottleneck in Equation~(\ref{eq:NLI}), where we need the paired BERT encoding with all the training examples, given an input utterance $u$.
+However, our example-based method has an inference-time bottleneck in Equation~(\ref{eq:NLI}), where we need to compute the BERT encoding for all $N\times K$ $(u, e_{j,i})$ pairs. 
+
+We follow common practice in document retrieval to reduce the inference-time bottleneck~\citep{sem-bert,graph-retriever}, by introducing a fast text retrieval model to select a set of top-$k$ examples $E_k$ from the training set $E$, based on its retrieval scores.
+We then replace $E$ in Equation~(\ref{eq:example-based}) with the shrunk set $E_k$.
+The cost of the paired BERT encoding is now constant, regardless the size of $E$.
+Either TF-IDF~\citep{drqa} or embedding-based retrieval~\citep{faiss,phrase-embedding-index,latent-retrieval} can be used for the first step.
+We use the following fast $k$NN.
+
+\paragraph{Faster $k$NN}
+%Our target text is much shorter than the documents used in open-domain question answering.
+%Therefore it could perform well to separately encode query and target embeddings, without the deep self attention in Equation~(\ref{eq:NLI}).
+As a baseline and a way to instantiate our joint approach, we use Sentence-BERT (SBERT)~\citep{sbert} to separately encode $u$ and $e_{j, i}$ ($x\in\{u, e_{j, i}\}$) as follows:
+\begin{eqnarray}
+    \label{eq:sbert}
+    v(x) &=& \mathrm{SBERT}(x) \in\mathbb{R}^{d},
+\end{eqnarray}
+where the input text format is identical to that of BERT in Equation~(\ref{eq:bert}).
+SBERT is a BERT-based text embedding model, fine-tuned by siamese networks with NLI datasets.
+Thus both our method and SBERT transfer the NLI task in different ways.
+
+% We then replace $S(u, e_{j, i})$ in Equation~(\ref{eq:sigmoid}) with the cosine similarity between $v(u)$ and $v(e_{j, i})$.
+Cosine similarity between $v(u)$ and $v(e_{j, i})$ then replaces $S(u, e_{j, i})$ in Equation~(\ref{eq:sigmoid}).
+To get a fair comparison, instead of using the encoding vectors produced by the original SBERT, we fine-tune SBERT with our intent training examples described in Section~\ref{subsec:pos_neg}.
+The cosine similarity is symmetric, so we have half the training examples.
+We use the pairwise cosine-based loss function in \citet{sbert}.
+After the model training, we pre-compute $v(e_{j, i})$ for fast retrieval.
+
+%\subsubsection{Prototypical Networks}
+%Describe this later!
+
+
+%\paragraph{Hierarchical Attention Prototypical Networks}
+

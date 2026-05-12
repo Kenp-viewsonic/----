@@ -1,0 +1,302 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citename{Akova \bgroup et al.\egroup }2012]{akova2012self}
+Ferit Akova, Murat Dundar, Yuan Qi, and Bartek Rajwa.
+\newblock 2012.
+\newblock Self-adjusting models for semi-supervised learning in partially
+  observed settings.
+\newblock In {\em IEEE ICDM}.
+
+\bibitem[\protect\citename{Bendale and Boult}2015]{bendale2015towards}
+Abhijit Bendale and Terrance Boult.
+\newblock 2015.
+\newblock Towards open world recognition.
+\newblock In {\em CVPR}.
+
+\bibitem[\protect\citename{Bendale and Boult}2016]{bendale2016towards}
+Abhijit Bendale and Terrance~E Boult.
+\newblock 2016.
+\newblock Towards open set deep networks.
+\newblock In {\em CVPR}.
+
+\bibitem[\protect\citename{Bhargava \bgroup et al.\egroup }2013]{bhargava2013}
+Aditya Bhargava, Asli Celikyilmaz, Dilek~Hakkani T{\"u}r, and Ruhi Sarikaya.
+\newblock 2013.
+\newblock Easy contextual intent prediction and slot detection.
+\newblock In {\em ICASSP}.
+
+\bibitem[\protect\citename{Castellucci \bgroup et al.\egroup
+  }2019]{castellucci2019multi}
+Giuseppe Castellucci, Valentina Bellomaria, Andrea Favalli, and Raniero
+  Romagnoli.
+\newblock 2019.
+\newblock Multi-lingual intent detection and slot filling in a joint bert-based
+  model.
+\newblock {\em arXiv preprint arXiv:1907.02884}.
+
+\bibitem[\protect\citename{Coucke \bgroup et al.\egroup }2018]{coucke2018}
+Alice Coucke, Alaa Saade, Adrien Ball, Th{\'e}odore Bluche, Alexandre Caulier,
+  David Leroy, Cl{\'e}ment Doumouro, et~al.
+\newblock 2018.
+\newblock Snips voice platform.
+\newblock {\em arXiv preprint arXiv:1805.10190}.
+
+\bibitem[\protect\citename{Dahl \bgroup et al.\egroup }1994]{dahl1994}
+Deborah~A Dahl, Madeleine Bates, Michael Brown, William Fisher, Kate
+  Hunicke-Smith, David Pallett, et~al.
+\newblock 1994.
+\newblock Expanding the scope of the atis task: The atis-3 corpus.
+\newblock In {\em HLT Workshop}.
+
+\bibitem[\protect\citename{Devlin \bgroup et al.\egroup }2018]{devlin2018bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova.
+\newblock 2018.
+\newblock Bert: Pre-training of deep bidirectional transformers for language
+  understanding.
+\newblock {\em arXiv preprint arXiv:1810.04805}.
+
+\bibitem[\protect\citename{Dundar \bgroup et al.\egroup
+  }2012]{dundar2012bayesian}
+Murat Dundar, Ferit Akova, Alan Qi, and Bartek Rajwa.
+\newblock 2012.
+\newblock Bayesian nonexhaustive learning for online discovery and modeling of
+  emerging classes.
+\newblock {\em arXiv preprint arXiv:1206.4600}.
+
+\bibitem[\protect\citename{Fei and Liu}2016]{fei2016breaking}
+Geli Fei and Bing Liu.
+\newblock 2016.
+\newblock Breaking the closed world assumption in text classification.
+\newblock In {\em NAACL}.
+
+\bibitem[\protect\citename{Fu and Sigal}2016]{fu2016semi}
+Yanwei Fu and Leonid Sigal.
+\newblock 2016.
+\newblock Semi-supervised vocabulary-informed learning.
+\newblock In {\em CVPR}.
+
+\bibitem[\protect\citename{Goo \bgroup et al.\egroup }2018]{goo2018slot}
+Chih-Wen Goo, Guang Gao, Yun-Kai Hsu, Chih-Li Huo, Tsung-Chieh Chen, Keng-Wei
+  Hsu, and Yun-Nung Chen.
+\newblock 2018.
+\newblock Slot-gated modeling for joint slot filling and intent prediction.
+\newblock In {\em NAACL}.
+
+\bibitem[\protect\citename{Gowda and Krishna}1978]{gowda1978agglomerative}
+K~Gowda and G~Krishna.
+\newblock 1978.
+\newblock Agglomerative clustering using the concept of mutual nearest
+  neighbourhood.
+\newblock {\em Pattern recognition}.
+
+\bibitem[\protect\citename{Gupta \bgroup et al.\egroup
+  }2018]{gupta2018semantic}
+Sonal Gupta, Rushin Shah, Mrinal Mohit, Anuj Kumar, and Mike Lewis.
+\newblock 2018.
+\newblock Semantic parsing for task oriented dialog using hierarchical
+  representations.
+\newblock {\em arXiv preprint arXiv:1810.07942}.
+
+\bibitem[\protect\citename{Hadsell \bgroup et al.\egroup
+  }2006]{hadsell2006dimensionality}
+Raia Hadsell, Sumit Chopra, and Yann LeCun.
+\newblock 2006.
+\newblock Dimensionality reduction by learning an invariant mapping.
+\newblock In {\em CVPR}.
+
+\bibitem[\protect\citename{Howard and Ruder}2018]{howard2018universal}
+Jeremy Howard and Sebastian Ruder.
+\newblock 2018.
+\newblock Universal language model fine-tuning for text classification.
+\newblock {\em arXiv preprint arXiv:1801.06146}.
+
+\bibitem[\protect\citename{Hsu and Kira}2015]{hsu2015neural}
+Yen-Chang Hsu and Zsolt Kira.
+\newblock 2015.
+\newblock Neural network-based clustering using pairwise constraints.
+\newblock {\em arXiv preprint arXiv:1511.06321}.
+
+\bibitem[\protect\citename{Jeong and Lee}2008]{jeong2008triangular}
+Minwoo Jeong and Gary~Geunbae Lee.
+\newblock 2008.
+\newblock Triangular-chain conditional random fields.
+\newblock {\em IEEE TASLP}.
+
+\bibitem[\protect\citename{Kim and Kim}2018]{kim2018joint}
+Joo-Kyung Kim and Young-Bum Kim.
+\newblock 2018.
+\newblock Joint learning of domain classification and out-of-domain detection
+  with dynamic class weighting for satisficing false acceptance rates.
+\newblock {\em arXiv preprint arXiv:1807.00072}.
+
+\bibitem[\protect\citename{Kim \bgroup et al.\egroup }2016]{kim2016intent}
+Joo-Kyung Kim, Gokhan Tur, Asli Celikyilmaz, Bin Cao, and Ye-Yi Wang.
+\newblock 2016.
+\newblock Intent detection using semantically enriched word embeddings.
+\newblock In {\em IEEE SLT}.
+
+\bibitem[\protect\citename{Kim \bgroup et al.\egroup }2017]{kim2017onenet}
+Young-Bum Kim, Sungjin Lee, and Karl Stratos.
+\newblock 2017.
+\newblock Onenet: Joint domain, intent, slot prediction for spoken language
+  understanding.
+\newblock In {\em ASRU}.
+
+\bibitem[\protect\citename{Kingma and Ba}2014]{kingma2014adam}
+Diederik~P Kingma and Jimmy Ba.
+\newblock 2014.
+\newblock Adam: A method for stochastic optimization.
+\newblock {\em arXiv preprint arXiv:1412.6980}.
+
+\bibitem[\protect\citename{Kumar \bgroup et al.\egroup }2017]{kumar2017zero}
+Anjishnu Kumar, Pavankumar~Reddy Muddireddy, Markus Dreyer, and Bj{\"o}rn
+  Hoffmeister.
+\newblock 2017.
+\newblock Zero-shot learning across heterogeneous overlapping domains.
+\newblock In {\em INTERSPEECH}.
+
+\bibitem[\protect\citename{Lin and Xu}2019]{lin2019deep}
+Ting-En Lin and Hua Xu.
+\newblock 2019.
+\newblock Deep unknown intent detection with margin loss.
+\newblock {\em arXiv preprint arXiv:1906.00434}.
+
+\bibitem[\protect\citename{Liu and Lane}2016]{liu2016attention}
+Bing Liu and Ian Lane.
+\newblock 2016.
+\newblock Attention-based recurrent neural network models for joint intent
+  detection and slot filling.
+\newblock {\em arXiv preprint arXiv:1609.01454}.
+
+\bibitem[\protect\citename{Maaten and Hinton}2008]{maaten2008visualizing}
+Laurens van~der Maaten and Geoffrey Hinton.
+\newblock 2008.
+\newblock Visualizing data using t-sne.
+\newblock {\em JMLR}.
+
+\bibitem[\protect\citename{Radford \bgroup et al.\egroup
+  }2018]{radford2018improving}
+Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever.
+\newblock 2018.
+\newblock Improving language understanding by generative pre-training.
+
+\bibitem[\protect\citename{Ravuri and Stoicke}2015]{ravuri2015comparative}
+Suman Ravuri and Andreas Stoicke.
+\newblock 2015.
+\newblock A comparative study of neural network models for lexical intent
+  classification.
+\newblock In {\em IEEE ASRU}.
+
+\bibitem[\protect\citename{Scheirer \bgroup et al.\egroup
+  }2014]{scheirer2014probability}
+Walter~J Scheirer, Lalit~P Jain, and Terrance~E Boult.
+\newblock 2014.
+\newblock Probability models for open set recognition.
+\newblock {\em IEEE TPAMI}.
+
+\bibitem[\protect\citename{Schroff \bgroup et al.\egroup
+  }2015]{schroff2015facenet}
+Florian Schroff, Dmitry Kalenichenko, and James Philbin.
+\newblock 2015.
+\newblock Facenet: A unified embedding for face recognition and clustering.
+\newblock In {\em CVPR}.
+
+\bibitem[\protect\citename{Shah and Koltun}2017]{shah2017robust}
+Sohil~Atul Shah and Vladlen Koltun.
+\newblock 2017.
+\newblock Robust continuous clustering.
+\newblock {\em PNAS}.
+
+\bibitem[\protect\citename{Shivakumar \bgroup et al.\egroup
+  }2019]{shivakumar2019spoken}
+Prashanth~Gurunath Shivakumar, Mu~Yang, and Panayiotis Georgiou.
+\newblock 2019.
+\newblock Spoken language intent detection using confusion2vec.
+\newblock {\em arXiv preprint arXiv:1904.03576}.
+
+\bibitem[\protect\citename{Shu \bgroup et al.\egroup }2017]{shu2017doc}
+Lei Shu, Hu~Xu, and Bing Liu.
+\newblock 2017.
+\newblock Doc: Deep open classification of text documents.
+\newblock {\em arXiv preprint arXiv:1709.08716}.
+
+\bibitem[\protect\citename{Shu \bgroup et al.\egroup }2018]{shu2018unseen}
+Lei Shu, Hu~Xu, and Bing Liu.
+\newblock 2018.
+\newblock Unseen class discovery in open-world classification.
+\newblock {\em arXiv preprint arXiv:1801.05609}.
+
+\bibitem[\protect\citename{Srivastava and
+  Sutton}2017]{srivastava2017autoencoding}
+Akash Srivastava and Charles Sutton.
+\newblock 2017.
+\newblock Autoencoding variational inference for topic models.
+\newblock {\em arXiv preprint arXiv:1703.01488}.
+
+\bibitem[\protect\citename{Sun \bgroup et al.\egroup }2016]{sun2016weakly}
+Ming Sun, Aasish Pappu, Yun-Nung Chen, and Alexander~I Rudnicky.
+\newblock 2016.
+\newblock Weakly supervised user intent detection for multi-domain dialogues.
+\newblock In {\em IEEE SLT}.
+
+\bibitem[\protect\citename{Tur \bgroup et al.\egroup }2011]{tur2011sentence}
+Gokhan Tur, Dilek~Hakkani T{\"u}r, Larry Heck, and Sarangarajan Parthasarathy.
+\newblock 2011.
+\newblock Sentence simplification for spoken language understanding.
+\newblock In {\em ICASSP}.
+
+\bibitem[\protect\citename{Vedula \bgroup et al.\egroup
+  }2020]{vedula2019towards}
+Nikhita Vedula, Nedim Lipka, Pranav Maneriker, and Srinivasan Parthasarathy.
+\newblock 2020.
+\newblock Open intent extraction from natural language interactions.
+\newblock In {\em WWW}.
+
+\bibitem[\protect\citename{Wang \bgroup et al.\egroup }2018]{wang2018bi}
+Yu~Wang, Yilin Shen, and Hongxia Jin.
+\newblock 2018.
+\newblock A bi-model based rnn semantic frame parsing model for intent
+  detection and slot filling.
+\newblock {\em arXiv preprint arXiv:1812.10235}.
+
+\bibitem[\protect\citename{Xia \bgroup et al.\egroup }2018]{xia2018}
+Congying Xia, Chenwei Zhang, Xiaohui Yan, Yi~Chang, and Philip~S Yu.
+\newblock 2018.
+\newblock Zero-shot user intent detection via capsule neural networks.
+\newblock {\em arXiv preprint arXiv:1809.00385}.
+
+\bibitem[\protect\citename{Xu and Sarikaya}2013]{xu2013convolutional}
+Puyang Xu and Ruhi Sarikaya.
+\newblock 2013.
+\newblock Convolutional neural network based triangular crf for joint intent
+  detection and slot filling.
+\newblock In {\em ASRU}.
+
+\bibitem[\protect\citename{Xu \bgroup et al.\egroup }2019]{xu2019open}
+Hu~Xu, Bing Liu, Lei Shu, and P~Yu.
+\newblock 2019.
+\newblock Open-world learning and application to product classification.
+\newblock In {\em WWW}.
+
+\bibitem[\protect\citename{Yi \bgroup et al.\egroup }2013]{yi2013semi}
+Jinfeng Yi, Lijun Zhang, Rong Jin, Qi~Qian, and Anil Jain.
+\newblock 2013.
+\newblock Semi-supervised clustering by input pattern assisted pairwise
+  similarity matrix completion.
+\newblock In {\em ICML}.
+
+\bibitem[\protect\citename{Yi \bgroup et al.\egroup }2015]{yi2015efficient}
+Jinfeng Yi, Lijun Zhang, Tianbao Yang, Wei Liu, and Jun Wang.
+\newblock 2015.
+\newblock An efficient semi-supervised clustering algorithm with sequential
+  constraints.
+\newblock In {\em ACM SIGKDD}.
+
+\bibitem[\protect\citename{Zhang and Wang}2016]{zhang2016joint}
+Xiaodong Zhang and Houfeng Wang.
+\newblock 2016.
+\newblock A joint model of intent determination and slot filling for spoken
+  language understanding.
+\newblock In {\em IJCAI}.
+
+\end{thebibliography}

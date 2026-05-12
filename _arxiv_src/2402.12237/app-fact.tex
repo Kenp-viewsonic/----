@@ -1,0 +1,56 @@
+\subsection{Concentration Inequality}
+We frequently use the following Hoeffding's Inequality \cite{boucheron2013concentration}.
+\begin{fact}[Hoeffding's Inequality]\label{fact:hoeffding}
+Given $N$ independent random variables $X_n$ taking values in $[0,1]$ almost surely. Let $X = \sum_{n=1}^N X_n$. Then for any $x > 0$,
+    \[\Pr\{X-\expect{X} > x\} \leq e^{-2x^2/N},~\Pr\{X-\expect{X} < -x\} \leq e^{-2x^2/N}.\]
+\end{fact}
+We also use the Chernoff bound for sub-Gaussian random variables, which is given in \cite[Page 25]{boucheron2013concentration}.
+\begin{fact}[Chernoff Bound]\label{fact:chernoff}
+Given $n$ i.i.d. random variables $X_i$ that are sub-Gaussian with variance proxy $\sigma^2$ and letting $X = \sum_{i=1}^n X_i / n$, for any $x > 0$,
+\[
+\Pr\{X-\expect{X} > x\} \leq e^{-x^2/(2n\sigma^2)},~\Pr\{X-\expect{X} < -x\} \leq e^{-x^2 / (2n\sigma^2)}.
+\]
+\end{fact}
+\subsection{Facts on Matrix Norm}
+Our results rely on a self-normalized tail inequality derived in \cite{Abbasi-YadkoriPS11} which we restate here. Let us consider a unknown $\btheta^\star \in \mathbb{R}^d$, an arbitrary sequence $\{\bolds{X}_t\}_{t=1}^{\infty}$ with $\bolds{X}_t \in \mathbb{R}^d$, a real-valued sequence $\{\eta_t\}_{t=1}^{\infty}$, and a sequence $\{Z_t\}_{t=1}^{\infty}$ with $Z_t = \bolds{X}_t^{\trans}\btheta^\star + \eta_t$. We define the $\sigma-$algebra $\set{F}_t = \sigma(\bolds{X}_1,\ldots,\bolds{X}_{t+1},\eta_1,\ldots,\eta_t)$. In addition, recall the definition of $\hat{\bolds{\btheta}}_t$ as the solution to the ridge regression with regularizer $\xi$ and $\bar{V}_t$ in \eqref{eq:regression}. Then we have the following result implied by the second result in \cite[Theorem 2]{Abbasi-YadkoriPS11}.
+\begin{fact}\label{fact:abbasi-bound}
+Assume that $\|\bolds{\theta}^\star\|_2,~\|\bolds{X}_t\|_2 \leq U$ and that $\eta_t$ is conditionally sub-Gaussian with variance proxy $R^2$ such that $\forall u \in \mathbb{R}$, $\expect{e^{u\eta_t} \mid \set{F}_{t-1}} \leq \exp(u^2R^2/2)$. Then for any $\delta > 0$, with probability at least $1-\delta$, for all $t \geq 0$, $\btheta_\star$ lies in the set  
+\[
+\set{C}_t = \left\{\btheta \in \mathbb{R}^d \colon \|\hat{\btheta}_t - \btheta\|_{\bar{V}_t} \leq R\sqrt{d\ln\left(\frac{1+tU^2/\xi}{\delta}\right)} + \sqrt{\xi}U\right\}.
+\]
+\end{fact}
+The following result is a restatement of a result in \cite[Lemma 11]{Abbasi-YadkoriPS11}.
+\begin{fact}\label{fact:ellipsoid-bound}
+Let $\{\bolds{X}_t\}$ be a sequence in $\mathbb{R}^d$, $\bV$ a $d\times d$ positive definite matrix and define $\bV_t = \bV + \sum_{\tau=1}^t \bolds{X}_t\bolds{X}_t^{\trans}$. If $\|\bolds{X}_t\|_2 \leq U$ for all $t$, and $\lambda_{\min}(\bV) \geq \max(1,U^2)$, then $\sum_{t=1}^n \|\bolds{X}_t\|_{\bV_{t-1}^{-1}}^2 \leq 2\ln \frac{\mathrm{det}(\bV_n)}{\mathrm{det}(\bV)}$ for any $n$.
+\end{fact}
+We also use a determinant-trace inequality from \cite[Lemma~10]{Abbasi-YadkoriPS11}.
+\begin{fact}\label{fact:matrix-norm-bound}
+Suppose $\bolds{X}_1,\ldots,\bolds{X}_t \in \mathbb{R}^d$ and for any $\tau \leq t$, $\|\bolds{X}_{\tau}\|_2 \leq U$. Let $\bV_t = \xi \bolds{I} + \sum_{\tau=1}^t \bolds{X}_{\tau}\bolds{X}_{\tau}^{\trans}$ for some $\xi > 0$. Then $\mathrm{det}(\bV_t) \leq (\xi+tU^2/d)^d$.
+\end{fact}
+
+\subsection{Additional Analytical Facts}
+\begin{fact}\label{fact:negative-subgaussian}
+If $X$ is a sub-Gaussian random variable with variance proxy $\sigma^2$, then $-X$ is sub-Gaussian with variance proxy $\sigma^2$. 
+\end{fact}
+\begin{proof}
+For any $s \in \mathbb{R}$, $\expect{\exp(s(-X - \expect{-X}))} = \expect{\exp((-s)(X-\expect{X})} \leq \exp(s^2 \sigma^2 / 2)$. As a result, $-X$ is sub-Gaussian with variance proxy $\sigma^2$. 
+\end{proof}
+\begin{fact}\label{fact:addition-subGaussian}
+Given two independent sub-Gaussian random variables $X,Y$ with variance proxy $\sigma_X^2$ and $\sigma_Y^2$ respectively, their sum $X+Y$ is sub-Gaussian with variance proxy $\sigma_X^2 + \sigma_Y^2.$
+\end{fact}
+\begin{proof}
+For any $s \in \mathbb{R}$, $\expect{\exp(s(X+Y-\expect{X+Y}))} = \expect{\exp(s(X-\expect{X})}\expect{\exp(s(Y-\expect{Y})} \leq \exp(s^2 (\sigma_X^2+\sigma_Y^2) / 2)$, where the equality uses independence between $X,Y$.
+\end{proof}
+
+\begin{fact}\label{fact:lnt}
+For $t \geq 100$, we have $t/4 \geq \sqrt{t\ln t}$.
+\end{fact}
+\begin{proof}
+It suffices to show $t/16 \geq \ln t$ for $t \geq 100$. Let $f(t) = t/16 - \ln(t)$. Then $f'(t) = 1/16 - 1/t \geq 0$ for $t \geq 16$. Thus $f(t)$ increases for $t \geq 16$. We prove the desired result by noting $f(100) \geq 0$.
+\end{proof}
+\begin{fact}\label{fact:ln-property}
+We have $x\ln(1+3/x) \geq 1$ for any $x \geq 1$.
+\end{fact}
+\begin{proof}
+Leg $f(x) = x\ln(1+3/x)$. Then $f'(x) = \ln(1+3/x)-\frac{3}{x+3}$ and $f''(x) = \frac{-3}{x(x+3)} + \frac{3}{(x+3)^2)} \leq 0$. Therefore, $f'(x)$ is a decreasing function with $f'(+\infty) = 0$, and $f'(x) \geq 0$. This shows $f(x)$ is an increasing function. Since $f(1) = \ln(4) \geq 1$, we have $f(x) \geq 1$ for any $x \geq 1$.
+\end{proof}

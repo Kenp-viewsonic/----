@@ -1,0 +1,39 @@
+\definecolor{lightgreen}{RGB}{200,255,200}
+\begin{table*}[t]
+\begin{center}
+\caption{Model performance on VQAv2 and NExT-QA. \#Mem: memory size; Type \#Mem: type of memory used, where \faQuestionCircle\ and \faImage\ denote storing both questions and images in the memory buffer; Standard Test: standard testing; Novel Comp. Test: novel composition testing; AP: Final Average Performance (\%); Forget: Average Forgetting (\%). Best results are in \textbf{bold}, second-best are \underline{underlined}.}
+\vspace{-3mm}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l|c|c|c|c|c|c|c|c|c|c|c|c|c}
+\toprule
+\multirow{3}{*}{\textbf{Methods}} & \multicolumn{6}{c|}{\textbf{VQAv2}} & \multicolumn{6}{c}{\textbf{NExT-QA}} \\
+\cmidrule(l){2-7} \cmidrule(l){8-13}
+ & \multirow{2}{*}{\textbf{\#Mem}} & \multirow{2}{*}{\textbf{Type}} & \multicolumn{2}{c|}{\textbf{Standard Test}} & \multicolumn{2}{c|}{\textbf{Novel Comp. Test}} & \multirow{2}{*}{\textbf{\#Mem}} & \multirow{2}{*}{\textbf{Type}} & \multicolumn{2}{c|}{\textbf{Standard Test}} & \multicolumn{2}{c}{\textbf{Novel Comp. Test}} \\
+\cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){10-11} \cmidrule(l){12-13}
+ & & \textbf{\#Mem} & \textbf{AP ($\uparrow$)} & \textbf{Forget ($\downarrow$)} & \textbf{AP ($\uparrow$)} & \textbf{Forget ($\downarrow$)} & & \textbf{\#Mem} & \textbf{AP ($\uparrow$)} & \textbf{Forget ($\downarrow$)} & \textbf{AP ($\uparrow$)} & \textbf{Forget ($\downarrow$)} \\
+\midrule
+Joint & - & None & 51.64 & - & 51.10 & - & - & None & 35.92 & - & 36.24 & - \\
+\midrule
+\rowcolor[HTML]{FDEDEC} Vanilla & None & None & 14.92 & 30.80 & 11.79 & 27.16 & None & None & 12.68 & 25.94 & 12.59 & 28.04 \\
+
+\rowcolor[HTML]{FDEDEC} EWC \citep{kirkpatrick2017elastic} & None & None & 15.77 & 30.62 & 12.83 & 28.16 & None & None & 13.01 & 24.06 & 11.91 & 27.44 \\
+
+\rowcolor[HTML]{FDEDEC} MAS \citep{mas2018} & None & None & 20.56 & 11.16 & 23.90 & 6.24 & None & None & 18.04 & 10.07 & 21.12 & 10.09 \\
+
+\midrule
+\rowcolor[HTML]{FEF9E7} ER \citep{chaudhry2019tinyepisodicmemoriescontinual} & 5000 & \faQuestionCircle / \faImage & 36.99 & 5.99 & 33.78 & 5.76 & 500 & \faQuestionCircle / \faImage & 30.55 & 4.91 & 32.20 & 5.57 \\
+
+\rowcolor[HTML]{FEF9E7} DER \citep{Chaudhry2019er} & 5000 & \faQuestionCircle / \faImage & 35.35 & 8.62 & 31.52 & 8.59 & 500 & \faQuestionCircle / \faImage & 26.17 & 5.12 & 21.56 & 12.68 \\
+
+\rowcolor[HTML]{FEF9E7} VS \citep{Wan_2022_CVPR} & 5000 & \faQuestionCircle / \faImage & 34.03 & 8.79 & 32.96 & 5.78 & 500 & \faQuestionCircle / \faImage & 28.13 & 4.45 & 29.47 & 6.14 \\
+
+\rowcolor[HTML]{FEF9E7} VQACL \citep{zhang2023vqacl} & 5000 & \faQuestionCircle / \faImage & \underline{37.46} & \underline{6.96} & \underline{35.40} & \underline{4.90} & 500 & \faQuestionCircle / \faImage & \underline{30.86} & \underline{4.12} & \textbf{33.85} & \textbf{3.80} \\
+\midrule
+\rowcolor{lightgreen} \textbf{\qstmethodshort{} (Ours)} & 5000 & \faQuestionCircle & \textbf{39.25} & \textbf{4.91}  & \textbf{40.00} & \textbf{3.81} & 500 & \faQuestionCircle & \textbf{31.70} & \textbf{2.91} & \underline{33.21} & \underline{4.16} \\
+\bottomrule
+\end{tabular}
+}
+\vspace{-5mm}
+\label{tab:model_performance}
+\end{center}
+\end{table*}

@@ -1,0 +1,29 @@
+\section{Introduction}
+
+Numerous everyday gadgets like mobile phones or smart speaker devices consist of an NLU component to automatically understand the semantics %, particularly the intentions
+of user requests. %The action to be taken by the system is then decided based on the intent identified. 
+Comprehending the \textit{intent} and/or \textit{domain} (groups of mutually related intents) of users' natural language utterances is a key task in these devices. Deep learning models have been proposed in the literature for intent detection in diversely expressed utterances, to avoid additional feature engineering~\cite{bhargava2013,kim2016intent,liu2016attention,sun2016weakly,zhang2016joint,kim2017onenet,goo2018slot}. %, and identify relevant entities linked with those intents (slot filling). 
+But most models are supervised or semi-supervised, i.e. they require sufficient labeled data, and can only handle a fixed number of intents and domains \textit{seen} during model training.
+%This inhibits the range of functionalities that the users of these voice assistants can enjoy.
+However, user interactions with voice-powered agents generate large amounts of unlabeled conversational text. This data often contains newly emergent, \textit{unseen} domains and intents not encountered by the learning models before. %, and is expensive to label.
+Expanding the capabilities of voice assistants to account for these new intents and domains would require expensive and time-consuming human labeling efforts each time a new skill, functionality or intent is to be added. Thus, it is crucial to be able to learn effectively from unlabeled text.
+
+Zero shot techniques~\cite{kumar2017zero,xia2018} recognize intents for which no labeled training data is available. However, they require the number of the new intent types, and some prior knowledge about the new intents to be discovered to be available at test time. Such information may be unfeasible to obtain. 
+Efforts have been made to break the closed-world assumption in computer vision~\cite{scheirer2014probability,bendale2015towards,bendale2016towards,fei2016breaking} as well as in the NLU literature~\cite{shu2017doc,kim2018joint,vedula2019towards,lin2019deep}. This is the paradigm of \textit{open world learning} or \textit{open set recognition}, that identifies instances with labels unseen during training. 
+%These works classify instances from the \textit{seen} (during training) classes and reject instances that do not belong to any seen class as an \textit{unseen} (during training) or novel class. 
+However, the task of discovering the actual latent categories in the instances identified as containing unseen labels is relatively under explored. \cite{shu2018unseen} attempted this for image classification, but their model could not always outperform baselines. \cite{vedula2019towards} developed a sequence tagging approach to discover unseen intents in dialog. However, unlike our proposed framework, their method (i) is restricted to intents containing an action or activity to be performed; (ii) is customized for longer utterances containing additional background context such as customer support conversations; and (iii) does not recognize an intent expressed in different ways semantically as the same intent, or group related novel intents into novel domains. 
+In this work, we attempt to bridge the gap between detecting utterances belonging to new intents/domains and actually discovering a taxonomy of those new intents/domains. Though we address the problem of novel user intent and domain discovery, our technique can easily be applied to any open classification setting. 
+
+We propose a novel three-stage framework called \mbox{\textit{\mname{}}} (\underline{A}utomatic \underline{D}iscovery of no\underline{V}el \underline{I}ntents and Domai\underline{N}s). It automatically discovers user intents and domains in massive, unlabeled text corpora, \textit{without} any prior knowledge about the intents or domains that the text may comprise of. 
+Similar to an open classification setting, our method first leverages a multi-layer transformer network, BERT~\cite{devlin2018bert}, to determine if the text input is likely to contain a novel, unseen intent or not. In the next step, \mname{} discovers the latent intent categories in the above identified input utterances in an unsupervised manner, via a knowledge transfer component. %We do this by transferring the knowledge learnt from an utterance corpus labeled with intents seen during training.  
+Finally, \mname{} hierarchically links semantically related groups of the newly discovered intents to form new domains. 
+\mname{} is a generic algorithm and we empirically demonstrate that it is equally effective across several task domains and fields. %The gains obtained can further be improved by incorporating minimal supervision (less than $5$ labeled instances per intent). 
+To summarize:
+
+(i) We propose a novel, fully automated method, \mname{}, that jointly discovers newly emerging intents as well as domains in unlabeled user utterances.%, and hierarchically link related intents into domains. 
+
+(ii) Unlike existing literature, \mname{} can generalize to diverse, open-world scenarios, and is independent of the intents and domains that it has been trained upon.
+
+(iii) We extensively evaluate \mname{} on public benchmark datasets and real-world data from a commercial voice agent, and significantly outperform baselines across various empirical configurations. 
+
+

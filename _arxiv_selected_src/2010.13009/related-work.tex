@@ -1,0 +1,45 @@
+\section{Discussions and Related Work}
+% NEED MORE
+
+\paragraph{Interpretability}
+Interpretability is an important line of research recently~\citep{interpret-qa-1,interpret-qa-2,graph-retriever}.
+The nearest neighbor approach~\citep{knn-nips} is appealing in that we can explicitly know which training example triggers each prediction.
+Table~\ref{table:case-study} in Appendix~\ref{extra-results} shows some examples.
+
+\paragraph{Call for better embeddings}
+Emb-$k$NN and RN-$k$NN are not as competitive as DNNC.
+This encourages future work on the task-oriented evaluation of text embeddings in $k$NN.
+
+\paragraph{Training time}
+Our DNNC method needs longer training time than that of the classifier (e.g., 90 vs. 40 seconds to train a single-domain model), because we synthesize the pairwise examples.
+As a first step, we used all the training examples to investigate the effectiveness, but it is an interesting direction to seek more efficient pairwise training.
+
+\paragraph{Distilled model}
+Another way to speedup our model is to use distilled pre-trained models~\citep{distil-bert}.
+We replaced the RoBERTa model with a distilled RoBERTa model,
+%\footnote{\url{https://s3.amazonaws.com/models.huggingface.co/bert/distilroberta-base-config.json}.}
+and observed large variances with significantly lower OOS accuracy.
+\citet{acl-ood} also suggested that the distilled models would not be robust to out-of-distribution examples.
+
+% will be revised later
+\paragraph{Few-shot text classification}
+%Few-shot classification~\cite{fei2006one,vinyals2016matching} learns classifiers given only a few labeled examples of each class.
+%In NLP applications, it has been used for semantic parsing~\cite{N18-2115}, machine translation ~\cite{D18-1398}, text classification~\cite{deng2019low,geng2019induction,xu2019open}, dialogue state tracking~\cite{wu-etal-2019-transferable}, and intent classification~\citep{marrying-reg,efficient_intent} without OOS.
+% These tasks usually employ multiple domains to achieve fast adaptation, while in our case the number of existing domains is limited.
+Few-shot classification~\citep{fei2006one,vinyals2016matching} has been applied to text classification tasks~\citep{deng2019low,geng2019induction,xu2019open}, and few-shot intent detection is also studied but without OOS~\citep{marrying-reg,xia2020cg,efficient_intent}.
+There are two common scenarios: 1) learning with plenty of examples and then generalizing to unseen classes with a few examples, and 2) learning with a few examples for all seen classes.
+Meta-learning~\citep{finn2017model,geng2019induction} is widely studied in the first scenario.
+%, using large labeled meta-train and meta-test data to optimize model parameters with second-order gradients.
+In our paper, we have focused on the second scenario, assuming that there are only a limited number of training examples for each class.
+Our work is related to metric-based approaches such as matching networks~\cite{matching-net}, prototypical networks~\cite{proto-net} and relation networks~\cite{relation_net}, as they model nearest neighbours in an example-embedding or a class-embedding space.
+%and kernel density estimation.
+We showed that a relation network with the RoBERTa embeddings does not perform comparably to our method.
+We also considered several ideas from prototypical networks~\citep{hierarchical-proto-net}, but those did not outperform our Emb-$k$NN baseline.
+These results indicate that deep self-attention is the key to the nearest neighbor approach with OOS detection.
+
+% General approaches usually fall into two categories: optimization-based approaches and metric-based approaches.
+% Optimization-based approaches such as meta-learning frameworks~\cite{finn2017model,geng2019induction} use large labeled meta-train and meta-test data to optimize model parameters with second-order gradients and learn to fast adapt to the few-shot examples during inference. 
+% learn to extract transferable knowledge from a large labeled training set with a set of seen classes, and optimize model parameters based on gradients computed from the few-shot examples.
+% In our paper, we focus on the second scenario, assuming there are only a limited number of training examples for each class. 
+% Metric-based approaches such as Match Networks~\cite{matching-net}, Prototypical Networks~\cite{proto-net} and Relation Networks~\cite{relation_net} are similar to nearest neighbours and kernel density estimation.
+% Recently, some approaches are also proposed for few-shot text classification~\cite{deng2019low,geng2019induction,xu2019open} and few-shot intent classification~\citep{marrying-reg,efficient_intent} without OOS.

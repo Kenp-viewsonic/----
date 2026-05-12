@@ -1,0 +1,301 @@
+\begin{thebibliography}{58}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Aljundi et~al.(2019{\natexlab{a}})Aljundi, Belilovsky, Tuytelaars, Charlin, Caccia, Lin, and Page-Caccia]{aljundi2019online}
+Aljundi, R., Belilovsky, E., Tuytelaars, T., Charlin, L., Caccia, M., Lin, M., and Page-Caccia, L.
+\newblock Online continual learning with maximal interfered retrieval.
+\newblock \emph{Advances in neural information processing systems}, 32, 2019{\natexlab{a}}.
+
+\bibitem[Aljundi et~al.(2019{\natexlab{b}})Aljundi, Lin, Goujaud, and Bengio]{GSSaljundi2019gradient}
+Aljundi, R., Lin, M., Goujaud, B., and Bengio, Y.
+\newblock Gradient based sample selection for online continual learning.
+\newblock \emph{Advances in neural information processing systems}, 32, 2019{\natexlab{b}}.
+
+\bibitem[Arani et~al.(2022)Arani, Sarfraz, and Zonooz]{clser}
+Arani, E., Sarfraz, F., and Zonooz, B.
+\newblock Learning fast, learning slow: A general continual learning method based on complementary learning system.
+\newblock \emph{arXiv preprint arXiv:2201.12604}, 2022.
+
+\bibitem[Bang et~al.(2021)Bang, Kim, Yoo, Ha, and Choi]{RMbang2021rainbow}
+Bang, J., Kim, H., Yoo, Y., Ha, J.-W., and Choi, J.
+\newblock Rainbow memory: Continual learning with a memory of diverse samples.
+\newblock In \emph{Proceedings of the IEEE/CVF conference on computer vision and pattern recognition}, pp.\  8218--8227, 2021.
+
+\bibitem[Borsos et~al.(2020)Borsos, Mutny, and Krause]{borsos2020coresets}
+Borsos, Z., Mutny, M., and Krause, A.
+\newblock Coresets via bilevel optimization for continual learning and streaming.
+\newblock \emph{Advances in neural information processing systems}, 33:\penalty0 14879--14890, 2020.
+
+\bibitem[Buzzega et~al.(2020)Buzzega, Boschini, Porrello, Abati, and Calderara]{derpp}
+Buzzega, P., Boschini, M., Porrello, A., Abati, D., and Calderara, S.
+\newblock Dark experience for general continual learning: a strong, simple baseline.
+\newblock \emph{Advances in neural information processing systems}, 33:\penalty0 15920--15930, 2020.
+
+\bibitem[Caccia et~al.(2021)Caccia, Aljundi, Asadi, Tuytelaars, Pineau, and Belilovsky]{ERACE}
+Caccia, L., Aljundi, R., Asadi, N., Tuytelaars, T., Pineau, J., and Belilovsky, E.
+\newblock New insights on reducing abrupt representation change in online continual learning.
+\newblock \emph{arXiv preprint arXiv:2104.05025}, 2021.
+
+\bibitem[Cazenavette et~al.(2022)Cazenavette, Wang, Torralba, Efros, and Zhu]{MTTcazenavette2022dataset}
+Cazenavette, G., Wang, T., Torralba, A., Efros, A.~A., and Zhu, J.-Y.
+\newblock Dataset distillation by matching training trajectories.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pp.\  4750--4759, 2022.
+
+\bibitem[Chaudhry et~al.(2018{\natexlab{a}})Chaudhry, Dokania, Ajanthan, and Torr]{chaudhry2018riemannian}
+Chaudhry, A., Dokania, P.~K., Ajanthan, T., and Torr, P.~H.
+\newblock Riemannian walk for incremental learning: Understanding forgetting and intransigence.
+\newblock In \emph{Proceedings of the European conference on computer vision (ECCV)}, pp.\  532--547, 2018{\natexlab{a}}.
+
+\bibitem[Chaudhry et~al.(2018{\natexlab{b}})Chaudhry, Ranzato, Rohrbach, and Elhoseiny]{AGEM}
+Chaudhry, A., Ranzato, M., Rohrbach, M., and Elhoseiny, M.
+\newblock Efficient lifelong learning with a-gem.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2018{\natexlab{b}}.
+
+\bibitem[Cui et~al.(2023)Cui, Wang, Si, and Hsieh]{cui2023scaling}
+Cui, J., Wang, R., Si, S., and Hsieh, C.-J.
+\newblock Scaling up dataset distillation to imagenet-1k with constant memory.
+\newblock In \emph{International Conference on Machine Learning}, pp.\  6565--6590. PMLR, 2023.
+
+\bibitem[Finn et~al.(2017)Finn, Abbeel, and Levine]{maml}
+Finn, C., Abbeel, P., and Levine, S.
+\newblock Model-agnostic meta-learning for fast adaptation of deep networks.
+\newblock In \emph{International conference on machine learning}, pp.\  1126--1135. PMLR, 2017.
+
+\bibitem[Gal \& Ghahramani(2016)Gal and Ghahramani]{uncertaintygal2016dropout}
+Gal, Y. and Ghahramani, Z.
+\newblock Dropout as a bayesian approximation: Representing model uncertainty in deep learning.
+\newblock In \emph{international conference on machine learning}, pp.\  1050--1059. PMLR, 2016.
+
+\bibitem[Gretton et~al.(2012)Gretton, Borgwardt, Rasch, Sch{\"o}lkopf, and Smola]{mmdgretton2012kernel}
+Gretton, A., Borgwardt, K.~M., Rasch, M.~J., Sch{\"o}lkopf, B., and Smola, A.
+\newblock A kernel two-sample test.
+\newblock \emph{The Journal of Machine Learning Research}, 13\penalty0 (1):\penalty0 723--773, 2012.
+
+\bibitem[Hao et~al.(2024)Hao, Ji, and Liu]{BCSRhao2024bilevel}
+Hao, J., Ji, K., and Liu, M.
+\newblock Bilevel coreset selection in continual learning: A new formulation and algorithm.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36, 2024.
+
+\bibitem[Haykin(1998)]{mlphaykin1998neural}
+Haykin, S.
+\newblock \emph{Neural networks: a comprehensive foundation}.
+\newblock Prentice Hall PTR, 1998.
+
+\bibitem[Hou et~al.(2019)Hou, Pan, Loy, Wang, and Lin]{LUCIR}
+Hou, S., Pan, X., Loy, C.~C., Wang, Z., and Lin, D.
+\newblock Learning a unified classifier incrementally via rebalancing.
+\newblock In \emph{2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, pp.\  831--839, 2019.
+
+\bibitem[Jiang et~al.(2023)Jiang, Gu, Liu, and Pan]{jiang2023delving}
+Jiang, Z., Gu, J., Liu, M., and Pan, D.~Z.
+\newblock Delving into effective gradient matching for dataset condensation.
+\newblock In \emph{2023 IEEE International Conference on Omni-layer Intelligent Systems (COINS)}, pp.\  1--6. IEEE, 2023.
+
+\bibitem[Kim et~al.(2022)Kim, Kim, Oh, Yun, Song, Jeong, Ha, and Song]{kim2022dataset}
+Kim, J.-H., Kim, J., Oh, S.~J., Yun, S., Song, H., Jeong, J., Ha, J.-W., and Song, H.~O.
+\newblock Dataset condensation via efficient synthetic-data parameterization.
+\newblock In \emph{International Conference on Machine Learning}, pp.\  11102--11118. PMLR, 2022.
+
+\bibitem[Kingma \& Ba(2014)Kingma and Ba]{adam}
+Kingma, D. and Ba, J.
+\newblock Adam: A method for stochastic optimization.
+\newblock \emph{Computer Science}, 2014.
+
+\bibitem[Kirkpatrick et~al.(2017)Kirkpatrick, Pascanu, Rabinowitz, Veness, Desjardins, Rusu, et~al.]{EWC}
+Kirkpatrick, J., Pascanu, R., Rabinowitz, N., Veness, J., Desjardins, G., Rusu, A., et~al.
+\newblock Overcoming catastrophic forgetting in neural networks.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 114\penalty0 (13):\penalty0 3521--3526, 2017.
+
+\bibitem[Krizhevsky et~al.(2009)Krizhevsky, Hinton, et~al.]{cifar10}
+Krizhevsky, A., Hinton, G., et~al.
+\newblock Learning multiple layers of features from tiny images.
+\newblock 2009.
+
+\bibitem[Lee et~al.(2022)Lee, Chun, Jung, Yun, and Yoon]{lee2022dataset}
+Lee, S., Chun, S., Jung, S., Yun, S., and Yoon, S.
+\newblock Dataset condensation with contrastive signals.
+\newblock In \emph{International Conference on Machine Learning}, pp.\  12352--12364. PMLR, 2022.
+
+\bibitem[Li et~al.(2024)Li, Togo, Ogawa, and Haseyama]{li2024dataset}
+Li, G., Togo, R., Ogawa, T., and Haseyama, M.
+\newblock Dataset distillation using parameter pruning.
+\newblock \emph{IEICE Transactions on Fundamentals of Electronics, Communications and Computer Sciences}, 107\penalty0 (6):\penalty0 936--940, 2024.
+
+\bibitem[Li \& Hoiem(2018)Li and Hoiem]{LwF}
+Li, Z. and Hoiem, D.
+\newblock Learning without forgetting.
+\newblock \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence}, 40\penalty0 (12):\penalty0 2935--2947, 2018.
+\newblock \doi{10.1109/TPAMI.2017.2773081}.
+
+\bibitem[Liu et~al.(2020)Liu, Su, Liu, Schiele, and Sun]{liu2020mnemonics}
+Liu, Y., Su, Y., Liu, A.-A., Schiele, B., and Sun, Q.
+\newblock Mnemonics training: Multi-class incremental learning without forgetting.
+\newblock In \emph{Proceedings of the IEEE/CVF conference on Computer Vision and Pattern Recognition}, pp.\  12245--12254, 2020.
+
+\bibitem[Lopez-Paz \& Ranzato(2017)Lopez-Paz and Ranzato]{GEM}
+Lopez-Paz, D. and Ranzato, M.
+\newblock Gradient episodic memory for continual learning.
+\newblock In \emph{Advances in Neural Information Processing Systems}, volume~30. Neural Information Processing Systems (NeurIPS), 2017.
+
+\bibitem[McCloskey \& Cohen(1989)McCloskey and Cohen]{mccloskey1989catastrophic}
+McCloskey, M. and Cohen, N.~J.
+\newblock Catastrophic interference in connectionist networks: The sequential learning problem.
+\newblock In \emph{Psychology of learning and motivation}, volume~24, pp.\  109--165. Elsevier, 1989.
+
+\bibitem[Piao et~al.(2024)Piao, Wu, Wu, and Wei]{piao2024federated}
+Piao, H., Wu, Y., Wu, D., and Wei, Y.
+\newblock Federated continual learning via prompt-based dual knowledge transfer.
+\newblock In \emph{Forty-first International Conference on Machine Learning}, 2024.
+
+\bibitem[Pouransari \& Ghili(2014)Pouransari and Ghili]{tinyimg}
+Pouransari, H. and Ghili, S.
+\newblock Tiny imagenet visual recognition challenge, 2014.
+\newblock 6.
+
+\bibitem[Ratcliff(1990{\natexlab{a}})]{ERratcliff1990connectionist}
+Ratcliff, R.
+\newblock Connectionist models of recognition memory: constraints imposed by learning and forgetting functions.
+\newblock \emph{Psychological review}, 97\penalty0 (2):\penalty0 285, 1990{\natexlab{a}}.
+
+\bibitem[Ratcliff(1990{\natexlab{b}})]{ratcliff1990connectionist}
+Ratcliff, R.
+\newblock Connectionist models of recognition memory: constraints imposed by learning and forgetting functions.
+\newblock \emph{Psychological review}, 97\penalty0 (2):\penalty0 285, 1990{\natexlab{b}}.
+
+\bibitem[Rebuffi et~al.(2017)Rebuffi, Kolesnikov, Sperl, and Lampert]{icarl}
+Rebuffi, S.-A., Kolesnikov, A., Sperl, G., and Lampert, C.~H.
+\newblock icarl: Incremental classifier and representation learning.
+\newblock In \emph{Proceedings of the IEEE conference on Computer Vision and Pattern Recognition}, pp.\  2001--2010, 2017.
+
+\bibitem[Rusu et~al.(2017)Rusu, Rusu, Rao, Desjardins, He, Horgan, Ghemawat, Legenstein, Schmidhuber, et~al.]{MER}
+Rusu, A.~A., Rusu, I.~A., Rao, D., Desjardins, G., He, B., Horgan, D., Ghemawat, S., Legenstein, R., Schmidhuber, J., et~al.
+\newblock Learning to learn without forgetting by maximizing transfer and minimizing interference.
+\newblock In \emph{Proceedings of the 5th International Conference on Learning Representations (ICLR)}, 2017.
+
+\bibitem[Shim et~al.(2021)Shim, Mai, Jeong, Sanner, Kim, and Jang]{shim2021online}
+Shim, D., Mai, Z., Jeong, J., Sanner, S., Kim, H., and Jang, J.
+\newblock Online class-incremental continual learning with adversarial shapley value.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial Intelligence}, volume~35, pp.\  9630--9638, 2021.
+
+\bibitem[Thrun \& Mitchell(1995)Thrun and Mitchell]{thrun1995lifelong}
+Thrun, S. and Mitchell, T.~M.
+\newblock Lifelong robot learning.
+\newblock \emph{Robotics and autonomous systems}, 15\penalty0 (1-2):\penalty0 25--46, 1995.
+
+\bibitem[Tiwari et~al.(2022)Tiwari, Killamsetty, Iyer, and Shenoy]{GCRtiwari2022gcr}
+Tiwari, R., Killamsetty, K., Iyer, R., and Shenoy, P.
+\newblock Gcr: Gradient coreset based replay buffer selection for continual learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pp.\  99--108, 2022.
+
+\bibitem[Vitter(1985)]{Reservoirsamplingvitter1985random}
+Vitter, J.~S.
+\newblock Random sampling with a reservoir.
+\newblock \emph{ACM Transactions on Mathematical Software (TOMS)}, 11\penalty0 (1):\penalty0 37--57, 1985.
+
+\bibitem[Wang et~al.(2022{\natexlab{a}})Wang, Zhao, Peng, Zhu, Yang, Wang, Huang, Bilen, Wang, and You]{wang2022cafe}
+Wang, K., Zhao, B., Peng, X., Zhu, Z., Yang, S., Wang, S., Huang, G., Bilen, H., Wang, X., and You, Y.
+\newblock Cafe: Learning to condense dataset by aligning features.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pp.\  12196--12205, 2022{\natexlab{a}}.
+
+\bibitem[Wang et~al.(2023)Wang, Wang, Wu, Jia, and Meng]{wang2023cba}
+Wang, Q., Wang, R., Wu, Y., Jia, X., and Meng, D.
+\newblock Cba: Improving online continual learning via continual bias adaptor.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on Computer Vision}, pp.\  19082--19092, 2023.
+
+\bibitem[Wang et~al.(2024)Wang, Wang, Wu, Jia, Zhou, and Meng]{wang2024dual}
+Wang, Q., Wang, R., Wu, Y., Jia, X., Zhou, M., and Meng, D.
+\newblock Dual-cba: Improving online continual learning via dual continual bias adaptors from a bi-level optimization perspective.
+\newblock \emph{arXiv preprint arXiv:2408.13991}, 2024.
+
+\bibitem[Wang et~al.(2018)Wang, Zhu, Torralba, and Efros]{DDwang2018dataset}
+Wang, T., Zhu, J.-Y., Torralba, A., and Efros, A.~A.
+\newblock Dataset distillation.
+\newblock \emph{arXiv preprint arXiv:1811.10959}, 2018.
+
+\bibitem[Wang et~al.(2022{\natexlab{b}})Wang, Shen, Fang, Suo, Duan, and Gao]{wang2022improving}
+Wang, Z., Shen, L., Fang, L., Suo, Q., Duan, T., and Gao, M.
+\newblock Improving task-free continual learning by distributionally robust memory evolution.
+\newblock In \emph{International conference on machine learning}, pp.\  22985--22998. PMLR, 2022{\natexlab{b}}.
+
+\bibitem[Wang et~al.(2025)Wang, Wu, Wang, Lin, Wang, Zhao, and Meng]{wang2025singular}
+Wang, Z., Wu, Y., Wang, R., Lin, H., Wang, Q., Zhao, Q., and Meng, D.
+\newblock Singular value fine-tuning for few-shot class-incremental learning.
+\newblock \emph{arXiv preprint arXiv:2503.10214}, 2025.
+
+\bibitem[Wu et~al.(2019)Wu, Chen, Wang, Ye, Liu, Guo, and Fu]{BIC}
+Wu, Y., Chen, Y., Wang, L., Ye, Y., Liu, Z., Guo, Y., and Fu, Y.
+\newblock Large scale incremental learning.
+\newblock In \emph{2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, pp.\  374--382, 2019.
+\newblock \doi{10.1109/CVPR.2019.00046}.
+
+\bibitem[Wu et~al.(2024{\natexlab{a}})Wu, Huang, Wang, Meng, and Wei]{wu2024meta}
+Wu, Y., Huang, L.-K., Wang, R., Meng, D., and Wei, Y.
+\newblock Meta continual learning revisited: Implicitly enhancing online hessian approximation via variance reduction.
+\newblock In \emph{The Twelfth International Conference on Learning Representations}, 2024{\natexlab{a}}.
+
+\bibitem[Wu et~al.(2024{\natexlab{b}})Wu, Wang, Zhao, Zheng, Wei, and Huang]{wu2024mitigating}
+Wu, Y., Wang, H., Zhao, P., Zheng, Y., Wei, Y., and Huang, L.-K.
+\newblock Mitigating catastrophic forgetting in online continual learning by modeling previous task interrelations via pareto optimization.
+\newblock In \emph{Forty-first International Conference on Machine Learning}, 2024{\natexlab{b}}.
+
+\bibitem[Wu et~al.(2025)Wu, Piao, Huang, Wang, Li, Pfister, Meng, Ma, and Wei]{wu2025sd-lora}
+Wu, Y., Piao, H., Huang, L.-K., Wang, R., Li, W., Pfister, H., Meng, D., Ma, K., and Wei, Y.
+\newblock {SD-LoRA: Scalable Decoupled Low-Rank Adaptation for Class Incremental Learning}.
+\newblock \emph{The Thirteenth International Conference on Learning Representations}, 2025.
+
+\bibitem[Yang et~al.(2023)Yang, Shen, Wang, Liu, and Guo]{LoDM}
+Yang, E., Shen, L., Wang, Z., Liu, T., and Guo, G.
+\newblock An efficient dataset condensation plugin and its application to continual learning.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36, 2023.
+
+\bibitem[Yang et~al.(2024)Yang, Wu, Cen, Huang, Wang, and Zhang]{yang2024continual}
+Yang, J., Wu, Y., Cen, J., Huang, W., Wang, H., and Zhang, J.
+\newblock Continual learning for segment anything model adaptation.
+\newblock \emph{arXiv preprint arXiv:2412.06418}, 2024.
+
+\bibitem[Yoon et~al.(2021)Yoon, Madaan, Yang, and Hwang]{OCSyoon2021online}
+Yoon, J., Madaan, D., Yang, E., and Hwang, S.~J.
+\newblock Online coreset selection for rehearsal-based continual learning.
+\newblock \emph{arXiv preprint arXiv:2106.01085}, 2021.
+
+\bibitem[Yuan et~al.(2020)Yuan, Tay, Li, Wang, and Feng]{labelsmoothing}
+Yuan, L., Tay, F.~E., Li, G., Wang, T., and Feng, J.
+\newblock Revisiting knowledge distillation via label smoothing regularization.
+\newblock In \emph{2020 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, pp.\  3902--3910, 2020.
+\newblock \doi{10.1109/CVPR42600.2020.00396}.
+
+\bibitem[Zhang et~al.(2023)Zhang, Zhang, Lei, Mukherjee, Pan, Zhao, Ding, Li, and Xu]{zhang2023accelerating}
+Zhang, L., Zhang, J., Lei, B., Mukherjee, S., Pan, X., Zhao, B., Ding, C., Li, Y., and Xu, D.
+\newblock Accelerating dataset distillation via model augmentation.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pp.\  11950--11959, 2023.
+
+\bibitem[Zhao \& Bilen(2021)Zhao and Bilen]{zhao2021dataset}
+Zhao, B. and Bilen, H.
+\newblock Dataset condensation with differentiable siamese augmentation.
+\newblock In \emph{International Conference on Machine Learning}, pp.\  12674--12685. PMLR, 2021.
+
+\bibitem[Zhao \& Bilen(2023)Zhao and Bilen]{DMzhao2023dataset}
+Zhao, B. and Bilen, H.
+\newblock Dataset condensation with distribution matching.
+\newblock In \emph{Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision}, pp.\  6514--6523, 2023.
+
+\bibitem[Zhao et~al.(2020)Zhao, Mopuri, and Bilen]{DCzhao2020dataset}
+Zhao, B., Mopuri, K.~R., and Bilen, H.
+\newblock Dataset condensation with gradient matching.
+\newblock \emph{arXiv preprint arXiv:2006.05929}, 2020.
+
+\bibitem[Zhiqi et~al.(2025)Zhiqi, Wang, Zhang, and Alahari]{zhiqi2025advancing}
+Zhiqi, K., Wang, L., Zhang, X., and Alahari, K.
+\newblock Advancing prompt-based methods for replay-independent general continual learning.
+\newblock In \emph{The Thirteenth International Conference on Learning Representations}, 2025.
+
+\bibitem[Zhou et~al.(2022)Zhou, Pi, Zhang, Lin, Chen, and Zhang]{zhou2022probabilistic}
+Zhou, X., Pi, R., Zhang, W., Lin, Y., Chen, Z., and Zhang, T.
+\newblock Probabilistic bilevel coreset selection.
+\newblock In \emph{International Conference on Machine Learning}, pp.\  27287--27302. PMLR, 2022.
+
+\end{thebibliography}

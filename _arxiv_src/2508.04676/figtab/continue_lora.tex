@@ -1,0 +1,73 @@
+\begin{table}[t]
+\footnotesize
+\centering
+\caption{Comparison of different methods on continual LoRA finetuning (8 epochs per task) in 15 downstream tasks (w=d. denotes weight dynamic).}
+\label{tab:continual_lora}
+\begin{tabular}{l|c|c|c}
+\toprule
+\makecell{Methods \\(LoRA)}& \makecell{MMLU Score\\(Final)} & \makecell{15 Tasks AP\\(Final)} & \makecell{F1 Avg} \\
+
+\midrule
+\midrule
+Baseline &
+55.7620 & 73.3944 & 63.3746\\
+\midrule
+Baseline\textsuperscript{R} &
+58.6515& \textbf{75.5310}& 66.0296\\
+
+\rowcolor{gray!10}\quad w/ BI &
+56.5187& 73.3986& 63.8621\\
+\midrule
+
+Baseline\textsuperscript{R}+KL &
+61.0251& 74.8367& 67.2289\\
+
+\rowcolor{gray!10}\quad w/ BI &
+61.5755& 72.9626& 66.7872\\
+
+\midrule
+Baseline\textsuperscript{R}+L1 &
+61.5411& 73.4170& 66.9565\\
+
+\rowcolor{gray!10}\quad w/ BI &
+65.1875& 73.1178& 68.9253\\
+
+Baseline\textsuperscript{R}+L2 &
+61.6787& 74.9397& 67.6656\\
+
+\rowcolor{gray!10}\quad w/ BI &
+64.4651& 74.1000& 68.9476\\
+
+
+\midrule
+\rowcolor{gray!40}
+\textcolor{red!80!black}{\textbf{Ours}} & & &\\
+Baseline\textsuperscript{R}+TM &
+65.3251 & \textbf{75.0639}& \textbf{69.8567} \\
+\rowcolor{gray!10}\quad w/ BI &
+64.6371 & 72.7650 & 68.4606\\
+
+Baseline\textsuperscript{R}+TM (w=100) &
+65.9443& 63.9167& 64.9147 \\
+\rowcolor{gray!10}\quad w/ BI &
+65.5659& 68.7755& 67.1323\\
+
+
+Baseline\textsuperscript{R}+TM (w=d.) &
+\textbf{66.2539}& 64.4417&65.3352 \\
+\rowcolor{gray!10}\quad w/ BI &
+65.4627& 67.7580& 66.5906\\
+
+
+\midrule
+O-LoRA~\cite{wang2023orthogonal} &
+55.8996 & 73.6823 & 63.5707\\
+
+\midrule
+Upper Bound &
+\makecell{Orig\\ 66.5291} & \makecell{MTL\\ 80.3474} & 72.7882\\
+
+\bottomrule
+\end{tabular}
+
+\end{table}

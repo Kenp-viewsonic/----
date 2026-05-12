@@ -1,0 +1,13 @@
+% \section{Implementation Details}
+% \label{sec:implementation_f}
+
+% We use hidden layer size of 56 with dropout probability of 0.3. Hyper-parameter optimization gave value of 3 for context history window, $K$. We use embedding layer size of 56 as well, training the embeddings from scratch. Adadelta \cite{zeiler2012adadelta} algorithm with initial learning rate of 0.0001 gave the optimal performance. Concatenation window size, $P$ of 3 is used. $\alpha$ and $\beta$ in loss objective are set to 0.9. Early stopping is used with patience of 10 and threshold of 0.5. Each model is trained for 3 seeds and average F1 is reported.
+
+
+\section{Implementation Details}
+\label{sec:implementation_f}
+
+We use hidden layer size of 56 with dropout probability of 0.3. Context history window $K$ was varied from 1 to 5 and the optimal value of 3 was selected.
+%,  Hyper-parameter optimization gave value of 3 for context history window $K$. 
+%We use embedding layer size of 56 as well, training the embeddings from scratch. 
+Word embeddings are trained from scratch using an embedding layer size of 56. Adam \cite{kingma2014adam} algorithm with initial learning rate of 0.01 gave the optimal performance. Concatenation window size $w$ of 3 is used. $\alpha$ and $\beta$ in loss objective are set to 0.9. Early stopping is used with patience of 10 and threshold of 0.5. Each model is trained for 3 seeds and scores averaged across the seeds are reported.

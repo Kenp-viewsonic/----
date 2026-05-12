@@ -1,0 +1,61 @@
+{
+   "sources" : [
+      {
+         "usage" : "toplevel",
+         "filename" : "main.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "LICENSE"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "README.md"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "images/main.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "images/nispa.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "images/sequential_performance.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "images/vis_layerwise_analysis.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "images/vis_layerwise_analysis_seed_20.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "images/vis_layerwise_analysis_vit.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "main-accepted.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "main.bbl"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "main.bib"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "tmlr.bst"
+      }
+   ],
+   "spec_version" : 1,
+   "texlive_version" : "2025",
+   "process" : {
+      "compiler" : "pdflatex"
+   }
+}

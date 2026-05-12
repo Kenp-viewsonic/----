@@ -1,0 +1,99 @@
+
+
+\paragraph{Problem Statement}
+In a dialogue system, given $K$ predefined intent classes $S_{\text{known}}=\{C_i\}_{i=1}^K$, an unknown intent detection model aims at predicting the category of an utterance $u$, which may be one of the known intents or an out-of-scope intent $C_{\text{oos}}$. Essentially, it is a $K+1$ classification problem at the test stage. At the training stage, a set of $N$ labeled utterances $\mathcal{D}_{l} = \{ (x_i,c_i) \mid c_i\in S_{\text{known}})\}_{i=1}^{N}$ is provided for training. Previous methods typically train a $K$-way classifier for the known intents. %classes. 
+
+
+% 之前的限制，idea怎么 ipsired的。overview怎么做的
+\paragraph{Overview of Our Approach} 
+%The discrepancy between training and inference results in additional complexity in previous methods. They usually require strong assumption on intent distribution (e.g., Gaussian mixture distribution) to build effective decision boundaries for each of known classes in the training stage. With the learned decision boundaries, in inference, outliers are usually detected by a post-step with the help of an additional off-the-shell outlier detector or hand-crafted confidence thresholding policy.  
+The mismatch between the training and test tasks, i.e., $K$-way classification vs. $(K+1)$-way classification, leads to the use of strong assumptions and additional complexity in previous methods. Inspired by recent practice in meta learning to simulate test conditions in training~\citep{vinyals2016matching}, we propose to match the training and test settings. In essence, as shown in Figure~\ref{fig:framework}, we formalize a $(K+1)$-way classification task in the training stage by constructing out-of-scope samples via self-supervision and from open-domain data. Our method simply trains a $(K+1)$-way classifier without making any assumption on the data distribution. After training, the classifier can be readily applied to the test task without any adaptation or post-processing.
+In the following, we elaborate on the details of our proposed method, including representation learning, construction of pseudo outliers, and discriminative training.
+%In essence, we devise our method by ``a simple machine learning principle: test and train conditions must match''~\citep{vinyals2016matching}. 
+%We intend to formalize a consistent $K+1$ classification task to bridge the gap between training and inference for our model.
+%To this end, we propose an algorithm that only requires a single training stage with cross-entropy loss. 
+% In result, we devise an effective unknown intent classification model that is simple and easy-to-train.
+
+%As shown in Figure~\ref{fig:framework}, we build two kinds of outliers at training stage to form a consistent $K+1$ classification task for training and test, as described later. Note that following the conventional setting for unknown intent detection, we avoid utilizing any information from the outliers in the test set. After the training stage, our model can be readily applied to test examples without any further adaptation steps. In the following, we elaborate on how to construct outliers at the training stage and how to use them to aid the training process.
+
+
+
+
+\subsection{Representation Learning}
+We employ BERT~\citep{DBLP:conf/naacl/DevlinCLT19} -- a deep Transformer network as text encoder. Specifically, we take the $d$-dimensional output vector of the special classification token [CLS] as the representation of an utterance $u$, i.e.,
+$$h = \text{BERT}(u) \in \mathbb{R}^d,$$ 
+where $d=768$ by default. The training set $\mathcal{D}_{l}$ is then mapped to $\mathcal{D}_{l}^{tr} = \{(h_i, c_i)\mid h_i = \text{BERT}(u_i), (u_i, c_i)\in \mathcal{D}_{l}\}_{i=1}^N$ in the feature space.
+
+%and an out-of-scope class $C_{oos}$ ,  where $c$ may either be in $S_{known}$ or an out-of-scope utterance, i.e., $c \in S = S_{known} \cup \{C_{OOS}\}$.  Note that as $S_{know n}$ varies, the coverage of $C_{oos}$ changes accordingly. 
+
+
+%In a task-oriented dialog system, given $K$ predefined known intent classes $S_{known}=\{C_i\}_{i=1}^K$ and an out-of-scope class $C_{oos}$ , an unknown intent classification model aims at predicating the category $c$ of an utterance $u$, where $c$ may either be in $S_{known}$ or an out-of-scope utterance, i.e., $c \in S = S_{known} \cup \{C_{OOS}\}$.  Note that as $S_{know n}$ varies, the coverage of $C_{oos}$ changes accordingly. Given a labeled training set $\mathcal{D}_{l} = \{ (x_i,c_i) \mid c_i\in S_{known})\}_{i=1}^{N}$, previous methods consider a $K$-class classification problem in training whereas the targeted classes become $K+1$ during inference with an additional $C_{oos}$ class. 
+
+
+%\subsection{The Proposed Method}
+
+
+
+%为什么要两种类型。robust。simulate oos。模仿用户，再多一点 
+\subsection{Construction of Outliers}\label{subsec: building outlier}
+
+%We construct two different types of out-of-scope examples that are defined in terms of the complexity of recognizing them and generated dynamically in training. 
+
+We construct two different types of pseudo outliers to be used in the training stage: synthetic outliers that are generated by self-supervision, and open-domain outliers that can be easily acquired. 
+
+%At a high level, in the learned representation space, we hypothesize that the outliers that are similar to inliers drawn from known intent classes may be geometrically \emph{close} to these inliers. We call this kind of outliers as the \emph{hard} ones.  
+
+%On other hand, in practical, despite dialog systems are task-oriented, but users are not. Generally, users can input anything they want into the system such as unrelated small talks, typos, or punctuation. We regard this kind of outliers as the \emph{easy} ones.
+
+%To enhance the generalization ability of our model, we devise the corresponding construction methods for these two kinds of outliers.  
+
+\paragraph{Synthetic Outliers by Self-Supervision} To improve the generalization ability of the unknown intent detection model, we propose to generate ``\emph{hard}'' outliers in the feature space, which may have similar representations to the inliers of known intent classes. We hypothesize that those outliers may be geometrically \emph{close} to the inliers in the feature space. Based on this assumption, we propose a self-supervised method to generate the ``hard'' outliers using the training set $\mathcal{D}^{tr}_{l}$.  
+
+%We call this kind of outliers as the \emph{hard} ones.
+%Based on our geometrically \emph{close} hypothesis in the representation space, the \emph{hard} outliers can be generated based on information provided by the training set $\mathcal{D}^{tr}_{l}$. 
+%We consider generating this kind of hard outliers that resemble the known intent examples in a self-supervised manner. 
+Specifically, in the feature space, we generate synthetic outliers by using convex combinations of the features of  inliers from different intent classes:
+\begin{flalign}
+\begin{aligned}
+	h^{oos} =\theta * h_{\beta} + (1-\theta)*h_{\alpha},
+\end{aligned}
+\end{flalign}
+where $h_{\beta}$ and $h_{\alpha}$ are the representations of two utterances which are randomly sampled from different intent classes in $\mathcal{D}_{l}^{tr}$, i.e., $c_{\beta} \neq c_{\alpha}$, and $h^{oos}$ is the synthetic outlier. For example, $\theta$ can be sampled from a uniform distribution $U(0, 1)$. In this case, when $\theta$ is close to $0$ or $1$, it will generate ``harder'' outliers that only contain a small proportion of mix-up from different classes. In essence, ``hard'' outliers act like support vectors in SVM~\citep{cortes1995support}, and ``harder'' outliers could help to train a more discriminative classifier. 
+
+%We find that $\theta$ that is close to $0$ or $1$ is important, which indicates that a small proportion of mixup from different classes can lead to distinctive features.
+% To ensure $h^{oos}$ is a possible outlier, the weight parameter $\theta$ should not be too close to 0 or 1.
+%namely $\mathbf{\theta} \sim \mathcal{U}(0.2, 0.8)$. 
+
+The generated outliers $h^{oos}$ are assigned to the class of $C_{oos}$, the $(K+1)$-th class in the feature space, forming a training set
+\begin{flalign}
+\begin{aligned}
+	\mathcal{D}_{co}^{tr} = \{(h_{i}^{oos}, c_i = C_{oos}) \}_{i=1}^{M}.
+\end{aligned}
+\end{flalign}
+Notice that since the outliers are generated in the feature space, it is very efficient to construct a large outlier set $\mathcal{D}_{co}^{tr}$.
+
+%than $\mathcal{D}_{l}^{tr}$.
+
+%By assigning all of the generated $h^{oos}$ into the class of $C_{oos}$, we get an out-of-scope set for training in the embedded space: 
+ 
+
+\paragraph{Open-Domain Outliers} In practical dialogue systems, user input can be arbitrary free-form sentences. To simulate real-world outliers and provide learning signals representing them in training, we propose to construct a set of open-domain outliers, which can be easily obtained. Specifically, the set of free-form outliers $\mathcal{D}_{fo}$ can be constructed by collecting sentences from various public datasets that are disjoint from the training and test tasks. There are many datasets available, including the question answering dataset SQuaD 2.0~\citep{DBLP:conf/acl/RajpurkarJL18}, the sentiment analysis datasets Yelp~\citep{DBLP:conf/cikm/MengSZ018} and IMDB~\citep{DBLP:conf/acl/MaasDPHNP11}, and dialogue datasets from different domains. 
+
+In the feature space, $\mathcal{D}_{fo}$ is mapped to
+$\mathcal{D}_{fo}^{tr} = \{(h^{oos}_i, c_i=C_{oos})\mid h^{oos}_i=\text{BERT}(u_i), u_i \in \mathcal{D}_{fo}\}_{i=1}^H$.
+
+Both synthetic outliers and open-domain outliers are easy to construct. As will be demonstrated in Section~\ref{sec:exp}, both of them are useful, but synthetic outliers are much more effective than open-domain outliers in improving the generalization ability of the trained $(K+1)$-way intent classifier. 
+
+%To simulate real-world outliers, we propose to construct another set of open-domain outliers. In practice, despite dialog systems are task-oriented, but users are not. Generally, users can input anything they want into the system such as unrelated small talks, typos, or punctuation. We regard this kind of outliers as the \emph{easy} ones.
+%Next, we consider another set of easy-to-recognized out-of-scope utterances. We construct an easy-acquired OOS set so as to provide learning signals representing this kind of free-form utterances. Specifically, we build an OOS set $\mathcal{D}_{fo}$ which consists of $0.5$ million utterances by collecting sentences from the question answering dataset SQuaD 2.0~\citep{DBLP:conf/acl/RajpurkarJL18} and the sentiment analysis datasets Yelp~\citep{DBLP:conf/cikm/MengSZ018} and IMDB~\citep{DBLP:conf/acl/MaasDPHNP11}. The corresponding set is noted as
+%$\mathcal{D}_{fo}^{tr} = \{(h^{oos}_i, c_i=C_{oos})\mid h^{oos}_i=\text{BERT}(u_i), u_i \in \mathcal{D}_{fo}\}_{i=1}^H$.
+
+
+\subsection{Discriminative Training}
+
+After constructing the pseudo outliers, in the feature space, our training set $\mathcal{D}^{tr}$ now consists of a set of inliers $\mathcal{D}_{l}^{tr}$ and two sets of outliers $\mathcal{D}_{co}^{tr}$ and $\mathcal{D}_{fo}^{tr}$, i.e., $\mathcal{D}^{tr} = \mathcal{D}_{l}^{tr} \cup \mathcal{D}_{co}^{tr} \cup \mathcal{D}_{fo}^{tr}$ and $|\mathcal{D}^{tr}| = N+M+H$. Therefore, in the training stage, we can train a $(K+1)$-way classifier  with the intent label set $S= S_{known} \cup \{C_{oos}\}$, which can be directly applied in the test stage to identify unknown intent and classify known ones. In particular, we use a multilayer perceptron network, $\Phi(\cdot)$, as the classifier in the feature space. The selection of the classifier is flexible, and the only requirement is that it is differentiable. Then, we train our model using a cross-entropy loss:
+\begin{align*}
+	\mathcal{L} = 
+	- \frac{1}{|\mathcal{D}^{tr}|}\sum_{\mathcal{D}^{tr}}\log \frac{\exp(\Phi(h_i)^{c_i}/\tau)}{\sum_{j\in S}\exp(\Phi(h_i)^j/\tau)},
+\end{align*}
+where $\Phi(h_i)^{c_i}$ refers to the output logit of $\Phi(\cdot)$ for the ground-truth class $c_i$, and $\tau \in \mathbb{R}^+$ is an adjustable scalar temperature parameter.

@@ -1,0 +1,232 @@
+[
+  {
+    "link": "https://www.arxiv.org/abs/2312.10967",
+    "title": "Knowledge Graphs and Pre-trained Language Models enhanced Representation Learning for Conversational Recommender Systems",
+    "publish_time": "20231218",
+    "authors": [
+      "Zhangchi Qiu",
+      "Ye Tao",
+      "Shirui Pan and Alan Wee-Chung Liew"
+    ],
+    "abstract": "Conversational recommender systems (CRS) utilize natural language interactions and dialogue history to infer user preferences and provide accurate recommendations. Due to the limited conversation context and background knowledge, existing CRSs rely on external sources such as knowledge graphs to enrich the context and model entities based on their inter-relations. However, these methods ignore the rich intrinsic information within entities. To address this, we introduce the Knowledge-Enhanced Entity Representation Learning (KERL) framework, which leverages both the knowledge graph and a pre-trained language model to improve the semantic understanding of entities for CRS. In our KERL framework, entity textual descriptions are encoded via a pre-trained language model, while a knowledge graph helps reinforce the representation of these entities. We also employ positional encoding to effectively capture the temporal information of entities in a conversation. The enhanced entity representation is then used to develop a recommender component that fuses both entity and contextual representations for more informed recommendations, as well as a dialogue component that generates informative entity-related information in the response text. A high-quality knowledge graph with aligned entity descriptions is constructed to facilitate our study, namely the Wiki Movie Knowledge Graph (WikiMKG). The experimental results show that KERL achieves state-of-the-art results in both recommendation and response generation tasks.",
+    "score": 0.7536929249763489
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2510.03561",
+    "title": "Reactive Transformer (RxT) -- Stateful Real-Time Processing for Event-Driven Reactive Language Models",
+    "publish_time": "20251003",
+    "authors": [
+      "Adam Filipek"
+    ],
+    "abstract": "The Transformer architecture has become the de facto standard for Large Language Models (LLMs), demonstrating remarkable capabilities in language understanding and generation. However, its application in conversational AI is fundamentally constrained by its stateless nature and the quadratic computational complexity ($O(L^2)$) with respect to sequence length $L$. Current models emulate memory by reprocessing an ever-expanding conversation history with each turn, leading to prohibitive costs and latency in long dialogues. This paper introduces the Reactive Transformer (RxT), a novel architecture designed to overcome these limitations by shifting from a data-driven to an event-driven paradigm. RxT processes each conversational turn as a discrete event in real-time, maintaining context in an integrated, fixed-size Short-Term Memory (STM) system. The architecture features a distinct operational cycle where a generator-decoder produces a response based on the current query and the previous memory state, after which a memory-encoder and a dedicated Memory Attention network asynchronously update the STM with a representation of the complete interaction. This design fundamentally alters the scaling dynamics, reducing the total user-facing cost of a conversation from quadratic ($O(N^2 \\cdot T)$) to linear ($O(N \\cdot T)$) with respect to the number of interactions $N$. By decoupling response generation from memory updates, RxT achieves low latency, enabling truly real-time, stateful, and economically viable long-form conversations. We validated our architecture with a series of proof-of-concept experiments on synthetic data, demonstrating superior performance and constant-time inference latency compared to a baseline stateless model of comparable size.",
+    "score": 0.9613630771636963
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2306.03009",
+    "title": "Using Sequences of Life-events to Predict Human Lives",
+    "publish_time": "20230605",
+    "authors": [
+      "Germans Savcisens",
+      "Tina Eliassi-Rad",
+      "Lars Kai Hansen",
+      "Laust Mortensen",
+      "Lau Lilleholt",
+      "Anna Rogers",
+      "Ingo Zettler",
+      "Sune Lehmann"
+    ],
+    "abstract": "Over the past decade, machine learning has revolutionized computers' ability to analyze text through flexible computational models. Due to their structural similarity to written language, transformer-based architectures have also shown promise as tools to make sense of a range of multi-variate sequences from protein-structures, music, electronic health records to weather-forecasts. We can also represent human lives in a way that shares this structural similarity to language. From one perspective, lives are simply sequences of events: People are born, visit the pediatrician, start school, move to a new location, get married, and so on. Here, we exploit this similarity to adapt innovations from natural language processing to examine the evolution and predictability of human lives based on detailed event sequences. We do this by drawing on arguably the most comprehensive registry data in existence, available for an entire nation of more than six million individuals across decades. Our data include information about life-events related to health, education, occupation, income, address, and working hours, recorded with day-to-day resolution. We create embeddings of life-events in a single vector space showing that this embedding space is robust and highly structured. Our models allow us to predict diverse outcomes ranging from early mortality to personality nuances, outperforming state-of-the-art models by a wide margin. Using methods for interpreting deep learning models, we probe the algorithm to understand the factors that enable our predictions. Our framework allows researchers to identify new potential mechanisms that impact life outcomes and associated possibilities for personalized interventions.",
+    "score": 0.8165828585624695
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2012.15786",
+    "title": "Conditional Generation of Temporally-ordered Event Sequences",
+    "publish_time": "20201231",
+    "authors": [
+      "Shih-Ting Lin",
+      "Nathanael Chambers",
+      "Greg Durrett"
+    ],
+    "abstract": "Models of narrative schema knowledge have proven useful for a range of event-related tasks, but they typically do not capture the temporal relationships between events. We propose a single model that addresses both temporal ordering, sorting given events into the order they occurred, and event infilling, predicting new events which fit into an existing temporally-ordered sequence. We use a BART-based conditional generation model that can capture both temporality and common event co-occurrence, meaning it can be flexibly applied to different tasks in this space. Our model is trained as a denoising autoencoder: we take temporally-ordered event sequences, shuffle them, delete some events, and then attempt to recover the original event sequence. This task teaches the model to make inferences given incomplete knowledge about the events in an underlying scenario. On the temporal ordering task, we show that our model is able to unscramble event sequences from existing datasets without access to explicitly labeled temporal training data, outperforming both a BERT-based pairwise model and a BERT-based pointer network. On event infilling, human evaluation shows that our model is able to generate events that fit better temporally into the input events when compared to GPT-2 story completion models.",
+    "score": 0.530699610710144
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2303.04794",
+    "title": "Comprehensive Event Representations using Event Knowledge Graphs and Natural Language Processing",
+    "publish_time": "20230308",
+    "authors": [
+      "Tin Kuculo"
+    ],
+    "abstract": "Recent work has utilised knowledge-aware approaches to natural language understanding, question answering, recommendation systems, and other tasks. These approaches rely on well-constructed and large-scale knowledge graphs that can be useful for many downstream applications and empower knowledge-aware models with commonsense reasoning. Such knowledge graphs are constructed through knowledge acquisition tasks such as relation extraction and knowledge graph completion. This work seeks to utilise and build on the growing body of work that uses findings from the field of natural language processing (NLP) to extract knowledge from text and build knowledge graphs. The focus of this research project is on how we can use transformer-based approaches to extract and contextualise event information, matching it to existing ontologies, to build a comprehensive knowledge of graph-based event representations. Specifically, sub-event extraction is used as a way of creating sub-event-aware event representations. These event representations are then further enriched through fine-grained location extraction and contextualised through the alignment of historically relevant quotes.",
+    "score": 0.49943023920059204
+  },
+  {
+    "link": "https://www.arxiv.org/abs/1804.00819",
+    "title": "End-to-End Dense Video Captioning with Masked Transformer",
+    "publish_time": "20180403",
+    "authors": [
+      "Luowei Zhou",
+      "Yingbo Zhou",
+      "Jason J. Corso",
+      "Richard Socher",
+      "and Caiming Xiong"
+    ],
+    "abstract": "Dense video captioning aims to generate text descriptions for all events in an untrimmed video. This involves both detecting and describing events. Therefore, all previous methods on dense video captioning tackle this problem by building two models, i.e. an event proposal and a captioning model, for these two sub-problems. The models are either trained separately or in alternation. This prevents direct influence of the language description to the event proposal, which is important for generating accurate descriptions. To address this problem, we propose an end-to-end transformer model for dense video captioning. The encoder encodes the video into appropriate representations. The proposal decoder decodes from the encoding with different anchors to form video event proposals. The captioning decoder employs a masking network to restrict its attention to the proposal event over the encoding feature. This masking network converts the event proposal to a differentiable mask, which ensures the consistency between the proposal and captioning during training. In addition, our model employs a self-attention mechanism, which enables the use of efficient non-recurrent structure during encoding and leads to performance improvements. We demonstrate the effectiveness of this end-to-end model on ActivityNet Captions and YouCookII datasets, where we achieved 10.12 and 6.58 METEOR score, respectively.",
+    "score": 0.4683181047439575
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2504.07373",
+    "title": "ChronoFormer: Time-Aware Transformer Architectures for Structured Clinical Event Modeling",
+    "publish_time": "20250410",
+    "authors": [
+      "Yuanyun Zhang",
+      "Shi Li"
+    ],
+    "abstract": "The temporal complexity of electronic health record (EHR) data presents significant challenges for predicting clinical outcomes using machine learning. This paper proposes ChronoFormer, an innovative transformer based architecture specifically designed to encode and leverage temporal dependencies in longitudinal patient data. ChronoFormer integrates temporal embeddings, hierarchical attention mechanisms, and domain specific masking techniques. Extensive experiments conducted on three benchmark tasks mortality prediction, readmission prediction, and long term comorbidity onset demonstrate substantial improvements over current state of the art methods. Furthermore, detailed analyses of attention patterns underscore ChronoFormer's capability to capture clinically meaningful long range temporal relationships.",
+    "score": 0.43748193979263306
+  },
+  {
+    "link": "https://www.arxiv.org/abs/1909.05858",
+    "title": "CTRL: A Conditional Transformer Language Model for Controllable Generation",
+    "publish_time": "20190911",
+    "authors": [
+      "Nitish Shirish Keskar",
+      "Bryan McCann",
+      "Lav R. Varshney",
+      "Caiming Xiong",
+      "Richard Socher"
+    ],
+    "abstract": "Large-scale language models show promising text generation capabilities, but users cannot easily control particular aspects of the generated text. We release CTRL, a 1.63 billion-parameter conditional transformer language model, trained to condition on control codes that govern style, content, and task-specific behavior. Control codes were derived from structure that naturally co-occurs with raw text, preserving the advantages of unsupervised learning while providing more explicit control over text generation. These codes also allow CTRL to predict which parts of the training data are most likely given a sequence. This provides a potential method for analyzing large amounts of data via model-based source attribution. We have released multiple full-sized, pretrained versions of CTRL at https://github.com/salesforce/ctrl.",
+    "score": 0.4374370276927948
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2306.11547",
+    "title": "Event Stream GPT: A Data Pre-processing and Modeling Library for Generative, Pre-trained Transformers over Continuous-time Sequences of Complex Events",
+    "publish_time": "20230620",
+    "authors": [
+      "Matthew B. A. McDermott",
+      "Bret Nestor",
+      "Peniel Argaw",
+      "Isaac Kohane"
+    ],
+    "abstract": "Generative, pre-trained transformers (GPTs, a.k.a. \"Foundation Models\") have reshaped natural language processing (NLP) through their versatility in diverse downstream tasks. However, their potential extends far beyond NLP. This paper provides a software utility to help realize this potential, extending the applicability of GPTs to continuous-time sequences of complex events with internal dependencies, such as medical record datasets. Despite their potential, the adoption of foundation models in these domains has been hampered by the lack of suitable tools for model construction and evaluation. To bridge this gap, we introduce Event Stream GPT (ESGPT), an open-source library designed to streamline the end-to-end process for building GPTs for continuous-time event sequences. ESGPT allows users to (1) build flexible, foundation-model scale input datasets by specifying only a minimal configuration file, (2) leverage a Hugging Face compatible modeling API for GPTs over this modality that incorporates intra-event causal dependency structures and autoregressive generation capabilities, and (3) evaluate models via standardized processes that can assess few and even zero-shot performance of pre-trained models on user-specified fine-tuning tasks.",
+    "score": 0.43741539120674133
+  },{
+    "link": "https://www.arxiv.org/abs/2506.01781",
+    "title": "Enhancing Customer Service Chatbots with Context-Aware NLU through Selective Attention and Multi-task Learning",
+    "publish_time": "20250602",
+    "authors": [
+      "Subhadip Nandi",
+      "Neeraj Agrawal",
+      "Anshika Singh",
+      "Priyanka Bhatt"
+    ],
+    "abstract": "Customer service chatbots are conversational systems aimed at addressing customer queries, often by directing them to automated workflows. A crucial aspect of this process is the classification of the customer's intent. Presently, most intent classification models for customer care utilise only customer query for intent prediction. This may result in low-accuracy models, which cannot handle ambiguous queries. An ambiguous query like \"I didn't receive my package\" could indicate a delayed order, or an order that was delivered but the customer failed to receive it. Resolution of each of these scenarios requires the execution of very different sequence of steps. Utilizing additional information, such as the customer's order delivery status, in the right manner can help identify the intent for such ambiguous queries. In this paper, we have introduced a context-aware NLU model that incorporates both, the customer query and contextual information from the customer's order status for predicting customer intent. A novel selective attention module is used to extract relevant context features. We have also proposed a multi-task learning paradigm for the effective utilization of different label types available in our training data. Our suggested method, Multi-Task Learning Contextual NLU with Selective Attention Weighted Context (MTL-CNLU-SAWC), yields a 4.8% increase in top 2 accuracy score over the baseline model which only uses user queries, and a 3.5% improvement over existing state-of-the-art models that combine query and context. We have deployed our model to production for Walmart's customer care domain. Accurate intent prediction through MTL-CNLU-SAWC helps to better direct customers to automated workflows, thereby significantly reducing escalations to human agents, leading to almost a million dollars in yearly savings for the company.",
+    "score": 0.9944393634796143
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2411.06022",
+    "title": "Improved intent classification based on context information using a windows-based approach",
+    "publish_time": "20241109",
+    "authors": [
+      "Jeanfranco D. Farfan-Escobedo",
+      "Julio C. Dos Reis"
+    ],
+    "abstract": "Conversational systems have a Natural Language Understanding (NLU) module. In this module, there is a task known as an intent classification that aims at identifying what a user is attempting to achieve from an utterance. Previous works use only the current utterance to predict the intent of a given query and they do not consider the role of the context (one or a few previous utterances) in the dialog flow for this task. In this work, we propose several approaches to investigate the role of contextual information for the intent classification task. Each approach is used to carry out a concatenation between the dialogue history and the current utterance. Our intent classification method is based on a convolutional neural network that obtains effective vector representations from BERT to perform accurate intent classification using an approach window-based. Our experiments were carried out on a real-world Brazilian Portuguese corpus with dialog flows provided by Wavy global company. Our results achieved substantial improvements over the baseline, isolated utterances (without context), in three approaches using the user's utterance and system's response from previous messages as dialogue context.",
+    "score": 0.9930379986763
+  },
+  {
+    "link": "https://www.arxiv.org/abs/1909.08705",
+    "title": "CASA-NLU: Context-Aware Self-Attentive Natural Language Understanding for Task-Oriented Chatbots",
+    "publish_time": "20190918",
+    "authors": [
+      "Arshit Gupta",
+      "Peng Zhang",
+      "Garima Lalwani and Mona Diab"
+    ],
+    "abstract": "Natural Language Understanding (NLU) is a core component of dialog systems. It typically involves two tasks - intent classification (IC) and slot labeling (SL), which are then followed by a dialogue management (DM) component. Such NLU systems cater to utterances in isolation, thus pushing the problem of context management to DM. However, contextual information is critical to the correct prediction of intents and slots in a conversation. Prior work on contextual NLU has been limited in terms of the types of contextual signals used and the understanding of their impact on the model. In this work, we propose a context-aware self-attentive NLU (CASA-NLU) model that uses multiple signals, such as previous intents, slots, dialog acts and utterances over a variable context window, in addition to the current user utterance. CASA-NLU outperforms a recurrent contextual NLU baseline on two conversational datasets, yielding a gain of up to 7% on the IC task for one of the datasets. Moreover, a non-contextual variant of CASA-NLU achieves state-of-the-art performance for IC task on standard public datasets - Snips and ATIS.",
+    "score": 0.9917816519737244
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2403.16504",
+    "title": "LARA: Linguistic-Adaptive Retrieval-Augmented LLMs for Multi-Turn Intent Classification",
+    "publish_time": "20240325",
+    "authors": [
+      "Liu Junhua",
+      "Tan Yong Keat",
+      "Fu Bin"
+    ],
+    "abstract": "Following the significant achievements of large language models (LLMs), researchers have employed in-context learning for text classification tasks. However, these studies focused on monolingual, single-turn classification tasks. In this paper, we introduce LARA (Linguistic-Adaptive Retrieval-Augmented Language Models), designed to enhance accuracy in multi-turn classification tasks across six languages, accommodating numerous intents in chatbot interactions. Multi-turn intent classification is notably challenging due to the complexity and evolving nature of conversational contexts. LARA tackles these issues by combining a fine-tuned smaller model with a retrieval-augmented mechanism, integrated within the architecture of LLMs. This integration allows LARA to dynamically utilize past dialogues and relevant intents, thereby improving the understanding of the context. Furthermore, our adaptive retrieval techniques bolster the cross-lingual capabilities of LLMs without extensive retraining and fine-tune. Comprehensive experiments demonstrate that LARA achieves state-of-the-art performance on multi-turn intent classification tasks, enhancing the average accuracy by 3.67% compared to existing methods.",
+    "score": 0.9514220356941223
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2411.14252",
+    "title": "Intent-Aware Dialogue Generation and Multi-Task Contrastive Learning for Multi-Turn Intent Classification",
+    "publish_time": "20241121",
+    "authors": [
+      "Junhua Liu",
+      "Yong Keat Tan",
+      "Bin Fu",
+      "Kwan Hui Lim"
+    ],
+    "abstract": "Generating large-scale, domain-specific, multilingual multi-turn dialogue datasets remains a significant hurdle for training effective Multi-Turn Intent Classification models in chatbot systems. In this paper, we introduce Chain-of-Intent, a novel mechanism that combines Hidden Markov Models with Large Language Models (LLMs) to generate contextually aware, intent-driven conversations through self-play. By extracting domain-specific knowledge from e-commerce chat logs, we estimate conversation turns and intent transitions, which guide the generation of coherent dialogues. Leveraging LLMs to enhance emission probabilities, our approach produces natural and contextually consistent questions and answers. We also propose MINT-CL, a framework for multi-turn intent classification using multi-task contrastive learning, improving classification accuracy without the need for extensive annotated data. Evaluations show that our methods outperform baselines in dialogue quality and intent classification accuracy, especially in multilingual settings, while significantly reducing data generation efforts. Furthermore, we release MINT-E, a multilingual, intent-aware multi-turn e-commerce dialogue corpus to support future research in this area.",
+    "score": 0.9035534262657166
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2109.01267",
+    "title": "A Context-Aware Hierarchical BERT Fusion Network for Multi-turn Dialog Act Detection",
+    "publish_time": "20210903",
+    "authors": [
+      "Ting-Wei Wu",
+      "Ruolin Su",
+      "Biing-Hwang Juang"
+    ],
+    "abstract": "The success of interactive dialog systems is usually associated with the quality of the spoken language understanding (SLU) task, which mainly identifies the corresponding dialog acts and slot values in each turn. By treating utterances in isolation, most SLU systems often overlook the semantic context in which a dialog act is expected. The act dependency between turns is non-trivial and yet critical to the identification of the correct semantic representations. Previous works with limited context awareness have exposed the inadequacy of dealing with complexity in multiproned user intents, which are subject to spontaneous change during turn transitions. In this work, we propose to enhance SLU in multi-turn dialogs, employing a context-aware hierarchical BERT fusion Network (CaBERT-SLU) to not only discern context information within a dialog but also jointly identify multiple dialog acts and slots in each utterance. Experimental results show that our approach reaches new state-of-the-art (SOTA) performances in two complicated multi-turn dialogue datasets with considerable improvements compared with previous methods, which only consider single utterances for multiple intents and slot filling.",
+    "score": 0.8343002796173096
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2505.14668",
+    "title": "ContextAgent: Context-Aware Proactive LLM Agents with Open-World Sensory Perceptions",
+    "publish_time": "20250520",
+    "authors": [
+      "Bufang Yang",
+      "Lilin Xu",
+      "Liekang Zeng",
+      "Kaiwei Liu",
+      "Siyang Jiang",
+      "Wenrui Lu",
+      "Hongkai Chen",
+      "Xiaofan Jiang",
+      "Guoliang Xing",
+      "and Zhenyu Yan"
+    ],
+    "abstract": "Recent advances in Large Language Models (LLMs) have propelled intelligent agents from reactive responses to proactive support. While promising, existing proactive agents either rely exclusively on observations from enclosed environments (e.g., desktop UIs) with direct LLM inference or employ rule-based proactive notifications, leading to suboptimal user intent understanding and limited functionality for proactive service. In this paper, we introduce ContextAgent, the first context-aware proactive agent that incorporates extensive sensory contexts to enhance the proactive capabilities of LLM agents. ContextAgent first extracts multi-dimensional contexts from massive sensory perceptions on wearables (e.g., video and audio) to understand user intentions. ContextAgent then leverages the sensory contexts and the persona contexts from historical data to predict the necessity for proactive services. When proactive assistance is needed, ContextAgent further automatically calls the necessary tools to assist users unobtrusively. To evaluate this new task, we curate ContextAgentBench, the first benchmark for evaluating context-aware proactive LLM agents, covering 1,000 samples across nine daily scenarios and twenty tools. Experiments on ContextAgentBench show that ContextAgent outperforms baselines by achieving up to 8.5% and 6.0% higher accuracy in proactive predictions and tool calling, respectively. We hope our research can inspire the development of more advanced, human-centric, proactive AI assistants.",
+    "score": 0.730286717414856
+  },
+  {
+    "link": "https://www.arxiv.org/abs/1901.03489",
+    "title": "User Intent Prediction in Information-seeking Conversations",
+    "publish_time": "20190111",
+    "authors": [
+      "Chen Qu",
+      "Liu Yang",
+      "Bruce Croft",
+      "Yongfeng Zhang",
+      "Johanne R. Trippas and Minghui Qiu"
+    ],
+    "abstract": "Conversational assistants are being progressively adopted by the general population. However, they are not capable of handling complicated information-seeking tasks that involve multiple turns of information exchange. Due to the limited communication bandwidth in conversational search, it is important for conversational assistants to accurately detect and predict user intent in information-seeking conversations. In this paper, we investigate two aspects of user intent prediction in an information-seeking setting. First, we extract features based on the content, structural, and sentiment characteristics of a given utterance, and use classic machine learning methods to perform user intent prediction. We then conduct an in-depth feature importance analysis to identify key features in this prediction task. We find that structural features contribute most to the prediction performance. Given this finding, we construct neural classifiers to incorporate context information and achieve better performance without feature engineering. Our findings can provide insights into the important factors and effective methods of user intent prediction in information-seeking conversations.",
+    "score": 0.6503900289535522
+  },
+  {
+    "link": "https://www.arxiv.org/abs/2309.10954",
+    "title": "In-Context Learning for Text Classification with Many Labels",
+    "publish_time": "20230919",
+    "authors": [
+      "Aristides Milios",
+      "Siva Reddy",
+      "Dzmitry Bahdanau"
+    ],
+    "abstract": "In-context learning (ICL) using large language models for tasks with many labels is challenging due to the limited context window, which makes it difficult to fit a sufficient number of examples in the prompt. In this paper, we use a pre-trained dense retrieval model to bypass this limitation, giving the model only a partial view of the full label space for each inference call. Testing with recent open-source LLMs (OPT, LLaMA), we set new state of the art performance in few-shot settings for three common intent classification datasets, with no finetuning. We also surpass fine-tuned performance on fine-grained sentiment classification in certain cases. We analyze the performance across number of in-context examples and different model scales, showing that larger models are necessary to effectively and consistently make use of larger context lengths for ICL. By running several ablations, we analyze the model's use of: a) the similarity of the in-context examples to the current input, b) the semantic content of the class names, and c) the correct correspondence between examples and labels. We demonstrate that all three are needed to varying degrees depending on the domain, contrary to certain recent works.",
+    "score": 0.4683253765106201
+  }
+]

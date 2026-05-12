@@ -1,0 +1,194 @@
+\begin{thebibliography}{27}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Casanueva et~al.(2020)Casanueva, Tem{\v{c}}inas, Gerz, Henderson, and
+  Vuli{\'c}}]{casanueva2020efficient}
+I{\~n}igo Casanueva, Tadas Tem{\v{c}}inas, Daniela Gerz, Matthew Henderson, and
+  Ivan Vuli{\'c}. 2020.
+\newblock Efficient intent detection with dual sentence encoders.
+\newblock \emph{arXiv preprint arXiv:2003.04807}.
+
+\bibitem[{Dagan et~al.(2013)Dagan, Roth, Sammons, and
+  Zanzotto}]{dagan2013recognizing}
+Ido Dagan, Dan Roth, Mark Sammons, and Fabio~Massimo Zanzotto. 2013.
+\newblock Recognizing textual entailment: Models and applications.
+\newblock \emph{Synthesis Lectures on Human Language Technologies},
+  6(4):1--220.
+
+\bibitem[{Devlin et~al.(2018)Devlin, Chang, Lee, and
+  Toutanova}]{devlin2018bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2018.
+\newblock Bert: Pre-training of deep bidirectional transformers for language
+  understanding.
+\newblock \emph{arXiv preprint arXiv:1810.04805}.
+
+\bibitem[{Geng et~al.(2019)Geng, Li, Li, Zhu, Jian, and
+  Sun}]{geng2019induction}
+Ruiying Geng, Binhua Li, Yongbin Li, Xiaodan Zhu, Ping Jian, and Jian Sun.
+  2019.
+\newblock Induction networks for few-shot text classification.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 3895--3904.
+
+\bibitem[{Gidaris and Komodakis(2018)}]{DBLPGidarisK18}
+Spyros Gidaris and Nikos Komodakis. 2018.
+\newblock Dynamic few-shot visual learning without forgetting.
+\newblock In \emph{{IEEE} Conference on Computer Vision and Pattern
+  Recognition, {CVPR}}, pages 4367--4375.
+
+\bibitem[{Han et~al.(2018)Han, Zhu, Yu, Wang, Yao, Liu, and
+  Sun}]{han2018fewrel}
+Xu~Han, Hao Zhu, Pengfei Yu, Ziyun Wang, Yuan Yao, Zhiyuan Liu, and Maosong
+  Sun. 2018.
+\newblock Fewrel: A large-scale supervised few-shot relation classification
+  dataset with state-of-the-art evaluation.
+\newblock In \emph{Proceedings of the 2018 Conference on Empirical Methods in
+  Natural Language Processing}, pages 4803--4809.
+
+\bibitem[{Hendrickx et~al.(2019)Hendrickx, Kim, Kozareva, Nakov, S{\'e}aghdha,
+  Pad{\'o}, Pennacchiotti, Romano, and Szpakowicz}]{hendrickx2019semeval}
+Iris Hendrickx, Su~Nam Kim, Zornitsa Kozareva, Preslav Nakov, Diarmuid~O
+  S{\'e}aghdha, Sebastian Pad{\'o}, Marco Pennacchiotti, Lorenza Romano, and
+  Stan Szpakowicz. 2019.
+\newblock Semeval-2010 task 8: Multi-way classification of semantic relations
+  between pairs of nominals.
+\newblock \emph{arXiv preprint arXiv:1911.10422}.
+
+\bibitem[{Kowsari et~al.(2019)Kowsari, Jafari~Meimandi, Heidarysafa, Mendu,
+  Barnes, and Brown}]{kowsari2019text}
+Kamran Kowsari, Kiana Jafari~Meimandi, Mojtaba Heidarysafa, Sanjana Mendu,
+  Laura Barnes, and Donald Brown. 2019.
+\newblock Text classification algorithms: A survey.
+\newblock \emph{Information}, 10(4):150.
+
+\bibitem[{{Li} et~al.(2020){Li}, {Peng}, {Li}, {Xia}, {Yang}, {Sun}, {Yu}, and
+  {He}}]{li2020survey}
+Qian {Li}, Hao {Peng}, Jianxin {Li}, Congying {Xia}, Renyu {Yang}, Lichao
+  {Sun}, Philip~S. {Yu}, and Lifang {He}. 2020.
+\newblock {A Survey on Text Classification: From Shallow to Deep Learning}.
+\newblock \emph{arXiv preprint arXiv:2008.00364}.
+
+\bibitem[{Liu and Lane(2016)}]{liu2016attention}
+Bing Liu and Ian Lane. 2016.
+\newblock Attention-based recurrent neural network models for joint intent
+  detection and slot filling.
+\newblock In \emph{INTERSPEECH}, pages 685--689.
+
+\bibitem[{Liu et~al.(2019)Liu, Ott, Goyal, Du, Joshi, Chen, Levy, Lewis,
+  Zettlemoyer, and Stoyanov}]{liu2019roberta}
+Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer
+  Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. 2019.
+\newblock Roberta: A robustly optimized bert pretraining approach.
+\newblock \emph{arXiv preprint arXiv:1907.11692}.
+
+\bibitem[{Nguyen et~al.(2020)Nguyen, Zhang, Xia, and
+  Philip}]{nguyen2020semantic}
+Hoang Nguyen, Chenwei Zhang, Congying Xia, and S~Yu Philip. 2020.
+\newblock Semantic matching and aggregation network for few-shot intent
+  detection.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing: Findings}, pages 1209--1218.
+
+\bibitem[{Qi et~al.(2018)Qi, Brown, and Lowe}]{DBLPQiBL18}
+Hang Qi, Matthew Brown, and David~G. Lowe. 2018.
+\newblock Low-shot learning with imprinted weights.
+\newblock In \emph{{IEEE} Conference on Computer Vision and Pattern
+  Recognition, {CVPR}}, pages 5822--5830.
+
+\bibitem[{Ren et~al.(2019)Ren, Liao, Fetaya, and Zemel}]{DBLPRenLFZ19}
+Mengye Ren, Renjie Liao, Ethan Fetaya, and Richard~S. Zemel. 2019.
+\newblock Incremental few-shot learning with attention attractor networks.
+\newblock In \emph{{NeurIPS}}, pages 5276--5286.
+
+\bibitem[{Schick and Sch{\"{u}}tze(2020)}]{DBLP07676}
+Timo Schick and Hinrich Sch{\"{u}}tze. 2020.
+\newblock Exploiting cloze questions for few-shot text classification and
+  natural language inference.
+\newblock \emph{CoRR}, abs/2001.07676.
+
+\bibitem[{Snell et~al.(2017)Snell, Swersky, and Zemel}]{DBLPSnellSZ17}
+Jake Snell, Kevin Swersky, and Richard~S. Zemel. 2017.
+\newblock Prototypical networks for few-shot learning.
+\newblock In \emph{{NeurIPS}}, pages 4077--4087.
+
+\bibitem[{Vrande{\v{c}}i{\'c} and Kr{\"o}tzsch(2014)}]{vrandevcic2014wikidata}
+Denny Vrande{\v{c}}i{\'c} and Markus Kr{\"o}tzsch. 2014.
+\newblock Wikidata: a free collaborative knowledgebase.
+\newblock \emph{Communications of the ACM}, 57(10):78--85.
+
+\bibitem[{Williams et~al.(2018)Williams, Nangia, and
+  Bowman}]{williams2018broad}
+Adina Williams, Nikita Nangia, and Samuel Bowman. 2018.
+\newblock A broad-coverage challenge corpus for sentence understanding through
+  inference.
+\newblock In \emph{Proceedings of the 2018 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies, Volume 1 (Long Papers)}, pages 1112--1122.
+
+\bibitem[{Xia et~al.(2020{\natexlab{a}})Xia, Xiong, Philip, and
+  Socher}]{xia2020composed}
+Congying Xia, Caiming Xiong, S~Yu Philip, and Richard Socher.
+  2020{\natexlab{a}}.
+\newblock Composed variational natural language generation for few-shot
+  intents.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing: Findings}, pages 3379--3388.
+
+\bibitem[{Xia et~al.(2020{\natexlab{b}})Xia, Zhang, Nguyen, Zhang, and
+  Yu}]{xia2020cg}
+Congying Xia, Chenwei Zhang, Hoang Nguyen, Jiawei Zhang, and Philip Yu.
+  2020{\natexlab{b}}.
+\newblock Cg-bert: Conditional text generation with bert for generalized
+  few-shot intent detection.
+\newblock \emph{arXiv preprint arXiv:2004.01881}.
+
+\bibitem[{Xia et~al.(2018)Xia, Zhang, Yan, Chang, and Philip}]{xia2018zero}
+Congying Xia, Chenwei Zhang, Xiaohui Yan, Yi~Chang, and S~Yu Philip. 2018.
+\newblock Zero-shot user intent detection via capsule neural networks.
+\newblock In \emph{Proceedings of the 2018 Conference on Empirical Methods in
+  Natural Language Processing}, pages 3090--3099.
+
+\bibitem[{Yin et~al.(2019)Yin, Hay, and Roth}]{DBLPYinHR19}
+Wenpeng Yin, Jamaal Hay, and Dan Roth. 2019.
+\newblock Benchmarking zero-shot text classification: Datasets, evaluation and
+  entailment approach.
+\newblock In \emph{{EMNLP-IJCNLP}}, pages 3912--3921.
+
+\bibitem[{Yin et~al.(2020)Yin, Rajani, Radev, Socher, and
+  Xiong}]{yin2020universal}
+Wenpeng Yin, Nazneen~Fatema Rajani, Dragomir Radev, Richard Socher, and Caiming
+  Xiong. 2020.
+\newblock Universal natural language processing with limited annotations: Try
+  few-shot textual entailment as a start.
+\newblock \emph{arXiv preprint arXiv:2010.02584}.
+
+\bibitem[{Yu et~al.(2018)Yu, Guo, Yi, Chang, Potdar, Cheng, Tesauro, Wang, and
+  Zhou}]{yu2018diverse}
+Mo~Yu, Xiaoxiao Guo, Jinfeng Yi, Shiyu Chang, Saloni Potdar, Yu~Cheng, Gerald
+  Tesauro, Haoyu Wang, and Bowen Zhou. 2018.
+\newblock Diverse few-shot text classification with multiple metrics.
+\newblock In \emph{Proceedings of the 2018 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies, Volume 1 (Long Papers)}, pages 1206--1215.
+
+\bibitem[{Yu et~al.(2020)Yu, Yin, and Roth}]{DBLP12808}
+Xiaodong Yu, Wenpeng Yin, and Dan Roth. 2020.
+\newblock Paired representation learning for event and entity coreference.
+\newblock \emph{CoRR}, abs/2010.12808.
+
+\bibitem[{Zeng et~al.(2014)Zeng, Liu, Lai, Zhou, and Zhao}]{zeng2014relation}
+Daojian Zeng, Kang Liu, Siwei Lai, Guangyou Zhou, and Jun Zhao. 2014.
+\newblock Relation classification via convolutional deep neural network.
+\newblock In \emph{Proceedings of COLING 2014, the 25th International
+  Conference on Computational Linguistics: Technical Papers}, pages 2335--2344.
+
+\bibitem[{Zhang et~al.(2020)Zhang, Hashimoto, Liu, Wu, Wan, Yu, Socher, and
+  Xiong}]{zhangdiscriminative}
+Jianguo Zhang, Kazuma Hashimoto, Wenhao Liu, Chien-Sheng Wu, Yao Wan, Philip
+  Yu, Richard Socher, and Caiming Xiong. 2020.
+\newblock Discriminative nearest neighbor few-shot intent detection by
+  transferring natural language inference.
+\newblock In \emph{EMNLP}, pages 5064--5082.
+
+\end{thebibliography}

@@ -1,0 +1,13 @@
+AI language model, your task is to assign the correct intent to a given textual utterance. The intent can be one of the pre-defined intents or a new one that you create based on the context and knowledge about the problem and specific data domain. You should never assign an utterance to 'unknown'. 
+
+For each utterance, analyze the context and the specific request or action implied. If the utterance matches a known intent, assign it to that intent. If it doesn't match any known intent, create a new intent that accurately represents the request or action implied by the utterance.
+
+Remember, the goal is to understand the user's intent as accurately as possible. Be aware of the known intents and reuse them as much as possible, but don't hesitate to create new intents when necessary. 
+
+Here are some examples:
+
+- If the utterance is "how are you named", the intent is "what_is_your_name".
+- If the utterance is "i need to know the total calories for a chicken caesar salad", the intent is "calories".
+- If the utterance is "please pause my banking actions", the intent is "freeze_account".
+
+Use these examples as a guide, but remember that the utterances can vary greatly in structure and content. Your task is to understand the underlying intent, regardless of how the utterance is phrased.

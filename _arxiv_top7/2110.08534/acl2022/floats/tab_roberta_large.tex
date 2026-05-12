@@ -1,0 +1,19 @@
+\begin{table}[]
+\centering
+\scalebox{0.66}{
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Domain        & \multicolumn{2}{c}{Biomedical} & \multicolumn{2}{c}{Computer Science} \\
+\cmidrule(r){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-5}  
+Dataset       & Chemprot      & RCT-Sample     & ACL-ARC           & SciERC           \\ \midrule
+RoBERTa-large & 84.39$_{\pm0.7}$     & 80.76$_{\pm0.7}$      & 72.20$_{\pm3.2}$         & 83.02$_{\pm0.8}$        \\
+Naive         & 85.43$_{\pm0.6}$     & 81.10$_{\pm0.5}$      & 73.44$_{\pm2.0}$         & 82.88$_{\pm0.7}$        \\
+ER            & 85.42$_{\pm0.2}$     & 81.30$_{\pm0.4}$      & 71.51$_{\pm2.5}$         & 83.22$_{\pm0.5}$        \\
+Logit-KD      & \textbf{86.18$_{\pm0.7}$}     & \textbf{81.93$_{\pm0.7}$}      & 72.10$_{\pm2.0}$         & 83.23$_{\pm0.6}$        \\
+SEED-Logit-KD  &      85.98$_{\pm 0.4}$               &         81.34$_{\pm 0.4}$             &         74.02$_{\pm 3.0}$            &   \textbf{83.89$_{\pm 0.6}$}
+\\
+Task-Specific        & 85.99$_{\pm0.3}$     & 82.02$_{\pm0.6}$      & \textbf{76.07$_{\pm1.0}$}         & 82.91$_{\pm0.9}$        \\ \bottomrule
+\end{tabular}}
+\caption{Results on the Research Paper stream with RoBERTa-large as the base model.}
+\label{tab:roberta_large}
+\end{table}

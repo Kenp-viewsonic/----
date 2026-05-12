@@ -1,0 +1,590 @@
+
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2020_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{xparse}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{xspace}
+\usepackage{relsize}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{comment}
+\usepackage{tabu}
+\usepackage{appendix}
+\usepackage{threeparttable}
+\usepackage{adjustbox}
+\usepackage{caption}
+\usepackage{enumitem}
+%\usepackage{capt-of}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+
+
+%\title{Formatting Instructions for ICLR 2020 \\ Conference Submissions}
+\title{LAMOL: LAnguage MOdeling for \\
+Lifelong Language Learning}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+\author{Fan-Keng Sun\thanks{Equal contribution.} \, \thanks{Work done while at National Taiwan University.} \\
+MIT \\
+Cambridge, MA, USA \\
+\texttt{fankeng@mit.edu} \\
+\And
+Cheng-Hao Ho\footnotemark[1] \\
+National Taiwan University \\
+Taipei, Taiwan \\
+\texttt{jojotenya@gmail.com}
+\And
+Hung-Yi Lee \\
+National Taiwan University \\
+Taipei, Taiwan \\
+\texttt{hungyilee@ntu.edu.tw}
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+Most research on lifelong learning applies to images or games, but not language.
+We present LAMOL, a simple yet effective method for lifelong language learning (LLL) based on language modeling.
+LAMOL replays pseudo-samples of previous tasks while requiring no extra memory or model capacity.
+Specifically, LAMOL is a language model that simultaneously learns to solve the tasks and generate training samples.
+When the model is trained for a new task, it generates pseudo-samples of previous tasks for training alongside data for the new task.
+The results show that LAMOL prevents catastrophic forgetting without any sign of intransigence and can perform five very different language tasks sequentially with only one model. 
+Overall, LAMOL outperforms previous methods by a considerable margin and is only 2--3\% worse than multitasking, which is usually considered the LLL upper bound.
+The source code is available at \url{https://github.com/jojotenya/LAMOL}.
+\end{abstract}
+
+\section{Introduction}\label{sec:introduction}
+
+The current dominant paradigm for machine learning is to run an algorithm on a given dataset to produce a trained model specifically for a particular purpose; this is \emph{isolated learning}~\citep[p.~150]{lll_book}. 
+In isolated learning, the model is unable to retain and accumulate the knowledge it has learned before. 
+When a stream of tasks are joined to be trained sequentially, isolated learning faces \emph{catastrophic forgetting}~\citep{mccloskey1989catastrophic} due to a non-stationary data distribution that biases the model (left figure of Figure~\ref{fig:framework}).
+In contrast, lifelong learning is designed to address a stream of tasks by accumulating interconnected knowledge between learned tasks and retaining the performance of those tasks.
+A human easily achieves lifelong learning, but this is nontrivial for a machine; thus lifelong learning is a vital step toward artificial general intelligence.
+
+%Lee: 還是應該要講一下，這篇文章再幹嘛
+% Lifelong learning is especially important and suitable for language.
+% Words and phrases in different tasks almost always have the same meaning and sentences in most tasks follow the same syntax.
+% Therefore, it is highly possible to share knowledge across tasks.
+% Moreover, some NLP tasks are closely related to each other, and learning one task first may enhance the learning of the other.
+% For example, learning the syntactic parsing first may improve the QA task.
+% We hope the learner can retain the knowledge learned from past tasks and use them to help future learning.
+
+In this paper, we focus on lifelong language learning, where a machine achieves lifelong learning on a stream of natural language processing (NLP) tasks.
+To the best of our knowledge, lifelong language learning has been studied in only a few instances; 
+for sentiment analysis~\citep{chen-etal-2015-lifelong,8101496}, conversational agents~\citep{LLL_chatbot}, word representation learning~\citep{LLL_word}, sentence representation learning~\citep{Liu2019ContinualLF}, text classification, and question answering~\citep{d2019episodic}.
+However, in all previous work, the tasks in the stream are essentially the same task but in different domains.
+To achieve lifelong language learning on fundamentally different tasks, we propose LAMOL~--- LAnguage MOdeling for Lifelong language learning.
+
+\input{figures/framework}
+    
+It has been shown that many NLP tasks can be considered question answering (QA)~\citep{McCann2018decaNLP}.
+Therefore, we address multiple NLP tasks with a single model by training a language model (LM) that generates an answer based on the context and the question.  
+Treating QA as language modeling is beneficial because the LM can be pre-trained on a large number of sentences without any labeling~\citep{radford2019language}; however, this does not directly solve the problem of LLL.
+If we train an LM on a stream of tasks, catastrophic forgetting still occurs. 
+However, as an LM is intrinsically a text generator, we can use it to answer questions while generating pseudo-samples of the previous task to be replayed later.
+LAMOL is inspired by the data-based approach for LLL in which a generator learns to generate samples in previous tasks (middle of Figure~\ref{fig:framework})~\citep{shin2017continual,kemker2017fearnet}.
+In contrast to previous approaches, LAMOL needs no extra generator (right of Figure~\ref{fig:framework}).
+LAMOL is also similar to multitask training, but the model itself generates data from previous tasks instead of using real data.
+
+
+Our main contributions in this paper are:
+\begin{itemize}[leftmargin=*]
+    \item We present LAMOL, a simple yet effective method for LLL. Our method has the advantages of no requirements in terms of extra memory or model capacity. We also do not need to know how many tasks to train in advance and can always train on additional tasks when needed.
+    \item Experimental results show that our methods outperform baselines and other state-of-the-art methods by a considerable margin and approaches the multitasking upper bound within 2--3\%.
+    \item Furthermore, we propose adding task-specific tokens during pseudo-sample generation to evenly split the generated samples among all previous tasks. This extension stabilizes LLL and is particularly useful when training on a large number of tasks.
+    \item We analyze how different amounts of pseudo-samples affect the final performance of LAMOL, considering results both with and without the task-specific tokens.
+    \item We open-source our code to facilitate further LLL research.
+\end{itemize}
+%Lee: 需不需要講 outperform episodic memory system (SOTA) on the same task??? %Ho: draw already
+
+% In the framework, at or the beginning of training each task (except for the first task), the model replay previous pseudo data through the language model. Thus, the model isWeWiiii constrained not to deviate from previously learned knowledge too far.
+% Different from previous work, the proposed framework does not need to store any previous examples, which wastes the memory, because they can be generated from the language model. 
+% On the other hand, the proposed framework does not train an extra generator as previous work.
+
+\section{Related Work}
+Lifelong learning research is based on regularization, architecture, or data.
+Here is a brief survey of works in these three categories.
+
+\subsection{Regularization-based methods}
+
+In this approach, a constraint, i.e., a regularization term, is added to minimize deviation from trained weights while updating the weights in a new task.
+Most regularization based methods estimate the importance of each parameter and add the importance as a constraint to the loss function.
+% Along with the constraint, this method supposes that the model will find a satisfying optimum for both old and new tasks.
+Elastic weight consolidation (EWC)~\citep{kirkpatrick2017overcoming} calculates a Fisher information matrix to estimate the sensitivity of parameters as importance.
+% Presuming parameters are independent of each other, the diagonal of Fisher information matrix can be approximated to the square of the first-order derivative of the parameters. 
+% The approximation reduces the effort to calculate the importance.
+Online EWC~\citep{schwarz2018progress} is a transformed version of EWC.
+Instead of tracking the importance of parameters for each task, online EWC simply accumulates the importance of the stream of tasks.
+Synaptic intelligence (SI)~\citep{zenke2017continual} assigns importance to each parameter according to its contribution to the change in the total loss.
+% The total change of the loss can be accumulated from each local parameter's contribution.
+% Unlike EWC using point estimation, SI needs to integral over the gradient field through time. 
+Memory aware synapses (MAS)~\citep{aljundi2018memory} estimate importance via the gradients of the model outputs. 
+% Since the labels are free from calculating the outputs, MAS can adapt the model through unlabeled data.
+In contrast to estimating the importance of weights, incremental moment matching (IMM)~\citep{lee2017overcoming} matches the moment of weights between different tasks.
+% It aims to find a Gaussian of weights to approach the mixture of weights' Gaussian for different tasks.
+% Regularization based methods perform poorly in our experiments. 
+
+
+\subsection{Architecture-based methods}
+
+For this category, the main idea is to assign a dedicated capacity inside a model for each task.
+After completing a task, the weights are frozen and may not be changed thereafter.
+Some methods allow models to expand, whereas some fix the size but must allocate capacity for tasks at the beginning.
+Progressive neural networks~\citep{rusu2016progressive} utilize one column of the neural network per task.
+Once a new task is trained, progressive neural networks augment a new column of the neural network for the task while freezing the past trained columns.
+Columns that have been frozen are not allowed to change but are connected to the new column to transfer knowledge from old tasks.
+Towards Training Recurrent Neural Networks for Lifelong Learning~\citep{sodhani2018training} unifies Gradient episodic memory~\citep{lopez2017gradient} and Net2Net ~\citep{chen2015net2net}.
+Using the curriculum-based setting, the model learns the tasks in easy-to-hard order.
+The model alleviates the forgetting problem by GEM method, and if it fails to learn the current task and has not been expanded yet, the model will expand to a larger model by the Net2Net approach.
+
+PathNet~\citep{fernando2017pathnet} reuses subsets of a neural network to transfer knowledge between tasks. Unlike progressive neural networks, PathNet does not allow the model to expand. Instead, it builds a huge fixed-size model composed of a neural network and paths between different layers of the neural networks. While training a task, it selects the best combination of neural networks and paths for that particular task.
+Similar to progressive neural networks, selected parts are fixed to allow only inference and not training. 
+Inspired by network pruning, PackNet~\citep{mallya2018packnet}  prunes and re-trains the network iteratively to pack numerous tasks into a single huge model.
+%Lee: 沒有引用Progressive Neural Network 
+
+
+This category has some drawbacks. 
+When resources are limited, model expansion is prohibited.
+Also, some architecture-based methods require the number of tasks in advance to allocate the capacity for the tasks, which greatly reduces their practicality.
+
+% that do not augment the capacity of the model, they in fact need to know the number of total tasks in advance to allocate the capacity for them, which greatly reduces the practicality.
+%LeeNew: 真得是這樣嗎? PathNet 需要事先知道 task 數目嗎? %Ho: we refer to PackNet %Lee: 那我覺得需要引用論文
+
+\subsection{Data-based methods}
+
+This method restricts weights through the data distribution of old tasks. One data-based approach keeps a small amount of real samples from old tasks, and the other distills the knowledge from old data and imagines pseudo-data of old tasks later on. While training a new task, the data or pseudo-data is used to prevent weights from greatly deviating from the previous status.
+
+Gradient episodic memory (GEM)~\citep{lopez2017gradient} preserves a subset of real samples from previous tasks.
+Utilizing these real samples during optimization helps somewhat to constrain parameter gradients.
+Averaged-GEM (A-GEM)~\citep{chaudhry2018efficient} is a more efficient version of GEM which achieves the same or even better performance than the original GEM. Learning without forgetting~\citep{li2017learning} minimizes the alteration of shared parameters by recording the outputs from old task modules on data from the new task before updating. \citet{shin2017continual} and \citet{kemker2017fearnet} encode data from old tasks into a generative model system. The latter imitates the dual-memory system of the human brain, in that the model automatically decides which memory should be consolidated. 
+Both methods replay pseudo-data of previous tasks using the generative model during training. 
+
+\citet{d2019episodic} investigates the performance of the episodic memory system on NLP problems. 
+It distills the knowledge of previous tasks into episodic memory and replays it afterward.
+This work evaluates the method on two streams of tasks: question answering and text classification.\\
+
+% The result demonstrates their performance on cross-domain of a same task instead of cross-task NLP problems. %Lee: 這句我看不懂 ... --> %Ho: in my opinion, cross-domain are domains belong to the same task. %I see
+
+% We can integrate the approaches in different categories.
+% For example, \citet{sodhani2018training} combines Net2Net~\citep{chen2015net2net} with GEM. Under a curriculum learning setup, once the model detects a new task is too hard to learn, which implies the capacity is insufficient, it leverages Net2Net to expand the volume of the model.
+
+\section{LAMOL}\label{sec:our}
+% A pre-trained LM can generate a sequence of text given a context coherently.
+A pre-trained LM can generate a coherent sequence of text given a context.  % AMH: check
+Thus, we propose LAMOL, a method of training a single LM that learns not only to answer the question given the context but also to generate the context, the question, and the answer given a generation token.
+That is, in LAMOL, a model plays the role of both LM and QA model.
+Hence, answering questions and generating pseudo-old samples can both be done by a single model.
+During LLL, these pseudo-old samples are trained with new samples from new tasks to help mitigate catastrophic forgetting.
+\input{figures/training}
+
+
+% The pre-trained language generative model, theoretically is able to fit on any down-stream language tasks through generating proper answers.
+% While it fine-tunes to a specific task, we can also take advantage of its generative property to train a language model for reconstructing the task itself.
+% Unlike other works~\citep{shin2017continual,kemker2017fearnet,d2019episodic} which need an extra memory or model capacity, LAMOL only requires one LM.
+
+\subsection{Data formatting} \label{subsec:data_format}
+%\input{tables/QA_format}
+%\input{tables/LM_format}
+
+% McCann et al. (2018) show that many language processing tasks (e.g.,
+%classification, summarization, natural language inference, etc.) can be %formulated as a question answering problem
+% Using only one LM, we first need to transform all samples into an unified format.
+
+Inspired by the protocol used by decaNLP~\citep{McCann2018decaNLP}, samples from the datasets we used are framed into a SQuAD-like scheme, which consists of context, question, and answer.
+Although the LM is simultaneously a QA model, 
+% the data format is different when training for different objectives.
+the data format depends on the training objective.  % AMH: check
+When training as a QA model, the LM learns to decode the answer after reading the context and question.
+On the other hand, when training as an LM, the LM learns to decode all three parts given a generation token.
+
+In addition to context, question, and answer, we add three special tokens:
+\begin{description}
+    \item[ANS] Inserted between question and answer. As the context and question are known during inference, decoding starts after inputting ANS.
+    \item[EOS] The last token of every example. Decoding stops when EOS is encountered.
+    \item[GEN] The first token during pseudo-sample generation. Decoding starts after inputting GEN.
+\end{description}
+The data formats for QA and LM training are shown in Figure~\ref{fig:training}.
+
+% A Context might corresponds to one or multiple Questions, and a Question pairs with a single Answer in training dataset and might pair with one or many Answers in test dataset. 
+% \noindent After expansion, We reorganize the data into two kinds of format - QA format and LM format. Each of them are describes in Table \ref{tab:QA_format} and Table \ref{tab:LM_format}.
+% In Table \ref{tab:QA_format} and Table \ref{tab:LM_format}, ANS is a special token as a signal for the model to generate the answers.
+% IGN is for aligning with the inputs and it doesn't count to the loss later on.
+% EOS denote the position of the end of a sample.
+% GEN is the sign informing the model to replay pseudo data. There are somehttps://www.overleaf.com/5798652968jnzfgjvymvfh alternatives for GEN that will be revealed in the following section.
+
+%\input{figures/small_perm}
+
+\subsection{Training}
+Assume a stream of tasks $\{T_1, T_2, \dots\}$, where the number of tasks may be unknown.
+Directly training the LM on these tasks sequentially results in catastrophic forgetting.
+Thus, before beginning training on a new task $T_i, i > 1$, the model first generates pseudo samples $T^{'}_i$ 
+by top-$k$ sampling that represent the data distribution 
+% by top-$k$ sampling the data distribution   % AMH: check
+of previous tasks $T_1, \dots, T_{i-1}$.
+Then, the LM trains on the mixture of $T_i$ and $T^{'}_i$.
+To balance the ratio between $|T_i|$ and $|T^{'}_i|$, the LM generates $\gamma |T_i|$ pseudo samples, where $|T_i|$ denotes the number of samples in task $T_i$ and $\gamma$ is the sampling ratio.
+If the generated sample does not have exactly one ANS in it, then the sample is discarded.
+This happens in only 0.5\%-1\% of generated samples.
+
+During training, each sample is formatted into both the QA format and the LM format.
+Then, in the same optimization step, both formats are fed into the LM to minimize the QA loss $L_{\text{QA}}$ and LM loss $L_{\text{LM}}$ together. Overall, the loss is $L = L_{\text{QA}} + \lambda L_{\text{LM}}$, where $\lambda$ is the weight of the LM loss.
+
+% First, we declare some annotations below:
+
+% Assuming there is a task sequence including N tasks as T = $\{T_1, T_2, ..., T_N\}$, each task $T_i$ has its own dataset $D_i$ to be fit by $F_i$, a language model. %Lee: What is F_i here? the LM? %Ho it is the LM model, output is a distribution after softmax function.
+% The output of the $F_i$ is a vocabulary distribution produced by a softmax layer. 
+
+% $D_i$ consists of \{$X_i, Y_i$\} that corresponds to the input and output in Table \ref{tab:QA_format}.
+% $U_i$ denote the input and output in Table \ref{tab:LM_format}. Be noted that the input is just a shift (for one time step) from the output, We simply denote both as $U_i$ here.
+% $U$ composes of $\{u_1, u_2, ..., u_K\}$ with length $K$ while $X = \{x_1, x_2, ..., x_M\}$ and $Y = \{y_1, y_2, ..., y_M\}$ with length $M$.
+
+% For the first task, the objective $L$ for the language model to fit a sample than will be a mixture of two loss as follows:
+
+% \begin{equation}\label{equ:loss_qa}
+% L_{qa}(X,Y) = \sum_{(x,y\neq\ _{[IGN]})} logF(y|x_1,...,x_M;W)
+% \end{equation}
+
+% \begin{equation}\label{equ:loss_lm}
+% L_{lm}(U) = \sum_j^K logF(u_j|u_1,...,u_{j-1};W)
+% \end{equation}
+
+% \begin{equation}\label{equ:loss}
+% L = \lambda*L_{lm}(U)+L_{qa}(X,Y)
+% \end{equation}
+
+%$\lambda$ mentioned in Equation ($\ref{equ:loss}$) is set to 0.25 by the experiences form couple of preliminary test. --> appendix
+% $L_{qa}$ and $L_{lm}$ both aim to maximize the likelihood of the language model. The different is that $L_{qa}$ is of supervised manner targeting at solving the task while $L_{lm}$ is unsupervised and aims to reconstruct the task itself. $W$ in Equation (\ref{equ:loss_qa}) and Equation (\ref{equ:loss_lm}) denotes the weights of the model, and $\lambda$ in Equation (\ref{equ:loss}) is a constant weight to adjust the importance of $L_{lm}$.
+% 
+% At the beginning of task $T_i (i>1)$, the model generates an amount of pseudo sample $U_i'$ representing previous tasks $T_{i-1}, T_{i-2}, ..., T_1$. $U'$, a sample of $U_i'$ then decomposes itself to produce $X'$ and $Y'$ that match the format of $X_i$ and $Y_i$.
+% 
+% Each sample of $D_i'$ is decoded by the model iteratively given a special token denoting the sign of beginning of a sentence. $D_i'$ are then mixed with $D_i$ for the model to fit Equation (\ref{equ:loss}).
+% 
+% Be noted the annotation $F_i$ only indicates the model corresponds to the time step while training the task $T_i$. In fact, there is only a single model through all the tasks in the sequence.
+
+\subsection{Task-specific tokens}
+Using the same GEN token for all tasks is problematic when training for many tasks because the portion of old tasks decreases exponentially in theory.
+For instance, if $\gamma = 0.01$, then the portion of the first task when training the second task is about 1\%, but is only about 0.01\% when training the third task.
+This issue is definitely harmful to LLL.
+To mitigate this, we can choose to replace the GEN token with a task-specific token for each task to inform the model to generate pseudo-samples belonging to the specific task.
+Under this setup, all previous tasks have the same share of the $\gamma |T_i|$ generated pseudo samples.
+That is, when beginning training for the $i$-th task $T_i$, we generate $\frac{\gamma}{i-1} |T_i|$ for the previous $i-1$ tasks.
+Note that as each task uses a specific token, the vocabulary size and the embedding weight of the LM increase slightly as more tasks are trained.
+
+%This protocol, however, might cause a serious vanishing for very early tasks since pseudo data for previous tasks decrease by the percentage exponentially. 
+
+
+% So far there are now two types of GEN - one is constant over time and the other is dynamic.
+
+% There are also a variety of strategies we can adopt for allocating the percentage for generating each task's pseudo data; Here, after deciding the size to generate, we just allocate quota for all previous tasks equally.
+
+\begin{comment}
+\subsubsection{Definition}
+We annotate our method as \textbf{$LAML_{Task|Gen}^N$}.
+$N$ means the \% of current task size we generate.
+$Task|Gen$ corresponds to what kind of generation token we use. $Task$ is equivalent to task-specific token while $Gen$ means the constant generation token .
+For all tasks, We simply fit the model on training dataset without any supervision by development set.
+\end{comment}
+
+\section{Experiment Setup} \label{sec:expsetup}
+
+\subsection{Tasks, datasets, and metrics} 
+
+We collect five disparate tasks mentioned in decaNLP~\citep{McCann2018decaNLP}: question answering, semantic parsing, sentiment analysis, semantic role labeling, and goal-oriented dialogue, with a dataset for each task.
+
+Furthermore, to compare our method with~\citet{d2019episodic}, we conducted experiments on four text classification tasks: news classification, sentiment analysis, Wikipedia article classification, and question-and-answer categorization with five datasets. We use the procedure from~\citet{d2019episodic} to produce equal-sized datasets.
+
+We do not train on all datasets from both papers due to a lack of computational resources.
+For each task, there is a corresponding evaluation metric.
+Table~\ref{tab:data_attrs} contains a summary of tasks, datasets, and metrics.
+Additional details are provided in Appendix~\ref{appendix:dataset}.
+Note that the score of any metric lies between 0 and 100\%.
+
+\input{tables/data_attrs}
+\input{tables/single_task}
+
+\subsection{Methods to be compared}
+
+All methods use the smallest pre-trained GPT-2 model~\citep{radford2019language}\footnote{https://github.com/huggingface/pytorch-transformers} as the LM.
+Each task is trained for nine epochs; greedy decoding is applied during inference.
+
+\begin{itemize}[leftmargin=*]
+
+    \item \textbf{LAMOL} In all experiments, $k = 20$ in top-$k$ sampling and $\lambda = 0.25$ for weight of the LM loss are set.
+$\text{LAMOL}^{\gamma}_{\text{GEN}}$ denotes LAMOL with a sampling ratio of $\gamma$, and the same GEN token is used for all tasks.
+If the task-specific tokens are used, GEN is replaced by TASK.
+
+    \item \textbf{Keep real data} Pseudo-samples are replaced by real samples from previous tasks. 
+The quantity of real samples is equally split between previous tasks.
+This approach can be considered the upper bound of LAMOL.
+We denote it as $\text{LAMOL}^{\gamma}_{\text{REAL}}$.
+
+    \item \textbf{Fine-tune}
+The model is directly fine-tuned on the stream of tasks, one after another.
+% To get a baseline to be compared, we set up a fine-tuning process for the sequence of tasks. 
+% The initialization parameters of a new task are converged parameters for the previous task, except for the first task, the parameters are initialized randomly.
+
+    \item \textbf{Multitask learning} All tasks are trained simultaneously.
+Multitask learning is often seen as an upper bound of lifelong learning.
+In addition, it is also used to determine whether forgetting is caused by a lack of model capacity.
+
+    \item \textbf{Regularization-based methods}
+Online EWC~\citep{schwarz2018progress} and MAS~\citep{aljundi2018memory} are compared.
+They are chosen because they are more computationally efficient than SI~\citep{zenke2017continual} and more memory efficient than 
+IMM~\citep{lee2017overcoming}.
+Additionally, experiments such as~\cite{elhoseiny2018exploring} show that MAS has better performance overall.
+
+    \item \textbf{Gradient Episodic Memory (GEM)} When training each task, we randomly sample data from previous task with the amount equivalent to 5\% of the current task size into the memory. In each optimization step, the GEM~\citep{lopez2017gradient} approach retrieves all the data in the memory to calculate the gradients for the previous tasks.
+
+    \item \textbf{Improved memory-based parameter adaptation (MBPA++)} Sparse experience replay and local adaptation for LLL as proposed in~\citet{d2019episodic}. We also re-implement the paper and report better scores using different hyperparameters.
+
+\end{itemize}
+
+%Lee: 還是應該要在此引用 online EWC 和 MAS 的論文
+%====================== %Lee: 以下這段我覺得太細了，拿到 Appendix 比較合適
+
+%======================
+
+%Because the sizes between tasks are unbalanced, the order of tasks may be crucial. 
+%We permute the task order to observe if the order matters for our methods. 
+%There are three kinds of order:
+%\begin{itemize}
+%\item \textbf{Large-to-Small:} Literally, from task with largest data size to smallest. 
+%\item \textbf{Small-to-Large:} Smallest size to largest.
+%\item \textbf{Random Order} 
+%\end{itemize}
+
+%\subsection{Boundary of tasks}
+%When we train the tasks sequentially, we know the boundary between tasks exactly. Besides the condition of boundary is known, we also try to split all the training dataset into N equal size to emulate a real world situation-the boundary between tasks might be unknown. We don't shuffle the data before splitting otherwise it will become a multitask setup. Since the metrics for each task are quite different, we test the performance simply on the original test dataset for each task.  
+
+%\subsection{Implementation Details}
+%\begin{itemize}
+%\item \textbf{Parallel generation algorithm:}
+%\item \textbf{Dynamic batch size: }
+%\item \textbf{Mixed-precision training:}
+%\item \textbf{Multi-GPU training:}
+%\item \textbf{Optimization steps: }
+%\end{itemize}
+
+\section{Experimental Results}
+
+\subsection{Single Task}
+To establish a reference on the capability of the GPT-2 model on every dataset, we trained the model on each dataset independently.
+The results are shown in Table~\ref{tab:single_task}.
+We observe that the performance of the GPT-2 model is actually quite good, even beating the BERT-based model~\citep{d2019episodic} on text classification datasets by a large margin.
+Thus, the GPT-2 model has the potential for superior LLL performance, as long as we can prevent catastrophic forgetting.
+
+\input{tables/small_perm}
+\input{tables/five_tasks}
+
+\subsection{SST, QA-SRL, and WOZ Tasks}
+For an initial understanding of the performance on all of the methods and the effect of task order, we first conducted a small-scale experiment on three small datasets: SST, QA-SRL, and WOZ.
+We trained all but the the multitasked method on all six permutations of the task order.
+The final score for each order was obtained by evaluating the model at the conclusion of the training process.
+The results are shown in Table~\ref{tab:small_perm}; we make several observations.
+Note that LAMOL with $\gamma = 0$ is not the same as Fine-tuned, as the LM loss is still optimized.
+\begin{itemize}[leftmargin=*]
+    \item Fine-tuned, EWC, MAS, and LAMOL with $\gamma = 0$ show similar performance and are much worse than LAMOL with $\gamma > 0$.
+    \item $\text{LAMOL}^{0.2}_{\text{GEN}}$, our best performing method, is only 1.8 percent away from Multitasked, which implies almost no forgetting during LLL.
+    \item The order of the tasks is crucial to the performance.
+    For instance, the WOZ score drops significantly after training other tasks.
+    Thus, if WOZ is not the last task, the performance is usually noticeably worse.
+    \item When using LAMOL, the performance of old tasks maintains almost the same level throughout the training process.
+    When the sampling ratio $\gamma$ is increased, the performance also increases, especially when increased from 0 to 0.05.
+    \item When $\gamma = 0$, adding task-specific tokens harms performance, because the model must fit additional special tokens that are useless.
+    Adding task-specific tokens is also not helpful if $\gamma = 0.2$. We believe that 0.2 is enough for three tasks; thus task-specific tokens are redundant.
+    However, when $\gamma = 0.05$, task-specific tokens are beneficial because the tokens are needed to help retain a substantial presence of the first task when training the third task.
+    \item  We see that a better LLL method usually has a smaller standard deviation, which implies that it is effected less by task order. Adding task-specific tokens also has a stabilizing effect.
+\end{itemize}
+
+% However, by using our method (LAMOL), along with the increase of sample \% and applying task-specific tokens, the performances are less affected by order of the tasks. In this case, our proposed method with sample size of 20\% and not using task-specific token ($LAMOL_{Gen}^{20}$) reach the highest average score. 
+
+% The reason the version of 20\% with task-specific token ($LAMOL_{Task}^{20}$) loses mainly because the trade-off-under the circumstance of relative less number of tasks, 20\% is quite enough for remembering; But meanwhile the more special tokens, the harder the model can be trained. 
+% However, since the task-specific token version generate samples for tasks more equally, the variance of it is the lowest in all of the methods.
+
+% For dry-run version of our method (not generating any samples), we find it surprisingly takes effect under the situation WOZ is at the earlier position comparing to fine-tune.
+% For regularization methods EWC and MAS, it seems the help is limited.
+% We will leave it to future works to find out why dry-run helps and the reason regularization methods does not work well.
+
+% So far, we are still not able to conquer the peak built by multitask learning.
+
+The complete forgetting progress is illustrated in Appendix~\ref{appendix:small_perm}.
+Clearly, Fine-tuned, EWC, MAS, $\text{LAMOL}_{\text{GEN}}^0$, and $\text{LAMOL}_{\text{TASK}}^0$ reveal similar patterns.
+However, the proposed LAMOL with $\gamma > 0$ displays the ability to retain its learned knowledge.
+In the case of 
+WOZ $\rightarrow$ SRL $\rightarrow$ SST,  % AMH: check
+the WOZ score even increases after training the third task using LAMOL with $\gamma = 0.2$.
+
+% It illustrates the score of each tasks by each methods and each order.
+
+\input{figures/five_tasks_cmp_gen_size}
+
+\subsection{Five decaNLP Tasks}
+Here, we train the following five tasks sequentially: SQuAD, WikiSQL, SST, QA-SRL, and WOZ.
+Given the limited computing resources, we explore only one task order: from large to small tasks, according to the number of training samples.
+
+As shown in Table~\ref{tab:five_tasks}, LAMOL outperforms all baselines by a large margin and on average approaches within 2--3\% of the multitasked upper bound.
+Also, as expected, the performance of LAMOL improves as the sampling ratio $\gamma$ increases and task-specific tokens are used.
+
+There is also a gap between our method and the method of keeping real samples.
+As shown in the table, using real samples is much more sample-efficient, as 5\% of real samples beats 20\% of pseudo-samples.
+This may be due to the less-than-ideal quality of the pseudo-data.
+The longer the paragraphs are, the harder it is for the model to create high-quality samples.
+After observing the samples generated when using task-specific tokens, we discover some ``chaos''.
+That is, some examples generated by the model do not exactly correspond to the task-specific token.
+This implies that the task-specific tokens are sometimes too weak to constrain the model; thus their influence is overshadowed by other tokens.
+We believe that solving this problem will bring the performance when using task-specific tokens closer to using real samples; however, we leave this as future work. 
+
+Figure~\ref{fig:five_tasks} illustrates the test scores of each method on each task throughout the training.
+We clearly see that when using LAMOL, the model remembers nearly perfectly.
+
+We make several observations:
+\begin{itemize}
+    \item When training SQuAD, QA-SRL has not been trained yet, but the score of QA-SRL is already around 40.
+    Also, when training QA-SRL, the SQuAD score revives if the model has forgotten SQuAD.
+    These two facts imply that SQuAD and SRL are similar tasks, such that the model is capable of transferring knowledge from one to the other.
+    \item If forward transfer exists, replaying pseudo-data also retains the forward transfer. That is, the QA-SRL score does not drop after training on WikiSQL and SST when LAMOL is used but drops significantly for other methods.
+    \item The transferability between SQuAD and QA-SRL is expected. 
+On the other hand, the transferability between WikiSQL and QA-SRL is quite surprising; the WikiSQL score improves considerably when training on QA-SRL for Fine-tuned and MAS after WikiSQL is forgotten during SST training. 
+\end{itemize}
+
+% Each sub-graph corresponds to each task fit by each method through time. SQuAD and QA-SRL show their transfer-ability to each other. In sub-graph SQuAD (On the top), the score of fine-tune manner revivals once QA-SRL begins. The sub-graph of QA-SRL (Fourth from the top) shows a similar phenomenon result from the transfer-ability. While the model fit on the task before QA-SRL and right after SQuAD, the score of fine-tune manner drop immediately. However, since pseudo SQuAD data are replayed by LAMOL, the performance of LAMOL on QA-SRL does not decline that much. 
+
+%MAS, which performs slightly worse than fine-tune on averagely, in fact maintain better performance on SQuAD, which implies it might be capable to own a longer memory of previous tasks; However, it looks like it is not stable for some task. The MAS is obviously awful at remembering SST task, which even performs worse than fine-tune for 13.18\%.
+
+%Another intuitive observation is tasks use special task tags to generate pseudo data perform better than using single generation tag. It's obviously a stronger constraint to generate specific tasks' pseudo data if the model trains the generator with specific tasks' tag.
+
+%\input{figures/cmp_gen_size}
+
+\subsection{Text classification tasks}
+We compared the proposed method against the state-of-the-art MBPA++ proposed in~\citet{d2019episodic}, both by citing their original numbers and also by reproducing their methods.
+We chose text classification as opposed to QA because we believe that LM has more of a disadvantage in text classification than in QA.
+We compared with $\text{LAMOL}_{\text{TASK}}^{0.2}$ due to its good performance and stability.
+Following their paper and testing our model on the same four kinds of task orders, the results are shown in Table~\ref{tab:text_cls}.
+
+Our implementation results in much higher scores than the original ones.
+However, the proposed $\text{LAMOL}_{\text{TASK}}^{0.2}$ still outperforms our implementation of MBPA++.
+
+% \begin{description}
+% \item (i) Yelp → AGNews → DBPedia → Amazon → Yahoo.
+% \item (ii) DBPedia → Yahoo → AGNews → Amazon → Yelp.
+% \item (iii) Yelp → Yahoo → Amazon → DBPedia → AGNews.
+% \item (iv) AGNews → Yelp → Amazon → Yahoo → DBPedia
+% \end{description}
+
+%Table \ref{tab:text_cls_order1}. is the result of our methods on order(i) including LAMOL with 5\%, 5\% plus task-specific tokens, 20\%, 20\% plus task-specific tokens. 
+
+% We reproduce their MBPA++ model to compare with our methods. Table \ref{tab:text_cls}. compares our implementation and method to them. We choose LAMOL with 20\% plus task-specific tokens as representative because of its stability. Individually and averagely, our method performs better than the previous work.
+
+\subsection{Influence of sampling ratio $\gamma$}
+As the value of $\gamma$ determines the performance of LLL,
+we conducted a medium-scale experiment to understand the influence of $\gamma$ with and without task-specific tokens.
+In this experiment we used WikiSQL (blue color), SST (orange), QA-SRL (green), and WOZ (red), in that training order.
+The results are shown in Figure~\ref{fig:cmp_gen_size}.
+
+Unsurprisingly, the less generation done by the model, the more likely the vanishing distribution in Section~\ref{sec:our} occurs: the model forgets how to generate previous tasks, as the ratio of previous tasks in the total dataset decreases exponentially over time. 
+Models using task-specific tokens mitigate this somewhat, as demonstrated in the first subgraph where the performance of $\text{LAMOL}_{\text{TASK}}^{0.03}$ is much better than that of $\text{LAMOL}_\text{GEN}^{0.03}$.
+
+In addition, the more samples the model generates, the better the overall performance of the model.
+However, this performance gain disappears when the sampling ratio $\gamma$ is around 0.1 to 0.3.
+
+\input{tables/text_cls}
+
+\section{Conclusion}
+
+We propose LAMOL, a simple yet effective method for LLL based on language modeling.
+A single LM achieves LLL without additional model components and without keeping old examples.
+Moreover, any pre-trained LM can be used to leverage a large amount of unlabeled text to improve LLL.
+Finally, more tasks can be added whenever needed. 
+% The trained model is simply stored for future use; when training the model on a new task, remembering old data distributions is straightforward.
+% In sum, language modeling is an important step toward lifelong language learning.
+
+\section*{Acknowledgement}
+This work was supported by the Ministry of Science and Technology of
+Taiwan.
+
+\bibliography{iclr2020_conference}
+\bibliographystyle{iclr2020_conference}
+
+\clearpage
+\appendix
+
+\section{Tasks, Dataset, and Metrics} \label{appendix:dataset}
+Five tasks and their corresponding datasets from decaNLP~\citep{McCann2018decaNLP}:
+\begin{itemize}
+\item \textbf{Question Answering -- Stanford Question Answering Dataset (SQuAD)}~\citep{rajpurkar2016squad}: This dataset consists of context, questions, and answers. The context is paragraphs from English Wikipedia, and the answers are spans from its corresponding question paragraphs. For evaluation, we use the normalized F1 score (nF1), which strips out articles and punctuation as in \citet{McCann2018decaNLP}. 
+Test datasets in this task are hidden from the host so that users must upload models to their platform to generate the test results; due to this inconvenience and our many models, we elected to use the development set to test the metric. 
+Note that we do not use the development set in the training process. The size of the training set is 87,599 while that of the development set is 10,570.
+
+\item \textbf{Semantic Parsing -- WikiSQL}~\citep{zhong2017seq2sql}: In this task, normal sentences are translated into SQL-structured SQL queries. WikiSQL provides logical forms along with natural language utterances. The exact match of the logical forms (lfEM) is used to evaluate the performance. The model outputs are required to be matched the SQL format. Otherwise, its won't get any score. The size of the training set is 56,355; that of the test set is 15,878.
+
+\item \textbf{Sentiment Analysis -- Stanford Sentiment Treebank (SST, binary version)}~\citep{radford2017learning}: This dataset consists of movie reviews with its answers, including positive and negative binary options. The exact match score is used as the metric. The size of the training set is 6,920; that of the test set is 1,821.
+
+\item \textbf{Semantic Role Labeling -- QA-SRL}~\citep{he2017deep}: QA-SRL is a question answering form of the SRL task. The normalized F1 (nF1) score is used. The size of the training set is 6,414; that of the test set is 2,201.
+
+\item \textbf{Goal-Oriented Dialogue -- English Wizard of Oz (WOZ)}~\citep{wen2016network}: WOZ is a restaurant reservation task that provides a predefined ontology of a series of information for helping an agent to make reservations for customers. To keep track of the dialogue state, turn-based dialogue state EM (dsEM), which requires the model outputs exactly follow the characters' conversation order, is used for judgment. The size of the training set is 2,536; that of the test set is 1,646.
+\end{itemize}
+
+\noindent Four text classification tasks and five datasets from MBPA++ (d’Autume et al. 2019):
+
+\begin{itemize}
+\item \textbf{News Classification -- AGNews:} News articles to be classified into 4 classes.
+\item \textbf{Sentiment Analysis -- Yelp and Amazon:} Customer reviews and ratings on Yelp and Amazon. Both datasets include 5 classes.
+\item \textbf{Wikipedia Article Classification -- DBPedia:} Articles and their corresponding categories on Wikipedia, including 14 classes.
+\item \textbf{Questions and Answers Categorization -- Yahoo:} Questions and answers on the Yahoo! platform, including 10 classes.
+\end{itemize}
+The dataset collected by \citet{cls} is available at http://goo.gl/JyCnZq. Given the unbalanced dataset sizes, we randomly sample 115,000 training examples and 7,600 test examples from all the datasets per~\citet{d2019episodic}. 
+All the tasks use exact match accuracy as the evaluation metric.
+
+\begin{comment}
+\section{MAS Implementation}
+The original paper of MAS indicates it is possible to utilize unlabeled data to estimate the importance of the weights by measuring the sensitivity to the outputs; However, it is not clear what is the "outputs" indicated in the paper. We traced the code of their implementation on github \footnote{https://github.com/rahafaljundi/MAS-Memory-Aware-Synapses} and found they use the outputs right before the softmax layer. Yet, we have misgivings about the L2-Norm implementing on the outputs. First, not like common classification tasks mentioned in the paper, the outputs of a language model involving a huge dimensions due to its vocabulary size. We concern about if it results in a low variety of outputs (after L2-Norm) because we also squares a huge number of negative values that makes certain dimensions not so outstanding. Second, a negative value, let's say -1,000 is not so different from a tremendous negative value, let's say -100,000,000 after the softmax function. Obviously the magnitude for negative values before and after softmax function is not consistent. Also, considering an extreme situation that all outputs before softmax function are negative, which means the model is not so sure about the result; If we square all those negative values and calculate gradients as parameter importance, it might lead to a misleading. For the reasons mentioned above, we also compare the result before and after softmax function.
+\end{comment}
+
+\clearpage
+% \section{The complete forgetting progress of Three Tasks}
+\section{Overview of the forgetting progress for three tasks}
+%\section{Forgetting the Three Tasks}  % AMH: check
+\label{appendix:small_perm}
+\input{figures/small_perm}
+
+\clearpage
+\section{Reverse order of five DECANLP tasks}
+\label{appendix:r_five_tasks}
+\input{tables/r_five_tasks.tex}
+\input{figures/r_five_tasks.tex}
+
+\clearpage
+\section{Generated Examples}
+%In Table~\ref{tab:gen_ex}, we illustrate two kinds of situations about examples generated by LAMOL with task-specific tokens. The upper part shows the expected results, whereas the lower part shows chaos results.
+% what happens when the contents do not match the corresponding task-specific tokens. 
+\input{tables/gen_examples.tex}
+
+\end{document}

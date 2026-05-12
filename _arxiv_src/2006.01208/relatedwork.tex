@@ -1,0 +1,23 @@
+\section{Related Work} 
+\label{sec:background}
+
+%We describe two lines of research related to our work of discovering novel domains and intents from unlabeled text.
+
+%\smallskip
+
+%\noindent \textbf{Domain and Intent Detection:}
+%Prior work on user intent detection encompasses two avenues: asynchronous, written communication (forums, blogs, tweets) and synchronous dialog from dialog agents such as Microsoft LUIS\footnote{https://www.luis.ai/}, Google Dialogflow\footnote{https://dialogflow.com/}, and Amazon Alexa\footnote{https://developer.amazon.com/alexa}. Supervised and semi-supervised learning models based on linguistic and sentiment features have been used to model racial intent on Tumblr~\cite{agarwal2017characterizing}, and purchase intent in social posts~\cite{gupta2014identifying,wang2015mining} and in discussion forums~\cite{chen2013identifying}. %Wang et al~\cite{wang2015mining} proposed a graph-based optimization approach for semi-supervised classification of tweets with a purchasing intent. Recent approaches have drawn upon progress in CNNs, RNNs, and transformer based language models to improve intent detection~\cite{xu2013convolutional,mesnil2015using,kim2016intent,liu2016attention,kim2017onenet,cai2017cnn,goo2018slot,xia2018,shivakumar2019spoken,castellucci2019multi} and domain detection~\cite{kim2018efficient,kim2018joint,zhang2018joint}. 
+%Cai et al~\cite{cai2017cnn} used hierarchical clustering to learn a taxonomy of intent classes, and applied a hybrid CNN-LSTM model to classify the intent of medical queries. Performing slot filling jointly with intent detection has improved the performance of both tasks~\cite{kim2016intent,liu2016attention,zhang2016joint,wang2018bi}.  
+Intent detection has been successfully performed in the literature via machine learning based approaches~\cite{tur2011sentence,jeong2008triangular,kim2016intent,ravuri2015comparative}, as well as deep learning models~\cite{sun2016weakly,xia2018,shivakumar2019spoken,castellucci2019multi,lin2019deep}. %\cite{ravuri2015comparative} performed a comparative study of different neural network architectures considering only lexical information of the utterance as features for intent detection. 
+In recent years, intent detection has been jointly done with slot filling to improve its performance~\cite{xu2013convolutional,bhargava2013,liu2016attention,zhang2016joint,kim2017onenet,goo2018slot,wang2018bi}. However, the above approaches either require sufficient labeled data for each domain and intent, or some prior knowledge about the new intents to be discovered. \mname{} seeks to eliminate these restrictions.
+
+
+%\smallskip
+
+%\noindent \textbf{Open Classification:}
+%Prior work classifies input instances into seen or unseen (during training) classes~\cite{scheirer2014probability,bendale2015towards,fei2016breaking,shu2017doc,xu2019open}. 
+%Domain and intent detection 
+Methods were proposed to recognize input texts belonging to novel domains~\cite{kim2018joint} and novel intents~\cite{lin2019deep,vedula2019towards}. However, unlike \mname{}, they do not jointly detect both novel domains and novel intents, cannot detect the number of novel domains and intents, and do not discover a taxonomy of the potential domain and intent types within user utterances. %likely to contain a novel domain or intent. 
+Deep clustering networks~\cite{hsu2015neural} and Bayesian non-parametric models~\cite{dundar2012bayesian,akova2012self} were proposed to identify mixture components or clusters in data. But unlike \mname{}, the clusters identified cannot automatically be mapped to unique unseen categories. 
+Our work %being completely unsupervised 
+is also different from semi-supervised clustering techniques~\cite{fu2016semi,akova2012self,yi2015efficient,yi2013semi,hsu2015neural}, which lever small amounts of labeled data and require the classes to be discovered to be known beforehand. Having said that, we show the gains achieved by a semi-supervised version of \mname{}, in case prior knowledge is available about the novel intents (Table~\ref{tab:supervision}).

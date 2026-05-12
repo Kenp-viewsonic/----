@@ -1,0 +1,60 @@
+%cost_results_cross_datasets_wo_cot
+\begin{table*}[t]
+\centering
+\caption{Cost-aware evaluation. Metrics: Always-Trust (A.T.) cost (\$), expected cost (\$), escalations (count), and escalation ratio (\%). Bold values indicate the lowest expected cost among methods for each LLM (row-wise).}
+\label{tab:cost_merged_side_by_side}
+\begin{tabular}{@{}c @{\ \vrule width 1pt\ } c@{}}  % <-- the separator line
+% ---------- Left subtable ----------
+\begin{subtable}[t]{0.56\linewidth}
+\centering
+\caption{OpenAI Moderation Dataset}
+\label{tab:cost_results_public}
+\setlength{\tabcolsep}{2.05pt}
+\renewcommand{\arraystretch}{1.05}
+\resizebox{\linewidth}{!}{
+\begin{tabular}{lccccccccccccc}
+\toprule
+LLM & A.T. & \multicolumn{3}{c}{MSP} & \multicolumn{3}{c}{Top-2 Margin} & \multicolumn{3}{c}{Entropy} & \multicolumn{3}{c}{Meta-Model (Ours)} \\
+ &  & Cost & Esc & Ratio & Cost & Esc & Ratio & Cost & Esc & Ratio & Cost & Esc & Ratio \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-8}\cmidrule(lr){9-11}\cmidrule(lr){12-14}
+gpt-4o-mini   & 127 & 138   & 339 & 38\% & 132 & 331 & 37\% & 138   & 339 & 38\% & \textbf{38} & 148 & 16\% \\
+gpt-4o        & 127 & 74    & 275 & 31\% & 75  & 271 & 30\% & 74    & 275 & 31\% & \textbf{51} & 151 & 17\% \\
+gpt-4.1-mini  & 127 & 69    & 258 & 29\% & 73  & 267 & 30\% & 69    & 259 & 29\% & \textbf{45} & 212 & 24\% \\
+gemini-2.5-flash-lite & 127 & 128 & 347 & 38\% & 122 & 315 & 35\% & 128 & 348 & 39\% & \textbf{77} & 227 & 25\% \\
+gemini-2.0-flash-lite & 127 & 74  & 248 & 28\% & 75  & 253 & 28\% & 74  & 248 & 28\% & \textbf{41} & 162 & 18\% \\
+gemini-2.0-flash-001      & 127 & 97  & 297 & 33\% & 97  & 297 & 33\% & 97  & 297 & 33\% & \textbf{69} & 238 & 26\% \\
+QWEN3-14B     & 127 &    103   &   73  &   8\%     &   105     &  70   &    8\%    &   98     &  84   &    9\%    &    \textbf{56}   &  205   &   23\%     \\
+QWEN3-32B     & NA   & NA       & NA     & NA        & NA        & NA     & NA        & NA        & NA     & NA        & NA       & NA     & NA        \\
+LLAMA32-11B   & NA   & NA       & NA     & NA        & NA        & NA     & NA        & NA        & NA     & NA        & NA       & NA     & NA        \\
+\bottomrule
+\end{tabular}}
+\end{subtable}
+&
+% ---------- Right subtable ----------
+\begin{subtable}[t]{0.44\linewidth}
+\centering
+\caption{Multimodal Moderation Dataset}
+\label{tab:cost_results_holdout}
+\setlength{\tabcolsep}{2.05pt}
+\renewcommand{\arraystretch}{1.05}
+\resizebox{\linewidth}{!}{
+\begin{tabular}{ccccccccccccc}
+\toprule
+A.T. & \multicolumn{3}{c}{MSP} & \multicolumn{3}{c}{Top-2 Margin} & \multicolumn{3}{c}{Entropy} & \multicolumn{3}{c}{Meta-Model (Ours)} \\
+ & Cost & Esc & Ratio & Cost & Esc & Ratio & Cost & Esc & Ratio & Cost & Esc & Ratio \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}\cmidrule(lr){11-13}
+42 & 39 & 110 & 37\% & 37 & 107 & 36\% & 39 & 110 & 37\% & \textbf{22} & 80 & 27\% \\
+42 & 41 & 70  & 23\% & 42 & 73  & 24\% & 40 & 72  & 24\% & \textbf{29} & 38 & 13\% \\
+42 & 32 & 85  & 28\% & 32 & 85  & 28\% & 32 & 85  & 28\% & \textbf{30} & 40 & 13\% \\
+42 & 53 & 93  & 31\% & 51 & 90  & 30\% & 53 & 92  & 31\% & \textbf{40} & 20 & 7\% \\
+\textbf{42} & 80 & 163 & 54\% & 80 & 162 & 54\% & 80 & 163 & 54\% & 45 & 64 & 21\% \\
+42 & 35 & 7   & 2\%  & 35 & 7   & 2\%  & 35 & 10  & 3\%  & \textbf{34} & 15 & 5\% \\
+42 & \textbf{36} & 17 & 6\% & \textbf{36} & 65 & 22\% & \textbf{36} & 21 & 7\% & \textbf{36} & 65 & 22\% \\
+\textbf{42} & 47 & 35 & 12\% & 47 & 46 & 15\% & 49 & 37 & 12\% & 47 & 46 & 15\% \\
+42 & 41 & 25 & 8\%  & 39 & 78 & 26\% & \textbf{38} & 33 & 11\% & 39 & 78 & 26\% \\
+\bottomrule
+\end{tabular}}
+\end{subtable}
+\\ % end row of the 2-col wrapper
+\end{tabular}
+\end{table*}

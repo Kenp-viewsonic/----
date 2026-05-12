@@ -1,0 +1,36 @@
+\section{Related Work}
+\label{sec:related_work_f}
+%%Arsh, i would move this section before the conclusion so you can cross link it to the various sections 
+
+There have been numerous advancements in NLU systems for dialogues over the past two decades. While the traditional approaches used handcrafted features and word n-gram based features fed to
+%which were fed as input to classical machine learning systems such as 
+SVM, logistic regression, etc. for IC task and conditional random fields (CRF) for SL task \cite{triangular_crf, wang12002combination, raymondAndRiccardi2007}, more recent approaches rely on deep neural networks to jointly model IC and SL tasks \cite{yao2014spokenLU, yao2014recurrentCR, joint_slu_recursive, zhang2016ajm, liu2016jointOS, Goo2018SlotGatedMF}. Attention as introduced by \citet{bahdanau2014neural} has played a major role in many of these systems \cite{liu2016attentionBasedRN, ma2017jointlyTS, li2018ASM, Goo2018SlotGatedMF}, for instance, for modeling interaction between intents and slots in \cite{Goo2018SlotGatedMF}.
+
+
+% \arsh{For a similar task of dialog state tracking (\pretty{dst}) \cite{young2013pomdp, williams2013dialog}, for each turn, the system predicts possible slot-value pairs. However, in \pretty{ic-sl} task, we focus on explicit token predictions, i.e. slot labels for each token in the utterance instead of latent slot-value pair extraction. In industrial setting, this setup is \emph{essential} to alleviate rule requirements.}
+
+
+% However, maintaining dialog states for multiple different models is quite infeasible, especially in industrial setting, as the developers have to maintain multiple ontologies, need to invest on rules for decoding dialog states, etc. Hence, our work is focused on the \pretty{Ic-Sl} task which eliminates the need for maintaining any rules. Hence, our work is focused on the \pretty{Ic-Sl} task which eliminates the need for maintaining any ontology and also any additional effort involved for decoding these.
+
+
+%\st{In the past, }.
+%\glalwani{\sout{Contextual information is critical for \pretty{Nlu}.}}
+\citet{dahlback1989empirical} and \citet{bertomeu2006contextual} studied contextual phenomena and thematic relations in
+%\st{conversational datasets}
+%\pretty{WoZ} experiments
+natural language,
+thereby highlighting the importance of using context. %%Arsh how is this different from your work here.
+Few previous works focused on modeling turn-level predictions as \pretty{DST} task \cite{williams2013dialog}. However, these systems 
+%use classifiers to 
+predict the possible slot-value pairs at utterance level \cite{glad}, making it necessary to maintain ontology of all possible slot values, which is infeasible for certain slot types (e.g., restaurant names). In industry settings, where IC-SL task is predominant, there is also an additional effort involved to invest in rules for converting utterance level dialog state annotations to token level annotations required for SL. % %\sout{Also, there is an additional effort involved to invest in rules for converting these dialog states into system actions in industry settings where \pretty{Ic-Sl} task is predominant.}
+Hence, our work mainly focuses on the IC-SL task which eliminates the need for maintaining any ontology or such handcrafted rules.
+
+\citet{Bhargava2013EasyCI} used previous intents and slots for IC and SL models. They were followed by \citet{Shi2015ContextualSL} who exploited previous intents and domain predictions to train a joint IC-SL model. However, both these studies lacked comprehensive context modeling framework that allows multiple contextual signals to be used together over a variable context window. % for variable context window size with multiple contextual signals such as dialog acts, used together in a single model. 
+%\st{Also, these works did not provide an analysis of the impact of the leveraged contextual signals used to predict IC-SL.} 
+Also, an intuitive interpretation of the impact of contextual signals on IC-SL task was missing.
+
+
+%Also, they lacked in-depth analysis of impact of different contextual signals for NLU tasks making the configuration opaque. 
+%In addition to proposing a unified framework for context modeling that leverages multi-dimension self-attention, we also provide thorough analysis as to how context impacts the model performance. 
+
+

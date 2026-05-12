@@ -1,0 +1,24 @@
+%main_results_holdout_set_no_cot
+\begin{table*}[t]
+\centering
+\caption{Baseline vs.\ meta-model predictive performance on the Multimodal Moderation Dataset. Metrics are reported as percentages. Bold values indicate the best result per metric for each LLM (row-wise).}
+\label{tab:main_results_holdout_no_cot}
+\resizebox{\linewidth}{!}{
+\begin{tabular}{lcccccccccccc}
+\toprule
+ & \multicolumn{3}{c}{MSP} & \multicolumn{3}{c}{Top-2 Margin} & \multicolumn{3}{c}{Entropy} & \multicolumn{3}{c}{Meta-Model (Ours)} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10} \cmidrule(lr){11-13}
+LLM & F1 & AUC-ROC & Macro-F1 & F1 & AUC-ROC & Macro-F1 & F1 & AUC-ROC & Macro-F1 & F1 & AUC-ROC & Macro-F1 \\
+\midrule
+gpt-4o-mini         & 85.71\% & 83.87\% & 71.20\% & 85.71\% & 83.95\% & 71.20\% & 85.12\% & 83.69\% & 70.47\% & \textbf{87.34\%} & \textbf{88.71\%} & \textbf{74.07\%} \\
+gpt-4o              & 88.05\% & 84.97\% & 67.39\% & 87.58\% & 84.72\% & 66.73\% & 88.00\% & \textbf{84.98\%} & 67.85\% & \textbf{91.42\%} & 84.43\% & \textbf{69.80\%} \\
+gpt-4.1-mini        & 88.84\% & \textbf{84.93\%} & \textbf{72.39\%} & 88.84\% & 84.82\% & 72.39\% & 88.84\% & 84.93\% & 72.39\% & \textbf{90.98\%} & 84.18\% & 69.02\% \\
+gemini-2.5-flash-lite & 84.53\% & 75.18\% & 63.87\% & 85.28\% & \textbf{75.20\%} & \textbf{64.77\%} & 83.19\% & 75.21\% & 62.81\% & \textbf{90.56\%} & 68.26\% & 57.59\% \\
+gemini-2.0-flash-lite & 69.52\% & 67.34\% & 52.41\% & 69.85\% & 67.29\% & 52.67\% & 69.52\% & 67.37\% & 52.41\% & \textbf{85.47\%} & \textbf{69.37\%} & \textbf{61.09\%} \\
+gemini-2.0-flash-001      & \textbf{91.65\%} & 62.38\% & 45.82\% & 91.30\% & 62.52\% & 52.17\% & 91.65\% & 62.32\% & 45.82\% & 90.71\% & \textbf{66.37\%} & \textbf{56.47\%} \\
+QWEN3-14B            & \textbf{91.06\%} & 74.04\% & 60.04\% & 91.06\% & 73.92\% & 60.04\% & 90.57\% & \textbf{74.25\%} & 60.44\% & 86.49\% & 73.77\% & \textbf{65.97\%} \\
+QWEN3-32B            & \textbf{87.70\%} & 74.70\% & 55.10\% & 87.70\% & 74.52\% & 55.10\% & 87.25\% & \textbf{74.79\%} & 54.60\% & 86.82\% & 74.71\% & \textbf{57.69\%} \\
+LLAMA32-11B          & \textbf{86.32\%} & \textbf{70.79\%} & 56.02\% & 86.32\% & 70.49\% & 56.02\% & 86.02\% & 70.74\% & 59.68\% & 79.51\% & 70.67\% & \textbf{62.52\%} \\
+\bottomrule
+\end{tabular}}
+\end{table*}

@@ -1,0 +1,294 @@
+\begin{thebibliography}{35}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Biesialska et~al.(2020)Biesialska, Biesialska, and
+  Costa-Jussa}]{biesialska2020continual}
+Magdalena Biesialska, Katarzyna Biesialska, and Marta~R Costa-Jussa. 2020.
+\newblock Continual lifelong learning in natural language processing: A survey.
+\newblock \emph{arXiv preprint arXiv:2012.09823}.
+
+\bibitem[{Caron et~al.(2020)Caron, Misra, Mairal, Goyal, Bojanowski, and
+  Joulin}]{caron2020unsupervised}
+Mathilde Caron, Ishan Misra, Julien Mairal, Priya Goyal, Piotr Bojanowski, and
+  Armand Joulin. 2020.
+\newblock Unsupervised learning of visual features by contrasting cluster
+  assignments.
+\newblock \emph{Advances in neural information processing systems},
+  33:9912--9924.
+
+\bibitem[{Casanueva et~al.(2020)Casanueva, Tem{\v{c}}inas, Gerz, Henderson, and
+  Vuli{\'c}}]{casanueva-etal-2020-efficient}
+I{\~n}igo Casanueva, Tadas Tem{\v{c}}inas, Daniela Gerz, Matthew Henderson, and
+  Ivan Vuli{\'c}. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.nlp4convai-1.5} {Efficient
+  intent detection with dual sentence encoders}.
+\newblock In \emph{Proceedings of the 2nd Workshop on Natural Language
+  Processing for Conversational AI}, pages 38--45, Online. Association for
+  Computational Linguistics.
+
+\bibitem[{Chen et~al.(2019)Chen, Zhuo, and Wang}]{chen2019bert}
+Qian Chen, Zhu Zhuo, and Wen Wang. 2019.
+\newblock Bert for joint intent classification and slot filling.
+\newblock \emph{arXiv preprint arXiv:1902.10909}.
+
+\bibitem[{Chen et~al.(2020)Chen, Kornblith, Norouzi, and
+  Hinton}]{chen2020simple}
+Ting Chen, Simon Kornblith, Mohammad Norouzi, and Geoffrey Hinton. 2020.
+\newblock A simple framework for contrastive learning of visual
+  representations.
+\newblock In \emph{International conference on machine learning}, pages
+  1597--1607. PMLR.
+
+\bibitem[{Cuturi(2013)}]{cuturi2013sinkhorn}
+Marco Cuturi. 2013.
+\newblock Sinkhorn distances: Lightspeed computation of optimal transport.
+\newblock \emph{Advances in neural information processing systems}, 26.
+
+\bibitem[{Dong et~al.(2023{\natexlab{a}})Dong, Wang, Wang, Guo, Fu, Wu, Zeng,
+  Li, Hui, He, Cui, Gao, and Xu}]{10095149}
+Guanting Dong, Zechen Wang, Liwen Wang, Daichi Guo, Dayuan Fu, Yuxiang Wu, Chen
+  Zeng, Xuefeng Li, Tingfeng Hui, Keqing He, Xinyue Cui, Qixiang Gao, and
+  Weiran Xu. 2023{\natexlab{a}}.
+\newblock \href {https://doi.org/10.1109/ICASSP49357.2023.10095149} {A
+  prototypical semantic decoupling method via joint contrastive learning for
+  few-shot named entity recognition}.
+\newblock In \emph{ICASSP 2023 - 2023 IEEE International Conference on
+  Acoustics, Speech and Signal Processing (ICASSP)}, pages 1--5.
+
+\bibitem[{Dong et~al.(2023{\natexlab{b}})Dong, Wang, Zhao, Zhao, Guo, Fu, Hui,
+  Zeng, He, Li, Wang, Cui, and Xu}]{dong2023multitask}
+Guanting Dong, Zechen Wang, Jinxu Zhao, Gang Zhao, Daichi Guo, Dayuan Fu,
+  Tingfeng Hui, Chen Zeng, Keqing He, Xuefeng Li, Liwen Wang, Xinyue Cui, and
+  Weiran Xu. 2023{\natexlab{b}}.
+\newblock \href {http://arxiv.org/abs/2308.14533} {A multi-task semantic
+  decomposition framework with task-specific pre-training for few-shot ner}.
+
+\bibitem[{Geng et~al.(2021)Geng, Yang, Yuan, Wang, Ao, and
+  Xu}]{geng2021iterative}
+Binzong Geng, Min Yang, Fajie Yuan, Shupeng Wang, Xiang Ao, and Ruifeng Xu.
+  2021.
+\newblock Iterative network pruning with uncertainty regularization for
+  lifelong sentiment classification.
+\newblock In \emph{Proceedings of the 44th International ACM SIGIR conference
+  on Research and Development in Information Retrieval}, pages 1229--1238.
+
+\bibitem[{Islam et~al.(2021)Islam, Chen, Panda, Karlinsky, Radke, and
+  Feris}]{islam2021broad}
+Ashraful Islam, Chun-Fu~Richard Chen, Rameswar Panda, Leonid Karlinsky, Richard
+  Radke, and Rogerio Feris. 2021.
+\newblock A broad study on the transferability of visual representations with
+  contrastive learning.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on
+  Computer Vision}, pages 8845--8855.
+
+\bibitem[{Ke et~al.(2021)Ke, Xu, and Liu}]{ke-etal-2021-adapting}
+Zixuan Ke, Hu~Xu, and Bing Liu. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.naacl-main.378} {Adapting
+  {BERT} for continual learning of a sequence of aspect sentiment
+  classification tasks}.
+\newblock In \emph{Proceedings of the 2021 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies}, pages 4746--4755, Online. Association for Computational
+  Linguistics.
+
+\bibitem[{Kuhn(1955)}]{kuhn1955hungarian}
+Harold~W Kuhn. 1955.
+\newblock The hungarian method for the assignment problem.
+\newblock \emph{Naval research logistics quarterly}, 2(1-2):83--97.
+
+\bibitem[{Larson et~al.(2019)Larson, Mahendran, Peper, Clarke, Lee, Hill,
+  Kummerfeld, Leach, Laurenzano, Tang, and Mars}]{larson-etal-2019-evaluation}
+Stefan Larson, Anish Mahendran, Joseph~J. Peper, Christopher Clarke, Andrew
+  Lee, Parker Hill, Jonathan~K. Kummerfeld, Kevin Leach, Michael~A. Laurenzano,
+  Lingjia Tang, and Jason Mars. 2019.
+\newblock \href {https://doi.org/10.18653/v1/D19-1131} {An evaluation dataset
+  for intent classification and out-of-scope prediction}.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 1311--1316, Hong Kong,
+  China. Association for Computational Linguistics.
+
+\bibitem[{Li et~al.(2022)Li, Zhai, Chen, Gao, Zhang, and
+  Zhang}]{li-etal-2022-continual}
+Guodun Li, Yuchen Zhai, Qianglong Chen, Xing Gao, Ji~Zhang, and Yin Zhang.
+  2022.
+\newblock \href {https://aclanthology.org/2022.coling-1.26} {Continual few-shot
+  intent detection}.
+\newblock In \emph{Proceedings of the 29th International Conference on
+  Computational Linguistics}, pages 333--343, Gyeongju, Republic of Korea.
+  International Committee on Computational Linguistics.
+
+\bibitem[{Li et~al.(2020)Li, Zhou, Xiong, and Hoi}]{li2020prototypical}
+Junnan Li, Pan Zhou, Caiming Xiong, and Steven~CH Hoi. 2020.
+\newblock Prototypical contrastive learning of unsupervised representations.
+\newblock \emph{arXiv preprint arXiv:2005.04966}.
+
+\bibitem[{Lin and Xu(2019)}]{lin-xu-2019-deep}
+Ting-En Lin and Hua Xu. 2019.
+\newblock \href {https://doi.org/10.18653/v1/P19-1548} {Deep unknown intent
+  detection with margin loss}.
+\newblock In \emph{Proceedings of the 57th Annual Meeting of the Association
+  for Computational Linguistics}, pages 5491--5496, Florence, Italy.
+  Association for Computational Linguistics.
+
+\bibitem[{Lin et~al.(2020)Lin, Xu, and Zhang}]{lin2020discovering}
+Ting-En Lin, Hua Xu, and Hanlei Zhang. 2020.
+\newblock Discovering new intents via constrained deep adaptive clustering with
+  cluster refinement.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial
+  Intelligence}, volume~34, pages 8360--8367.
+
+\bibitem[{Ma et~al.(2022)Ma, Jiang, Wu, Zhao, and
+  Lin}]{ma-etal-2022-decomposed}
+Tingting Ma, Huiqiang Jiang, Qianhui Wu, Tiejun Zhao, and Chin-Yew Lin. 2022.
+\newblock \href {https://doi.org/10.18653/v1/2022.findings-acl.124} {Decomposed
+  meta-learning for few-shot named entity recognition}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  ACL 2022}, pages 1584--1596, Dublin, Ireland. Association for Computational
+  Linguistics.
+
+\bibitem[{MacQueen(1965)}]{macqueen1965some}
+J~MacQueen. 1965.
+\newblock Some methods for classification and analysis of multivariate
+  observations.
+\newblock In \emph{Proc. 5th Berkeley Symposium on Math., Stat., and Prob},
+  page 281.
+
+\bibitem[{Masana et~al.(2022)Masana, Liu, Twardowski, Menta, Bagdanov, and
+  van~de Weijer}]{masana2022class}
+Marc Masana, Xialei Liu, Bart{\l}omiej Twardowski, Mikel Menta, Andrew~D
+  Bagdanov, and Joost van~de Weijer. 2022.
+\newblock Class-incremental learning: survey and performance evaluation on
+  image classification.
+\newblock \emph{IEEE Transactions on Pattern Analysis and Machine
+  Intelligence}.
+
+\bibitem[{Mehta et~al.(2021)Mehta, Patil, Chandar, and
+  Strubell}]{mehta2021empirical}
+Sanket~Vaibhav Mehta, Darshan Patil, Sarath Chandar, and Emma Strubell. 2021.
+\newblock An empirical investigation of the role of pre-training in lifelong
+  learning.
+\newblock \emph{arXiv preprint arXiv:2112.09153}.
+
+\bibitem[{Mou et~al.(2022{\natexlab{a}})Mou, He, Wang, Wu, Wang, Wu, and
+  Xu}]{mou-etal-2022-watch}
+Yutao Mou, Keqing He, Pei Wang, Yanan Wu, Jingang Wang, Wei Wu, and Weiran Xu.
+  2022{\natexlab{a}}.
+\newblock \href {https://aclanthology.org/2022.emnlp-main.98} {Watch the
+  neighbors: A unified k-nearest neighbor contrastive learning framework for
+  {OOD} intent discovery}.
+\newblock In \emph{Proceedings of the 2022 Conference on Empirical Methods in
+  Natural Language Processing}, pages 1517--1529, Abu Dhabi, United Arab
+  Emirates. Association for Computational Linguistics.
+
+\bibitem[{Mou et~al.(2022{\natexlab{b}})Mou, He, Wu, Wang, Wang, Wu, Huang,
+  Feng, and Xu}]{mou-etal-2022-generalized}
+Yutao Mou, Keqing He, Yanan Wu, Pei Wang, Jingang Wang, Wei Wu, Yi~Huang,
+  Junlan Feng, and Weiran Xu. 2022{\natexlab{b}}.
+\newblock \href {https://aclanthology.org/2022.coling-1.59} {Generalized intent
+  discovery: Learning from open world dialogue system}.
+\newblock In \emph{Proceedings of the 29th International Conference on
+  Computational Linguistics}, pages 707--720, Gyeongju, Republic of Korea.
+  International Committee on Computational Linguistics.
+
+\bibitem[{Mou et~al.(2022{\natexlab{c}})Mou, He, Wu, Zeng, Xu, Jiang, Wu, and
+  Xu}]{mou-etal-2022-disentangled}
+Yutao Mou, Keqing He, Yanan Wu, Zhiyuan Zeng, Hong Xu, Huixing Jiang, Wei Wu,
+  and Weiran Xu. 2022{\natexlab{c}}.
+\newblock \href {https://doi.org/10.18653/v1/2022.acl-short.6} {Disentangled
+  knowledge transfer for {OOD} intent discovery with unified contrastive
+  learning}.
+\newblock In \emph{Proceedings of the 60th Annual Meeting of the Association
+  for Computational Linguistics (Volume 2: Short Papers)}, pages 46--53,
+  Dublin, Ireland. Association for Computational Linguistics.
+
+\bibitem[{Mou et~al.(2022{\natexlab{d}})Mou, Wang, He, Wu, Wang, Wu, and
+  Xu}]{mou-etal-2022-uninl}
+Yutao Mou, Pei Wang, Keqing He, Yanan Wu, Jingang Wang, Wei Wu, and Weiran Xu.
+  2022{\natexlab{d}}.
+\newblock \href {https://aclanthology.org/2022.emnlp-main.494} {{U}ni{NL}:
+  Aligning representation learning with scoring function for {OOD} detection
+  via unified neighborhood learning}.
+\newblock In \emph{Proceedings of the 2022 Conference on Empirical Methods in
+  Natural Language Processing}, pages 7317--7325, Abu Dhabi, United Arab
+  Emirates. Association for Computational Linguistics.
+
+\bibitem[{Platt et~al.(1999)}]{platt1999probabilistic}
+John Platt et~al. 1999.
+\newblock Probabilistic outputs for support vector machines and comparisons to
+  regularized likelihood methods.
+\newblock \emph{Advances in large margin classifiers}, 10(3):61--74.
+
+\bibitem[{Rebuffi et~al.(2017)Rebuffi, Kolesnikov, Sperl, and
+  Lampert}]{rebuffi2017icarl}
+Sylvestre-Alvise Rebuffi, Alexander Kolesnikov, Georg Sperl, and Christoph~H
+  Lampert. 2017.
+\newblock icarl: Incremental classifier and representation learning.
+\newblock In \emph{Proceedings of the IEEE conference on Computer Vision and
+  Pattern Recognition}, pages 2001--2010.
+
+\bibitem[{Wang et~al.(2022)Wang, Xiao, Li, Feng, Niu, Chen, and
+  Zhao}]{wang2022pico}
+Haobo Wang, Ruixuan Xiao, Yixuan Li, Lei Feng, Gang Niu, Gang Chen, and Junbo
+  Zhao. 2022.
+\newblock Pico: Contrastive label disambiguation for partial label learning.
+\newblock \emph{arXiv preprint arXiv:2201.08984}.
+
+\bibitem[{Wu et~al.(2022)Wu, Zeng, He, Mou, Wang, and
+  Xu}]{wu-etal-2022-distribution}
+Yanan Wu, Zhiyuan Zeng, Keqing He, Yutao Mou, Pei Wang, and Weiran Xu. 2022.
+\newblock \href {https://aclanthology.org/2022.coling-1.50} {Distribution
+  calibration for out-of-domain detection with {B}ayesian approximation}.
+\newblock In \emph{Proceedings of the 29th International Conference on
+  Computational Linguistics}, pages 608--615, Gyeongju, Republic of Korea.
+  International Committee on Computational Linguistics.
+
+\bibitem[{Wu et~al.(2021)Wu, Wei, Jiang, Mao, Tang, and Li}]{wu2021ngc}
+Zhi-Fan Wu, Tong Wei, Jianwen Jiang, Chaojie Mao, Mingqian Tang, and Yu-Feng
+  Li. 2021.
+\newblock Ngc: A unified framework for learning with open-world noisy data.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on
+  Computer Vision}, pages 62--71.
+
+\bibitem[{Yang et~al.(2021)Yang, Zhou, Li, and Liu}]{yang2021generalized}
+Jingkang Yang, Kaiyang Zhou, Yixuan Li, and Ziwei Liu. 2021.
+\newblock Generalized out-of-distribution detection: A survey.
+\newblock \emph{arXiv preprint arXiv:2110.11334}.
+
+\bibitem[{Yu et~al.(2020)Yu, Twardowski, Liu, Herranz, Wang, Cheng, Jui, and
+  Weijer}]{yu2020semantic}
+Lu~Yu, Bartlomiej Twardowski, Xialei Liu, Luis Herranz, Kai Wang, Yongmei
+  Cheng, Shangling Jui, and Joost van~de Weijer. 2020.
+\newblock Semantic drift compensation for class-incremental learning.
+\newblock In \emph{Proceedings of the IEEE/CVF conference on computer vision
+  and pattern recognition}, pages 6982--6991.
+
+\bibitem[{Zeng et~al.(2022)Zeng, He, Wang, Fu, Dong, Geng, Wang, Wang, Sun, Wu,
+  and Xu}]{zeng-etal-2022-semi}
+Weihao Zeng, Keqing He, Zechen Wang, Dayuan Fu, Guanting Dong, Ruotong Geng,
+  Pei Wang, Jingang Wang, Chaobo Sun, Wei Wu, and Weiran Xu. 2022.
+\newblock \href {https://doi.org/10.18653/v1/2022.seretod-1.6} {Semi-supervised
+  knowledge-grounded pre-training for task-oriented dialog systems}.
+\newblock In \emph{Proceedings of the Towards Semi-Supervised and Reinforced
+  Task-Oriented Dialog Systems (SereTOD)}, pages 39--47, Abu Dhabi, Beijing
+  (Hybrid). Association for Computational Linguistics.
+
+\bibitem[{Zeng et~al.(2021)Zeng, He, Yan, Liu, Wu, Xu, Jiang, and
+  Xu}]{zeng-etal-2021-modeling}
+Zhiyuan Zeng, Keqing He, Yuanmeng Yan, Zijun Liu, Yanan Wu, Hong Xu, Huixing
+  Jiang, and Weiran Xu. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.acl-short.110} {Modeling
+  discriminative representations for out-of-domain detection with supervised
+  contrastive learning}.
+\newblock In \emph{Proceedings of the 59th Annual Meeting of the Association
+  for Computational Linguistics and the 11th International Joint Conference on
+  Natural Language Processing (Volume 2: Short Papers)}, pages 870--878,
+  Online. Association for Computational Linguistics.
+
+\bibitem[{Zhang et~al.(2021)Zhang, Xu, Lin, and Lyu}]{zhang2021discovering}
+Hanlei Zhang, Hua Xu, Ting-En Lin, and Rui Lyu. 2021.
+\newblock Discovering new intents with deep aligned clustering.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial
+  Intelligence}, volume~35, pages 14365--14373.
+
+\end{thebibliography}

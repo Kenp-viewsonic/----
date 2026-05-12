@@ -1,0 +1,410 @@
+\begin{thebibliography}{80}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Ainsworth et~al.(2022)Ainsworth, Hayase, and Srinivasa]{ainsworth2022git}
+Samuel~K Ainsworth, Jonathan Hayase, and Siddhartha Srinivasa.
+\newblock Git re-basin: Merging models modulo permutation symmetries.
+\newblock \emph{arXiv preprint arXiv:2209.04836}, 2022.
+
+\bibitem[Bhat et~al.(2024)Bhat, Renjith, Arani, and Zonooz]{bhat2024mitigating}
+Prashant Bhat, Bharath Renjith, Elahe Arani, and Bahram Zonooz.
+\newblock Mitigating interference in the knowledge continuum through attention-guided incremental learning.
+\newblock \emph{Third Conference on Lifelong Learning Agents (CoLLAs)}, 2024.
+
+\bibitem[Bhat et~al.(2023)Bhat, Zonooz, and Arani]{bhat2022task}
+Prashant~Shivaram Bhat, Bahram Zonooz, and Elahe Arani.
+\newblock Task-aware information routing from common representation space in lifelong learning.
+\newblock In \emph{The Eleventh International Conference on Learning Representations}, 2023.
+
+\bibitem[Biderman et~al.(2024)Biderman, Ortiz, Portes, Paul, Greengard, Jennings, King, Havens, Chiley, Frankle, et~al.]{biderman2024lora}
+Dan Biderman, Jose Javier~Gonzalez Ortiz, Jacob Portes, Mansheej Paul, Philip Greengard, Connor Jennings, Daniel King, Sam Havens, Vitaliy Chiley, Jonathan Frankle, et~al.
+\newblock Lora learns less and forgets less.
+\newblock \emph{CoRR}, 2024.
+
+\bibitem[Brown(2020)]{brown2020language}
+Tom~B Brown.
+\newblock Language models are few-shot learners.
+\newblock \emph{arXiv preprint arXiv:2005.14165}, 2020.
+
+\bibitem[Buzzega et~al.(2020)Buzzega, Boschini, Porrello, Abati, and Calderara]{buzzega2020dark}
+Pietro Buzzega, Matteo Boschini, Angelo Porrello, Davide Abati, and Simone Calderara.
+\newblock Dark experience for general continual learning: a strong, simple baseline.
+\newblock \emph{Advances in neural information processing systems}, 33:\penalty0 15920--15930, 2020.
+
+\bibitem[Caccia et~al.(2022)Caccia, Aljundi, Asadi, Tuytelaars, Pineau, and Belilovsky]{caccia2022new}
+Lucas Caccia, Rahaf Aljundi, Nader Asadi, Tinne Tuytelaars, Joelle Pineau, and Eugene Belilovsky.
+\newblock New insights on reducing abrupt representation change in online continual learning.
+\newblock In \emph{International Conference on Learning Representations}, 2022.
+
+\bibitem[Cha et~al.(2021)Cha, Lee, and Shin]{cha2021co2l}
+Hyuntak Cha, Jaeho Lee, and Jinwoo Shin.
+\newblock Co2l: Contrastive continual learning.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on Computer Vision}, pp.\  9516--9525, 2021.
+
+\bibitem[Chaudhry et~al.(2020)Chaudhry, Khan, Dokania, and Torr]{chaudhry2020continual}
+Arslan Chaudhry, Naeemullah Khan, Puneet Dokania, and Philip Torr.
+\newblock Continual learning in low-rank orthogonal subspaces.
+\newblock \emph{Advances in Neural Information Processing Systems}, 33:\penalty0 9900--9911, 2020.
+
+\bibitem[Chitale et~al.(2023)Chitale, Vaidya, Kane, and Ghotkar]{chitale2023task}
+Rajas Chitale, Ankit Vaidya, Aditya Kane, and Archana~Santosh Ghotkar.
+\newblock Task arithmetic with lo{RA} for continual learning.
+\newblock In \emph{Workshop on Advancing Neural Network Training: Computational Efficiency, Scalability, and Resource Optimization (WANT@NeurIPS 2023)}, 2023.
+
+\bibitem[De~Lange et~al.(2021)De~Lange, Aljundi, Masana, Parisot, Jia, Leonardis, Slabaugh, and Tuytelaars]{de2021continual}
+Matthias De~Lange, Rahaf Aljundi, Marc Masana, Sarah Parisot, Xu~Jia, Ale{\v{s}} Leonardis, Gregory Slabaugh, and Tinne Tuytelaars.
+\newblock A continual learning survey: Defying forgetting in classification tasks.
+\newblock \emph{IEEE transactions on pattern analysis and machine intelligence}, 44\penalty0 (7):\penalty0 3366--3385, 2021.
+
+\bibitem[Ditzler et~al.(2015)Ditzler, Roveri, Alippi, and Polikar]{ditzler2015learning}
+Gregory Ditzler, Manuel Roveri, Cesare Alippi, and Robi Polikar.
+\newblock Learning in nonstationary environments: A survey.
+\newblock \emph{IEEE Computational Intelligence Magazine}, 10\penalty0 (4):\penalty0 12--25, 2015.
+
+\bibitem[Dosovitskiy et~al.(2021)Dosovitskiy, Beyer, Kolesnikov, Weissenborn, Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, et~al.]{dosovitskiy2020image}
+Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, et~al.
+\newblock An image is worth 16x16 words: Transformers for image recognition at scale.
+\newblock In \emph{International Conference on Learning Representations}, 2021.
+
+\bibitem[Douillard et~al.(2022)Douillard, Ram{\'e}, Couairon, and Cord]{douillard2022dytox}
+Arthur Douillard, Alexandre Ram{\'e}, Guillaume Couairon, and Matthieu Cord.
+\newblock Dytox: Transformers for continual learning with dynamic token expansion.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pp.\  9285--9295, 2022.
+
+\bibitem[Ermis et~al.(2022)Ermis, Zappella, Wistuba, Rawal, and Archambeau]{10.5555/3600270.3601042}
+Beyza Ermis, Giovanni Zappella, Martin Wistuba, Aditya Rawal, and C\'{e}dric Archambeau.
+\newblock Memory efficient continual learning with transformers.
+\newblock In \emph{Proceedings of the 36th International Conference on Neural Information Processing Systems}, NIPS '22, Red Hook, NY, USA, 2022. Curran Associates Inc.
+\newblock ISBN 9781713871088.
+
+\bibitem[Frankle et~al.(2020)Frankle, Dziugaite, Roy, and Carbin]{frankle2020linear}
+Jonathan Frankle, Gintare~Karolina Dziugaite, Daniel Roy, and Michael Carbin.
+\newblock Linear mode connectivity and the lottery ticket hypothesis.
+\newblock In \emph{International Conference on Machine Learning}, pp.\  3259--3269. PMLR, 2020.
+
+\bibitem[Gao et~al.(2023{\natexlab{a}})Gao, Zhao, Sun, Xi, Zhang, Ghanem, and Zhang]{gao2023lae}
+Qiankun Gao, Chen Zhao, Yifan Sun, Teng Xi, Gang Zhang, Bernard Ghanem, and Jian Zhang.
+\newblock A unified continual learning framework with general parameter-efficient tuning.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)}, pp.\  11483--11493, 2023{\natexlab{a}}.
+
+\bibitem[Gao et~al.(2023{\natexlab{b}})Gao, Zhao, Sun, Xi, Zhang, Ghanem, and Zhang]{gao2023unified}
+Qiankun Gao, Chen Zhao, Yifan Sun, Teng Xi, Gang Zhang, Bernard Ghanem, and Jian Zhang.
+\newblock A unified continual learning framework with general parameter-efficient tuning.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on Computer Vision}, pp.\  11449--11459, 2023{\natexlab{b}}.
+
+\bibitem[Gao et~al.(2024)Gao, Cen, and Chang]{gao2024consistent}
+Zhanxin Gao, Jun Cen, and Xiaobin Chang.
+\newblock Consistent prompting for rehearsal-free continual learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pp.\  28463--28473, 2024.
+
+\bibitem[Golkar et~al.(2019)Golkar, Kagan, and Cho]{golkar2019continual}
+Siavash Golkar, Michael Kagan, and Kyunghyun Cho.
+\newblock Continual learning via neural pruning.
+\newblock \emph{arXiv preprint arXiv:1903.04476}, 2019.
+
+\bibitem[Goswami et~al.(2024{\natexlab{a}})Goswami, Liu, Twardowski, and van~de Weijer]{goswami2024fecam}
+Dipam Goswami, Yuyang Liu, Bart{\l}omiej Twardowski, and Joost van~de Weijer.
+\newblock Fecam: Exploiting the heterogeneity of class distributions in exemplar-free continual learning.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36, 2024{\natexlab{a}}.
+
+\bibitem[Goswami et~al.(2024{\natexlab{b}})Goswami, Soutif-Cormerais, Liu, Kamath, Twardowski, van~de Weijer, et~al.]{goswami2024resurrecting}
+Dipam Goswami, Albin Soutif-Cormerais, Yuyang Liu, Sandesh Kamath, Bart Twardowski, Joost van~de Weijer, et~al.
+\newblock Resurrecting old classes with new data for exemplar-free continual learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pp.\  28525--28534, 2024{\natexlab{b}}.
+
+\bibitem[Gurbuz \& Dovrolis(2022)Gurbuz and Dovrolis]{gurbuz2022nispa}
+Mustafa~B Gurbuz and Constantine Dovrolis.
+\newblock Nispa: Neuro-inspired stability-plasticity adaptation for continual learning in sparse networks.
+\newblock In \emph{International Conference on Machine Learning}, pp.\  8157--8174. PMLR, 2022.
+
+\bibitem[Hendrycks et~al.(2021)Hendrycks, Basart, Mu, Kadavath, Wang, Dorundo, Desai, Zhu, Parajuli, Guo, Song, Steinhardt, and Gilmer]{hendrycks2021many}
+Dan Hendrycks, Steven Basart, Norman Mu, Saurav Kadavath, Frank Wang, Evan Dorundo, Rahul Desai, Tyler Zhu, Samyak Parajuli, Mike Guo, Dawn Song, Jacob Steinhardt, and Justin Gilmer.
+\newblock The many faces of robustness: A critical analysis of out-of-distribution generalization.
+\newblock \emph{ICCV}, 2021.
+
+\bibitem[Houlsby et~al.(2019)Houlsby, Giurgiu, Jastrzebski, Morrone, De~Laroussilhe, Gesmundo, Attariyan, and Gelly]{houlsby2019parameter}
+Neil Houlsby, Andrei Giurgiu, Stanislaw Jastrzebski, Bruna Morrone, Quentin De~Laroussilhe, Andrea Gesmundo, Mona Attariyan, and Sylvain Gelly.
+\newblock Parameter-efficient transfer learning for nlp.
+\newblock In \emph{International conference on machine learning}, pp.\  2790--2799. PMLR, 2019.
+
+\bibitem[Hu et~al.(2021)Hu, Shen, Wallis, Allen-Zhu, Li, Wang, Wang, and Chen]{hu2021lora}
+Edward~J Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu~Wang, and Weizhu Chen.
+\newblock Lora: Low-rank adaptation of large language models.
+\newblock \emph{arXiv preprint arXiv:2106.09685}, 2021.
+
+\bibitem[Hung et~al.(2019{\natexlab{a}})Hung, Tu, Wu, Chen, Chan, and Chen]{hung2019compacting}
+Ching-Yi Hung, Cheng-Hao Tu, Cheng-En Wu, Chien-Hung Chen, Yi-Ming Chan, and Chu-Song Chen.
+\newblock Compacting, picking and growing for unforgetting continual learning.
+\newblock \emph{Advances in Neural Information Processing Systems}, 32, 2019{\natexlab{a}}.
+
+\bibitem[Hung et~al.(2019{\natexlab{b}})Hung, Lee, Wan, Chen, Chan, and Chen]{hung2019increasingly}
+Steven~CY Hung, Jia-Hong Lee, Timmy~ST Wan, Chein-Hung Chen, Yi-Ming Chan, and Chu-Song Chen.
+\newblock Increasingly packing multiple facial-informatics modules in a unified deep-learning model via lifelong learning.
+\newblock In \emph{Proceedings of the 2019 on International Conference on Multimedia Retrieval}, pp.\  339--343, 2019{\natexlab{b}}.
+
+\bibitem[Ilharco et~al.(2022)Ilharco, Wortsman, Gadre, Song, Hajishirzi, Kornblith, Farhadi, and Schmidt]{ilharco2022patching}
+Gabriel Ilharco, Mitchell Wortsman, Samir~Yitzhak Gadre, Shuran Song, Hannaneh Hajishirzi, Simon Kornblith, Ali Farhadi, and Ludwig Schmidt.
+\newblock Patching open-vocabulary models by interpolating weights.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:\penalty0 29262--29277, 2022.
+
+\bibitem[Ilharco et~al.(2023)Ilharco, Ribeiro, Wortsman, Schmidt, Hajishirzi, and Farhadi]{ilharcoediting}
+Gabriel Ilharco, Marco~Tulio Ribeiro, Mitchell Wortsman, Ludwig Schmidt, Hannaneh Hajishirzi, and Ali Farhadi.
+\newblock Editing models with task arithmetic.
+\newblock In \emph{The Eleventh International Conference on Learning Representations}, 2023.
+
+\bibitem[Jeeveswaran et~al.(2023)Jeeveswaran, Bhat, Zonooz, and Arani]{jeeveswaran2023birt}
+Kishaan Jeeveswaran, Prashant Bhat, Bahram Zonooz, and Elahe Arani.
+\newblock Birt: bio-inspired replay in vision transformers for continual learning.
+\newblock In \emph{Proceedings of the 40th International Conference on Machine Learning}, pp.\  14817--14835, 2023.
+
+\bibitem[Khan et~al.(2023)Khan, Naeem, Gool, Tombari, Stricker, and Afzal]{pub13491}
+Muhammad Gulzain~Ali Khan, Muhammad~Ferjad Naeem, Luc~Van Gool, Federico Tombari, Didier Stricker, and Muhammad~Zeshan Afzal.
+\newblock Introducing language guidance in prompt-based continual learning.
+\newblock In \emph{International Conference on Computer Vision 2023. International Conference on Computer Vision (ICCV-2023), October 2-6, Paris, France}. Computer Vision Foundation, IEEE, 10 2023.
+
+\bibitem[Kingma \& Ba(2015)Kingma and Ba]{kingma2015adam}
+Diederik~P. Kingma and Jimmy Ba.
+\newblock Adam: {A} method for stochastic optimization.
+\newblock In Yoshua Bengio and Yann LeCun (eds.), \emph{3rd International Conference on Learning Representations, {ICLR} 2015, San Diego, CA, USA, May 7-9, 2015, Conference Track Proceedings}, 2015.
+
+\bibitem[Kirkpatrick et~al.(2017)Kirkpatrick, Pascanu, Rabinowitz, Veness, Desjardins, Rusu, Milan, Quan, Ramalho, Grabska-Barwinska, et~al.]{kirkpatrick2017overcoming}
+James Kirkpatrick, Razvan Pascanu, Neil Rabinowitz, Joel Veness, Guillaume Desjardins, Andrei~A Rusu, Kieran Milan, John Quan, Tiago Ramalho, Agnieszka Grabska-Barwinska, et~al.
+\newblock Overcoming catastrophic forgetting in neural networks.
+\newblock \emph{Proceedings of the national academy of sciences}, 114\penalty0 (13):\penalty0 3521--3526, 2017.
+
+\bibitem[Krizhevsky et~al.(2009)Krizhevsky, Hinton, et~al.]{krizhevsky2009learning}
+Alex Krizhevsky, Geoffrey Hinton, et~al.
+\newblock Learning multiple layers of features from tiny images.
+\newblock 2009.
+
+\bibitem[Kurniawan et~al.(2024)Kurniawan, Song, Ma, He, Gong, Qi, and Wei]{Kurniawan_Song_Ma_He_Gong_Qi_Wei_2024}
+Muhammad~Rifki Kurniawan, Xiang Song, Zhiheng Ma, Yuhang He, Yihong Gong, Yang Qi, and Xing Wei.
+\newblock Evolving parameterized prompt memory for continual learning.
+\newblock \emph{Proceedings of the AAAI Conference on Artificial Intelligence}, 38\penalty0 (12):\penalty0 13301--13309, Mar. 2024.
+
+\bibitem[Le \& Yang(2015)Le and Yang]{le2015tiny}
+Ya~Le and Xuan Yang.
+\newblock Tiny imagenet visual recognition challenge.
+\newblock \emph{CS 231N}, 7\penalty0 (7):\penalty0 3, 2015.
+
+\bibitem[Li et~al.(2025)Li, Wang, Qian, He, Wei, Wang, and Gong]{DIA}
+Jiashuo Li, Shaokun Wang, Bo~Qian, Yuhang He, Xing Wei, Qiang Wang, and Yihong Gong.
+\newblock Dynamic integration of task-specific adapters for class incremental learning, 2025.
+
+\bibitem[Li et~al.(2022{\natexlab{a}})Li, Ji, Wang, Wang, and Gao]{li2022learning}
+Jin Li, Zhong Ji, Gang Wang, Qiang Wang, and Feng Gao.
+\newblock Learning from students: Online contrastive distillation network for general continual learning.
+\newblock In \emph{Proc. 31st Int. Joint Conf. Artiff. Intell.}, pp.\  3215--3221, 2022{\natexlab{a}}.
+
+\bibitem[Li et~al.(2022{\natexlab{b}})Li, Liu, Chen, Cai, Gu, Qiao, and Dong]{li2022blueprint}
+Zheyuan Li, Yingqi Liu, Xiangyu Chen, Haoming Cai, Jinjin Gu, Yu~Qiao, and Chao Dong.
+\newblock Blueprint separable residual network for efficient image super-resolution.
+\newblock In \emph{Proceedings of the IEEE/CVF conference on computer vision and pattern recognition}, pp.\  833--843, 2022{\natexlab{b}}.
+
+\bibitem[Li \& Hoiem(2017)Li and Hoiem]{li2017learning}
+Zhizhong Li and Derek Hoiem.
+\newblock Learning without forgetting.
+\newblock \emph{IEEE transactions on pattern analysis and machine intelligence}, 40\penalty0 (12):\penalty0 2935--2947, 2017.
+
+\bibitem[Liang \& Li(2024)Liang and Li]{liang2024inflora}
+Yan-Shuo Liang and Wu-Jun Li.
+\newblock Inflora: Interference-free low-rank adaptation for continual learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pp.\  23638--23647, 2024.
+
+\bibitem[Liu et~al.(2024{\natexlab{a}})Liu, Ji, Yu, Cao, Pang, Han, and Li]{liu2024parameter}
+Jingren Liu, Zhong Ji, YunLong Yu, Jiale Cao, Yanwei Pang, Jungong Han, and Xuelong Li.
+\newblock Parameter-efficient fine-tuning for continual learning: A neural tangent kernel perspective.
+\newblock \emph{arXiv preprint arXiv:2407.17120}, 2024{\natexlab{a}}.
+
+\bibitem[Liu et~al.(2024{\natexlab{b}})Liu, Wang, Yin, Molchanov, Wang, Cheng, and Chen]{liu2024dora}
+Shih-Yang Liu, Chien-Yi Wang, Hongxu Yin, Pavlo Molchanov, Yu-Chiang~Frank Wang, Kwang-Ting Cheng, and Min-Hung Chen.
+\newblock Dora: Weight-decomposed low-rank adaptation.
+\newblock \emph{arXiv preprint arXiv:2402.09353}, 2024{\natexlab{b}}.
+
+\bibitem[Lu et~al.(2024)Lu, Zhao, Xue, Yao, Moore, and Gong]{lu2024adaptive}
+Haodong Lu, Chongyang Zhao, Minhui Xue, Lina Yao, Kristen Moore, and Dong Gong.
+\newblock Adaptive rank, reduced forgetting: Knowledge retention in continual learning vision-language models with dynamic rank-selective lora.
+\newblock \emph{CoRR}, 2024.
+
+\bibitem[Mallya \& Lazebnik(2018)Mallya and Lazebnik]{mallya2018packnet}
+Arun Mallya and Svetlana Lazebnik.
+\newblock Packnet: Adding multiple tasks to a single network by iterative pruning.
+\newblock In \emph{Proceedings of the IEEE conference on Computer Vision and Pattern Recognition}, pp.\  7765--7773, 2018.
+
+\bibitem[Mao et~al.(2024)Mao, Huang, Guan, Bao, Mo, and Xu]{mao-etal-2024-dora}
+Yulong Mao, Kaiyu Huang, Changhao Guan, Ganglin Bao, Fengran Mo, and Jinan Xu.
+\newblock {D}o{RA}: Enhancing parameter-efficient fine-tuning with dynamic rank distribution.
+\newblock In Lun-Wei Ku, Andre Martins, and Vivek Srikumar (eds.), \emph{Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pp.\  11662--11675, Bangkok, Thailand, August 2024. Association for Computational Linguistics.
+
+\bibitem[Masana et~al.(2022)Masana, Liu, Twardowski, Menta, Bagdanov, and Van De~Weijer]{masana2022class}
+Marc Masana, Xialei Liu, Bart{\l}omiej Twardowski, Mikel Menta, Andrew~D Bagdanov, and Joost Van De~Weijer.
+\newblock Class-incremental learning: survey and performance evaluation on image classification.
+\newblock \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence}, 45\penalty0 (5):\penalty0 5513--5533, 2022.
+
+\bibitem[Peng et~al.(2025)Peng, Elenter, Agterberg, Ribeiro, and Vidal]{TSVD}
+Liangzu Peng, Juan Elenter, Joshua Agterberg, Alejandro Ribeiro, and Rene Vidal.
+\newblock {TSVD}: Bridging theory and practice in continual learning with pre-trained models.
+\newblock In \emph{The Thirteenth International Conference on Learning Representations}, 2025.
+
+\bibitem[Petit et~al.(2023)Petit, Popescu, Schindler, Picard, and Delezoide]{petit2023fetril}
+Gr{\'e}goire Petit, Adrian Popescu, Hugo Schindler, David Picard, and Bertrand Delezoide.
+\newblock Fetril: Feature translation for exemplar-free class-incremental learning.
+\newblock In \emph{Proceedings of the IEEE/CVF winter conference on applications of computer vision}, pp.\  3911--3920, 2023.
+
+\bibitem[Qiao et~al.(2024)Qiao, zhizhong zhang, Tan, Chen, Qu, Peng, and Xie]{qiao2024prompt}
+Jingyang Qiao, zhizhong zhang, Xin Tan, Chengwei Chen, Yanyun Qu, Yong Peng, and Yuan Xie.
+\newblock Prompt gradient projection for continual learning.
+\newblock In \emph{The Twelfth International Conference on Learning Representations}, 2024.
+
+\bibitem[Robins(1995)]{robins1995}
+Anthony Robins.
+\newblock Catastrophic forgetting, rehearsal and pseudorehearsal.
+\newblock \emph{Connection Science}, 7\penalty0 (2):\penalty0 123--146, 1995.
+
+\bibitem[Roy et~al.(2024)Roy, Moulick, Verma, Ghosh, and Das]{roy_2024_CVPR}
+Anurag Roy, Riddhiman Moulick, Vinay Verma, Saptarshi Ghosh, and Abir Das.
+\newblock Convolutional prompting meets language models for continual learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, June 2024.
+
+\bibitem[Rusu et~al.(2016)Rusu, Rabinowitz, Desjardins, Soyer, Kirkpatrick, Kavukcuoglu, Pascanu, and Hadsell]{rusu2016progressive}
+Andrei~A Rusu, Neil~C Rabinowitz, Guillaume Desjardins, Hubert Soyer, James Kirkpatrick, Koray Kavukcuoglu, Razvan Pascanu, and Raia Hadsell.
+\newblock Progressive neural networks.
+\newblock \emph{arXiv preprint arXiv:1606.04671}, 2016.
+
+\bibitem[Smith et~al.(2023{\natexlab{a}})Smith, Hsu, Zhang, Hua, Kira, Shen, and Jin]{DBLP:journals/corr/abs-2304-06027}
+James~Seale Smith, Yen{-}Chang Hsu, Lingyu Zhang, Ting Hua, Zsolt Kira, Yilin Shen, and Hongxia Jin.
+\newblock Continual diffusion: Continual customization of text-to-image diffusion with c-lora.
+\newblock \emph{CoRR}, 2023{\natexlab{a}}.
+
+\bibitem[Smith et~al.(2023{\natexlab{b}})Smith, Karlinsky, Gutta, Cascante-Bonilla, Kim, Arbelle, Panda, Feris, and Kira]{smith2023coda}
+James~Seale Smith, Leonid Karlinsky, Vyshnavi Gutta, Paola Cascante-Bonilla, Donghyun Kim, Assaf Arbelle, Rameswar Panda, Rogerio Feris, and Zsolt Kira.
+\newblock Coda-prompt: Continual decomposed attention-based prompting for rehearsal-free continual learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pp.\  11909--11919, 2023{\natexlab{b}}.
+
+\bibitem[Tan et~al.(2024)Tan, Zhou, Xiang, Wang, Wu, and Li]{10658306}
+Yuwen Tan, Qinhao Zhou, Xiang Xiang, Ke~Wang, Yuchuan Wu, and Yongbin Li.
+\newblock { Semantically-Shifted Incremental Adapter-Tuning is A Continual ViTransformer }.
+\newblock In \emph{2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, pp.\  23252--23262, Los Alamitos, CA, USA, June 2024. IEEE Computer Society.
+
+\bibitem[Valipour et~al.(2022)Valipour, Rezagholizadeh, Kobyzev, and Ghodsi]{valipour2022dylora}
+Mojtaba Valipour, Mehdi Rezagholizadeh, Ivan Kobyzev, and Ali Ghodsi.
+\newblock Dylora: Parameter efficient tuning of pre-trained models using dynamic search-free low-rank adaptation.
+\newblock \emph{arXiv preprint arXiv:2210.07558}, 2022.
+
+\bibitem[Valipour et~al.(2023)Valipour, Rezagholizadeh, Kobyzev, and Ghodsi]{valipour-etal-2023-dylora}
+Mojtaba Valipour, Mehdi Rezagholizadeh, Ivan Kobyzev, and Ali Ghodsi.
+\newblock {D}y{L}o{RA}: Parameter-efficient tuning of pre-trained models using dynamic search-free low-rank adaptation.
+\newblock In Andreas Vlachos and Isabelle Augenstein (eds.), \emph{Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics}, pp.\  3274--3287, Dubrovnik, Croatia, May 2023. Association for Computational Linguistics.
+
+\bibitem[Vijayan et~al.(2023{\natexlab{a}})Vijayan, Bhat, Arani, and Zonooz]{vijayan2023trire}
+Preetha Vijayan, Prashant Bhat, Elahe Arani, and Bahram Zonooz.
+\newblock Trire: A multi-mechanism learning paradigm for continual knowledge retention and promotion.
+\newblock \emph{arXiv preprint arXiv:2310.08217}, 2023{\natexlab{a}}.
+
+\bibitem[Vijayan et~al.(2023{\natexlab{b}})Vijayan, Bhat, Zonooz, and Arani]{TriRE2023}
+Preetha Vijayan, Prashant Bhat, Bahram Zonooz, and Elahe Arani.
+\newblock Trire: A multi-mechanism learning paradigm for continual knowledge retention and promotion.
+\newblock In \emph{Advances in Neural Information Processing Systems}, volume~36, pp.\  73775--73792, 2023{\natexlab{b}}.
+
+\bibitem[Wang et~al.(2025)Wang, Lu, Yao, and Gong]{SEMA}
+Huiyi Wang, Haodong Lu, Lina Yao, and Dong Gong.
+\newblock Self-expansion of pre-trained models with mixture of adapters for continual learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, 2025.
+
+\bibitem[Wang et~al.(2023{\natexlab{a}})Wang, Xie, Zhang, Huang, Su, and Zhu]{wang2023hide}
+Liyuan Wang, Jingyi Xie, Xingxing Zhang, Mingyi Huang, Hang Su, and Jun Zhu.
+\newblock Hierarchical decomposition of prompt-based continual learning: Rethinking obscured sub-optimality.
+\newblock \emph{Advances in Neural Information Processing Systems}, 2023{\natexlab{a}}.
+
+\bibitem[Wang et~al.(2023{\natexlab{b}})Wang, Zhang, Su, and Zhu]{wang2023comprehensive}
+Liyuan Wang, Xingxing Zhang, Hang Su, and Jun Zhu.
+\newblock A comprehensive survey of continual learning: Theory, method and application.
+\newblock \emph{arXiv preprint arXiv:2302.00487}, 2023{\natexlab{b}}.
+
+\bibitem[Wang et~al.(2023{\natexlab{c}})Wang, Chen, Ge, Xia, Bao, Zheng, Zhang, Gui, and Huang]{wang2023orthogonal}
+Xiao Wang, Tianze Chen, Qiming Ge, Han Xia, Rong Bao, Rui Zheng, Qi~Zhang, Tao Gui, and Xuan-Jing Huang.
+\newblock Orthogonal subspace learning for language model continual learning.
+\newblock In \emph{Findings of the Association for Computational Linguistics: EMNLP 2023}, pp.\  10658--10671, 2023{\natexlab{c}}.
+
+\bibitem[Wang et~al.(2022{\natexlab{a}})Wang, Huang, and Hong]{wang2022s}
+Yabin Wang, Zhiwu Huang, and Xiaopeng Hong.
+\newblock S-prompts learning with pre-trained transformers: An occam’s razor for domain incremental learning.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:\penalty0 5682--5695, 2022{\natexlab{a}}.
+
+\bibitem[Wang et~al.(2022{\natexlab{b}})Wang, Zhan, Gong, Yuan, Niu, Jian, Ren, Ioannidis, Wang, and Dy]{wang2022sparcl}
+Zifeng Wang, Zheng Zhan, Yifan Gong, Geng Yuan, Wei Niu, Tong Jian, Bin Ren, Stratis Ioannidis, Yanzhi Wang, and Jennifer Dy.
+\newblock Sparcl: Sparse continual learning on the edge.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:\penalty0 20366--20380, 2022{\natexlab{b}}.
+
+\bibitem[Wang et~al.(2022{\natexlab{c}})Wang, Zhang, Ebrahimi, Sun, Zhang, Lee, Ren, Su, Perot, Dy, et~al.]{wang2022dualprompt}
+Zifeng Wang, Zizhao Zhang, Sayna Ebrahimi, Ruoxi Sun, Han Zhang, Chen-Yu Lee, Xiaoqi Ren, Guolong Su, Vincent Perot, Jennifer Dy, et~al.
+\newblock Dualprompt: Complementary prompting for rehearsal-free continual learning.
+\newblock In \emph{European Conference on Computer Vision}, pp.\  631--648. Springer, 2022{\natexlab{c}}.
+
+\bibitem[Wang et~al.(2022{\natexlab{d}})Wang, Zhang, Ebrahimi, Sun, Zhang, Lee, Ren, Su, Perot, Dy, and Pfister]{DBLP:conf/eccv/0002ZESZLRSPDP22}
+Zifeng Wang, Zizhao Zhang, Sayna Ebrahimi, Ruoxi Sun, Han Zhang, Chen{-}Yu Lee, Xiaoqi Ren, Guolong Su, Vincent Perot, Jennifer~G. Dy, and Tomas Pfister.
+\newblock Dualprompt: Complementary prompting for rehearsal-free continual learning.
+\newblock In \emph{Proceedings of the European Conference on Computer Vision}, pp.\  631--648, 2022{\natexlab{d}}.
+
+\bibitem[Wang et~al.(2022{\natexlab{e}})Wang, Zhang, Lee, Zhang, Sun, Ren, Su, Perot, Dy, and Pfister]{wang2022learning}
+Zifeng Wang, Zizhao Zhang, Chen-Yu Lee, Han Zhang, Ruoxi Sun, Xiaoqi Ren, Guolong Su, Vincent Perot, Jennifer Dy, and Tomas Pfister.
+\newblock Learning to prompt for continual learning.
+\newblock In \emph{Proceedings of the IEEE/CVF conference on computer vision and pattern recognition}, pp.\  139--149, 2022{\natexlab{e}}.
+
+\bibitem[Yang et~al.(2024)Yang, Liu, Chen, Qi, and Zhou]{yang2024generating}
+Chengyi Yang, Wentao Liu, Shisong Chen, Jiayin Qi, and Aimin Zhou.
+\newblock Generating prompts in latent space for rehearsal-free continual learning.
+\newblock In \emph{ACM Multimedia}, 2024.
+
+\bibitem[Zaken et~al.(2021)Zaken, Ravfogel, and Goldberg]{zaken2021bitfit}
+Elad~Ben Zaken, Shauli Ravfogel, and Yoav Goldberg.
+\newblock Bitfit: Simple parameter-efficient fine-tuning for transformer-based masked language-models.
+\newblock \emph{arXiv preprint arXiv:2106.10199}, 2021.
+
+\bibitem[Zeng et~al.(2024)Zeng, Yang, Yang, Yang, and Lin]{zeng2024peeling}
+Jingjie Zeng, Zhihao Yang, Qi~Yang, Liang Yang, and Hongfei Lin.
+\newblock Peeling back the layers: Interpreting the storytelling of vit.
+\newblock In \emph{Proceedings of the 32nd ACM International Conference on Multimedia}, MM '24, pp.\  7298–7306, New York, NY, USA, 2024. Association for Computing Machinery.
+\newblock ISBN 9798400706868.
+
+\bibitem[Zhang et~al.(2023)Zhang, Chen, Bukharin, He, Cheng, Chen, and Zhao]{zhang2023adaptive}
+Qingru Zhang, Minshuo Chen, Alexander Bukharin, Pengcheng He, Yu~Cheng, Weizhu Chen, and Tuo Zhao.
+\newblock Adaptive budget allocation for parameter-efficient fine-tuning.
+\newblock In \emph{The Eleventh International Conference on Learning Representations}, 2023.
+
+\bibitem[Zhou et~al.(2024{\natexlab{a}})Zhou, Cai, Ye, Zhan, and Liu]{10.1007/s11263-024-02218-0}
+Da-Wei Zhou, Zi-Wen Cai, Han-Jia Ye, De-Chuan Zhan, and Ziwei Liu.
+\newblock Revisiting class-incremental learning with pre-trained models: Generalizability and adaptivity are all you need.
+\newblock \emph{Int. J. Comput. Vision}, 133\penalty0 (3):\penalty0 1012–1032, August 2024{\natexlab{a}}.
+\newblock ISSN 0920-5691.
+
+\bibitem[Zhou et~al.(2024{\natexlab{b}})Zhou, Sun, Ye, and Zhan]{zhou2024expandable}
+Da-Wei Zhou, Hai-Long Sun, Han-Jia Ye, and De-Chuan Zhan.
+\newblock Expandable subspace ensemble for pre-trained model-based class-incremental learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pp.\  23554--23564, 2024{\natexlab{b}}.
+
+\bibitem[Zhou et~al.(2024{\natexlab{c}})Zhou, Song, Wang, and Chen]{zhou2024metagpt}
+Yuyan Zhou, Liang Song, Bingning Wang, and Weipeng Chen.
+\newblock Metagpt: Merging large language models using model exclusive task arithmetic.
+\newblock \emph{arXiv preprint arXiv:2406.11385}, 2024{\natexlab{c}}.
+
+\bibitem[Zhu et~al.(2021{\natexlab{a}})Zhu, Cheng, Zhang, and Liu]{zhu2021class}
+Fei Zhu, Zhen Cheng, Xu-Yao Zhang, and Cheng-lin Liu.
+\newblock Class-incremental learning via dual augmentation.
+\newblock \emph{Advances in Neural Information Processing Systems}, 34:\penalty0 14306--14318, 2021{\natexlab{a}}.
+
+\bibitem[Zhu et~al.(2021{\natexlab{b}})Zhu, Zhang, Wang, Yin, and Liu]{zhu2021prototype}
+Fei Zhu, Xu-Yao Zhang, Chuang Wang, Fei Yin, and Cheng-Lin Liu.
+\newblock Prototype augmentation and self-supervision for incremental learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pp.\  5871--5880, 2021{\natexlab{b}}.
+
+\bibitem[Zhu et~al.(2022)Zhu, Zhai, Cao, Luo, and Zha]{zhu2022self}
+Kai Zhu, Wei Zhai, Yang Cao, Jiebo Luo, and Zheng-Jun Zha.
+\newblock Self-sustaining representation expansion for non-exemplar class-incremental learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pp.\  9296--9305, 2022.
+
+\end{thebibliography}

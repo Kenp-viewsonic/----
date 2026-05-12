@@ -1,0 +1,204 @@
+\begin{thebibliography}{40}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Bendale and Boult(2016)}]{bendale2016towards}
+Bendale, A.; and Boult, T.~E. 2016.
+\newblock Towards open set deep networks.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition}, 1563--1572.
+
+\bibitem[{Cao et~al.(2024)Cao, Yang, Xia, Wang, and Li}]{cao2024open}
+Cao, X.; Yang, X.; Xia, S.; Wang, G.; and Li, T. 2024.
+\newblock Open Continual Feature Selection via Granular-Ball Knowledge Transfer.
+\newblock \emph{IEEE Transactions on Knowledge and Data Engineering}, 36(12): 8967--8980.
+
+\bibitem[{Casanueva et~al.(2020)Casanueva, Tem{\v{c}}inas, Gerz, Henderson, and Vuli{\'c}}]{casanueva2020efficient}
+Casanueva, I.; Tem{\v{c}}inas, T.; Gerz, D.; Henderson, M.; and Vuli{\'c}, I. 2020.
+\newblock Efficient intent detection with dual sentence encoders.
+\newblock In \emph{Proceedings of the Workshop on Natural Language Processing for Conversational AI}, 38--45.
+
+\bibitem[{Chen(1982)}]{chen1982topological}
+Chen, L. 1982.
+\newblock Topological structure in visual perception.
+\newblock \emph{Science}, 218(4573): 699--700.
+
+\bibitem[{Cheng et~al.(2022)Cheng, Jiang, Yin, Wang, and Gu}]{cheng2022learning}
+Cheng, Z.; Jiang, Z.; Yin, Y.; Wang, C.; and Gu, Q. 2022.
+\newblock Learning to classify open intent via soft labeling and manifold mixup.
+\newblock \emph{IEEE/ACM Transactions on Audio, Speech, and Language Processing}, 30: 635--645.
+
+\bibitem[{Coucke et~al.(2018)Coucke, Saade, Ball, Bluche, Caulier, Leroy, Doumouro, Gisselbrecht, Caltagirone, Lavril et~al.}]{coucke2018snips}
+Coucke, A.; Saade, A.; Ball, A.; Bluche, T.; Caulier, A.; Leroy, D.; Doumouro, C.; Gisselbrecht, T.; Caltagirone, F.; Lavril, T.; et~al. 2018.
+\newblock Snips voice platform: an embedded spoken language understanding system for private-by-design voice interfaces.
+\newblock arXiv:1805.10190.
+
+\bibitem[{Guo et~al.(2017)Guo, Pleiss, Sun, and Weinberger}]{guo2017calibration}
+Guo, C.; Pleiss, G.; Sun, Y.; and Weinberger, K.~Q. 2017.
+\newblock On calibration of modern neural networks.
+\newblock In \emph{International Conference on Machine Learning}, 1321--1330.
+
+\bibitem[{Hendrycks and Gimpel(2022)}]{hendrycks2022baseline}
+Hendrycks, D.; and Gimpel, K. 2022.
+\newblock A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Jain, Scheirer, and Boult(2014)}]{jain2014multi}
+Jain, L.~P.; Scheirer, W.~J.; and Boult, T.~E. 2014.
+\newblock Multi-class open set recognition using probability of inclusion.
+\newblock In \emph{Computer Vision--ECCV}, 393--409. Springer.
+
+\bibitem[{Kenton and Toutanova(2019)}]{kenton2019bert}
+Kenton, J. D. M. W.~C.; and Toutanova, L.~K. 2019.
+\newblock {Bert: Pre-training of deep bidirectional transformers for language understanding}.
+\newblock In \emph{Proceedings of NAACL-HLT}, volume~1, 2.
+
+\bibitem[{Lin and Xu(2019)}]{lin2019deep}
+Lin, T.~E.; and Xu, H. 2019.
+\newblock Deep unknown Intent Detection with Margin Loss.
+\newblock In \emph{Proceedings of the Annual Meeting of the Association for Computational Linguistics}, 5491--5496.
+
+\bibitem[{Liu et~al.(2024)Liu, Jianye, Ma, and Xia}]{liuunlock}
+Liu, J.; Jianye, H.; Ma, Y.; and Xia, S. 2024.
+\newblock Unlock the Cognitive Generalization of Deep Reinforcement Learning via Granular Ball Representation.
+\newblock In \emph{International Conference on Machine Learning}.
+
+\bibitem[{Liu et~al.(2023)Liu, Li, Mu, Yang, Xu, and Wang}]{liu2023effective}
+Liu, X.~K.; Li, J.~Q.; Mu, J.~J.; Yang, M.; Xu, R.~F.; and Wang, B.~Y. 2023.
+\newblock Effective open intent classification with {K-center} contrastive learning and adjustable decision boundary.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial Intelligence}, 13291--13299.
+
+\bibitem[{Parmar et~al.(2023)Parmar, Chouhan, Raychoudhury, and Rathore}]{parmar2023open}
+Parmar, J.; Chouhan, S.; Raychoudhury, V.; and Rathore, S. 2023.
+\newblock Open-world machine learning: applications, challenges, and opportunities.
+\newblock \emph{ACM Computing Surveys}, 55(10): 1--37.
+
+\bibitem[{Quadir and Tanveer(2024)}]{quadir2024granular}
+Quadir, A.; and Tanveer, M. 2024.
+\newblock Granular ball twin support vector machine with pinball loss function.
+\newblock \emph{IEEE Transactions on Computational Social Systems}, 1--10.
+
+\bibitem[{Shu, Xu, and Liu(2017)}]{shu2017doc}
+Shu, L.; Xu, H.; and Liu, B. 2017.
+\newblock {DOC}: Deep open classification of text documents.
+\newblock In \emph{Proceedings of th Conference on Empirical Methods in Natural Language Processing}, 2911--2916.
+
+\bibitem[{Wang(2017)}]{wang2017dgcc}
+Wang, G.~Y. 2017.
+\newblock {DGCC}: data-driven granular cognitive computing.
+\newblock \emph{Granular Computing}, 2(4): 343--355.
+
+\bibitem[{Wang et~al.(2024{\natexlab{a}})Wang, Li, Xia, Lin, and Wang}]{wang2024text}
+Wang, Z.; Li, J.; Xia, S.; Lin, L.; and Wang, G. 2024{\natexlab{a}}.
+\newblock Text adversarial defense via granular-ball sample enhancement.
+\newblock In \emph{Proceedings of the International Conference on Multimedia Retrieval}, 348--356.
+
+\bibitem[{Wang et~al.(2024{\natexlab{b}})Wang, Zhang, Xia, Lin, and Wang}]{wang2024gbrain}
+Wang, Z.~L.; Zhang, T.; Xia, S.~Y.; Lin, L.~L.; and Wang, G.~Y. 2024{\natexlab{b}}.
+\newblock {GBRAIN}: Combating textual label noise by granular-ball based robust training.
+\newblock In \emph{Proceedings of the International Conference on Multimedia Retrieval}, 357--365.
+
+\bibitem[{Xia et~al.(2024{\natexlab{a}})Xia, Wang, Zhang, Yang, and Xia}]{xia2024three}
+Xia, D.; Wang, G.; Zhang, Q.; Yang, J.; and Xia, S. 2024{\natexlab{a}}.
+\newblock Three-way approximations fusion with granular-ball computing to guide multi-granularity fuzzy entropy for feature selection.
+\newblock \emph{IEEE Transactions on Fuzzy Systems}, 32(10): 5963--5977.
+
+\bibitem[{Xia et~al.(2024{\natexlab{b}})Xia, Lian, Wang, Gao, Chen, and Peng}]{xia2024gbsvm}
+Xia, S.; Lian, X.; Wang, G.; Gao, X.; Chen, J.; and Peng, X. 2024{\natexlab{b}}.
+\newblock Gbsvm: an efficient and robust support vector machine framework via granular-ball computing.
+\newblock \emph{IEEE Transactions on Neural Networks and Learning Systems}, 1--15.
+
+\bibitem[{Xia et~al.(2020)Xia, Zhang, Li, Wang, Giem, and Chen}]{xia2020gbnrs}
+Xia, S.; Zhang, H.; Li, W.; Wang, G.; Giem, E.; and Chen, Z. 2020.
+\newblock GBNRS: A novel rough set algorithm for fast adaptive attribute reduction in classification.
+\newblock \emph{IEEE Transactions on Knowledge and Data Engineering}, 34(3): 1231--1242.
+
+\bibitem[{Xia et~al.(2021)Xia, Zheng, Wang, Gao, and Wang}]{xia2021granular}
+Xia, S.; Zheng, S.; Wang, G.; Gao, X.; and Wang, B. 2021.
+\newblock Granular ball sampling for noisy label classification or imbalanced classification.
+\newblock \emph{IEEE Transactions on Neural Networks and Learning Systems}, 34(4): 2144--2155.
+
+\bibitem[{Xia et~al.(2019)Xia, Liu, Ding, Wang, Yu, and Luo}]{xia2019granular}
+Xia, S.~Y.; Liu, Y.~S.; Ding, X.; Wang, G.~Y.; Yu, H.; and Luo, Y.~G. 2019.
+\newblock Granular ball computing classifiers for efficient, scalable and robust learning.
+\newblock \emph{Information Sciences}, 483: 136--152.
+
+\bibitem[{Xia et~al.(2023)Xia, Wang, Wang, Gao, Ding, Yu, Zhai, and Chen}]{xia2023gbrs}
+Xia, S.~Y.; Wang, C.; Wang, G.~Y.; Gao, X.~B.; Ding, W.~P.; Yu, J.~H.; Zhai, Y.~J.; and Chen, Z.~Z. 2023.
+\newblock {GBRS}: A unified granular-ball learning model of pawlak rough set and neighborhood rough set.
+\newblock \emph{IEEE Transactions on Neural Networks and Learning Systems}, 1--15.
+
+\bibitem[{Xie et~al.(2024{\natexlab{a}})Xie, Hua, Xia, Cheng, Wang, and Gao}]{xie2024w}
+Xie, J.; Hua, C.; Xia, S.; Cheng, Y.; Wang, G.; and Gao, X. 2024{\natexlab{a}}.
+\newblock W-GBC: An Adaptive Weighted Clustering Method Based on Granular-Ball Structure.
+\newblock In \emph{2024 IEEE 40th International Conference on Data Engineering (ICDE)}, 914--925.
+
+\bibitem[{Xie et~al.(2024{\natexlab{b}})Xie, Xiang, Xia, Jiang, Wang, and Gao}]{xie2024mgnr}
+Xie, J.; Xiang, X.; Xia, S.; Jiang, L.; Wang, G.; and Gao, X. 2024{\natexlab{b}}.
+\newblock {MGNR}: A multi-granularity neighbor relationship and its application in {KNN} classification and clustering methods.
+\newblock \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence}, 46(12): 7956--7972.
+
+\bibitem[{Xie et~al.(2024{\natexlab{c}})Xie, Zhang, Xia, Zhao, Wu, Wang, and Ding}]{xie2024gbg++}
+Xie, Q.; Zhang, Q.; Xia, S.; Zhao, F.; Wu, C.; Wang, G.; and Ding, W. 2024{\natexlab{c}}.
+\newblock Gbg++: A fast and stable granular ball generation method for classification.
+\newblock \emph{IEEE Transactions on Emerging Topics in Computational Intelligence}, 8(2): 2022--2036.
+
+\bibitem[{Xu et~al.(2015)Xu, Wang, Tian, Xu, Zhao, Wang, and Hao}]{xu2015short}
+Xu, J.~M.; Wang, P.; Tian, G.~H.; Xu, B.; Zhao, J.; Wang, F.~Y.; and Hao, H.~W. 2015.
+\newblock Short text clustering via convolutional neural networks.
+\newblock In \emph{Proceedings of the Workshop on Vector Space Modeling for Natural Language Processing}, 62--69.
+
+\bibitem[{Yan et~al.(2020)Yan, Fan, Li, Liu, Zhang, Wu, and Lam}]{yan2020unknown}
+Yan, G.; Fan, L.; Li, Q.; Liu, H.; Zhang, X.; Wu, X.-M.; and Lam, A.~Y. 2020.
+\newblock Unknown intent detection using Gaussian mixture model with an application to zero-shot intent classification.
+\newblock In \emph{Proceedings of the Annual Meeting of the Association for Computational Linguistics}, 1050--1060.
+
+\bibitem[{Yang et~al.(2024)Yang, Liu, Xia, Wang, Zhang, Li, and Xu}]{yang20243wc}
+Yang, J.; Liu, Z.; Xia, S.; Wang, G.; Zhang, Q.; Li, S.; and Xu, T. 2024.
+\newblock 3WC-GBNRS++: A novel three-way classifier with granular-ball neighborhood rough sets based on uncertainty.
+\newblock \emph{IEEE Transactions on Fuzzy Systems}, 32(8): 4376--4387.
+
+\bibitem[{Yang et~al.(2022)Yang, Li, Meng, Yang, Liu, and Li}]{yang2022three}
+Yang, X.; Li, Y.~J.; Meng, D.; Yang, Y.~X.; Liu, D.; and Li, T.~R. 2022.
+\newblock Three-way multi-granularity learning towards open topic classification.
+\newblock \emph{Information Sciences}, 585: 41--57.
+
+\bibitem[{Zhan et~al.(2021)Zhan, Liang, Liu, Fan, Wu, and Lam}]{zhan2021out}
+Zhan, L.~M.; Liang, H.~W.; Liu, B.; Fan, L.; Wu, X.~M.; and Lam, A.~Y. 2021.
+\newblock Out-of-scope intent detection with self-supervision and discriminative training.
+\newblock In \emph{Proceedings of the Annual Meeting of the Association for Computational Linguistics and the International Joint Conference on Natural Language Processing}, 3521--3532.
+
+\bibitem[{Zhang, Xu, and Lin(2021)}]{zhang2021deep}
+Zhang, H.; Xu, H.; and Lin, T.-E. 2021.
+\newblock Deep open intent classification with adaptive decision boundary.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial Intelligence}, 14374--14382.
+
+\bibitem[{Zhang et~al.(2021)Zhang, Xu, Lin, and Lyu}]{zhang2021discovering}
+Zhang, H.; Xu, H.; Lin, T.-E.; and Lyu, R. 2021.
+\newblock Discovering new intents with deep aligned clustering.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial Intelligence}, 14365--14373.
+
+\bibitem[{Zhang et~al.(2023{\natexlab{a}})Zhang, Xu, Zhao, and Zhou}]{zhang2023learning}
+Zhang, H.; Xu, H.; Zhao, S.; and Zhou, Q. 2023{\natexlab{a}}.
+\newblock Learning discriminative representations and decision boundaries for open intent detection.
+\newblock \emph{IEEE/ACM Transactions on Audio, Speech, and Language Processing}, 31: 1611--1623.
+
+\bibitem[{Zhang et~al.(2023{\natexlab{b}})Zhang, Wu, Xia, Zhao, Gao, Cheng, and Wang}]{zhang2023incremental}
+Zhang, Q.; Wu, C.; Xia, S.; Zhao, F.; Gao, M.; Cheng, Y.; and Wang, G. 2023{\natexlab{b}}.
+\newblock Incremental learning based on granular ball rough sets for classification in dynamic mixed-type decision system.
+\newblock \emph{IEEE Transactions on Knowledge and Data Engineering}, 35(9): 9319--9332.
+
+\bibitem[{Zheng, Chen, and Huang(2020)}]{zheng2020out}
+Zheng, Y.~H.; Chen, G.~Y.; and Huang, M.~L. 2020.
+\newblock Out-of-domain detection for natural language understanding in dialog systems.
+\newblock \emph{IEEE/ACM Transactions on Audio, Speech, and Language Processing}, 28: 1198--1209.
+
+\bibitem[{Zhou, Liu, and Chen(2021)}]{zhou2021contrastive}
+Zhou, W.~X.; Liu, F.~Y.; and Chen, M.~H. 2021.
+\newblock Contrastive out-of-distribution detection for pretrained transformers.
+\newblock In \emph{Proceedings of the Conference on Empirical Methods in Natural Language Processing}, 1100--1111.
+
+\bibitem[{Zhou, Liu, and Qiu(2022)}]{zhou2022knn}
+Zhou, Y.; Liu, P.; and Qiu, X. 2022.
+\newblock {KNN}-contrastive learning for out-of-domain intent classification.
+\newblock In \emph{Proceedings of the Annual Meeting of the Association for Computational Linguistics}, 5129--5141.
+
+\end{thebibliography}

@@ -1,0 +1,64 @@
+\section{Experiments}
+\subsection{Experimental Setup}
+\textbf{Dataset}. The dataset is obtained from the conversation history of a large e-commerce company. It consists of user queries in the local languages of eight markets: Brazil, Indonesia, Malaysia, Philippines, Singapore, Thailand, Taiwan, and Vietnam.  All the labelled data are collected through manual annotation by local customer service teams of each market. The samples with consistency labels from 3 taggers are selected to ensure the annotation quality. More details are in Appendix \ref{appendix:b}.
+
+
+
+\noindent\textbf{Metrics}. We evaluate the accuracy of the methods based only on the label of the last query $q_n$ in each conversation session $\mathcal{Q}$. Other metrics which consider class imbalance are not used as the sampled sessions are expected to reflect the online traffic of each intent, thus more accurately simulating true online performance.
+
+
+
+
+% \begin{table}[t]
+% \centering
+% \begin{tabular}{||l c c c c||} 
+%  \hline
+%  Data Source & BR & ID & MY & SG \\ [0.5ex] 
+%  \hline\hline
+%  Single-Turn & 61k & 150k & 66k & 66k \\
+%  Chat Log & 8k & 16k & 8k & 8k \\ 
+%  Template & 37k & 37k & 37k & 37k \\ 
+%  Off-Topic & 17k & 18k & 17k & 73k \\ [0.3ex] 
+%  \hline\hline
+%  Total & 124k & 221k & 129k & 184k \\ [0.3ex] 
+%  \hline
+% \end{tabular}
+% \caption{Training data composition of SFT approach.}
+% \label{table:data_train_sft}
+% \end{table}
+
+%  The methods used to compose the multi-turn dataset for supervised fine-tuning approach and their ratio are shown in Table \ref{table:data_train_sft}. We only tried the approach in BR, ID, MY, and SG. \textbf{Single-turn} data are sampled from the training data shown in Table \ref{table:data_train_test}. \textbf{Chat Log} data are the real user multi-turn queries that we sampled from online sessions. Undeniably, the labels of each query turn are from the single-turn model $\mathcal{M}_c$ that we deployed online, and are not fully reliable for training. Thus, for the second turn onwards, we also output another intent using the \emph{Selective expand} method that we will mention below, but at a lower concatenation threshold. When the intent is different from that of $\mathcal{M}_c$, we use vicuna-13b-v1.5 to select the more accurate intent with few-shots COT prompt. You can find the prompt used for chat log data cleaning in the appendix. In \textbf{Template} data, the transition distribution of high-frequency intents is obtained via the analysis of online sessions. Then, we sample from the distribution to get a template, and fill in each turn with the utterances which we sample from single-turn training data. Lastly, \textbf{Off-Topic} data is made up of instruction tuning samples from Alpaca and Dolly datasets, as well as some programmatically crafted queries about competitors. The purpose of this data type is to add off-topic detection ability to the model, but the ratio is then reduced in non-English markets to let the model focus more on the intent recognition task due to their lower performances. 
+
+% \subsection{Processing Personal Data} % discuss how 
+
+
+% \subsection{Metrics}
+
+
+
+\subsection{Baselines}
+Current multi-turn models are trained with multi-turn datasets, but our methods did not require such data. For a fair comparison, we adopt a state-of-the-art single-turn model mentioned in 4.1 with two types of concatenation approaches as baselines:
+\subsubsection{Single-turn approach}
+Inference on only the last utterance of a session using the single-turn model $\mathcal{M}_c$, all previous contexts are ignored.
+\subsubsection{Naive concatenation}
+All queries in a single session $\mathcal{Q}$ are concatenated using comma, and the concatenation result is fed into the single-turn model $\mathcal{M}_c$, which is enhanced by HTC approach mentioned above, for inference. HTC methods which optimally utilise the overall label hierarchy information often outperform the methods which simply disregard the structure\cite{Rojas2020EfficientSF}. 
+\subsubsection{Selective concatenation}
+In this approach, only one query from $\mathcal{C}_q$ is selected to be concatenated with $q_n$. The intuition is that not all history queries are helpful in understanding the last query, and the excessive use of them might introduce unwanted noise. A concatenation decision model is trained to select the most appropriate historical query. Depending on the model confidence, there might be cases where no expansion is needed at all. The concatenation result is then also fed into the single-turn model $\mathcal{M}_c$ for inference.
+
+
+
+
+
+% \subsection{Implementation Details}
+% % - models and hyperparameters
+% % - context nlu and tradition model
+% %    - backbone
+% % - sft and icl models
+% %    - learning rate, and size
+
+% % In the LLM SFT approach, FastChat framework is used to LoRA-finetune 7B models on $q\_proj$, $v\_proj$, $o\_proj$, and $k\_proj$ modules with a learning rate of 2e-5 over 10 epochs. The 7B models used are Llama-2-7B and SeaLLM-7B-chat on Hugging Face. However, before finetuning on multi-turn intent recognition task, the Llama-2-7B base model is further LoRA-finetuned with the same setting above on a mix of ShareGPT dataset and in-domain live agent and customer chat transcript, and the weights are merged. Loss is calculated on all the model output including those after history queries. During inference, when the generated label has no exact match with any $r$ in $\mathcal{I}$, gestalt pattern matching is used to find the closest one.
+
+% % In LARA, both 7B and 13B instruction-tuned LLMs are tested, i.e. vicuna-7b-v1.5, vicuna-7b-v1.5, and SeaLLM-7B-v2
+
+% The traditional single-turn model, the retriever, and the concatenation decision model used are using backbone initialized with $\Phi_{XLMR}$, a multi-lingual domain specific XLM-RoBERTa-base model continued to be pre-trained with contrastive learning. We use AdamW to finetune the backbone and all other modules with a learning rate of 5e-6 and 1e-3, respectively. In LARA, the LLM used is vicuna-13b-v1.5 on Hugging Face with 13B parameters. All test are run on a single Nvidia V100 GPU card with a 32GB of GPU memory. The number of demonstrations $K$ retrieved for each intent is set at 10 in this experiment. Due to GPU memory constraint, the total number of tokens the in-context learning demonstrations can make up to are limited to 2300 tokens. If exceeded, the number of demonstrations in each candidate intent are pruned equally starting with the ones with the lowest cosine similarity scores to $q_{all}$. During inference time, if the generated intent doesn't match any of the provided options, the intent of $\mathcal{M}_c$ on $q_n$ will be considered as the final result. 
+ 

@@ -1,0 +1,47 @@
+\begin{table*}[t]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+    \begin{tabular}{l*{6}c|c|c}
+    \toprule
+    Methods & {\scriptsize SST SRL WOZ} & {\scriptsize SST WOZ SRL} & {\scriptsize SRL SST WOZ} & {\scriptsize SRL WOZ SST} & {\scriptsize WOZ SST SRL} & {\scriptsize WOZ SRL SST} & Average & Std \\
+    \midrule
+    Fine-tuned & 50.2 & 24.7 & 62.9 & 31.3 & 32.8 & 33.9 & 39.3 & 12\\
+    EWC & 50.6 & 48.4 & 64.7 & 35.5 & 43.9 & 39.0 & 47.0 & 8.7\\
+    MAS & 36.5 & 45.3 & 56.6 & 31.0 & 49.7 & 30.8 & 41.6 & 8.9\\
+    GEM & 50.4 & 29.8 & 63.3 & 32.6 & 44.1 & 36.3 & 42.8 & 11 \\
+    $\text{LAMOL}_{\text{GEN}}^{0}$ & 46.5 & 36.6 & 56.6 & 38.6 & 44.9 & 45.2 & 44.8 & 6.0\\
+    $\text{LAMOL}_{\text{GEN}}^{0.05}$ & 79.6 & 78.9 & 73.1 & 73.7 & 68.6 & 75.7 & 74.9 & 3.4\\
+    $\text{LAMOL}_{\text{GEN}}^{0.2}$ & 80.0 & 80.7 & 79.6 & 78.7 & 78.4 & 80.5 & \textbf{79.7} & 0.8 \\
+    $\text{LAMOL}_{\text{TASK}}^{0}$ & 41.0 & 33.5 & 50.1 & 41.9 & 49.3 & 41.5 & 42.9 & 5.2\\
+    $\text{LAMOL}_{\text{TASK}}^{0.05}$ & 77.3 & 76.9 & 78.1 & 74.7 & 73.4 & 75.8 & 76.0 & 1.5\\
+    $\text{LAMOL}_{\text{TASK}}^{0.2}$ & 79.4 & 79.9 & 80.1 & 78.7 & 79.8 & 79.0 & 79.5 & \textbf{0.5}\\
+    \midrule
+    $\text{LAMOL}_{\text{REAL}}^{0.05}$ & 81.0 & 78.9 & 80.1 & 80.9 & 77.7 & 78.0 & 79.4 & 1.2\\
+    $\text{LAMOL}_{\text{REAL}}^{0.02}$ & 81.8 & 80.6 & 81.6 & 81.2 & 80.4 & 80.5 & 81.0 & 0.5\\
+    \midrule
+    Multitasked & \multicolumn{7}{c}{81.5} \\
+    \bottomrule
+    \end{tabular}
+    \end{adjustbox}
+    \caption{Summary of averaged metric scores for different methods under permuted task orders using models at last epoch of last task. The Average and Std columns respectively are the average and standard deviation of the averaged scores for each row of the methods. Multitasked learning as an upper bound is shown at the bottom.}
+\label{tab:small_perm}
+\end{table*}
+% \begin{table*}[t]
+% \centering
+%     \begin{tabular}{l*{10}{c}}
+%     \toprule
+%     order & finetune & ewc & mas & UNill-0\% & UNill-0\% tag & UNill-5\%  & UNill-5\% tag & UNill-20\% & UNill-20\% tag & multitask }\\
+%     \midrule
+%     SST SRL WOZ & 50.2 & 50.6 & 36.5 & 46.5 & 41.0 & 79.6 & 77.3 & 80.0 & 79.4 & \multirow{7}{*}{81.5} \\
+%     SST WOZ SRL & 24.7 & 48.4 & 45.3 & 36.6 & 33.5 & 78.9 & 76.9 & 80.7 & 79.9 & \\
+%     SRL SST WOZ & 62.9 & 64.7 & 56.6 & 56.6 & 50.1 & 73.1 & 78.1 & 79.6 & 80.1 & \\
+%     SRL WOZ SST & 31.3 & 35.5 & 31.0 & 38.6 & 41.9 & 73.7 & 74.7 & 78.7 & 60.8 & \\
+%     WOZ SST SRL & 32.8 & 43.9 & 49.7 & 44.9 & 49.3 & 68.6 & 73.4 & 78.4 & 79.8 & \\
+%     WOZ SRL SST & 33.9 & 39.0 & 30.8 & 45.2 & 41.5 & 75.7 & 75.8 & 80.5 & 78.9 & \\
+%     \midrule
+%     Average & 39.3 & 47.0 & 41.6 & 44.8 & 42.9 & 74.9 & 76.0 & 79.7 & 76.5 & \\
+%     \bottomrule
+%     \end{tabular}
+%     \caption{Permutation of all small (SST SRL WOZ)}
+% \label{tab:bound-model-to-tasks}
+% \end{table*}

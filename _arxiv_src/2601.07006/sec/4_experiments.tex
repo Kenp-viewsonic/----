@@ -1,0 +1,49 @@
+\section{Experiments}
+\label{sec:experiments}
+We evaluate the proposed LLM Performance Predictor (LPP) framework in the context of cost-aware selective escalation for human–AI content moderation. From a multi-agent systems perspective, our experiments study the coordination dynamics between autonomous LLM agents and human reviewers, where the LPP meta-model serves as a decision-making intermediary that allocates tasks under cost constraints.
+\subsection{Experimental Setup}
+\label{subsec:experimental_setup}
+We evaluate several LLMs: proprietary (gpt-4o-mini, gpt-4o, gpt-4.1-mini, gemini-2.5-flash-lite, gemini-2.0-flash-lite, gemini-2.0-flash-001) and open-source (QWEN3-14B, QWEN3-32B, LLAMA32-11B).
+\footnote{We considered including safety-specialized models such as Llama Guard~\cite{Inan2023LlamaGL}, but defer discussion of these to Section~\ref{subsec:limitations}.}
+Following Section~\ref{sec:methods}, we instantiate LPPs using ridge regression trained on heterogeneous feature families derived from intrinsic model signals (e.g., token-level probabilities, self-consistency markers) and post-hoc signals (e.g., calibration-based scores). A summary of feature groups is provided in Table~\ref{tab:lpps}. Hyperparameters for baselines and the meta-model are tuned via nested cross-validation, with stratified sampling. To address class imbalance, we apply down-sampling as described in Sec.~\ref{subsec:training}, and evaluate final performance on a held-out test set using the optimized threshold.
+The meta-model is trained with Ridge Regression, chosen for its robustness in high-dimensional feature spaces.
+
+
+\myparagraph{Additional Experimental Details}
+We use deterministic decoding parameters (\texttt{temperature}=0, \texttt{top-p}=1) with a fixed random seed (\texttt{random\_state}=42) for data splitting and cross-validation reproducibility. For each generated token, we request log-probabilities of the \textit{top-20} candidate tokens. From these we compute two feature families:
+\begin{enumerate}
+    \item \textbf{Unfiltered top-5 features}: standard uncertainty metrics computed over the five most probable tokens.
+    \item \textbf{Filtered features}: log-probabilities restricted to the four valid class labels (\texttt{0-3}).
+\end{enumerate}
+This dual representation captures both the model’s general uncertainty landscape and its calibrated confidence over the task’s decision space. CoT perplexity is computed with natural logarithms. Cross-validation uses \texttt{StratifiedKFold} with $K=3$ splits.
+
+\subsection{Datasets}
+We use two complementary datasets:  
+(i) the \textbf{OpenAI Moderation dataset}~\cite{markov2023holisticapproachundesiredcontent}, which contains 1,680 English text samples annotated across multiple moderation categories (hate, self-harm, sexual, and violence, with fine-grained subcategories such as hate/threatening, sexual/minors, and violence/graphic). Since the dataset is multi-label, we evaluate our model at the level of \emph{text–label pairs}: each annotation is treated as a separate prediction instance. Thus, while the corpus comprises 1,680 source texts, the effective number of evaluation instances is larger, reflecting the total set of text–label assignments. This framing allows a more precise assessment of category-specific moderation performance.  
+(ii) a \textbf{Multimodal Moderation Dataset}~\cite{levi+al:25} of $1{,}500$ short-form videos spanning three categories: Death, Injury and Military Conflict; Drugs, Alcohol and Tobacco; and Kids content, across 12 languages and four modalities (text, thumbnail, transcript, video/frame). Together, these datasets enable evaluation of both text-only and multimodal moderation scenarios.  
+\input{tables/datasets}
+\subsection{Baselines}
+We compare our LPP-based meta-model against widely used uncertainty heuristics:
+\begin{itemize}
+    \item \textbf{MSP}~\cite{hendrycks2017a,geifman2017selectiveclassificationdeepneural}.
+    \item \textbf{Top-2 Margin}~\cite{gupta2024language}.
+    \item \textbf{Entropy}~\cite{kendall+al:17,barshalom2025tokenprobabilitieslearnablefast}.
+\end{itemize}
+These represent the strongest post-hoc uncertainty signals. We also include a cost-insensitive \emph{always-trust} baseline.
+\subsection{Evaluation Metrics}
+To address \textbf{RQ1}, we evaluate error prediction using:
+\begin{itemize}
+    \item \textbf{AUC-ROC}: area under the receiver operating characteristic curve, measuring ranking quality of correct vs.\ incorrect predictions across thresholds.
+    \item \textbf{F1-Score}: harmonic mean of precision and recall, balancing false positives and false negatives.
+    \item \textbf{Macro-F1}: F1 macro-averaged over correctness labels (correct vs.\ incorrect), giving equal weight to error and non-error cases.
+\end{itemize}
+To address \textbf{RQ2}, we evaluate:
+\begin{itemize}
+    \item \textbf{Expected Cost $\mathcal{C}(\tau)$}, as defined in Sec.~\ref{subsec:policy}
+    \item \textbf{Escalation Ratio}, defined as the fraction of items routed to human review:
+    \[
+    \text{Escalation Ratio} = \frac{TN + FN}{TP + FP + TN + FN}.
+    \]
+    Following best practice in selective prediction~\cite{geifman2017selectiveclassificationdeepneural,hendrycks2017a}, we report both the \emph{percentage} of items escalated and the \emph{absolute number of escalations}.
+%    \item \textbf{Error Recall @ K}, simulating fixed human budgets ($K=10,20,45$)
+\end{itemize}

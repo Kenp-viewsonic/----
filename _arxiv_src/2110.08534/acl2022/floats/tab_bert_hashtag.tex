@@ -1,0 +1,18 @@
+\begin{table}[]
+\centering
+\scalebox{0.66}{
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Task          & 2019-1                 & 2019-2                & 2020-1                 & 2020-2                \\ \midrule
+\multicolumn{5}{c}{Hashtag Prediction}                                                      \\ \midrule
+BERT-base  & 46.38$_{\pm 0.4}$            & 48.05$_{\pm 0.8}$            & 41.67$_{\pm 1.0}$            & 69.00$_{\pm 0.5}$            \\
+Sequential PT        & 50.46$_{\pm 0.1}$            & 52.70$_{\pm 0.7}$            &46.49$_{\pm 1.0}$            &71.63$_{\pm 0.7}$            \\
+ER            &49.90$_{\pm 0.4}$            &52.33$_{\pm 0.6}$            &46.84$_{\pm 0.3}$            & 71.67$_{\pm 0.4}$            \\
+Logit-KD    &     50.19$_{\pm 0.9}$          &      \textbf{53.70$_{\pm 0.4}$}     &     \textbf{47.64$_{\pm 0.4}$}    & \textbf{72.44$_{\pm 0.5}$}  \\
+SEED-Logit-KD    &    \textbf{50.79$_{\pm 0.8}$}          &      52.84$_{\pm 0.5}$     &     46.04$_{\pm 0.4}$    &  72.24$_{\pm 0.6}$  \\
+\bottomrule
+\end{tabular}
+}
+\caption{\small Hashtag prediction performance of continually pretrained BERT models over tweets after 2019.}
+\label{tab:bert_hashtag}
+\end{table}
