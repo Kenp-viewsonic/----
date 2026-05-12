@@ -188,13 +188,28 @@
 
 ---
 
-## 技术决策与约束
+## 技术决策与约束（已确认 + 待讨论）
 
-- **基座**：RoBERTa-base（11G显存下安全选择；若后续实验需更大容量可考虑RoBERTa-large配合梯度检查点，但当前计划以base为主）
-- **LoRA实现**：自研轻量版，不依赖peft库，直接对 `q_proj`, `v_proj`（或全部线性层）注入双分支低秩矩阵
-- **训练器**：基于transformers Trainer以减少样板代码，但通过Callback和重写compute_loss注入自定义逻辑
-- **显存优化**：梯度累积（accumulation_steps=2或4）、混合精度（fp16=True）、可能需 `gradient_checkpointing=True`
-- **数据集**：假设Jigsaw已下载到本地（需在config中配置路径）；若未下载，可在Step 1.2中增加Kaggle API自动下载作为fallback
+### 已确认决策
+
+- **基座**：RoBERTa-base（11G显存下安全选择）。RoBERTa-large暂列 backlog，仅在 base 结果稳定且显存允许（梯度检查点）时考虑。
+- **LoRA 层范围**：**首版仅注入 `q_proj` 与 `v_proj`**（`attention.self.query / attention.self.value`）。
+  - 理由：q/v 已覆盖毒性语义锚定与表面形式匹配的核心通路，参数量增幅约 **0.15%**；k_proj / o_proj 对表征收益有限但显著增加激活显存；fc1/fc2（FFN）与 ToxicAwarePE 易冲突，首版排除。
+  - **开放**：若 Variant Recall 瓶颈明显，可逐步开放 `k_proj` 或 `o_proj`，通过配置 `layers_to_adapt` 列表切换，无需改代码结构。
+- **LoRA 实现**：自研轻量版，不依赖 peft 库，直接对选定线性层注入双分支低秩矩阵。
+- **伪 OOD 构造**：**70% 毒性特化 + 30% 通用随机**，训练时按 **1:3（OOD:Known）** 混入同一 batch。
+  - Toxic-specific：对已知毒性词进行强字符扰动（leet、空格规避、符号插入）、句式反转、跨语言混排。
+  - Generic：Wikipedia/News 短文本采样或随机高斯无意义串。
+  - 两者通过配置开关切换，也可纯用一种做消融。
+- **训练器**：基于 transformers Trainer 以减少样板代码，通过 Callback 和重写 `compute_loss` 注入自定义逻辑。
+- **显存优化**：梯度累积（accumulation_steps=2 或 4）、混合精度（fp16=True）、必要时开启 `gradient_checkpointing=True`。
+
+### 待讨论 / 可调整
+
+- **双分支秩选择**：`r_s=8, r_p=4` 为经验初值，需根据阶段0验证集性能调参。若稳定分支容量不足，可上调 `r_s`；若可塑分支过拟合新类表面形式，可下调 `r_p` 或加大 L1 系数。
+- **冻结 plastic 分支的长期参数预算**：当阶段数 K>5 时，冻结分支累积可能导致参数量上升。是否引入“冻结分支剪枝”（丢弃超过 `T_max` 阶段且低激活的分支）首版暂不实现，列 backlog。
+- **K-means 前缀初始化 vs 随机初始化**：语义锚定前缀是核心创新点，但若聚类数 `n_anchors` 选择不当（过少则覆盖不足，过多则前缀冗长），可能反而引入噪声。需保留“随机初始化”对照作为 ablation。
+- **变体生成器规则集 vs 小型 CNN**：当前计划用轻量规则（字符替换、正则）计算 `v_i` 与构造评测变体。若后续需要更复杂的形变（如 Unicode 同形字、emoji 穿插），是否引入小型 char-CNN 检测器，待评估工程收益。
 
 ---
 
@@ -209,8 +224,47 @@
 
 ---
 
-## 进一步考虑
+## 待确认与开放讨论（迁移前/后均可调整）
 
-1. **Jigsaw数据集路径**：目前假设本地已下载，请确认数据文件（如 `train.csv`）在本地路径，我将在config中预留 `data_path` 字段供你填写。
-2. **双分支LoRA的层选择**：标准做法只改attention的q,v；是否要对 `o_proj`, `fc1`, `fc2` 也注入LoRA？建议初期仅q,v以控制参数量，消融时可扩展。
-3. **伪OOD构造策略**：通用做法（随机文本/非毒性评论）与毒性特化做法（强扰动毒性词变体）你倾向哪种？后者更贴合场景但实现稍复杂。建议两者都实现，通过配置切换。
+> 以下问题部分已有初步共识，但未在代码层面锁定；迁移后可根据目标机器环境、实验进展随时调整。建议在 `README.md` 中维护一张「决策日志」记录每次变更。
+
+1. **Jigsaw 数据路径（已确认）**
+   - 数据位于 `jigsaw-toxic-comment-classification-challenge/train.csv/train.csv`（解压后单文件）。
+   - **开放**：若迁移后路径不同，仅修改 `configs/base.yaml` 中的 `data_path` 即可，无需改代码。
+
+2. **FSCIL 阶段定义与 shot 数（建议初值，未锁定）**
+   - 当前建议：阶段 0 `{toxic, obscene, insult}` → 阶段 1 `{threat, identity_hate}` → 阶段 2 `{severe_toxic}`。
+   - shot 数建议 **16-shot**（11G 显存下稳定），若显存充裕或开启 gradient checkpointing 可尝试 32-shot。
+   - **开放**：阶段数、每阶段类别数、类别组合均可调；Jigsaw 为多标签，FSCIL 通常按单标签任务切分，这里存在**多标签增量 vs 单标签增量**的范式选择，需后续验证哪种更符合毒性场景评测惯例。
+
+3. **K-means 锚定前缀聚类数（建议初值）**
+   - 建议 `n_anchors = 10~20`，与 hidden_size=768 匹配。
+   - **开放**：若阶段 0 base 类样本聚类后质心分散，可适当增加；前缀长度 `m` 与聚类数直接相关，需与 `alpha`（锚定强度，建议 0.7）联合调参。
+
+4. **双分支 LoRA 层选择（已确认首版范围，扩展开放）**
+   - 首版仅 `q_proj/v_proj`，预留 `layers_to_adapt` 配置项。
+   - **开放**：若消融实验显示表征瓶颈在 k_proj，可扩展；若显存吃紧，可回退到仅 v_proj。
+
+5. **伪 OOD 构造（已确认混合策略，细节开放）**
+   - 70% 毒性特化 + 30% 通用随机，1:3 混入 batch。
+   - **开放**：毒性特化中的“跨语言混排”“句式反转”实现成本较高，首版可先用字符扰动替代；通用随机中“高斯无意义串”对语言模型过于简单，可能学偏，可替换为 Wikipedia 采样。
+
+6. **损失权重与超参（全部未锁定）**
+   - `lambda_evo, lambda_sp, beta, eta` 以及 `tau`（沉淀阈值）、`theta_coarse/fine`（拒识阈值）均需阶段 0 后在验证集上搜索。
+   - **开放**：建议首版先用网格搜索/随机搜索确定一组基线值，写入 `configs/base.yaml`，后续实验再细化。
+
+7. **评测指标权重（待讨论）**
+   - Avg-mAP、Macro-F1、Forgetting 是 CIL 标准；Variant Recall 和 Semantic Stability(CKA) 是本方法特色指标。
+   - **开放**：若审稿人质疑 CKA 计算开销大，可替换为更轻量的余弦相似度；若 Variant Recall 定义不清晰（多标签下“召回”如何判定），需统一口径。
+
+8. **长期运行时的工程问题（backlog）**
+   - 冻结 plastic 分支累积 → 参数量增长 → 推理时延上升。
+   - **开放**：首版不实现分支剪枝，但在 `SemanticConsolidation` 类中预留剪枝接口；若 K>5 后时延显著，再实现基于激活频率的轻量剪枝。
+
+9. **基线选择（建议最小集，可扩展）**
+   - 必跑：Sequential Fine-tune、Task-LoRA、Task-LoRA+MSP、Task-LoRA+ADB。
+   - **开放**：若算力允许，加入 MoCL、O-LoRA、ELLA 等强对照；若算力紧张，可仅跑 2~3 个基线。
+
+10. **代码可移植性**
+    - 计划使用 `transformers>=4.35`、`torch>=2.0`，迁移后需确认目标机器 CUDA 版本与 PyTorch 兼容性。
+    - **开放**：若目标机器无网络或 huggingface 下载受限，需提前缓存 `roberta-base` 权重到 `MODEL_DIR`。
