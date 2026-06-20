@@ -1,0 +1,55 @@
+# Implicit Hate → Jigsaw label mapping for cross-domain validation.
+#
+# Plan Step 4.4: 跨领域鲁棒性验证。
+#
+# Maps implicit-hate corpus (EMNLP 2021) categories to Jigsaw fine-grained labels.
+# This mapping enables zero-shot evaluation: after completing FSCIL training on
+# Jigsaw, we test the model's ability to detect implicit toxic expressions that
+# use the same toxicity framework but different surface forms.
+#
+# Reference: ElSherief et al., "Latent Hatred: A Benchmark for Understanding
+# Implicit Hate Speech", EMNLP 2021.
+
+mapping:
+  # Direct category mappings
+  Stereotypes:
+    target_labels: ["identity_hate"]      # stereotypes target group identity
+    description: "Subtle group-based generalizations"
+  Threats:
+    target_labels: ["threat"]             # direct threat mapping
+    description: "Implicit/veiled threats"
+  Incitement:
+    target_labels: ["threat", "identity_hate"]
+    description: "Encouraging violence/harassment against groups"
+
+  # Soft / indirect mappings (lower confidence)
+  Grievance:
+    target_labels: ["insult", "obscene"]
+    description: "Grievance-based hate often uses insulting/obscene language"
+  Inferiority:
+    target_labels: ["identity_hate", "insult"]
+    description: "Asserting group inferiority maps to identity hate + insult"
+  Irony:
+    target_labels: ["toxic"]  # parent label — used as "any toxicity"
+    description: "Ironic/sarcastic hate; hardest implicit category"
+
+  # Catch-all
+  Other:
+    target_labels: ["toxic"]
+    description: "Other implicit hate expressions"
+
+# Evaluation settings
+evaluation:
+  # Threshold for considering a prediction positive
+  threshold: 0.5
+  
+  # Subset size (random sample for fast evaluation; -1 = use all)
+  max_samples: -1
+  
+  # Metrics to report
+  metrics:
+    - macro_f1
+    - micro_f1
+    - avg_map
+    - auroc  # treat implicit as "unknown variant" of known toxicity
+    - variant_recall  # how many implicit samples trigger any toxicity detection

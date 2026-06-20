@@ -1,0 +1,87 @@
+# Quick Development Config — 用于快速验证代码、调试流程、冒烟测试
+# 特点：少 epoch、不保存中间模型、快速反馈
+# 预计单 stage 耗时：2-5 分钟（RTX 2080 Ti）
+
+model:
+  name: "roberta-base"
+  hidden_size: 768
+  num_attention_heads: 12
+  num_hidden_layers: 12
+
+data:
+  dataset_path: "../jigsaw-toxic-comment-classification-challenge/train.csv/train.csv"
+  max_length: 128
+  filter_toxic: true
+  test_size: 0.1
+  val_size: 0.1
+
+fscil:
+  # 快速开发时保持 shots 不变（验证数据流），如需更快可降至 16/8
+  stages:
+    - name: "base"
+      classes: ["obscene", "insult"]
+      shots_per_class: 32
+    - name: "stage1"
+      classes: ["threat", "identity_hate"]
+      shots_per_class: 16
+    - name: "stage2"
+      classes: ["severe_toxic"]
+      shots_per_class: 16
+  num_seeds: 1  # 快速验证只用 1 个 seed
+
+lora:
+  target_modules: ["query", "value"]
+  rs: 8
+  rp: 8
+  alpha: 16
+  dropout: 0.05
+
+prefix:
+  m: 10
+  n_anchors: 5
+  alpha_anchor: 0.7
+  apply_to_all_layers: true
+
+toxic_pe:
+  enable: true
+  q_dim: 1
+  m_dim: 1
+  l_dim: 1
+  v_dim: 1
+
+rejection_gate:
+  theta_coarse: 0.5
+  theta_fine: 0.3
+  learnable_weights: true
+  a: 1.0
+  b: 1.0
+  c: 1.0
+  d: 1.0
+
+training:
+  output_dir: "./outputs_dev"
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 16
+  gradient_accumulation_steps: 2
+  num_train_epochs: 2        # 快速：base 只跑 2 epoch
+  learning_rate: 2.0e-4
+  weight_decay: 0.01
+  warmup_ratio: 0.1
+  logging_steps: 10          # 频繁日志，快速看到损失下降
+  eval_strategy: "epoch"
+  save_strategy: "no"        # 不保存中间 checkpoint，节省磁盘和時間
+  load_best_model_at_end: false
+  metric_for_best_model: "eval_macro_f1"
+  greater_is_better: true
+  fp16: false
+  seed: 42
+
+loss_weights:
+  lambda_evo: 0.5
+  lambda_sp: 1.0e-3
+  beta: 0.3
+  eta: 1.0e-4
+
+semantic_consolidation:
+  tau: 0.1
+  eval_samples: 50           # 快速：减少 delta_k 估计样本数

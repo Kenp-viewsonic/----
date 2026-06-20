@@ -1,0 +1,32 @@
+# Stage overrides for subset_hparam.yaml
+# 增量阶段保持较短的训练周期
+
+base:
+  training:
+    num_train_epochs: 3
+    learning_rate: 2.0e-4
+  loss_weights:
+    lambda_evo: 0.5
+    lambda_sp: 1.0e-3
+    beta: 0.3
+    eta: 1.0e-4
+
+stage1:
+  training:
+    num_train_epochs: 2
+    learning_rate: 1.0e-4
+  loss_weights:
+    lambda_evo: 0.2
+    lambda_sp: 1.0e-3
+    beta: 0.2
+    eta: 1.0e-4
+
+stage2:
+  training:
+    num_train_epochs: 2
+    learning_rate: 1.0e-4
+  loss_weights:
+    lambda_evo: 0.2
+    lambda_sp: 1.0e-3
+    beta: 0.2
+    eta: 1.0e-4

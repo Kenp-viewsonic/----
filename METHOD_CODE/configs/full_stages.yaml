@@ -1,0 +1,42 @@
+# Stage overrides for full_experiment.yaml
+# 增量阶段保持与 base.yaml 默认一致，但显式写出以便微调
+
+base:
+  training:
+    num_train_epochs: 5
+    learning_rate: 2.0e-4
+  loss_weights:
+    lambda_evo: 0.5
+    lambda_sp: 1.0e-3
+    beta: 0.3
+    eta: 1.0e-4
+
+stage1:
+  training:
+    num_train_epochs: 8
+    learning_rate: 1.0e-4
+  loss_weights:
+    lambda_evo: 0.2
+    lambda_sp: 1.0e-3
+    beta: 0.2
+    eta: 1.0e-4
+    lambda_kd: 1.0
+    kd_temperature: 2.0
+    freeze_old_classifier: true
+    balanced_bce: true
+    balanced_bce_max_pos_weight: 8.0
+
+stage2:
+  training:
+    num_train_epochs: 8
+    learning_rate: 5.0e-5
+  loss_weights:
+    lambda_evo: 0.2
+    lambda_sp: 1.0e-3
+    beta: 0.2
+    eta: 1.0e-4
+    lambda_kd: 2.0
+    kd_temperature: 2.0
+    freeze_old_classifier: true
+    balanced_bce: true
+    balanced_bce_max_pos_weight: 8.0

@@ -1,0 +1,32 @@
+# Stage overrides for quick_dev.yaml
+# 增量阶段进一步减少 epoch，确保 10 分钟内跑完 0→1→2
+
+base:
+  training:
+    num_train_epochs: 2
+    learning_rate: 2.0e-4
+  loss_weights:
+    lambda_evo: 0.5
+    lambda_sp: 1.0e-3
+    beta: 0.3
+    eta: 1.0e-4
+
+stage1:
+  training:
+    num_train_epochs: 1    # 快速：增量阶段只跑 1 epoch
+    learning_rate: 1.0e-4
+  loss_weights:
+    lambda_evo: 0.2
+    lambda_sp: 1.0e-3
+    beta: 0.2
+    eta: 1.0e-4
+
+stage2:
+  training:
+    num_train_epochs: 1
+    learning_rate: 1.0e-4
+  loss_weights:
+    lambda_evo: 0.2
+    lambda_sp: 1.0e-3
+    beta: 0.2
+    eta: 1.0e-4

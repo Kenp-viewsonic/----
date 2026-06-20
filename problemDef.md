@@ -336,6 +336,7 @@ $$
 - **Semantic Stability（新增）**：跨阶段同一语义核的表示一致性（用中心核对齐 CKA 或余弦相似度衡量）
 - 尾部标签召回率（Tail Recall）
 - 参数增量与推理时延
+- **跨领域语义迁移（新增）**：在 `implicit-hate` 数据集上做零样本迁移评测，将隐式仇恨样本视为"语义级变体"，评测 AUROC / Macro-F1 / 拒识分数分布，验证毒性语义核是否超越了字符级关键词记忆
 
 ### 4.2 基线（可直接落地）
 
@@ -392,7 +393,8 @@ $$
 4. 上下文/语义演化补充集（用于 issue2）
 	- 多轮评论线程或回复链数据，用于建模上下文反讽与指代攻击
 	- 带上下文的社媒仇恨/攻击性数据，可用于验证语境依赖建模
-5. 外部迁移与鲁棒性补充（可选）
+5. 外部迁移与鲁棒性补充（建议必选 `implicit-hate`）
+	- **`implicit-hate`**（EMNLP 2021, *Latent Hatred*）：22K tweets，含 6.3K 隐式仇恨言论（Grievance/Incitement/Inferiority/Irony/Stereotypes/Threats）。与 Jigsaw 形成互补——Jigsaw 侧重**显式毒性+字符变体**，implicit-hate 侧重**隐式语义+隐喻讽刺**。用于验证模型学到的"毒性语义核"能否迁移到语义层面的隐式表达，而非仅记忆关键词。
 	- SNIPS、ATIS（仅作通用文本分类迁移参照）
 	- AfriSenti / WOS / MTL5（跨域持续学习鲁棒性验证）
 

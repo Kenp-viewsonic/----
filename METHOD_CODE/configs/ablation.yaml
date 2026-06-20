@@ -1,0 +1,104 @@
+# Ablation Control Config — 统一控制所有消融实验的开关
+# 在 run_ablation.py 中通过 --variant 参数引用对应区块
+# 也可被主实验脚本直接 merge 覆盖 base.yaml
+
+# ============================================================
+# 感知层消融 (Perception-layer ablations)
+# ============================================================
+
+no_toxic_pe:
+  description: "移除结构感知位置编码 ToxicAwarePE（验证手工特征的实际贡献）"
+  toxic_pe:
+    enable: false
+  # 测试时混合未覆盖变异（emoji/跨语言），验证泛化边界
+  variant_test:
+    include_uncovered: true
+
+no_anchor:
+  description: "K-means 锚定前缀降级为随机初始化前缀（验证语义锚定价值）"
+  prefix:
+    init_random: true  # 关掉 K-means，强制随机初始化
+    alpha_anchor: 0.5   # 降低锚定强度，更依赖可学习残差
+
+# ============================================================
+# 记忆层消融 (Memory-layer ablations) — 核心防御
+# ============================================================
+
+no_plastic:
+  description: "退化为单分支 LoRA（验证双分支记忆隔离的价值）"
+  lora:
+    rs: 12  # 总秩对齐：单分支秩=双分支秩之和(r_s+r_p=12)
+    rp: 0   # 关闭可塑分支
+  # 注意：关闭 plastic 后沉淀机制也失效，等价于标准 LoRA+EWC
+
+always_add:
+  description: "移除干扰评估门限 τ，阶段结束强制合并到 Stable（测试无保护合并效果）"
+  semantic_consolidation:
+    tau: 999.0        # 极大化阈值，永远满足 delta_k < tau → 总是合并
+    force_merge: true
+
+always_freeze:
+  description: "移除合并机制，阶段结束强制冻结所有 Plastic 并新增（测试纯隔离效果）"
+  semantic_consolidation:
+    tau: 0.0          # 极小化阈值，永远不满足合并条件 → 总是冻结
+    force_freeze: true
+
+# ============================================================
+# 损失与防御门消融 (Loss & gate ablations)
+# ============================================================
+
+no_evo:
+  description: "移除语义演化一致性损失 L_evo"
+  loss_weights:
+    lambda_evo: 0.0
+
+no_rejection:
+  description: "直接用普通阈值分类，不使用层级异常得分门控"
+  rejection_gate:
+    disabled: true     # 关闭层级拒识
+    theta_coarse: 0.0
+    theta_fine: 0.0
+
+no_open_loss:
+  description: "移除开集拒识损失 L_open（消融伪 OOD 训练的贡献）"
+  loss_weights:
+    beta: 0.0
+
+no_orth:
+  description: "移除跨阶段正交性约束 L_orth"
+  loss_weights:
+    eta: 0.0
+
+# ============================================================
+# 组合消融（论文关键对照组）
+# ============================================================
+
+no_dual:  # 等价于 no_plastic + 关闭所有双分支相关特性
+  description: "完全退化为单分支LoRA（无plastic、无沉淀、无历史补丁）"
+  lora:
+    rs: 12
+    rp: 0
+  semantic_consolidation:
+    tau: -1.0         # 禁用语义沉淀
+  loss_weights:
+    lambda_sp: 0.0   # 无plastic→无需sparsity reg
+    eta: 0.0          # 无stable跨阶段→无需orth loss
+
+ours_full:  # 完整方法（reference，消融对照的基准）
+  description: "Ours 完整方法（所有模块全开）"
+  toxic_pe:
+    enable: true
+  prefix:
+    init_random: false
+  lora:
+    rs: 8
+    rp: 8
+  semantic_consolidation:
+    tau: 0.1
+  loss_weights:
+    lambda_evo: 0.5
+    lambda_sp: 1.0e-3
+    beta: 0.3
+    eta: 1.0e-4
+  rejection_gate:
+    disabled: false

@@ -1,0 +1,93 @@
+# Full Experiment Config — 用于论文最终实验与复现
+# 特点：完整 epoch、多 seed、保存 best checkpoint、详细评估
+# 预计单 seed 全阶段耗时：30-60 分钟（RTX 2080 Ti）
+# 建议并行跑多个 seed，最后汇总结果
+
+model:
+  name: "roberta-base"
+  hidden_size: 768
+  num_attention_heads: 12
+  num_hidden_layers: 12
+
+data:
+  dataset_path: "../jigsaw-toxic-comment-classification-challenge/train.csv/train.csv"
+  max_length: 128
+  filter_toxic: true
+  test_size: 0.1
+  val_size: 0.1
+
+fscil:
+  stages:
+    - name: "base"
+      classes: ["obscene", "insult"]
+      shots_per_class: 32
+    - name: "stage1"
+      classes: ["threat", "identity_hate"]
+      shots_per_class: 64
+    - name: "stage2"
+      classes: ["severe_toxic"]
+      shots_per_class: 64
+  num_seeds: 5  # 论文标准：5 个 seed 报告 mean±std
+
+lora:
+  target_modules: ["query", "value"]
+  rs: 8
+  rp: 8
+  alpha: 16
+  dropout: 0.05
+
+prefix:
+  m: 10
+  n_anchors: 5
+  alpha_anchor: 0.7
+  apply_to_all_layers: true
+
+toxic_pe:
+  enable: true
+  q_dim: 1
+  m_dim: 1
+  l_dim: 1
+  v_dim: 1
+
+rejection_gate:
+  theta_coarse: 0.5
+  theta_fine: 0.3
+  learnable_weights: false
+  a: 1.0
+  b: 1.0
+  c: 1.0
+  d: 1.0
+
+replay:
+  # Keep known dataset labels for current-stage classes on replay samples.
+  # This gives new heads explicit negatives/positives for threshold calibration,
+  # instead of masking all current-stage replay labels as -1.
+  mask_new_class_labels: false
+
+training:
+  output_dir: "./outputs_full"
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 16
+  gradient_accumulation_steps: 2
+  num_train_epochs: 5        # base 完整 5 epoch
+  learning_rate: 2.0e-4
+  weight_decay: 0.01
+  warmup_ratio: 0.1
+  logging_steps: 50
+  eval_strategy: "epoch"
+  save_strategy: "epoch"
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_macro_f1"   # 优先避免尾类 recall 为 0 的 checkpoint
+  greater_is_better: true
+  fp16: false
+  seed: 42
+
+loss_weights:
+  lambda_evo: 0.5
+  lambda_sp: 1.0e-3
+  beta: 0.3
+  eta: 1.0e-4
+
+semantic_consolidation:
+  tau: 0.1
+  eval_samples: 200

@@ -18,12 +18,13 @@
 - `METHOD_CODE/scripts/` — 分阶段运行脚本（stage_0_base.sh, stage_1_incremental.sh等）
 - `METHOD_CODE/requirements.txt` — 依赖清单
 
-**Step 1.2 — 数据加载与FSCIL切分** *独立，可并行1.1*
-- 实现 `ToxicCommentDataset(Dataset)`：读取Jigsaw CSV，支持多标签（toxic, severe_toxic, obscene, threat, insult, identity_hate）
-- 实现 `FSCILSplitProtocol`：
+**Step 1.2 — 数据加载与FSCIL切分（严格防泄露协议）** *独立，可并行1.1*
+- 实现 `ToxicCommentDataset(Dataset)`：读取Jigsaw CSV，支持多标签。
+- 实现 `FSCILSplitProtocol`（**实施严格掩码与净化**）：
   - 阶段0: {toxic, obscene, insult}
   - 阶段1: {threat, identity_hate}
   - 阶段2: {severe_toxic}（可调）
+  - **防泄露机制**：对于阶段 $k$，样本掩码所有后续阶段 $>k$ 的标签（计算损失时设为 `ignore_index`），且在极端重叠下直接剔除超前泄露样本，确保零信息泄露。
   - 每阶段每类N-shot（如16-shot或32-shot）
 - 实现 `VariantGenerator`：leet替换、空格规避、符号插入（仅测试用，不加入训练）
 - **关键输出**：`data_splits/` 下每个seed的pickle/JSON切分文件，确保可复现
@@ -59,7 +60,8 @@
   - `plastic_A`, `plastic_B`：每阶段独立初始化，秩 `r_p`（建议 `r_s=8, r_p=4`）
   - `forward(x)`：`x @ (W_base + stable_A@stable_B + plastic_A@plastic_B)`
 - 实现 `SemanticConsolidation` 类：
-  - `evaluate_interference(model, old_val_loader)`：计算 `delta_k = mean ||h_stable+plastic - h_stable||`
+  - `evaluate_interference(model, old_coreset_loader)`：**采用Coreset机制解决开销问题**，仅从旧验证集提取极少量的代表性子集（如每类 10-shot 原型），计算 `delta_k = mean ||h_stable+plastic - h_stable||`，保证评估开销为 $O(1)$ 常数级。
+  - **自适应阈值机制**：避免 $\tau$ 的跨数据集调参敏感性，$\tau$ 不设为绝对绝对定值，而是设为 `stage_0` 基础干扰方差的相对倍数（例如 $\tau = \mu_0 + \alpha \sigma_0$）。
   - 若 `delta_k < tau`：执行 `stable += plastic`（矩阵累加），然后 `plastic.reset_parameters()`
   - 若 `delta_k >= tau`：`plastic.freeze()`（保留为历史补丁），新 `plastic` 初始化
 - **关键实现**：需要暴露 `h_stable`（仅stable分支）与 `h_full`（双分支）两种前向模式供沉淀审查使用
@@ -70,9 +72,9 @@
   - 绝对位置编码复用RoBERTa内置
   - `q_i`（强调强度）：标点密度与重复模式（正则 `[!?]{2,}`）
   - `m_i`（大写/强调）：连续大写序列、*星号*、_下划线_
-  - `l_i`（句法片段）：反问句、条件威胁模板（规则匹配，如 `if you.*then I will`）
   - `v_i`（字符变异）：轻量规则检测leet替换、空格规避，可扩展为char-CNN
   - 输出：`PE_i = RoBERTa_PE + W_q*q_i + W_m*m_i + W_l*l_i + W_v*v_i`
+  - **泛化边界验证声明**：为回应“手工特征”的泛化性缺陷，在测试时强行混入规则**未覆盖**的新型变异（如emoji组合、跨语言混用）。如果在未覆盖变异上导致性能显著下降，则必须在论文的 Limitation 章节坦诚其作为“领域特化组件”的边界，绝不包装为“通用泛化解”。
 - **实现方式**：在embedding层后、Transformer前注入，作为附加embedding加到token embedding上
 
 **Step 2.4 — 变体感知层级拒识门控（3.5）** *依赖1.3*
@@ -104,7 +106,7 @@
   - 可塑分支：L1稀疏 `lambda_sp * ||plastic||_1`
   - 沉淀合并平滑损失（若本阶段通过审查）：`||h_old_stable(x) - h_new_stable(x)||` 在旧类样本上
 - `losses/open_loss.py`：拒识损失
-  - 构造伪OOD样本：从非毒性评论中采样，或随机文本，或已知毒性词的强扰动变体
+  - 构造伪OOD样本（**Hard Benign Negatives 协议**）：为防止模型退化为“乱码分类器”，OOD不仅包含字度扰动，**必须强制包含 30-50% 的真实语法合法、但无毒性的真实评论（可从Jigsaw Label全0数据中采样 / 新闻数据集采样）**。
   - 目标：已知类 `u_t -> 0`，伪OOD `u_t -> 1`
 - `losses/orth_loss.py`：跨阶段正交性 `||stable^T @ stable_old||`（轻量，仅在阶段>0时激活）
 - **组合**：`L = L_bce + lambda_evo*L_evo + lambda_sp*L_sp + beta*L_open + eta*L_orth`
@@ -126,6 +128,27 @@
   - `configs/base.yaml`：模型、LoRA秩、前缀长度、损失权重
   - `configs/stages.yaml`：每阶段新增类、shot数、epoch数、学习率
 
+**Step 3.4 — 实验配置变体（新增）** *依赖3.3*
+为支持不同实验场景（快速开发、超参搜索、完整论文实验），建立分层配置系统：
+- `configs/quick_dev.yaml` + `configs/quick_dev_stages.yaml`：
+  - 用途：代码冒烟测试、快速验证数据流、调试模块
+  - 特点：base 2 epoch / 增量 1 epoch，不保存 checkpoint，eval_samples=50，1 seed
+  - 预计耗时：单 stage 2-5 分钟
+- `configs/subset_hparam.yaml` + `configs/subset_stages.yaml`：
+  - 用途：超参快速筛选（grid search / random search）
+  - 特点：base 8-shot / 增量 4-shot，prefix.n_anchors 同步下调，3 epoch，eval_samples=30
+  - 预计耗时：单 stage 1-3 分钟
+  - 配套：`scripts/launch_experiments.py --hparam_grid <grid_name>` 支持预定义搜索空间
+- `configs/full_experiment.yaml` + `configs/full_stages.yaml`：
+  - 用途：论文最终实验与复现
+  - 特点：完整 5/3 epoch，5 seeds，保存 best checkpoint，metric_for_best_model=eval_avg_map
+  - 预计耗时：单 seed 全阶段 30-60 分钟
+- 统一启动脚本 `scripts/launch_experiments.py`：
+  - 支持 `--scenario {quick_dev, subset_hparam, full_experiment}`
+  - 支持 `--methods ours, seq_finetune, ...` 或 `--methods all`
+  - 支持 `--dry_run` 预览命令
+  - 支持 `--hparam_grid` 调用预定义超参网格（如 `grid_example`, `tau_search`, `prefix_search`）
+
 ---
 
 ## Phase 4: 评测与基线（2-3天）
@@ -139,20 +162,53 @@
   - 长尾：Tail Recall（对最少样本的毒性标签单独计算Recall）
 - 实现 `evaluate_all_stages()`：加载每个阶段的最终检查点，在累积测试集上评测
 
-**Step 4.2 — 消融基线实现** *依赖4.1*
-- `baselines/seq_finetune.py`：顺序微调（无防遗忘）
-- `baselines/task_lora.py`：每阶段独立LoRA + 冻结旧LoRA（单分支对照）
-- `baselines/task_lora_msp.py`：Task-LoRA + MSP（Max Softmax Prob作为OOD分数）
-- `baselines/task_lora_adb.py`：Task-LoRA + ADB（Adaptive Decision Boundary）
-- 消融变体（在Ours上开关模块）：
-  - `Ours - L_evo`：evo_loss权重置0
-  - `Ours - Dual Branch`：退化为单LoRA（plastic分支移除，稳定分支保留）
-  - `Ours - Anchor Prefix`：前缀随机初始化
+**Step 4.2 — “绝对公平协议”下的基线实现** *依赖4.1*
+**公平性约束（Fairness Protocol）**：所有基线必须使用同款预训练权重（`roberta-base`）；在对比CL机制时，保证所有PEFT基线的**可训练参数总量完全对齐**（例如：Ours $r_s=8, r_p=4$，则单分支基线统一设为 $r=12$）；使用完全相同的随机数种子和N-shot数据切分。
 
-**Step 4.3 — 结果记录与可视化** *依赖4.2*
+*流派一：正则化与架构防遗忘 (Regularization & Architecture CIL)*
+- `baselines/ewc_lora.py`：EWC + LoRA。传统参数重要性惩罚标杆。
+- `baselines/o_lora.py`：阶段间正交 LoRA（O-LoRA，来自 2601.02232）。本文直接竞品，正交参数隔离流派SOTA。
+
+*流派二：基于提示的连续学习 (Prompt-based CL)*
+  
+**（特别声明：基线信度防御）** 为了应对“自导自演弱化基线”的攻击，所有基线的方法核心（如Fisher矩阵计算、正交约束强度调度）必须**引用原始公开代码或使用 `peft`、`avalanche` 等成熟开源框架的官方实现**，并在附录明示各基线已过参数网格搜索的最优超参。
+- `baselines/l2p.py`：Learning to Prompt (L2P) 或 DualPrompt 的文本适配版。当前NLP增量学习主流SOTA，用以证明我们的双分支LoRA优于动态提示池。
+
+*流派三：开集拒识专用 (OOD / Rejection)*
+- `baselines/task_lora_msp.py`：Task-LoRA + MSP (Max Softmax Prob)。
+- `baselines/task_lora_maha.py`：Task-LoRA + Mahalanobis Distance。经典的特征空间异常检测基线。
+
+**Step 4.3 — 手术刀级消融实验 (Micro-Ablation Study)** *依赖4.2*
+通过`configs/ablation.yaml`统一控制开关：
+*感知层消融*
+- `Ours w/o ToxicPE`：移除结构感知位置编码。（回应“特征工程”质疑。
+- `Ours w/o Anchor`：K-means语义前缀降级为随机初始化前缀。
+*记忆层消融（核心防御）*
+- `Ours w/o Plastic`：退化为单分支LoRA。
+- `Ours - Always Add`：移除干扰评估门限 $\tau$，阶段结束强制合并到Stable。
+- `Ours - Always Freeze`：移除合并机制，阶段结束强制冻结所有Plastic并新增（测试纯隔离效果）。
+*损失与防御门消融*
+- `Ours w/o L_evo`：移除语义演化一致性损失。
+- `Ours w/o Rejection`：直接用普通阈值分类，不使用层级异常得分门控。
+
+**Step 4.4 — 结果记录与可视化** *依赖4.3*
 - `utils/logger.py`：CSV/JSON记录每阶段指标
-- `scripts/plot_results.py`：绘制增量性能曲线（每阶段Avg-mAP）、遗忘柱状图、Variant Recall对比图
+- `scripts/plot_results.py`：
+  - 增量性能曲线（每阶段Avg-mAP对比）
+  - **核心故事自证图**：可塑分支激活度随Epoch衰减图（证明沉淀确实发生）
+  - Variant Recall雷达图
+  - **Attention Map 可视化分析**：定性对比带/不带 ToxicPE 时，RoBERTa对变异黑话（l33t）的注意力焦点转移（回应“人工规则无用”论，证明 Tokenizer 缺陷需要特征先验兜底）。
 - 输出 `results/` 目录，包含模型预测、指标汇总、对比表格（LaTeX格式，可直接贴论文）
+
+**Step 4.4 — 跨领域鲁棒性验证（可选但高价值）** *依赖4.2*
+- 目的：验证模型学到的"毒性语义核"是否超越了关键词记忆，能迁移到语义层面的隐式表达
+- 数据：`implicit-hate`（EMNLP 2021, 22K tweets, 6.3K implicit hate，含 Grievance/Incitement/Inferiority/Irony/Stereotypes/Threats 7 类）
+- 实验设计：
+  - 在 Jigsaw 上完成完整 FSCIL 训练（Stage 0→1→2），固定模型参数
+  - 将 implicit-hate 的 7 个类别映射到 Jigsaw 的多标签空间（如 Stereotypes→identity_hate, Threats→threat）
+  - 零样本评测：AUROC、FPR95、Macro-F1，将隐式样本视为"新型语义变体"
+- 输出：`scripts/eval_cross_domain.py`、映射配置文件 `configs/implicit_hate_mapping.yaml`
+- 工作量：低（半天），不改动主 FSCIL 流程，仅增加评测入口
 
 ---
 
@@ -215,12 +271,16 @@
 
 ## 验证步骤（可执行检查项）
 
-1. [ ] `python -c "from models.roberta_dual_lora import DualBranchLoRALayer; print('OK')"` — 模块导入无报错
-2. [ ] `python data/fscil_split.py --seed 42` — 生成切分文件，类别分布符合阶段定义
-3. [ ] `python scripts/run_stage.py --stage 0 --config configs/base.yaml` — 阶段0训练1个epoch，损失下降，无OOM
-4. [ ] `python -m pytest tests/test_consolidation.py` — 语义沉淀逻辑通过单元测试
+1. [x] `python -c "from models.roberta_dual_lora import DualBranchLoRALayer; print('OK')"` — 模块导入无报错
+2. [x] `python data/fscil_split.py --seed 42` — 生成切分文件，类别分布符合阶段定义
+3. [x] `python scripts/run_stage.py --stage 0 --config configs/base.yaml` — 阶段0训练1个epoch，损失下降，无OOM
+4. [x] `python -m pytest tests/test_consolidation.py` — 语义沉淀逻辑通过单元测试
 5. [ ] `python scripts/evaluate.py --checkpoint checkpoint-stage2/ --variant_test data/variants_seed42.json` — 输出Variant Recall > 随机基线
-6. [ ] `python scripts/run_baseline.py --method seq_finetune` — 基线可跑通，指标可复现
+6. [x] `python scripts/run_baseline.py --method seq_finetune` — 基线可跑通，指标可复现
+7. [ ] `python scripts/run_baseline.py --method o_lora` — O-LoRA SOTA 基线可跑通
+8. [ ] `python scripts/run_baseline.py --method ewc_lora` — EWC 正则基线可跑通
+9. [x] `python scripts/launch_experiments.py --scenario quick_dev --methods ours --dry_run` — 实验启动脚本命令生成正确
+10. [x] `python scripts/launch_experiments.py --scenario subset_hparam --hparam_grid tau_search --dry_run` — 超参搜索流程正确
 
 ---
 
@@ -255,9 +315,9 @@
 
 7. **评测指标权重（待讨论）**
    - Avg-mAP、Macro-F1、Forgetting 是 CIL 标准；Variant Recall 和 Semantic Stability(CKA) 是本方法特色指标。
-   - **开放**：若审稿人质疑 CKA 计算开销大，可替换为更轻量的余弦相似度；若 Variant Recall 定义不清晰（多标签下“召回”如何判定），需统一口径。
-
-8. **长期运行时的工程问题（backlog）**
+   - **开放**：若审稿与语义损伤（Limitation & Future Work 预留）**
+   - **冻结分支的长期不可持续性**：随着阶段数 K>5，历史快照分支累积会导致推理时延上升。本研究承认这一边界，将在文中提供**“模拟剪枝验证”**（强制丢弃冷门历史分支观察衰减曲线），以证明在 K<=10 场景下的实用区间，并指明知识蒸馏为未来解决方向。
+   - **多标签 Masking 的语义损伤**：为遵守无泄露协议，我们去除了新类标签，但这破坏了文本真实的共现语义。文末需进行**“Masking vs 完整标签”的权衡探讨**，坦诚我们的方案是目前学术公平准则下的保守选择
    - 冻结 plastic 分支累积 → 参数量增长 → 推理时延上升。
    - **开放**：首版不实现分支剪枝，但在 `SemanticConsolidation` 类中预留剪枝接口；若 K>5 后时延显著，再实现基于激活频率的轻量剪枝。
 

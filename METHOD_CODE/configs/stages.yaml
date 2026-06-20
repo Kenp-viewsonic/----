@@ -1,0 +1,31 @@
+# Stage-specific overrides
+
+base:
+  training:
+    num_train_epochs: 5
+    learning_rate: 2.0e-4
+  loss_weights:
+    lambda_evo: 0.5
+    lambda_sp: 1.0e-3
+    beta: 0.3
+    eta: 1.0e-4
+
+stage1:
+  training:
+    num_train_epochs: 3
+    learning_rate: 1.0e-4
+  loss_weights:
+    lambda_evo: 0.2
+    lambda_sp: 1.0e-3
+    beta: 0.2
+    eta: 1.0e-4
+
+stage2:
+  training:
+    num_train_epochs: 3
+    learning_rate: 1.0e-4
+  loss_weights:
+    lambda_evo: 0.2
+    lambda_sp: 1.0e-3
+    beta: 0.2
+    eta: 1.0e-4

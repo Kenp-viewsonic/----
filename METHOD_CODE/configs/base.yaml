@@ -1,0 +1,87 @@
+# Base configuration for FSCIL Toxic Comment Classification
+
+model:
+  name: "roberta-base"
+  hidden_size: 768
+  num_attention_heads: 12
+  num_hidden_layers: 12
+
+data:
+  dataset_path: "../jigsaw-toxic-comment-classification-challenge/train.csv/train.csv"
+  max_length: 128
+  filter_toxic: true  # Only keep toxic=1 samples for FSCIL stages
+  test_size: 0.1
+  val_size: 0.1
+
+fscil:
+  # Stage definitions (fine-grained toxic sub-classes only)
+  # toxic parent label is used as filter, not as FSCIL class
+  stages:
+    - name: "base"
+      classes: ["obscene", "insult"]
+      shots_per_class: 32
+    - name: "stage1"
+      classes: ["threat", "identity_hate"]
+      shots_per_class: 16
+    - name: "stage2"
+      classes: ["severe_toxic"]
+      shots_per_class: 16
+  num_seeds: 3
+
+lora:
+  # LoRA injection layers: q_proj, v_proj only (first version)
+  target_modules: ["query", "value"]
+  rs: 8   # stable branch rank
+  rp: 8   # plastic branch rank (increased from 4 for better new-class capacity)
+  alpha: 16
+  dropout: 0.05
+
+prefix:
+  m: 10               # prefix length
+  n_anchors: 5        # K-means clusters for initialization
+  alpha_anchor: 0.7   # anchor blend weight
+  apply_to_all_layers: true
+
+toxic_pe:
+  enable: true
+  q_dim: 1    # emphasis intensity
+  m_dim: 1    # markup/caps
+  l_dim: 1    # syntactic pattern
+  v_dim: 1    # character variation
+
+rejection_gate:
+  theta_coarse: 0.5
+  theta_fine: 0.3
+  learnable_weights: true
+  a: 1.0
+  b: 1.0
+  c: 1.0
+  d: 1.0
+
+training:
+  output_dir: "./outputs"
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 16
+  gradient_accumulation_steps: 2
+  num_train_epochs: 5
+  learning_rate: 2.0e-4
+  weight_decay: 0.01
+  warmup_ratio: 0.1
+  logging_steps: 50
+  eval_strategy: "epoch"
+  save_strategy: "epoch"
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_macro_f1"
+  greater_is_better: true
+  fp16: false
+  seed: 42
+
+loss_weights:
+  lambda_evo: 0.5
+  lambda_sp: 1.0e-3
+  beta: 0.3
+  eta: 1.0e-4
+
+semantic_consolidation:
+  tau: 0.1
+  eval_samples: 200
