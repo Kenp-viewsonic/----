@@ -84,6 +84,20 @@ SCENARIOS = {
         "default_methods": ["ours"],
         "description": "Plastic rank halfed + stage2 KD reduced",
     },
+    "full_baselines_core": {
+        "config": "configs/full_experiment.yaml",
+        "stages_config": "configs/full_stages.yaml",
+        "default_seeds": [42],
+        "default_methods": ["seq_finetune", "task_lora", "ewc_lora"],
+        "description": "Core baselines: seq_finetune, task_lora, ewc_lora",
+    },
+    "full_baselines_open": {
+        "config": "configs/full_experiment.yaml",
+        "stages_config": "configs/full_stages.yaml",
+        "default_seeds": [42],
+        "default_methods": ["task_lora_msp", "task_lora_maha", "task_lora_adb", "o_lora", "l2p"],
+        "description": "Open-set / prototype baselines: MSP, Maha, ADB, O-LoRA, L2P",
+    },
 }
 
 ALL_METHODS = [
