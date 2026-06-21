@@ -98,6 +98,20 @@ SCENARIOS = {
         "default_methods": ["ours"],
         "description": "Secondary SOTA candidate: stronger stage1 separation with zero KD",
     },
+    "full_experiment_low_rank_proto_gated": {
+        "config": "configs/full_experiment_low_rank_proto_gated.yaml",
+        "stages_config": "configs/full_stages_low_rank_proto_gated.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Primary proto-gated candidate: prototype classifier init + weaker stage1 anchor",
+    },
+    "full_experiment_low_rank_proto_gated_layerwise": {
+        "config": "configs/full_experiment_low_rank_proto_gated_layerwise.yaml",
+        "stages_config": "configs/full_stages_low_rank_proto_gated_layerwise.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Secondary proto-gated candidate: prototype init + layerwise weaker high-layer anchor",
+    },
     "full_baselines_core": {
         "config": "configs/full_experiment.yaml",
         "stages_config": "configs/full_stages.yaml",

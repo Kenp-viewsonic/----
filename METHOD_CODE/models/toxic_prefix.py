@@ -33,6 +33,8 @@ class ToxicSemanticPrefix(nn.Module):
         prefix_length: int = 10,
         n_anchors: int = 5,
         alpha: float = 0.7,
+        stage_alpha: dict = None,
+        layerwise_alpha: list = None,
         init_random: bool = False,
     ):
         super().__init__()
@@ -41,6 +43,8 @@ class ToxicSemanticPrefix(nn.Module):
         self.prefix_length = prefix_length
         self.n_anchors = n_anchors
         self.alpha = alpha
+        self.stage_alpha = {str(k): float(v) for k, v in (stage_alpha or {}).items()}
+        self.layerwise_alpha = list(layerwise_alpha) if layerwise_alpha is not None else None
         
         # Flag to indicate if proto has been initialized
         self._proto_initialized = False
@@ -143,7 +147,16 @@ class ToxicSemanticPrefix(nn.Module):
             return self.P_proto
         
         residual = self.stage_residuals[key]
-        P_k = self.alpha * self.P_proto + (1.0 - self.alpha) * residual
+        alpha = float(self.stage_alpha.get(key, self.alpha))
+        if self.layerwise_alpha is None:
+            P_k = alpha * self.P_proto + (1.0 - alpha) * residual
+        else:
+            layer_alpha = torch.tensor(
+                self.layerwise_alpha,
+                device=self.P_proto.device,
+                dtype=self.P_proto.dtype,
+            ).view(self.num_layers, 1, 1)
+            P_k = layer_alpha * self.P_proto + (1.0 - layer_alpha) * residual
         return P_k
     
     def forward(self, stage_idx: int = None):

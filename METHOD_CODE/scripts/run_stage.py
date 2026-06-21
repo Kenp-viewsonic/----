@@ -176,6 +176,38 @@ def evaluate_comprehensive(model, cumulative_loader, ood_dataloader, ref_reps, d
     )
 
 
+def compute_class_prototypes(model, dataloader, device, target_class_indices):
+    """Compute class prototypes from current support set CLS embeddings."""
+    prototypes = {int(class_idx): [] for class_idx in target_class_indices}
+    model.eval()
+    with torch.no_grad():
+        for batch in dataloader:
+            batch_tensors = {k: v.to(device) if isinstance(v, torch.Tensor) else v for k, v in batch.items()}
+            outputs = model(
+                input_ids=batch_tensors["input_ids"],
+                attention_mask=batch_tensors["attention_mask"],
+                texts=batch_tensors.get("texts"),
+                return_rejection=False,
+            )
+            cls_hidden = outputs["cls_hidden"]
+            labels = batch_tensors.get("labels")
+            if labels is None:
+                continue
+            for class_idx in target_class_indices:
+                positive_mask = labels[:, class_idx] > 0.5
+                if positive_mask.any():
+                    prototypes[int(class_idx)].append(cls_hidden[positive_mask].detach())
+
+    reduced = {}
+    for class_idx, chunks in prototypes.items():
+        if chunks:
+            reduced[class_idx] = torch.cat(chunks, dim=0).mean(dim=0)
+        else:
+            reduced[class_idx] = None
+    model.train()
+    return reduced
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--stage", type=int, required=True, help="Stage ID: 0, 1, 2, ...")
@@ -425,6 +457,25 @@ def main():
         # Ensure rejection gate is trainable
         for param in model.rejection_gate.parameters():
             param.requires_grad = True
+
+        proto_cfg = cfg.get("prototype_init", {})
+        if proto_cfg.get("enable", False) and num_active_classes > old_num_classes:
+            new_class_indices = list(range(old_num_classes, num_active_classes))
+            proto_loader = torch.utils.data.DataLoader(
+                train_dataset,
+                batch_size=training_args.per_device_eval_batch_size if 'training_args' in locals() else 32,
+                shuffle=False,
+                collate_fn=ToxicCommentDataset.collate_fn,
+            )
+            class_prototypes = compute_class_prototypes(model, proto_loader, device, new_class_indices)
+            model.initialize_classifier_from_prototypes(
+                class_prototypes=class_prototypes,
+                normalize=proto_cfg.get("normalize", True),
+                init_bias=proto_cfg.get("init_bias", -0.5),
+                blend_old=proto_cfg.get("blend_old", 0.0),
+            )
+            initialized = [idx for idx, proto in class_prototypes.items() if proto is not None]
+            print(f"[PrototypeInit] Initialized classifier rows from support prototypes for classes: {initialized}")
     
     # Training args
     training_cfg = cfg.get("training", {})

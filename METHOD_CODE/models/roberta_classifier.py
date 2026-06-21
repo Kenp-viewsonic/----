@@ -53,6 +53,8 @@ class RobertaToxicClassifier(nn.Module):
             prefix_length=pcfg.get("prefix_length", 10),
             n_anchors=pcfg.get("n_anchors", 5),
             alpha=pcfg.get("alpha", 0.7),
+            stage_alpha=pcfg.get("stage_alpha"),
+            layerwise_alpha=pcfg.get("layerwise_alpha"),
             init_random=pcfg.get("init_random", False),
         )
         self.prefix_length = self.prefix_module.prefix_length
@@ -290,6 +292,34 @@ class RobertaToxicClassifier(nn.Module):
         self.num_classes = new_num_classes
         self.rejection_gate.num_classes = new_num_classes
         print(f"[Classifier] Expanded from {old_num_classes} to {new_num_classes} classes.")
+
+    def initialize_classifier_from_prototypes(
+        self,
+        class_prototypes: dict,
+        normalize: bool = True,
+        init_bias: float = -0.5,
+        blend_old: float = 0.0,
+    ):
+        """Initialize classifier rows from class prototypes.
+
+        Args:
+            class_prototypes: Dict[class_idx, Tensor[hidden_size]]
+            normalize: Whether to L2-normalize prototype rows before assignment.
+            init_bias: Bias for initialized classes.
+            blend_old: Optional blend with existing row: new = blend*old + (1-blend)*proto.
+        """
+        head = self.classifier[1]
+        with torch.no_grad():
+            for class_idx, proto in class_prototypes.items():
+                if proto is None or class_idx >= head.out_features:
+                    continue
+                row = proto.to(head.weight.device, dtype=head.weight.dtype)
+                if normalize:
+                    row = torch.nn.functional.normalize(row.unsqueeze(0), dim=-1).squeeze(0)
+                if blend_old > 0:
+                    row = blend_old * head.weight[class_idx] + (1.0 - blend_old) * row
+                head.weight[class_idx].copy_(row)
+                head.bias[class_idx].fill_(init_bias)
     
     def consolidate_plastic(self, merge: bool = True):
         """
