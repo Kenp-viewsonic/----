@@ -1,5 +1,5 @@
-# Stage overrides for full_experiment_low_rank.yaml
-# Lower plastic rank (4 instead of 8) + stage2 KD reduced.
+# Stage overrides for full_experiment_low_rank_sep_aggressive.yaml
+# Aggressive stage1 adaptation to maximize threat / identity_hate separation.
 
 base:
   training:
@@ -15,22 +15,22 @@ stage1:
   replay:
     mask_new_class_labels: false
     coreset_size_per_class: 64
-    new_class_negative_ratio: 0.5
+    new_class_negative_ratio: 0.25
   training:
-    num_train_epochs: 8
+    num_train_epochs: 12
     learning_rate: 1.0e-4
   loss_weights:
     lambda_evo: 0.2
     lambda_sp: 1.0e-3
     beta: 0.2
     eta: 1.0e-4
-    lambda_kd: 0.5
+    lambda_kd: 0.0
     kd_temperature: 2.0
     freeze_old_classifier: true
     balanced_bce: true
-    balanced_bce_max_pos_weight: 3.0
-    lambda_sep: 0.2
-    separation_margin: 0.15
+    balanced_bce_max_pos_weight: 2.0
+    lambda_sep: 0.35
+    separation_margin: 0.20
     separation_apply_stages: [1]
 
 stage2:

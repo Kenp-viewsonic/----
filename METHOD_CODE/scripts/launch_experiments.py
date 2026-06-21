@@ -84,6 +84,20 @@ SCENARIOS = {
         "default_methods": ["ours"],
         "description": "Plastic rank halfed + stage2 KD reduced",
     },
+    "full_experiment_low_rank_sep": {
+        "config": "configs/full_experiment_low_rank_sep.yaml",
+        "stages_config": "configs/full_stages_low_rank_sep.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Primary SOTA candidate: low-rank plastic + conservative stage1 separation",
+    },
+    "full_experiment_low_rank_sep_aggressive": {
+        "config": "configs/full_experiment_low_rank_sep_aggressive.yaml",
+        "stages_config": "configs/full_stages_low_rank_sep_aggressive.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Secondary SOTA candidate: stronger stage1 separation with zero KD",
+    },
     "full_baselines_core": {
         "config": "configs/full_experiment.yaml",
         "stages_config": "configs/full_stages.yaml",

@@ -25,6 +25,7 @@ from losses.evo_loss import EvoLoss
 from losses.stable_plastic_reg import StablePlasticRegLoss
 from losses.open_loss import OpenSetLoss
 from losses.orth_loss import OrthogonalityLoss
+from losses.separation_loss import NewClassSeparationLoss
 
 
 class IncrementalLearningCallback(TrainerCallback):
@@ -186,6 +187,15 @@ class OldClassifierRowsRestoreCallback(TrainerCallback):
         self.bias_snapshot = head.bias[:self.old_num_classes].detach().clone()
         return control
 
+    def on_step_end(self, args, state, control, model=None, **kwargs):
+        if model is None or self.weight_snapshot is None:
+            return control
+        head = model.classifier[1]
+        with torch.no_grad():
+            head.weight[:self.old_num_classes].copy_(self.weight_snapshot.to(head.weight.device))
+            head.bias[:self.old_num_classes].copy_(self.bias_snapshot.to(head.bias.device))
+        return control
+
 
 def asymmetric_loss_with_logits(
     logits,
@@ -220,15 +230,6 @@ def asymmetric_loss_with_logits(
 
     loss = -loss * valid_mask
     return loss.sum() / (valid_mask.sum() + eps)
-    
-    def on_step_end(self, args, state, control, model=None, **kwargs):
-        if model is None or self.weight_snapshot is None:
-            return control
-        head = model.classifier[1]
-        with torch.no_grad():
-            head.weight[:self.old_num_classes].copy_(self.weight_snapshot.to(head.weight.device))
-            head.bias[:self.old_num_classes].copy_(self.bias_snapshot.to(head.bias.device))
-        return control
 
 
 class IncrementalTrainer(Trainer):
@@ -278,6 +279,10 @@ class IncrementalTrainer(Trainer):
         self.sp_loss = StablePlasticRegLoss()
         self.open_loss = OpenSetLoss()
         self.orth_loss = OrthogonalityLoss()
+        self.sep_loss = NewClassSeparationLoss(
+            margin=(loss_weights or {}).get("separation_margin", 0.15),
+            normalize=(loss_weights or {}).get("separation_normalize", True),
+        )
         
         # Coreset dataloader for O(1) semantic interference evaluation
         self.coreset_dataloader = coreset_dataloader
@@ -438,6 +443,20 @@ class IncrementalTrainer(Trainer):
             lorth = self.orth_loss(model)
             if isinstance(lorth, torch.Tensor) and lorth.item() > 0:
                 loss = loss + self.loss_weights["eta"] * lorth
+
+        # New-class semantic separation loss, mainly for stage1 threat/identity_hate.
+        sep_weight = self.loss_weights.get("lambda_sep", 0.0)
+        sep_stages = self.loss_weights.get("separation_apply_stages", [1])
+        if (
+            self.stage_id > 0
+            and labels is not None
+            and self.old_num_classes > 0
+            and sep_weight > 0
+            and self.stage_id in sep_stages
+        ):
+            lsep = self.sep_loss(outputs["cls_hidden"], labels, self.old_num_classes)
+            if isinstance(lsep, torch.Tensor) and lsep.item() > 0:
+                loss = loss + sep_weight * lsep
         
         if return_outputs:
             return loss, outputs

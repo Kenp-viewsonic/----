@@ -1,6 +1,5 @@
-# Full Experiment Low-Rank Plastic Config
-# Half plastic rank to check whether excess capacity causes noise.
-# Lower stage2 KD to avoid over-suppressing with less plastic capacity.
+# Full Experiment Low-Rank + Separation Config
+# Recommended primary SOTA candidate.
 
 model:
   name: "roberta-base"
@@ -63,7 +62,7 @@ replay:
   new_class_negative_ratio: 2.0
 
 training:
-  output_dir: "./outputs_full_low_rank"
+  output_dir: "./outputs_full_low_rank_sep"
   per_device_train_batch_size: 8
   per_device_eval_batch_size: 32
   gradient_accumulation_steps: 2
