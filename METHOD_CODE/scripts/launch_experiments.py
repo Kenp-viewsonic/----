@@ -63,6 +63,13 @@ SCENARIOS = {
         "default_methods": ["ours"],
         "description": "Full experiment variant with stronger stage2 KD and lower LR",
     },
+    "full_experiment_stage1_free": {
+        "config": "configs/full_experiment_stage1_free.yaml",
+        "stages_config": "configs/full_stages_stage1_free.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Parallel diagnostic: loosen stage1 KD and negatives",
+    },
 }
 
 ALL_METHODS = [
