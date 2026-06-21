@@ -26,6 +26,7 @@ from losses.stable_plastic_reg import StablePlasticRegLoss
 from losses.open_loss import OpenSetLoss
 from losses.orth_loss import OrthogonalityLoss
 from losses.separation_loss import NewClassSeparationLoss
+from losses.class_margin_loss import ClassMarginLoss
 
 
 class IncrementalLearningCallback(TrainerCallback):
@@ -283,6 +284,9 @@ class IncrementalTrainer(Trainer):
             margin=(loss_weights or {}).get("separation_margin", 0.15),
             normalize=(loss_weights or {}).get("separation_normalize", True),
         )
+        self.margin_loss = ClassMarginLoss(
+            margin=(loss_weights or {}).get("class_margin", 0.5),
+        )
         
         # Coreset dataloader for O(1) semantic interference evaluation
         self.coreset_dataloader = coreset_dataloader
@@ -315,6 +319,7 @@ class IncrementalTrainer(Trainer):
         # Merge smoothing control (set by callback after consolidation)
         self._merge_smoothing_steps = 0
         self._old_val_iter = None
+        self._kd_delay_ratio = (loss_weights or {}).get("kd_delay_ratio", 0.0)
     
     def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
         """
@@ -374,23 +379,30 @@ class IncrementalTrainer(Trainer):
             and self.old_num_classes > 0
             and lambda_kd > 0
         ):
-            kd_temperature = self.loss_weights.get("kd_temperature", 2.0)
-            with torch.no_grad():
-                teacher_outputs = self.teacher_model(
-                    input_ids=inputs["input_ids"],
-                    attention_mask=inputs["attention_mask"],
-                    texts=texts,
-                    return_rejection=False,
-                )
-                teacher_logits = teacher_outputs["logits"][:, :self.old_num_classes]
-            student_logits = outputs["logits"][:, :self.old_num_classes]
-            teacher_probs = torch.sigmoid(teacher_logits / kd_temperature)
-            kd_loss = nn.functional.binary_cross_entropy_with_logits(
-                student_logits / kd_temperature,
-                teacher_probs,
-                reduction="mean",
-            ) * (kd_temperature ** 2)
-            loss = loss + lambda_kd * kd_loss
+            # Delayed KD: skip distillation for the first kd_delay_ratio fraction
+            # of total training steps. This gives new classes a head-start.
+            do_kd = True
+            if self._kd_delay_ratio > 0:
+                total_steps = max(self.state.max_steps, 1)
+                do_kd = self.state.global_step / total_steps >= self._kd_delay_ratio
+            if do_kd:
+                kd_temperature = self.loss_weights.get("kd_temperature", 2.0)
+                with torch.no_grad():
+                    teacher_outputs = self.teacher_model(
+                        input_ids=inputs["input_ids"],
+                        attention_mask=inputs["attention_mask"],
+                        texts=texts,
+                        return_rejection=False,
+                    )
+                    teacher_logits = teacher_outputs["logits"][:, :self.old_num_classes]
+                student_logits = outputs["logits"][:, :self.old_num_classes]
+                teacher_probs = torch.sigmoid(teacher_logits / kd_temperature)
+                kd_loss = nn.functional.binary_cross_entropy_with_logits(
+                    student_logits / kd_temperature,
+                    teacher_probs,
+                    reduction="mean",
+                ) * (kd_temperature ** 2)
+                loss = loss + lambda_kd * kd_loss
         
         # Evo loss (only in base stage — in incremental stages, forcing CLS to
         # stay close to pre-training representation suppresses new-class learning)
@@ -457,7 +469,21 @@ class IncrementalTrainer(Trainer):
             lsep = self.sep_loss(outputs["cls_hidden"], labels, self.old_num_classes)
             if isinstance(lsep, torch.Tensor) and lsep.item() > 0:
                 loss = loss + sep_weight * lsep
-        
+
+        # Class-margin loss for stage > 0 (pushes new-class logits above old-class max)
+        margin_weight = self.loss_weights.get("lambda_margin", 0.0)
+        margin_stages = self.loss_weights.get("margin_apply_stages", [1])
+        if (
+            self.stage_id > 0
+            and labels is not None
+            and self.old_num_classes > 0
+            and margin_weight > 0
+            and self.stage_id in margin_stages
+        ):
+            lm = self.margin_loss(outputs["logits"], labels, self.old_num_classes)
+            if isinstance(lm, torch.Tensor) and lm.item() > 0:
+                loss = loss + margin_weight * lm
+
         if return_outputs:
             return loss, outputs
         return loss

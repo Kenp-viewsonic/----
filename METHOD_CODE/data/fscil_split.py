@@ -44,6 +44,8 @@ class FSCILSplitProtocol:
         min_positive_per_class: int = 10,
         coreset_size_per_class: int = 10,
         new_class_negative_ratio: float = 0.0,
+        confusion_negatives_enabled: bool = False,
+        confusion_negatives_extra_per_class: int = 0,
         stage_definitions: dict = None,
     ):
         self.dataset = dataset
@@ -52,6 +54,8 @@ class FSCILSplitProtocol:
         self.min_positive = min_positive_per_class
         self.coreset_size_per_class = coreset_size_per_class
         self.new_class_negative_ratio = new_class_negative_ratio
+        self.confusion_negatives_enabled = confusion_negatives_enabled
+        self.confusion_negatives_extra_per_class = confusion_negatives_extra_per_class
         
         # Allow external override (e.g. from YAML config)
         if stage_definitions is not None:
@@ -146,8 +150,25 @@ class FSCILSplitProtocol:
                     selected_neg = candidates[:min(n_neg, len(candidates))]
                     stage_negatives.extend(selected_neg)
                     stage_negatives_by_class[cls] = [int(i) for i in selected_neg]
-            
-            # For stage > 0, also include test data from all previously seen classes
+
+                # Confusion negatives: extra negatives from old classes most
+                # confusable with the current new class. Select samples that
+                # co-occur (i.e. have old-class label == 1 but current new-class
+                # label == 0) — these are the hardest to distinguish.
+                if self.confusion_negatives_enabled and self.confusion_negatives_extra_per_class > 0:
+                    for prev_s in range(stage_id):
+                        for old_cls in self.STAGE_DEFINITIONS[prev_s]["classes"]:
+                            if old_cls not in self.class_to_indices or old_cls not in self.class_train_test:
+                                continue
+                            old_pos = set(self.class_to_indices[old_cls])
+                            already_used = set(stage_train + stage_negatives)
+                            extra_candidates = list(old_pos - positive_set - already_used)
+                            rng.shuffle(extra_candidates)
+                            selected = extra_candidates[:min(self.confusion_negatives_extra_per_class, len(extra_candidates))]
+                            stage_negatives.extend(selected)
+                            if cls not in stage_negatives_by_class:
+                                stage_negatives_by_class[cls] = []
+                            stage_negatives_by_class[cls].extend([int(i) for i in selected])
             # And generate the Coreset for evaluating interference (O(1) cost instead of running full val)
             coreset_indices = []
             coreset_by_class = {}

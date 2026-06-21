@@ -272,6 +272,8 @@ def main():
         seed=args.seed,
         coreset_size_per_class=replay_cfg.get("coreset_size_per_class", 10),
         new_class_negative_ratio=replay_cfg.get("new_class_negative_ratio", 0.0),
+        confusion_negatives_enabled=replay_cfg.get("confusion_negatives_enabled", False),
+        confusion_negatives_extra_per_class=replay_cfg.get("confusion_negatives_extra_per_class", 0),
         stage_definitions=stage_definitions,
     )
     splits = split_protocol.create_splits()
@@ -450,6 +452,22 @@ def main():
                 module.freeze_stable()
                 module.unfreeze_plastic()
         
+        # If partial stable unfreeze is enabled, reopen specified top layers.
+        stable_partial_cfg = cfg.get("stable_partial", {})
+        if stable_partial_cfg.get("enable", False):
+            unfreeze_top_layers = stable_partial_cfg.get("unfreeze_top_layers", 0)
+            if unfreeze_top_layers > 0:
+                total_layers = 12
+                unfreeze_start = total_layers - unfreeze_top_layers
+                for layer_idx, layer in enumerate(model.roberta.encoder.layer):
+                    if layer_idx >= unfreeze_start:
+                        attn = layer.attention.self
+                        for attn_part_name in ["query", "value"]:
+                            lo = getattr(attn, attn_part_name, None)
+                            if isinstance(lo, DualBranchLoRALayer):
+                                lo.unfreeze_stable()
+                print(f"[PartialStable] Unfroze stable branch on top {unfreeze_top_layers} layers (indices {unfreeze_start}..{total_layers-1}).")
+        
         # Ensure classifier head is trainable
         for param in model.classifier.parameters():
             param.requires_grad = True
@@ -603,6 +621,30 @@ def main():
         data_collator=ToxicCommentDataset.collate_fn,
         max_length=data_max_length,
     )
+    
+    # --- New-class LR boost: scale up LR for classifier rows and plastic branch ---
+    lr_boost_cfg = cfg.get("newclass_lr_boost", {})
+    if args.stage > 0 and lr_boost_cfg.get("enable", False):
+        boost_factor = lr_boost_cfg.get("boost_factor", 2.0)
+        # Trainer hasn't created the optimizer yet, so we override
+        # create_optimizer to inject param groups with different LRs.
+        _orig_create_opt = trainer.create_optimizer
+        def _create_boosted_optimizer():
+            opt = _orig_create_opt()
+            for pg in opt.param_groups:
+                for p in pg.get("params", []):
+                    if p is model.classifier[1].weight or p is model.classifier[1].bias:
+                        pg["lr"] = pg["lr"] * boost_factor
+                        break
+                    from models.dual_lora import DualBranchLoRALayer
+                    for m in model.modules():
+                        if isinstance(m, DualBranchLoRALayer):
+                            if p is m.plastic_A or p is m.plastic_B:
+                                pg["lr"] = pg["lr"] * boost_factor
+                                break
+            return opt
+        trainer.create_optimizer = _create_boosted_optimizer
+        print(f"[LRBoost] Stage {args.stage}: classifier + plastic LR boosted by factor {boost_factor}.")
     
     # Train
     print(f"\n[Stage {args.stage}] Starting training...")
