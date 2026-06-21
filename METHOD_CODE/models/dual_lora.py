@@ -138,6 +138,10 @@ class DualBranchLoRALayer(nn.Module):
         self.reset_plastic_parameters()
         print("[DualLoRA] Plastic SVD-merged to stable (rank preserved).")
     
+    def set_disable_frozen_plastics(self, disabled: bool):
+        """If True, frozen historical plastic patches are NOT added in forward."""
+        self._disable_frozen_plastics = disabled
+    
     def freeze_current_plastic(self):
         """
         Freeze current plastic branch as historical patch (not merged to stable).
@@ -188,9 +192,10 @@ class DualBranchLoRALayer(nn.Module):
             result = result + h * (self.lora_alpha / self.r_plastic if self.r_plastic > 0 else 1.0)
         
         # Frozen historical plastics
-        for frozen in self.frozen_plastics:
-            h = x @ frozen.A @ frozen.B
-            result = result + h * (self.lora_alpha / self.r_plastic if self.r_plastic > 0 else 1.0)
+        if not getattr(self, '_disable_frozen_plastics', False):
+            for frozen in self.frozen_plastics:
+                h = x @ frozen.A @ frozen.B
+                result = result + h * (self.lora_alpha / self.r_plastic if self.r_plastic > 0 else 1.0)
         
         return result
 

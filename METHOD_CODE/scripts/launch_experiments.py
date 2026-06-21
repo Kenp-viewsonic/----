@@ -70,6 +70,20 @@ SCENARIOS = {
         "default_methods": ["ours"],
         "description": "Parallel diagnostic: loosen stage1 KD and negatives",
     },
+    "full_experiment_frozen_ablate": {
+        "config": "configs/full_experiment_frozen_ablate.yaml",
+        "stages_config": "configs/full_stages_frozen_ablate.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Frozen plastics ablation — disable at eval only",
+    },
+    "full_experiment_low_rank": {
+        "config": "configs/full_experiment_low_rank.yaml",
+        "stages_config": "configs/full_stages_low_rank.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Plastic rank halfed + stage2 KD reduced",
+    },
 }
 
 ALL_METHODS = [

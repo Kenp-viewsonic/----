@@ -561,6 +561,12 @@ def main():
     
     trainer.train()
 
+    # If ablation: disable frozen plastics for all evaluation forward passes.
+    lora_cfg = cfg.get("lora", {})
+    if lora_cfg.get("eval_disable_frozen_plastics", False):
+        model.set_disable_frozen_plastics(True)
+        print("[Ablation] Frozen plastics DISABLED for evaluation.")
+
     # Build cumulative evaluation loaders immediately after training. At this
     # point, stage > 0 models have already run semantic consolidation, because
     # the callback executes in on_train_end.
@@ -604,6 +610,8 @@ def main():
         pre_model.set_stage(args.stage)
         pre_model.to(device)
         pre_model.eval()
+        if lora_cfg.get("eval_disable_frozen_plastics", False):
+            pre_model.set_disable_frozen_plastics(True)
         pre_consolidation_metrics = evaluate_comprehensive(
             model=pre_model,
             cumulative_loader=cumulative_loader,
@@ -663,6 +671,8 @@ def main():
             prev_model.load_state_dict(prev_state, strict=False)
             prev_model.to(device)
             prev_model.eval()
+            if lora_cfg.get("eval_disable_frozen_plastics", False):
+                prev_model.set_disable_frozen_plastics(True)
             ref_cls = []
             with torch.no_grad():
                 for batch in cumulative_loader:

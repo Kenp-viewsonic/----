@@ -303,3 +303,9 @@ class RobertaToxicClassifier(nn.Module):
                     module.merge_plastic_to_stable()
                 else:
                     module.freeze_current_plastic()
+    
+    def set_disable_frozen_plastics(self, disabled: bool):
+        """Apply frozen plastics disable flag to all DualBranchLoRALayer modules."""
+        for module in self.modules():
+            if isinstance(module, DualBranchLoRALayer):
+                module.set_disable_frozen_plastics(disabled)
