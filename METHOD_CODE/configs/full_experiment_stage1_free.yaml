@@ -73,8 +73,8 @@ training:
   warmup_ratio: 0.1
   logging_steps: 50
   eval_strategy: "epoch"
-  save_strategy: "epoch"
-  load_best_model_at_end: true
+  save_strategy: "no"           # 不保存中间 checkpoint，仅靠脚本末尾手动保存 checkpoint-best
+  load_best_model_at_end: false
   metric_for_best_model: "eval_macro_f1"
   greater_is_better: true
   fp16: false
