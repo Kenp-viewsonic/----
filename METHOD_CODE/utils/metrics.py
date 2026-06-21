@@ -81,39 +81,43 @@ def compute_forgetting(perf_history):
 def compute_cka(X, Y):
     """
     Centered Kernel Alignment (CKA) between two representation matrices.
-    
+    Uses Linear CKA — mathematically equivalent to standard CKA with linear
+    kernel, but O(np²) instead of O(n³). Runs on GPU when available.
+
+    CKA(X, Y) = ||X_c^T Y_c||_F^2 / (||X_c^T X_c||_F * ||Y_c^T Y_c||_F)
+
     Args:
-        X: [n, p] representation matrix from stage A
-        Y: [n, p] representation matrix from stage B (same n samples)
-    
+        X: [n, p] numpy array — representation matrix from stage A
+        Y: [n, p] numpy array — representation matrix from stage B (same n samples)
+
     Returns:
-        cka_score: scalar in [0, 1]
+        cka_score: float in [0, 1]
     """
-    def center(K):
-        n = K.shape[0]
-        unit = np.ones((n, n))
-        I = np.eye(n)
-        H = I - unit / n
-        return H @ K @ H
-    
-    X = X - X.mean(axis=0, keepdims=True)
-    Y = Y - Y.mean(axis=0, keepdims=True)
-    
-    Kx = X @ X.T
-    Ky = Y @ Y.T
-    
-    Kx_centered = center(Kx)
-    Ky_centered = center(Ky)
-    
-    hsic = np.trace(Kx_centered @ Ky_centered)
-    var_x = np.trace(Kx_centered @ Kx_centered)
-    var_y = np.trace(Ky_centered @ Ky_centered)
-    
+    import torch
+
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    X = torch.from_numpy(X.astype(np.float32)).to(device)
+    Y = torch.from_numpy(Y.astype(np.float32)).to(device)
+
+    # Center columns
+    X = X - X.mean(dim=0, keepdim=True)
+    Y = Y - Y.mean(dim=0, keepdim=True)
+
+    # Linear CKA: only p×p matrices (p=768), not n×n
+    XtX = X.T @ X   # [p, p]
+    XtY = X.T @ Y   # [p, p]
+    YtY = Y.T @ Y   # [p, p]
+
+    hsic = (XtY ** 2).sum()
+    var_x = (XtX ** 2).sum().sqrt()
+    var_y = (YtY ** 2).sum().sqrt()
+
     if var_x == 0 or var_y == 0:
         return 0.0
-    
-    cka = hsic / (np.sqrt(var_x) * np.sqrt(var_y))
-    return float(cka)
+
+    cka = hsic / (var_x * var_y)
+    return float(cka.cpu().item())
 
 
 def compute_variant_recall(model, variant_texts, variant_labels, tokenizer, device="cpu", threshold=0.5):
