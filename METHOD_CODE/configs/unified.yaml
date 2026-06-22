@@ -48,7 +48,7 @@ prefix:
   alpha_anchor: 0.7
   stage_alpha:
     "0": 0.7
-    "1": 0.3
+    "1": 0.4
     "2": 0.6
   apply_to_all_layers: true
 

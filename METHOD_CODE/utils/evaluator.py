@@ -160,10 +160,10 @@ def evaluate_model(
             tp = (t_preds_all & (labels_c[:, None] == 1)).sum(axis=0).astype(float)
             fp = (t_preds_all & (labels_c[:, None] == 0)).sum(axis=0).astype(float)
             denom_p = tp + fp
-            denom_r = pos_total
-            t_prec = np.where(denom_p > 0, tp / denom_p, 0.0)
-            t_rec = tp / max(denom_r, 1)
-            t_f1s = np.where((t_prec + t_rec) > 0, 2 * t_prec * t_rec / (t_prec + t_rec), 0.0)
+            t_prec = np.divide(tp, denom_p, out=np.zeros_like(tp), where=denom_p > 0)
+            t_rec = tp / max(pos_total, 1.0)
+            denom_f1 = t_prec + t_rec
+            t_f1s = np.divide(2 * t_prec * t_rec, denom_f1, out=np.zeros_like(t_prec), where=denom_f1 > 0)
             best_idx = int(np.argmax(t_f1s))
             if t_f1s[best_idx] > best["f1"]:
                 best["threshold"] = float(thresholds[best_idx])
