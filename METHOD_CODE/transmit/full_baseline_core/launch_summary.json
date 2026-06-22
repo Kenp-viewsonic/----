@@ -1,0 +1,68 @@
+{
+  "seq_finetune": {
+    "seed42": [
+      {
+        "stage": 0,
+        "output_dir": "./outputs/full_baselines_core_20260622_191315/runs/seq_finetune_seed42_stage0",
+        "exit_code": 0,
+        "success": true
+      },
+      {
+        "stage": 1,
+        "output_dir": "./outputs/full_baselines_core_20260622_191315/runs/seq_finetune_seed42_stage1",
+        "exit_code": 0,
+        "success": true
+      },
+      {
+        "stage": 2,
+        "output_dir": "./outputs/full_baselines_core_20260622_191315/runs/seq_finetune_seed42_stage2",
+        "exit_code": 0,
+        "success": true
+      }
+    ]
+  },
+  "task_lora": {
+    "seed42": [
+      {
+        "stage": 0,
+        "output_dir": "./outputs/full_baselines_core_20260622_191315/runs/task_lora_seed42_stage0",
+        "exit_code": 0,
+        "success": true
+      },
+      {
+        "stage": 1,
+        "output_dir": "./outputs/full_baselines_core_20260622_191315/runs/task_lora_seed42_stage1",
+        "exit_code": 0,
+        "success": true
+      },
+      {
+        "stage": 2,
+        "output_dir": "./outputs/full_baselines_core_20260622_191315/runs/task_lora_seed42_stage2",
+        "exit_code": 0,
+        "success": true
+      }
+    ]
+  },
+  "ewc_lora": {
+    "seed42": [
+      {
+        "stage": 0,
+        "output_dir": "./outputs/full_baselines_core_20260622_191315/runs/ewc_lora_seed42_stage0",
+        "exit_code": 0,
+        "success": true
+      },
+      {
+        "stage": 1,
+        "output_dir": "./outputs/full_baselines_core_20260622_191315/runs/ewc_lora_seed42_stage1",
+        "exit_code": 0,
+        "success": true
+      },
+      {
+        "stage": 2,
+        "output_dir": "./outputs/full_baselines_core_20260622_191315/runs/ewc_lora_seed42_stage2",
+        "exit_code": 0,
+        "success": true
+      }
+    ]
+  }
+}
