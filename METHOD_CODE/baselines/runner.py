@@ -8,11 +8,13 @@ Each baseline script in this directory calls run_experiment(method=...).
 import os
 import sys
 import argparse
+import random
 import yaml
 import json
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import numpy as np
 from transformers import TrainingArguments
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -328,7 +330,15 @@ def run_experiment(method: str, stage: int, config_path: str = "configs/base.yam
     with open(os.path.join(output_dir, "config_used.yaml"), "w", encoding="utf-8") as f:
         yaml.dump(cfg, f)
 
+    # Full seed determinism (mirrors run_stage.py)
+    random.seed(seed)
+    np.random.seed(seed)
     torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Dataset
@@ -617,7 +627,6 @@ def _compute_mahalanobis_ood(model, known_loader, ood_loader, device):
     Returns:
         dict with 'maha_auroc' and 'maha_fpr95' keys.
     """
-    import numpy as np
     from sklearn.metrics import roc_auc_score, roc_curve
 
     model.eval()
