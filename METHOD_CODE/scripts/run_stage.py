@@ -454,10 +454,11 @@ def main():
                 module.freeze_stable()
                 module.unfreeze_plastic()
         
-        # If partial stable unfreeze is enabled, reopen specified top layers.
+        # Optionally unfreeze top stable layers for controlled semantic reorganization.
+        # Disabled by default (can conflict with weak prefix anchoring).
         stable_partial_cfg = cfg.get("stable_partial", {})
         if stable_partial_cfg.get("enable", False):
-            unfreeze_top_layers = stable_partial_cfg.get("unfreeze_top_layers", 0)
+            unfreeze_top_layers = stable_partial_cfg.get("unfreeze_top_layers", 2)
             if unfreeze_top_layers > 0:
                 total_layers = 12
                 unfreeze_start = total_layers - unfreeze_top_layers
@@ -492,7 +493,6 @@ def main():
                 class_prototypes=class_prototypes,
                 normalize=proto_cfg.get("normalize", True),
                 init_bias=proto_cfg.get("init_bias", -0.5),
-                blend_old=proto_cfg.get("blend_old", 0.0),
             )
             initialized = [idx for idx, proto in class_prototypes.items() if proto is not None]
             print(f"[PrototypeInit] Initialized classifier rows from support prototypes for classes: {initialized}")
@@ -623,30 +623,6 @@ def main():
         data_collator=ToxicCommentDataset.collate_fn,
         max_length=data_max_length,
     )
-    
-    # --- New-class LR boost: scale up LR for classifier rows and plastic branch ---
-    lr_boost_cfg = cfg.get("newclass_lr_boost", {})
-    if args.stage > 0 and lr_boost_cfg.get("enable", False):
-        boost_factor = lr_boost_cfg.get("boost_factor", 2.0)
-        # Trainer hasn't created the optimizer yet, so we override
-        # create_optimizer to inject param groups with different LRs.
-        _orig_create_opt = trainer.create_optimizer
-        def _create_boosted_optimizer():
-            opt = _orig_create_opt()
-            for pg in opt.param_groups:
-                for p in pg.get("params", []):
-                    if p is model.classifier[1].weight or p is model.classifier[1].bias:
-                        pg["lr"] = pg["lr"] * boost_factor
-                        break
-                    from models.dual_lora import DualBranchLoRALayer
-                    for m in model.modules():
-                        if isinstance(m, DualBranchLoRALayer):
-                            if p is m.plastic_A or p is m.plastic_B:
-                                pg["lr"] = pg["lr"] * boost_factor
-                                break
-            return opt
-        trainer.create_optimizer = _create_boosted_optimizer
-        print(f"[LRBoost] Stage {args.stage}: classifier + plastic LR boosted by factor {boost_factor}.")
     
     # Train
     print(f"\n[Stage {args.stage}] Starting training...")

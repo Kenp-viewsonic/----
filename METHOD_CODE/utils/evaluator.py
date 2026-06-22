@@ -151,17 +151,26 @@ def evaluate_model(
             "f1": f1c,
             "pred_pos": int(preds_c.sum()),
         }
-        # Diagnostic threshold sweep: report the best achievable per-class F1
-        # on this evaluation split. This is not used for the default metrics.
-        for t in np.linspace(0.05, 0.95, 19):
-            t_preds = (probs_c >= t).astype(int)
-            t_f1 = f1_score(labels_c, t_preds, zero_division=0)
-            if t_f1 > best["f1"]:
-                best["threshold"] = float(t)
-                best["precision"] = precision_score(labels_c, t_preds, zero_division=0)
-                best["recall"] = recall_score(labels_c, t_preds, zero_division=0)
-                best["f1"] = t_f1
-                best["pred_pos"] = int(t_preds.sum())
+        # Diagnostic threshold sweep (vectorized, single-pass)
+        thresholds = np.linspace(0.05, 0.95, 13)
+        pos_total = float(labels_c.sum())
+        if pos_total > 0:
+            # [N_c, 13] boolean matrix: True where prob >= threshold
+            t_preds_all = probs_c[:, None] >= thresholds[None, :]
+            tp = (t_preds_all & (labels_c[:, None] == 1)).sum(axis=0).astype(float)
+            fp = (t_preds_all & (labels_c[:, None] == 0)).sum(axis=0).astype(float)
+            denom_p = tp + fp
+            denom_r = pos_total
+            t_prec = np.where(denom_p > 0, tp / denom_p, 0.0)
+            t_rec = tp / max(denom_r, 1)
+            t_f1s = np.where((t_prec + t_rec) > 0, 2 * t_prec * t_rec / (t_prec + t_rec), 0.0)
+            best_idx = int(np.argmax(t_f1s))
+            if t_f1s[best_idx] > best["f1"]:
+                best["threshold"] = float(thresholds[best_idx])
+                best["precision"] = float(t_prec[best_idx])
+                best["recall"] = float(t_rec[best_idx])
+                best["f1"] = float(t_f1s[best_idx])
+                best["pred_pos"] = int(tp[best_idx] + fp[best_idx])
         per_class_best_threshold[c] = float(best["threshold"])
         per_class_best_precision[c] = float(best["precision"])
         per_class_best_recall[c] = float(best["recall"])

@@ -44,6 +44,9 @@ class ToxicSemanticPrefix(nn.Module):
         self.n_anchors = n_anchors
         self.alpha = alpha
         self.stage_alpha = {str(k): float(v) for k, v in (stage_alpha or {}).items()}
+        # Default: stage1 alpha=0.3, stage2 alpha=0.6; base uses construction-time alpha.
+        if not self.stage_alpha:
+            self.stage_alpha = {"1": 0.3, "2": 0.6}
         self.layerwise_alpha = list(layerwise_alpha) if layerwise_alpha is not None else None
         
         # Flag to indicate if proto has been initialized
