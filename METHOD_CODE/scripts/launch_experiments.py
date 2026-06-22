@@ -84,6 +84,35 @@ SCENARIOS = {
         "default_methods": ["task_lora_msp", "task_lora_maha", "task_lora_adb", "o_lora", "l2p"],
         "description": "Open-set / prototype baselines: MSP, Maha, ADB, O-LoRA, L2P",
     },
+    # ── Diagnostic ablations ──
+    "unified_diag_nosp": {
+        "config": "configs/unified.yaml",
+        "stages_config": "configs/unified_stages_nosp.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Diagnostic: disable StablePlasticReg (λ_sp=0)",
+    },
+    "unified_diag_noprefix": {
+        "config": "configs/unified_noprefix_s1.yaml",
+        "stages_config": "configs/unified_stages.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Diagnostic: disable prefix anchor in stage1 (α=0)",
+    },
+    "unified_diag_nokd": {
+        "config": "configs/unified.yaml",
+        "stages_config": "configs/unified_stages_nokd.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Diagnostic: disable KD in all stages (λ_kd=0)",
+    },
+    "unified_diag_nosp_noprefix": {
+        "config": "configs/unified_noprefix_s1.yaml",
+        "stages_config": "configs/unified_stages_nosp_noprefix.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Diagnostic: disable spreg in stage1 + disable prefix s1",
+    },
 }
 
 ALL_METHODS = [
