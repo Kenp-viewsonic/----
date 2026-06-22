@@ -196,6 +196,27 @@ SCENARIOS = {
         "default_methods": ["ours"],
         "description": "G4: Combo quad — hardneg + margin + delaykd + stable2",
     },
+    "full_experiment_low_rank_delaykd_alpha03": {
+        "config": "configs/full_experiment_low_rank.yaml",
+        "stages_config": "configs/full_stages_low_rank_delaykd_alpha03.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Next: delayed KD + weak stage1 prefix anchor alpha=0.3",
+    },
+    "full_experiment_low_rank_delaykd_stable2": {
+        "config": "configs/full_experiment_low_rank.yaml",
+        "stages_config": "configs/full_stages_low_rank_delaykd_stable2.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Next: delayed KD + top-2 stable unfreeze",
+    },
+    "full_experiment_low_rank_delaykd_hardneg_refined": {
+        "config": "configs/full_experiment_low_rank.yaml",
+        "stages_config": "configs/full_stages_low_rank_delaykd_hardneg_refined.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Next: delayed KD + refined class-specific confusion negatives",
+    },
     "full_baselines_core": {
         "config": "configs/full_experiment.yaml",
         "stages_config": "configs/full_stages.yaml",

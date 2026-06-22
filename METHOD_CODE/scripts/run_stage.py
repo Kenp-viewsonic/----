@@ -274,6 +274,8 @@ def main():
         new_class_negative_ratio=replay_cfg.get("new_class_negative_ratio", 0.0),
         confusion_negatives_enabled=replay_cfg.get("confusion_negatives_enabled", False),
         confusion_negatives_extra_per_class=replay_cfg.get("confusion_negatives_extra_per_class", 0),
+        confusion_negatives_extra_by_class=replay_cfg.get("confusion_negatives_extra_by_class", None),
+        confusion_negatives_old_classes=replay_cfg.get("confusion_negatives_old_classes", None),
         stage_definitions=stage_definitions,
     )
     splits = split_protocol.create_splits()

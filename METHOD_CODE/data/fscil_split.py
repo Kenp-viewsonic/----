@@ -46,6 +46,8 @@ class FSCILSplitProtocol:
         new_class_negative_ratio: float = 0.0,
         confusion_negatives_enabled: bool = False,
         confusion_negatives_extra_per_class: int = 0,
+        confusion_negatives_extra_by_class: dict = None,
+        confusion_negatives_old_classes: dict = None,
         stage_definitions: dict = None,
     ):
         self.dataset = dataset
@@ -56,6 +58,8 @@ class FSCILSplitProtocol:
         self.new_class_negative_ratio = new_class_negative_ratio
         self.confusion_negatives_enabled = confusion_negatives_enabled
         self.confusion_negatives_extra_per_class = confusion_negatives_extra_per_class
+        self.confusion_negatives_extra_by_class = confusion_negatives_extra_by_class or {}
+        self.confusion_negatives_old_classes = confusion_negatives_old_classes or {}
         
         # Allow external override (e.g. from YAML config)
         if stage_definitions is not None:
@@ -155,16 +159,22 @@ class FSCILSplitProtocol:
                 # confusable with the current new class. Select samples that
                 # co-occur (i.e. have old-class label == 1 but current new-class
                 # label == 0) — these are the hardest to distinguish.
-                if self.confusion_negatives_enabled and self.confusion_negatives_extra_per_class > 0:
+                extra_per_old = int(self.confusion_negatives_extra_by_class.get(cls, self.confusion_negatives_extra_per_class))
+                if self.confusion_negatives_enabled and extra_per_old > 0:
+                    allowed_old = self.confusion_negatives_old_classes.get(cls, None)
+                    if isinstance(allowed_old, str):
+                        allowed_old = [allowed_old]
                     for prev_s in range(stage_id):
                         for old_cls in self.STAGE_DEFINITIONS[prev_s]["classes"]:
+                            if allowed_old is not None and old_cls not in allowed_old:
+                                continue
                             if old_cls not in self.class_to_indices or old_cls not in self.class_train_test:
                                 continue
                             old_pos = set(self.class_to_indices[old_cls])
                             already_used = set(stage_train + stage_negatives)
                             extra_candidates = list(old_pos - positive_set - already_used)
                             rng.shuffle(extra_candidates)
-                            selected = extra_candidates[:min(self.confusion_negatives_extra_per_class, len(extra_candidates))]
+                            selected = extra_candidates[:min(extra_per_old, len(extra_candidates))]
                             stage_negatives.extend(selected)
                             if cls not in stage_negatives_by_class:
                                 stage_negatives_by_class[cls] = []
