@@ -1,0 +1,24 @@
+{
+  "run_id": "full_experiment_low_rank_margin_20260621_223816",
+  "scenario": "full_experiment_low_rank_margin",
+  "description": "G2: Logit-level margin pushing new-class logits above old-class max",
+  "config": "configs/full_experiment_low_rank.yaml",
+  "stages_config": "configs/full_stages_low_rank_margin.yaml",
+  "methods": [
+    "ours"
+  ],
+  "seeds": [
+    42
+  ],
+  "stages": [
+    0,
+    1,
+    2
+  ],
+  "hparam_grid": null,
+  "dry_run": false,
+  "skip_failed_seed": false,
+  "run_root": "./outputs/full_experiment_low_rank_margin_20260621_223816",
+  "created_at": "2026-06-21T23:39:20",
+  "summary_file": "./outputs/full_experiment_low_rank_margin_20260621_223816/launch_summary.json"
+}

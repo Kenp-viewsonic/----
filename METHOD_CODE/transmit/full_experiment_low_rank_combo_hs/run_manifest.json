@@ -1,0 +1,24 @@
+{
+  "run_id": "full_experiment_low_rank_combo_hs_20260622_064155",
+  "scenario": "full_experiment_low_rank_combo_hs",
+  "description": "G4: Combo \u2014 hardneg_perclass + stable_top2",
+  "config": "configs/full_experiment_low_rank.yaml",
+  "stages_config": "configs/full_stages_low_rank_combo_hs.yaml",
+  "methods": [
+    "ours"
+  ],
+  "seeds": [
+    42
+  ],
+  "stages": [
+    0,
+    1,
+    2
+  ],
+  "hparam_grid": null,
+  "dry_run": false,
+  "skip_failed_seed": false,
+  "run_root": "./outputs/full_experiment_low_rank_combo_hs_20260622_064155",
+  "created_at": "2026-06-22T07:44:38",
+  "summary_file": "./outputs/full_experiment_low_rank_combo_hs_20260622_064155/launch_summary.json"
+}

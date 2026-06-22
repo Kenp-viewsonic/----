@@ -64,7 +64,7 @@ replay:
 training:
   output_dir: "./outputs_full_low_rank_rp8"
   per_device_train_batch_size: 8
-  per_device_eval_batch_size: 32
+  per_device_eval_batch_size: 128
   gradient_accumulation_steps: 2
   num_train_epochs: 5
   learning_rate: 2.0e-4

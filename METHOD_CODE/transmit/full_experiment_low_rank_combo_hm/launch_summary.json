@@ -1,0 +1,24 @@
+{
+  "ours": {
+    "seed42": [
+      {
+        "stage": 0,
+        "output_dir": "./outputs/full_experiment_low_rank_combo_hm_20260622_044101/runs/ours_seed42_stage0",
+        "exit_code": 0,
+        "success": true
+      },
+      {
+        "stage": 1,
+        "output_dir": "./outputs/full_experiment_low_rank_combo_hm_20260622_044101/runs/ours_seed42_stage1",
+        "exit_code": 0,
+        "success": true
+      },
+      {
+        "stage": 2,
+        "output_dir": "./outputs/full_experiment_low_rank_combo_hm_20260622_044101/runs/ours_seed42_stage2",
+        "exit_code": 0,
+        "success": true
+      }
+    ]
+  }
+}
