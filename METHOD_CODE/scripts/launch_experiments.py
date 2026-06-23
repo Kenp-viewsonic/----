@@ -157,6 +157,35 @@ SCENARIOS = {
         "default_methods": ["ours"],
         "description": "Explore: unfreeze RoBERTa top-2 layers in stage1, no KD, no spreg",
     },
+    # ── Explore refinement (toward GIRD SOTA) ──
+    "explore_t2_lr1e4": {
+        "config": "configs/unified_explore.yaml",
+        "stages_config": "configs/unified_stages_explore_t2_lr1e4.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Explore t2 + backbone lr 1e-4 (2x from 5e-5)",
+    },
+    "explore_t2_ep10": {
+        "config": "configs/unified_explore.yaml",
+        "stages_config": "configs/unified_stages_explore_t2_ep10.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Explore t2 + 10 epochs in stage1",
+    },
+    "explore_t2_warm03": {
+        "config": "configs/unified_explore.yaml",
+        "stages_config": "configs/unified_stages_explore_t2_warm03.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Explore t2 + warmup_ratio 0.3 in stage1",
+    },
+    "explore_t2_clean": {
+        "config": "configs/unified_explore.yaml",
+        "stages_config": "configs/unified_stages_explore_t2_clean.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Explore t2 + pure BCE only in stage1 (no evo/open/orth)",
+    },
 }
 
 ALL_METHODS = [
