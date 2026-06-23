@@ -113,6 +113,35 @@ SCENARIOS = {
         "default_methods": ["ours"],
         "description": "Diagnostic: disable spreg in stage1 + disable prefix s1",
     },
+    # ── Capacity verification (λ_sp=0 baseline) ──
+    "rp8_nosp": {
+        "config": "configs/unified_rp8.yaml",
+        "stages_config": "configs/unified_stages_nosp.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Plastic rp=8 (2x) + λ_sp=0",
+    },
+    "rp16_nosp": {
+        "config": "configs/unified_rp16.yaml",
+        "stages_config": "configs/unified_stages_nosp.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Plastic rp=16 (4x) + λ_sp=0",
+    },
+    "rp8_stable2_nosp": {
+        "config": "configs/unified_rp8_stable2.yaml",
+        "stages_config": "configs/unified_stages_nosp.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Plastic rp=8 + stable_partial top-2 + λ_sp=0",
+    },
+    "rp16_stable2_nosp": {
+        "config": "configs/unified_rp16_stable2.yaml",
+        "stages_config": "configs/unified_stages_nosp.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Plastic rp=16 + stable_partial top-2 + λ_sp=0",
+    },
 }
 
 ALL_METHODS = [
