@@ -1,0 +1,24 @@
+{
+  "run_id": "unified_diag_nosp_20260622_213334",
+  "scenario": "unified_diag_nosp",
+  "description": "Diagnostic: disable StablePlasticReg (\u03bb_sp=0)",
+  "config": "configs/unified.yaml",
+  "stages_config": "configs/unified_stages_nosp.yaml",
+  "methods": [
+    "ours"
+  ],
+  "seeds": [
+    42
+  ],
+  "stages": [
+    0,
+    1,
+    2
+  ],
+  "hparam_grid": null,
+  "dry_run": false,
+  "skip_failed_seed": false,
+  "run_root": "./outputs/unified_diag_nosp_20260622_213334",
+  "created_at": "2026-06-22T22:21:16",
+  "summary_file": "./outputs/unified_diag_nosp_20260622_213334/launch_summary.json"
+}

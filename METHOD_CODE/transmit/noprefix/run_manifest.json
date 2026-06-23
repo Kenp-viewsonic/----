@@ -1,0 +1,24 @@
+{
+  "run_id": "unified_diag_noprefix_20260622_222116",
+  "scenario": "unified_diag_noprefix",
+  "description": "Diagnostic: disable prefix anchor in stage1 (\u03b1=0)",
+  "config": "configs/unified_noprefix_s1.yaml",
+  "stages_config": "configs/unified_stages.yaml",
+  "methods": [
+    "ours"
+  ],
+  "seeds": [
+    42
+  ],
+  "stages": [
+    0,
+    1,
+    2
+  ],
+  "hparam_grid": null,
+  "dry_run": false,
+  "skip_failed_seed": false,
+  "run_root": "./outputs/unified_diag_noprefix_20260622_222116",
+  "created_at": "2026-06-22T23:06:24",
+  "summary_file": "./outputs/unified_diag_noprefix_20260622_222116/launch_summary.json"
+}
