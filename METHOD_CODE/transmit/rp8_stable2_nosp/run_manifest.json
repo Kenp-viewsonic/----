@@ -1,0 +1,24 @@
+{
+  "run_id": "rp8_stable2_nosp_20260623_120146",
+  "scenario": "rp8_stable2_nosp",
+  "description": "Plastic rp=8 + stable_partial top-2 + \u03bb_sp=0",
+  "config": "configs/unified_rp8_stable2.yaml",
+  "stages_config": "configs/unified_stages_nosp.yaml",
+  "methods": [
+    "ours"
+  ],
+  "seeds": [
+    42
+  ],
+  "stages": [
+    0,
+    1,
+    2
+  ],
+  "hparam_grid": null,
+  "dry_run": false,
+  "skip_failed_seed": false,
+  "run_root": "./outputs/rp8_stable2_nosp_20260623_120146",
+  "created_at": "2026-06-23T12:44:24",
+  "summary_file": "./outputs/rp8_stable2_nosp_20260623_120146/launch_summary.json"
+}
