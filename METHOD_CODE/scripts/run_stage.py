@@ -478,6 +478,21 @@ def main():
                                 lo.unfreeze_stable()
                 print(f"[PartialStable] Unfroze stable branch on top {unfreeze_top_layers} layers (indices {unfreeze_start}..{total_layers-1}).")
         
+        # Optionally unfreeze full RoBERTa top layers for high-plasticity exploration.
+        # Disabled by default. When enabled, all params in the top-k encoder layers
+        # become trainable (not just LoRA adapters). Intended for difficult new classes
+        # that require backbone-level semantic reorganisation.
+        roberta_unfreeze_cfg = cfg.get("roberta_unfreeze", {})
+        if roberta_unfreeze_cfg.get("enable", False):
+            top_layers = roberta_unfreeze_cfg.get("top_layers", 1)
+            total_layers = 12
+            unfreeze_start = max(0, total_layers - top_layers)
+            for layer_idx, layer in enumerate(model.roberta.encoder.layer):
+                if layer_idx >= unfreeze_start:
+                    for param in layer.parameters():
+                        param.requires_grad = True
+            print(f"[ExploreMode] Unfroze full RoBERTa top {top_layers} layers (indices {unfreeze_start}..{total_layers-1}).")
+        
         # Ensure classifier head is trainable
         for param in model.classifier.parameters():
             param.requires_grad = True

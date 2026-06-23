@@ -142,6 +142,21 @@ SCENARIOS = {
         "default_methods": ["ours"],
         "description": "Plastic rp=16 + stable_partial top-2 + λ_sp=0",
     },
+    # ── Explore-mode verification (roberta_unfreeze) ──
+    "explore_top1": {
+        "config": "configs/unified_explore.yaml",
+        "stages_config": "configs/unified_stages_explore_top1.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Explore: unfreeze RoBERTa top-1 layer in stage1, no KD, no spreg",
+    },
+    "explore_top2": {
+        "config": "configs/unified_explore.yaml",
+        "stages_config": "configs/unified_stages_explore_top2.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Explore: unfreeze RoBERTa top-2 layers in stage1, no KD, no spreg",
+    },
 }
 
 ALL_METHODS = [
