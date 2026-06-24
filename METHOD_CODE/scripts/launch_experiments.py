@@ -186,6 +186,35 @@ SCENARIOS = {
         "default_methods": ["ours"],
         "description": "Explore t2 + pure BCE only in stage1 (no evo/open/orth)",
     },
+    # ── 2026-06-24 round 2: push severe_toxic / identity_hate learning ──
+    "explore_t2_lr1e4_top3": {
+        "config": "configs/unified_explore.yaml",
+        "stages_config": "configs/unified_stages_explore_t2_lr1e4_top3.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Explore t2 + lr1e4 + top-3 layers unfrozen (vs top-2)",
+    },
+    "explore_t2_lr1e4_focal": {
+        "config": "configs/unified_explore.yaml",
+        "stages_config": "configs/unified_stages_explore_t2_lr1e4_focal.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Explore t2 + lr1e4 + stage2 ASL (focal-style) loss",
+    },
+    "explore_t2_lr1e4_lrh": {
+        "config": "configs/unified_explore.yaml",
+        "stages_config": "configs/unified_stages_explore_t2_lr1e4_lrh.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Explore t2 + lr1.5e-4 (1.5x from lr1e4)",
+    },
+    "explore_t2_lr1e4_combo": {
+        "config": "configs/unified_explore.yaml",
+        "stages_config": "configs/unified_stages_explore_t2_lr1e4_combo.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "Explore t2 + top-3 layers + stage2 ASL (combo)",
+    },
 }
 
 ALL_METHODS = [
