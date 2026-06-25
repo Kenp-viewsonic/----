@@ -1,0 +1,57 @@
+# Explore-mode stage overrides — variant: lrh (1.5e-4) + Stage2 backbone unfreeze.
+# Direct lever: severe_toxic gets access to backbone high-level semantics.
+# Stage1 identical to lrh; Stage2 unfreezes top-2 backbone layers.
+
+base:
+  training:
+    num_train_epochs: 5
+    learning_rate: 2.0e-4
+  loss_weights:
+    lambda_evo: 0.5
+    lambda_sp: 0.0
+    beta: 0.3
+    eta: 1.0e-4
+
+stage1:
+  roberta_unfreeze:
+    enable: true
+    top_layers: 2
+  training:
+    num_train_epochs: 8
+    learning_rate: 1.5e-4
+  prototype_init:
+    enable: false
+  loss_weights:
+    lambda_evo: 0.2
+    lambda_sp: 0.0
+    beta: 0.2
+    eta: 1.0e-4
+    lambda_kd: 0.0
+    kd_temperature: 2.0
+    freeze_old_classifier: true
+    balanced_bce: true
+    balanced_bce_max_pos_weight: 3.0
+
+stage2:
+  roberta_unfreeze:
+    enable: true
+    top_layers: 2
+  replay:
+    mask_new_class_labels: false
+    coreset_size_per_class: 64
+    new_class_negative_ratio: 2.0
+  training:
+    num_train_epochs: 8
+    learning_rate: 8.0e-5
+  prototype_init:
+    enable: false
+  loss_weights:
+    lambda_evo: 0.2
+    lambda_sp: 0.0
+    beta: 0.2
+    eta: 1.0e-4
+    lambda_kd: 0.5
+    kd_temperature: 2.0
+    freeze_old_classifier: true
+    balanced_bce: true
+    balanced_bce_max_pos_weight: 3.0

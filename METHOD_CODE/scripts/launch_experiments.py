@@ -215,6 +215,28 @@ SCENARIOS = {
         "default_methods": ["ours"],
         "description": "Explore t2 + top-3 layers + stage2 ASL (combo)",
     },
+    # ── 2026-06-24 round 3: push further from lrh (1.5e-4) baseline ──
+    "explore_t2_lrh_s2unfreeze": {
+        "config": "configs/unified_explore.yaml",
+        "stages_config": "configs/unified_stages_explore_t2_lrh_s2unfreeze.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "lrh + Stage2 backbone unfreeze (direct cls2 lever)",
+    },
+    "explore_t2_lrh_top3": {
+        "config": "configs/unified_explore.yaml",
+        "stages_config": "configs/unified_stages_explore_t2_lrh_top3.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "lrh + top-3 layers (vs top-2 at 1.5e-4)",
+    },
+    "explore_t2_lrh_2e4": {
+        "config": "configs/unified_explore.yaml",
+        "stages_config": "configs/unified_stages_explore_t2_lrh_2e4.yaml",
+        "default_seeds": [42],
+        "default_methods": ["ours"],
+        "description": "lrh + lr=2.0e-4 (double from lr1e4 baseline)",
+    },
 }
 
 ALL_METHODS = [
